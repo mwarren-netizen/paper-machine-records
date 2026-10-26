@@ -9,7 +9,7 @@ The operator's notes are recorded here only in the generic form passed to the re
 ## Sources
 
 - **[M]** the operator's margin note on the printout, or his spoken pass. Only the generic "To the AI" form is passed on.
-- **[R]** Outside reviewer: a separate Claude conversation run under the same rules. File: `outside-reviewer-suggestions-2026-10-25.txt` (this folder). Its header says the human chose a topic for review, selected the structure polish, and asked only generic questions.
+- **[R]** Outside reviewer: a separate Claude conversation run under the same rules. File: `outside-reviewer-suggestions-2026-10-25.txt` (this folder). Its header says the human chose a topic for review, selected the structure polish, and asked only generic questions. (Corrected 2026-10-26 from the transcript: it was not a fresh conversation but the session that screened the operator's Paralysis notes, which had seen them unfiltered; two suggestions of the operator's raised there were judged out of bounds and withheld.)
 - **[C]** Claude in this session (an AI). Comments on the operator's notes and on [R]. These are AI-originated, so they are permitted as AI critique. They are tagged so the report can tell them apart; in the brief they appear as [A].
 
 ## Status key

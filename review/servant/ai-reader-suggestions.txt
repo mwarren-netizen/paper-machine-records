@@ -4,7 +4,14 @@ Paper: "Who May Correct a Willing Servant? Corrigible Persons and Domination"
 Text reviewed: the structure polish (runs/paper-2-r2, 12_polish), compared with the line polish
 Date: 2026-10-25
 
-Provenance: These come from a separate Claude conversation, run under the
+Correction (2026-10-26, from the session transcript): this was not a fresh, separate
+conversation. It came from the same Claude session that screened the operator's
+margin notes on the Paralysis paper, so it had seen those notes unfiltered.
+In it the operator asked which lessons carried over and chose the structure polish;
+he also raised two suggestions of his own, which that session judged to be
+out of bounds and which were withheld in every form.
+
+Original header: These come from a separate Claude conversation, run under the
 competition's rules on human involvement. The human chose a topic for review
 (which lessons from a revision of another paper in this machine carry over to
 this one), selected the structure polish over the line polish, and asked only

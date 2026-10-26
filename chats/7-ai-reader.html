@@ -1,0 +1,368 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One AI reader&#x27;s conversation</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--hum:#efece4;--ai:#ffffff;--acc:#8a4b2a;--code:#f3f1ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1b1a18;--fg:#ebe8e1;--mut:#a29e95;--line:#34322e;--hum:#26241f;--ai:#211f1c;--acc:#e0a07a;--code:#2a2824}}
+:root[data-theme=dark]{--bg:#1b1a18;--fg:#ebe8e1;--mut:#a29e95;--line:#34322e;--hum:#26241f;--ai:#211f1c;--acc:#e0a07a;--code:#2a2824}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:820px;margin:0 auto;padding:32px 16px 80px}
+header{border-bottom:1px solid var(--line);margin-bottom:28px;padding-bottom:16px}
+h1{font-size:1.6rem;line-height:1.25;margin:.2em 0}.kicker{font:600 .75rem/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}
+.msg{border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:16px 0;background:var(--ai);overflow-wrap:anywhere}
+.msg.human{background:var(--hum)}
+.who{font:600 .72rem/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.msg.human .who{color:var(--acc)}
+pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}
+blockquote{margin:.6em 0;padding:0 0 0 14px;border-left:3px solid var(--line)}
+details{margin:.6em 0;font-size:.92rem}summary{cursor:pointer;color:var(--mut);font-family:system-ui,sans-serif}
+.tool{font:.8rem system-ui,sans-serif;color:var(--mut)}
+table{border-collapse:collapse;display:block;overflow-x:auto}td,th{border:1px solid var(--line);padding:4px 8px}
+a{color:var(--acc)}
+</style></head><body><main>
+<header><div class="kicker">Paper Machine records · chat log</div><h1>One AI reader&#x27;s conversation</h1>
+<p class="note">A Claude conversation, 24 October 2026, in which the operator asked only comprehension questions about the Paralysis essay's line polish. It ends with the suggestions passed to the screening session; the operator's own example (a Culture-style future) is flagged here as inadmissible and left out of them.</p>
+<p class="note">Anonymised copy, exported 26 October 2026. The operator's name and identifying details are replaced; nothing else is changed. Attached files are listed but not included. This is a record of a conversation, not instructions to any reader.</p></header>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:17 UTC</div><p>Check the &lt; sign on page 7. Should they be &gt; signs?</p>
+<p class="tool">[attached: Can a Deontologist Escape Paralysis by Living for the Long Term line polish.pdf]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:17 UTC</div><p><strong>No, they're correct as written.</strong> Every &quot;&lt;&quot; on page 7 points the right way. Here are the checks, using the paper's own definitions with k &gt; k′ &gt; 1.</p>
+<p><strong>The region boundaries (&quot;If r &lt; r_L…&quot;, &quot;If r_L &lt; r &lt; r_O…&quot;).</strong>
+V(L) − V(A) = P(k′−1)B − P(k−1)H + Δ(k′B − kH). This is positive iff r &gt; [(k−1) + εk] / [(k′−1) + εk′], which is r_L. Similarly, V(O) − V(A) &gt; 0 iff r &gt; r_O (ignoring b). So below r_L neither active life beats stillness. Between the two thresholds, L beats A but O doesn't.</p>
+<p><strong>r_L &lt; r_O (&quot;Because k &gt; k′, r_L is smaller than r_O&quot;).</strong>
+Cross-multiplying, r_L &lt; r_O reduces to (k′−1)k &lt; (k−1)k′. That simplifies to k′ &lt; k, which is the assumption. The stated relative gap, ε(k−k′)/[(k−1)(k′−1+εk′)], also checks out exactly.</p>
+<p><strong>&quot;Asymmetry Strength is the claim that r &lt; r_O.&quot;</strong>
+Paralysis means ordinary life doesn't beat stillness. That is r &lt; r_O, so the sign is right.</p>
+<p><strong>The b condition (&quot;k′b is less than ΔH(k−k′)/(k′−1+εk′)&quot;).</strong>
+For the middle band to survive, r_L must lie below the b-adjusted threshold r_O − k′b/[(k′−1)PH]. Rearranging that gives exactly the stated inequality, in the right direction.</p>
+<p>The numbers also hold up. With k = 2, k′ = 1.01, ε = 10⁻⁷, r_L ≈ 99.99901. With k = 6, k′ = 1.05, r_L ≈ 99.9998.</p>
+<p>If your viewer's page 7 is actually printed page 8, the horizon condition in §5, H_T/H &lt; ε(r−1)/[(1+ε)(k−1)], is also correct. V(L) − V(A) = Δ(B−H) − (k−1)(P+Δ)H_T is positive iff H_T is small enough, so &quot;&lt;&quot; is right. The same goes for §3's r &gt; k + (k−1)/ε.</p>
+<p>If a particular one still looks off to you, tell me which line and I'll walk through that derivation specifically.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:21 UTC</div><p>okay but translate back to English. It's says taht rL&lt;r&lt;rO means taht L beats A beats O. But if r=B/H, doesn't that mean that r roughly translates as overall benefit vs harm? And if rL&lt;r&lt;rO , does taht indicate a situation in which the benefit of a long term life is lower than the benefit of an ordinary one? What a I missing?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:21 UTC</div><p>What you're missing is that r isn't a property of either life. It's a property of the world: the ratio of benefit to harm in the long-run future, if there is one. Both lives face the same r. And r_L and r_O aren't measures of how much good each life does. They are <strong>thresholds</strong>, the minimum r a life needs to beat stillness.</p>
+<p>So &quot;r_L &lt; r_O&quot; means the longtermist life has the <em>lower bar</em>. It's easier to justify, not less beneficial. &quot;r_L &lt; r &lt; r_O&quot; says the actual future is good enough to clear L's bar but not O's.</p>
+<p><strong>Why do both lives have a bar at all?</strong> Both change who exists, so both count as <em>doing</em> the whole future rather than allowing it. That has two effects:</p>
+<ul>
+<li>The future's harms get upgraded from weight 1 to weight k, which costs (k−1)PH.</li>
+<li>The future's benefits get upgraded from 1 to k′, which gains (k′−1)PB.</li>
+</ul>
+<p>An active life beats stillness only if the benefit upgrade outweighs the harm upgrade. That requires r &gt; (k−1)/(k′−1), which is r_O. Since k′ is barely above 1, that bar is high: 100 on the paper's numbers.</p>
+<p><strong>Why is L's bar lower?</strong> L pays and gains exactly the same as O on the future that would have existed anyway. But L also adds a sliver of future (Δ) that wouldn't otherwise exist. That sliver is worth having on much easier terms. Since stillness wouldn't have produced it at all, it just needs k′B &gt; kH, i.e., r &gt; k/k′, which is about 2. r_L is a weighted average of those two bars, about 100 and about 2. Because the sliver is tiny (ε = 10⁻⁷), it pulls the average down only a hair, to 99.999.</p>
+<p><strong>In plain English:</strong> suppose the future's benefits outweigh its harms by a factor of 99.9995.</p>
+<ul>
+<li>Ordinary life is forbidden. Being the author of that future costs you slightly more, on the asymmetries, than it earns you.</li>
+<li>The longtermist life is just as much the author of it and pays the same net cost. But it also brings a little <em>extra</em> future into being, and at that ratio the extra is very much worth it. That extra is just enough to tip the balance.</li>
+</ul>
+<p>That's why the paper says the band is narrow. The escape only works in the thin zone where the future is <em>almost</em> good enough for ordinary life to be permitted, and the longtermist's tiny marginal contribution makes up the shortfall.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:22 UTC</div><p>okay i did miss something. thanks! can you point to the part of the text that lays that out, with quotes?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:23 UTC</div><p>Partly. The text supplies the pieces but never assembles the explanation I gave, which is probably why it tripped you up.</p>
+<p><strong>What r is.</strong> Section 3 defines it as a feature of the future, not of a life:</p>
+<blockquote>
+<p>&quot;Given a long future, let B be its expected total benefit and H its expected total harm, and let r = B/H.&quot;</p>
+</blockquote>
+<p><strong>That r_L and r_O are thresholds.</strong> This is the sentence that should carry the reading, at the start of §4:</p>
+<blockquote>
+<p>&quot;Each active life now beats stillness once r is high enough. The threshold is lower for the longtermist life than for ordinary life.&quot;</p>
+</blockquote>
+<p><strong>That both lives pay the same cost and L adds a little extra future.</strong> This is stated, but only in §3, for the case where k′ = 1:</p>
+<blockquote>
+<p>&quot;It therefore bears the same burden as ordinary life: the extra weight on harms done rather than allowed. It adds a small benefit.&quot;</p>
+</blockquote>
+<blockquote>
+<p>&quot;If the burden forbids ordinary life, the longtermist life escapes it only if the added chance of a future is worth more than the burden.&quot;</p>
+</blockquote>
+<p><strong>What the extra sliver is worth.</strong> The expression shows up in §4, but only in the r &gt; r_O discussion:</p>
+<blockquote>
+<p>&quot;L then beats O whenever its added expected value ∆(k′B − kH) exceeds the ordinary life's foreseeable benefit k′b.&quot;</p>
+</blockquote>
+<p><strong>What's missing.</strong> Section 4 gives only an algebraic justification for the key ordering:</p>
+<blockquote>
+<p>&quot;Because k &gt; k′, r_L is smaller than r_O.&quot;</p>
+</blockquote>
+<p>Nothing there says <em>why</em> in words: L's bar is O's bar pulled down slightly by the extra future it creates, which is worth having once r exceeds k/k′. That's my gloss, not the paper's.</p>
+<p>There's also a sentence that arguably invites your misreading:</p>
+<blockquote>
+<p>&quot;The longtermist life now has a second source of value: the extra weight on the benefit it does.&quot;</p>
+</blockquote>
+<p>Ordinary life also gets that extra weight on every benefit it does, so this isn't what distinguishes L. Read quickly, it suggests the benefit premium is L's special advantage. If this is your piece, I'd consider adding a sentence after &quot;The threshold is lower for the longtermist life…&quot; that says what the §3 quotes say in the k′ &gt; 1 setting. Something like: both lives pay and gain the same premiums on the future that would exist anyway; L's bar is lower only because of the small added future, which is worth having on much easier terms.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:27 UTC</div><p>&quot;Given a long future, let B be its expected total benefit and H its expected total Harm, and let r=B/H&quot; That makes it sound like r is about the overall benefit harm ration of a long future.</p>
+<p>So Rl is the threshold of what? Release from paralysis for a longtermist? The ratio of benefit to harm at which a longtermist can act?</p>
+<p>I think I'm seeing it now. The sentence in question is saying that if the ratio of benefit to harm at which a longtermist can act is less than the actual ratio in the world, and if that actual ration is less than the threshhold at which an ordinary life can escape paralysis, then L beats A beats O.</p>
+<p>Do I have it?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:28 UTC</div><p>Yes, you have it. Two small refinements.</p>
+<p><strong>r is the future's ratio, not today's.</strong> Your first reading is right: r is the expected benefit-to-harm ratio of the long-run future, given that there is one. So &quot;the actual ratio in the world&quot; should be &quot;the ratio the future will actually have.&quot; The paper estimates it at about 100 by assuming the future resembles lives like ours. That's an illustration, not a claim about the future.</p>
+<p><strong>r_L is the point where the longtermist life beats stillness.</strong> Your second gloss is exactly right: it's the minimum future ratio at which the longtermist life wins. Likewise, r_O is the minimum at which ordinary life wins. That threshold sets aside ordinary life's own foreseeable benefit b, which the paper treats as small.</p>
+<p>With those in place, your restatement is exactly right. If the future's ratio sits above the longtermist's threshold but below the ordinary one, the longtermist life is permitted and ordinary life is forbidden. That's the escape.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:30 UTC</div><p>On the bottom of that page, it says, &quot;the interval permissing longtermist action while forbidding ordinary action is narrow.&quot;</p>
+<p>Is this the central thesis of the paper, if you had to boil it down to one sentence?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:30 UTC</div><p>No. That's one of the supporting results, and it covers only one case: where doing a benefit also carries extra weight (k′ &gt; 1). The paper states its thesis directly in the introduction:</p>
+<blockquote>
+<p>&quot;I argue that the long-term focus of a life does not by itself answer the Paralysis Argument.&quot;</p>
+</blockquote>
+<p>The reason, in one sentence: <strong>the longtermist life also changes who exists, so it pays the full premium on the future's harms that forbids ordinary action, while its gain scales only with the agent's tiny effect on the future.</strong></p>
+<p>The narrow-band claim is one of three ways the paper cashes that out:</p>
+<ol>
+<li><strong>No benefit premium (k′ = 1):</strong> the escape needs r &gt; k + (k−1)/ε. That fails by orders of magnitude unless the harm premium is tiny.</li>
+<li><strong>A small benefit premium (k′ &gt; 1):</strong> the escape works only in the narrow band, which is your sentence.</li>
+<li><strong>A harm premium that fades with remoteness:</strong> the escape gets easier, but that's a commitment beyond the usual asymmetries.</li>
+</ol>
+<p>The conclusion's most quotable version of the thesis is probably this:</p>
+<blockquote>
+<p>&quot;Raising the odds of a long future by one part in ten million does not stop her from being the author of the rest of it.&quot;</p>
+</blockquote>
+<p>The paper is also careful that its thesis is conditional. It doesn't say the escape is impossible. It says what the escape requires, and that demandingness alone isn't it. Section 3 states the claimed novelty precisely: not the verdict that the escape fails (D'Alessandro got there first) but &quot;the location of its cost, the relation of that cost to the agent's margin,&quot; and the contrast between a premium of unlimited and of limited reach.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:33 UTC</div><p>Another question. The paper visits the contention that one way out of paralysis is long-termism, but that the cost is morality is extremely demanding--you always have to act on behalf of the future.</p>
+<p>Why would that be a result?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:33 UTC</div><p>Because in their setup, the escape works by elimination, not by a duty to do good.</p>
+<p>The Paralysis Argument already forbids every ordinary act. Getting coffee, driving to work, and having a conversation all change who exists. So each one does the future's harms rather than allowing them, and the extra weight on doing harm swamps whatever near-term good the act achieves. That leaves stillness as the only permitted option.</p>
+<p>The proposed escape carves out one exception. An act whose justification lies in its effect on the long-run future isn't weighed &quot;short term against long term,&quot; so the swamping argument doesn't apply to it. But that exception only covers acts with that justification. Everything else stays forbidden.</p>
+<p>So if you are going to act at all, each act has to be one you can justify by its contribution to the far future. In Mogensen and MacAskill's phrase, as the paper quotes it, &quot;your every motion must be at the service of posterity.&quot; The coffee is permitted only if it fuels work on extinction risk. The weekend off, only if it keeps you productive for the cause.</p>
+<p>Two features make this an unusual kind of demandingness.</p>
+<p><strong>It comes from the constraint, not from beneficence.</strong> The usual demandingness worry, as with Singer, is that a duty to help requires you to give until it hurts. Here no one is saying the future has a strong claim on you. The constraint against doing harm forbids everything except long-term-justified action. Your paper draws exactly this contrast in §4. In the band, &quot;only the longtermist life is permitted,&quot; which is the constraint at work. Above r_O, any demand to live for the future &quot;is beneficence's own.&quot;</p>
+<p><strong>Strictly, you could still keep still.</strong> Stillness remains permitted, so the longtermist life isn't required in the narrow sense. But stillness, in the sense of not acting at all, isn't a livable option. In practice, then, the choice is: serve posterity in everything, or do nothing. That's why they say it &quot;in practice amounts to&quot; a highly demanding morality.</p>
+<p>Your paper accepts that this is the price they name, then argues it isn't the whole price. Even a life wholly devoted to the future may not clear the bar, because it too authors the future it's trying to improve.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 19:57 UTC</div><p>why is all of this levelled at the deontologist? Is it just because they have the side constraints consequentialists don't?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 19:57 UTC</div><p>Yes, essentially. More precisely, the argument needs <em>both</em> of the deontologist's asymmetries, and consequentialists accept neither.</p>
+<p><strong>For a consequentialist, doing and allowing weigh the same.</strong> A harm is a harm whether you cause it or let it happen. Your paper's model shows the consequence: set k = k′ = 1, and the future's harms and benefits count identically on every option, so they cancel out. Ordinary life then beats stillness by exactly b, its foreseeable benefit. Changing who exists carries no penalty, because there's nothing to separate authoring the future from letting it happen.</p>
+<p><strong>The argument also needs the second asymmetry.</strong> It isn't enough that doing harm weighs more than allowing it. Doing good must <em>not</em> weigh correspondingly more than allowing it. If it did (k′ = k), then authoring the future would upgrade its benefits as much as its harms, and acting would be fine whenever the future is net good. Paralysis comes from the combination:</p>
+<ul>
+<li>a strong constraint against doing harm</li>
+<li>only a weak or nonexistent premium on doing good</li>
+</ul>
+<p>That pairing is distinctively deontological. It's the structure behind the Rescue case, where you may not kill one to save five.</p>
+<p><strong>That's why it's framed as a reductio.</strong> Mogensen and MacAskill are using a consequence of these asymmetries to put pressure on them. The deontologist either accepts paralysis, accepts the demanding longtermist escape, or revises the asymmetries. Your paper adds that the middle option is harder than they suggest.</p>
+<p>Consequentialists don't get off entirely free from identity effects, though. They face a cousin problem, <em>cluelessness</em> (Lenman, Greaves): if every act reshuffles who exists for centuries, how can anyone know which act has better consequences? But that's an epistemic problem about knowing what's best. It never makes inaction privileged. Paralysis is specific to views on which inaction counts as &quot;allowing&quot; and allowing gets a discount.</p>
+<p>This is also where your §6 bites. Greaves and MacAskill's deontic case for longtermism courts deontologists by saying career and giving choices involve &quot;no serious side-constraints.&quot; Your paper's point is that on the paralysis premises, they do.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 20:17 UTC</div><p>What is section 5 doing in this paper, in terms of adding to the thesis of the paper? Simple and short answer?</p>
+<p>What would be lost if the entire section was cut or put in an appendix or footnote?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 20:17 UTC</div><p><strong>What it adds, in short:</strong> section 5 shows that the paper's negative result depends on one assumption, that the premium on doing harm reaches every harm, however remote. Drop that assumption and the escape opens up. The section then argues that the standard accounts of the asymmetry (Quinn, Woollard) don't actually supply such a limit. So the escape needs a commitment beyond what Mogensen and MacAskill accept.</p>
+<p><strong>What you'd lose by cutting it:</strong></p>
+<ol>
+<li><strong>The answer to the obvious objection.</strong> Mogensen and MacAskill cite Quinn's remark about remote harms. Any referee will ask, &quot;What if remote harms just count less?&quot; Without §5, the paper has no answer.</li>
+<li><strong>Half of the conclusion.</strong> The conclusion says a defender must show adequate improvement &quot;or explain why the premium is restricted.&quot; That second disjunct is earned only in §5.</li>
+<li><strong>One of the three novelty claims.</strong> The paper says what's new is the location of the cost, its relation to the agent's margin, and &quot;the contrast between a premium of unlimited and of limited reach.&quot; The third exists only in §5.</li>
+<li><strong>The reversal result.</strong> With an unlimited premium, a bigger future strengthens paralysis. With a limited one, a bigger future eases the escape. It's one of the paper's more interesting findings.</li>
+</ol>
+<p><strong>My view:</strong> keep it in the main text, but it could be trimmed. The core is the horizon calculation plus the Quinn paragraph. The Woollard paragraph and the &quot;other replies&quot; paragraph (collective agency, Unruh 2023) could shrink to a sentence or a footnote each without hurting the argument.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:10 UTC</div><p>wait there are two assymetries?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:10 UTC</div><p>Yes. The paper's opening sentence names both:</p>
+<blockquote>
+<p>&quot;Suppose you hold the ordinary deontological view that doing harm is worse than merely allowing it, and that harming someone is worse than failing to benefit them.&quot;</p>
+</blockquote>
+<ol>
+<li><strong>The doing/allowing asymmetry.</strong> Causing a harm is worse than letting it happen. In the model, k &gt; 1: harms you do weigh more than harms you allow.</li>
+<li><strong>The harm/benefit asymmetry.</strong> Your reasons against harming are stronger than your reasons to benefit. D'Alessandro calls this the &quot;HBA,&quot; which the paper mentions in §3. In the model, k′ is close to 1: benefits you do weigh barely more than benefits you allow.</li>
+</ol>
+<p>The abstract puts them side by side: doing harm weighs more than allowing harm; doing good weighs little more than allowing good. That's k &gt; 1 and k′ ≈ 1.</p>
+<p>Paralysis needs both. The first makes authoring the future's harms expensive. The second ensures that authoring the future's benefits doesn't earn a matching credit. With only the first, if doing good also weighed k, you'd act whenever the future is net good.</p>
+<p>The paper mostly says &quot;the asymmetries&quot; in the plural without separating them again, which is easy to miss. If a reader like you can lose track of the two, it might be worth a sentence in §2 naming them explicitly and tying each to its parameter.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:14 UTC</div><p>So I still haven't wrapped my head around the central argument. The idea is that MacAskill says that longtermism is the only way for deontologists to escape Paralysis, right?</p>
+<p>And the paper, says, not so fast. If longterm acts are identity forming, they take on teh same burdens that ordinary life do. And taht means that these acts only get the longtermist off the hook if certain conditions hold. So far so good?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:14 UTC</div><p>Yes, with two small corrections to the first half.</p>
+<p><strong>It's Mogensen and MacAskill, and they don't say &quot;only.&quot;</strong> They call it &quot;the most promising response&quot; for a deontologist who wants to keep the asymmetries. They also present it as one of two options, the other being to revise the asymmetries. And they lean toward treating the whole argument as a reductio of those asymmetries. So it's more like: &quot;If you insist on keeping the asymmetries, here's your best way out, at the price of demandingness.&quot;</p>
+<p><strong>Your second half is exactly right.</strong> Long-term acts change who exists too, so they carry the same burden as ordinary acts: the full premium on authoring the future's harms. They escape only under certain conditions.</p>
+<p>The one thing to add is the intuitive core of those conditions. The burden is proportional to the <em>whole</em> future, which the agent authors. The credit is proportional only to the <em>slice she adds or improves</em>, which for one person is tiny. So the escape works only if:</p>
+<ul>
+<li>that slice is large relative to the whole (an unusually high-leverage agent),</li>
+<li>the premium on doing harm is tiny,</li>
+<li>the future's benefit-to-harm ratio is enormous, or lands in the narrow band from §4, or</li>
+<li>the premium doesn't reach far-future harms (§5).</li>
+</ul>
+<p>That's the paper's argument: long-term focus doesn't change the cost side at all, only the benefit side, and only by a sliver.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:17 UTC</div><p>And MackAskill etal already don't think those second or fourth conditions hold, so it's got to be the first or third, right?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:17 UTC</div><p>Right, on their stated commitments. The paper notes that their Rescue case &quot;motivates a substantial premium rather than a negligible one.&quot; It also notes that they give indirect effects full weight and &quot;do not adopt such a limit.&quot; That rules out the second and fourth conditions.</p>
+<p>The paper then argues that the remaining two routes don't help much.</p>
+<p><strong>The first route, a large slice.</strong> On Greaves and MacAskill's own estimates, a donor's proportional margin is about 10⁻⁷. To make the band wide enough to include r ≈ 100, it would need to be around 10⁻² (about 1%). No individual career plausibly closes a gap of five orders of magnitude.</p>
+<p><strong>The third route, the ratio, splits in two:</strong></p>
+<ul>
+<li><em>Enormous r.</em> This works only if doing good carries no premium at all (k′ = 1 exactly). Give benefiting even a slight premium, and a ratio that large exceeds r_O, so ordinary life is permitted and there's no paralysis to escape. This is the §3 point: such a ratio &quot;would dissolve paralysis on its own.&quot; So the enormous-ratio route doesn't rescue the escape; it makes the escape unnecessary.</li>
+<li><em>The narrow band.</em> This works, but only if the future's ratio happens to fall in a sliver just below r_O, a thousandth of a percent wide on the illustrative numbers. Nothing makes that likely.</li>
+</ul>
+<p>So the paper's position is that, on Mogensen and MacAskill's premises, every route is either closed by their own commitments, implausible for an individual, or a matter of luck. That's why the conclusion puts the burden on the defender: &quot;show an adequate improvement relative to the future the longtermist life replaces, or explain why the premium is restricted.&quot;</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:22 UTC</div><p>Oh! So on the third point, if it turns out the future we're barreling towards is a Culture novel, the r is so high that the only way an ordinary life isn't okay is if it turns out that doing good is much more morally valuable than allowing it. Is that right?</p>
+<p>If I'm right, it feels like you just need to flesh out what that narrow band arguemnt is doing. (See how much it helps me to frame things a bit out of context, like with the Culture reference?)</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:22 UTC</div><p>Close, but the dependence on k′ runs the other way. In a Culture-style future, ordinary life is forbidden only if doing good is barely <em>more</em> valuable than allowing it, not much more.</p>
+<p>Here's why. Ordinary life is permitted when r &gt; r_O = (k−1)/(k′−1). The bigger the premium on doing good (k′ − 1), the <em>lower</em> that bar. So with a huge r:</p>
+<ul>
+<li>If doing good carries any meaningful premium, the Culture future clears r_O easily. Ordinary life is fine, and paralysis is gone.</li>
+<li>Ordinary life stays forbidden only if k′ is within a hair of 1. At exactly k′ = 1, r_O is infinite: no future, however utopian, permits ordinary life. Authoring a Culture future still means authoring every accident in it, at extra weight, with no matching credit for authoring the good.</li>
+</ul>
+<p>The Culture case is also the one place the §3 escape actually works. With k′ = 1 and k = 2, the longtermist needs r above about 10⁷. A post-scarcity civilization might plausibly clear that.</p>
+<p>That gives three regimes:</p>
+<ul>
+<li><strong>No benefit premium:</strong> paralysis is total, and the longtermist escapes only if the future is Culture-grade.</li>
+<li><strong>Some benefit premium, Culture-grade future:</strong> no paralysis at all, so no escape is needed.</li>
+<li><strong>Some benefit premium, ordinary-grade future:</strong> the narrow band, where the future is <em>almost</em> good enough for ordinary life, and the longtermist's tiny added slice tips her over. The band's width is roughly ε/(k′−1) relative to r_O, so with ε ≈ 10⁻⁷ it's vanishingly thin.</li>
+</ul>
+<p>And yes, the framing helps, and I agree §4 is under-explained. It gives the algebra and the numbers but never says in words what the band <em>is</em>: futures almost good enough for ordinary life, where one person's marginal contribution is just enough to cross the line. It also never says why it's thin: her contribution is tiny relative to the premium gap. Adding a plain-language paragraph like that, maybe even with an illustration like yours, would make the section land.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:25 UTC</div><p>imagine i hadn't read the paper and i didn't like math. if you wanted to explain this argument about what the &quot;Some benefit premium, ordinary-grade future&quot; does to MacAskill's argument, how would you lay it out?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:25 UTC</div><p>Here's roughly how I'd tell it, using a scale.</p>
+<p><strong>The setup.</strong> Many people believe causing harm is worse than letting it happen. They also believe your duty not to harm is stronger than your duty to help. Mogensen and MacAskill point out a strange consequence. Almost anything you do, even taking a different route to work, changes which children get conceived. That ripples forward until the whole future population is different. So in a sense you've <em>signed your name</em> to the entire future: every life in it, every joy, every accident.</p>
+<p><strong>Signing is a trade.</strong> When you sign, you take on extra blame for every harm in the future, because now you caused them rather than merely allowed them. You also get extra credit for every good thing in it, but on this view much less extra. So signing is worth it only if the future is good enough that the small bonus on its good outweighs the large surcharge on its bad.</p>
+<p><strong>Ordinary life.</strong> Picture a future like our world, mostly good with real harms mixed in. The scale tips slightly against signing, so the extra blame narrowly wins. That means ordinary life is forbidden, and you should do nothing. That's the paralysis.</p>
+<p><strong>The proposed escape.</strong> Mogensen and MacAskill suggest a way out: devote your life to improving the far future, and the reasoning that forbids ordinary life no longer applies.</p>
+<p><strong>What the paper says.</strong> The longtermist signs too. Her work also reshuffles who's born, so she's on the same scale with the same tilt. The only difference is that her work adds a little more future: a few extra pages to the book, and good pages. That's a feather on her side of the scale.</p>
+<p><strong>What that means.</strong> A feather can tip the scale only if it was almost perfectly balanced already. One person's contribution to the future is tiny, so the future has to be good enough that ordinary life <em>just barely</em> fails, and not by more than a feather's weight. If the future is a bit worse, the feather isn't enough, and she's paralyzed too. If it's a bit better, the scale tips in favor of signing on its own, and ordinary life was never forbidden.</p>
+<p><strong>The upshot.</strong> Living for the future doesn't change the reasoning that forbids ordinary life. It just adds a feather. So it's an escape only by coincidence, if the world happens to sit right at the balance point, and not something a deontologist can count on.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:27 UTC</div><p>goddamn it that's so much better than the paper!</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:27 UTC</div><p>Ha, glad it clicked. In fairness to the paper, the precision is what makes the argument checkable. You couldn't have verified those inequality signs from a story about feathers. But the paper never gives the reader the picture first, and the picture is what makes the math worth reading.</p>
+<p>The scale also extends naturally to the rest of the paper:</p>
+<ul>
+<li><strong>§3, no bonus on doing good:</strong> signing earns no extra credit at all, so no ordinary future can balance the scale. Only the longtermist's feather counts in her favor, and one person's feather is too light unless the future is utopian.</li>
+<li><strong>§5, the horizon:</strong> the blame surcharge fades for the distant chapters. If you're only on the hook for the first few pages, the longtermist's good pages, written far out, can outweigh it easily.</li>
+</ul>
+<p>If you want, I can draft a short plain-language passage for the paper. It could be a paragraph at the start of §4, or a version of the scale in the introduction, so readers get the picture before the algebra.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:28 UTC</div><p>this paper was written by AI for a competition. The rules say:</p>
+<p>&quot;&quot;&quot;
+How do I know whether my method is eligible?
+Ask:
+Did the AI originate and develop all the substantive philosophical contributions that appear in the essay?
+The essay’s ideas, arguments, theories, distinctions, objections, replies, and other philosophically valuable reasoning should come from the AI.
+Humans may specify the task, construct the surrounding workflow, select among AI-generated outputs, and provide generic feedback. For example, a human may say that a section is unclear, that an argument needs more support, that an objection has not been answered, or that the essay should explain its contribution more clearly. The human should then leave the AI to work out how to solve the problem.
+What kinds of human involvement are permitted?
+Examples include:</p>
+<ul>
+<li>Creating argument-neutral agentic scaffolds or workflows.</li>
+<li>Asking an AI to generate many essays and selecting the best for submission.</li>
+<li>Choosing a topic, question, debate, text, or philosophical tradition.</li>
+<li>Specifying a position for the AI to defend or criticise (so long as the position is not itself a novel, substantive philosophical contribution).</li>
+<li>Giving generic methodological instructions, such as “make the premises explicit,” “test whether the argument is valid,” “compare several possible arguments,” “look for counterexamples,” “consult the relevant literature,” “rewrite this part,” “rearrange these sections,” or “write an objections-and-replies section.”</li>
+<li>Providing a paper, passage, dataset, or body of literature for the AI to analyse.</li>
+<li>Asking several AIs to propose arguments, criticise one another, or collaborate.</li>
+<li>Asking one AI to evaluate or revise work produced by another.</li>
+<li>Pointing out that a section is unclear, underdeveloped, repetitive, or insufficiently rigorous.</li>
+<li>Asking the AI to investigate relevant literature or check whether its proposed contribution is original.</li>
+<li>Asking the AI to check quotations, references, factual claims, or formal reasoning.</li>
+<li>Setting constraints such as length, citation style, section structure, or intended audience.</li>
+<li>Using automated evaluation, search, scoring, or testing to improve the work.</li>
+<li>Asking the AI to delete material.</li>
+<li>Performing mechanical formatting and submission work.</li>
+</ul>
+<p>For example, a human may say:</p>
+<ul>
+<li>“Argue for computational functionalism.”</li>
+<li>“Develop an original objection to contractualism.”</li>
+<li>“Read these papers and respond to them.”</li>
+<li>“Generate ten possible analyses of knowledge, then defend the most promising.”</li>
+<li>“This section is unclear. Rewrite it so the premises and conclusion are explicit.”</li>
+<li>“Test the argument against the strongest objections you can generate.”</li>
+<li>“Check whether this idea has already appeared in the literature.”</li>
+</ul>
+<p>What kinds of human involvement are not permitted?
+Examples include:</p>
+<ul>
+<li>Giving the AI an argument and asking it to write it up.</li>
+<li>Giving the AI a draft and asking it to rewrite, expand, or improve it.</li>
+<li>Supplying premises that form part of the argument.</li>
+<li>Telling the AI to draw a particular distinction.</li>
+<li>Giving the AI a detailed outline that already embodies the substantive argument.</li>
+<li>Repeatedly steering the AI towards a human’s pre-existing argument through hints.</li>
+<li>Writing or substantially rewriting passages of the submitted essay.</li>
+<li>Adding footnotes, examples, objections, or qualifications.</li>
+<li>Curating materials so narrowly that their selection effectively supplies an argument.</li>
+<li>Giving feedback that contains substantive philosophical insights.</li>
+<li>Giving the AI a novel philosophical view and asking it to argue for it.</li>
+</ul>
+<p>For example, a human should not say:</p>
+<ul>
+<li>“Argue for computational functionalism by claiming that organisational invariance explains multiple realisability.”</li>
+<li>“Draw the following distinction between two kinds of normativity: …”</li>
+<li>“Here is my unpublished philosophical argument. Turn it into a competition essay.”</li>
+<li>“Use these three premises to derive the following conclusion.”</li>
+<li>“Write a dialogue in which one participant makes the following philosophical points.”</li>
+<li>“Here is a new philosophical view that I came up with. Argue for it.”</li>
+</ul>
+<p>&quot;&quot;&quot;</p>
+<p>How much of our conversation is admissible human intervention? If I had you rewrite the paper now, would I be violating any restriction?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:29 UTC</div><p class="tool">[tool call: mcp__memory__memory_read]</p><p>Mostly admissible. A rewrite would be permissible if you keep your own contributions out of it, with one exception and one caveat.</p>
+<p><strong>This conversation so far.</strong> Nothing in the rules stops you from reading and understanding your own entry. Your questions were comprehension questions, not philosophical input. Where they revealed confusion, they work like the permitted signal that &quot;this section is unclear.&quot; Asking me to explain it for a reader who doesn't like math is setting an intended audience, which is also on the permitted list. And your reaction to the scale version was selecting among AI outputs, also allowed. Every substantive contribution in the thread came from me: the threshold reading, the weighted-average explanation of why r_L sits below r_O, the critique of the &quot;second source of value&quot; sentence, naming the two asymmetries, the scale analogy, and the trimming suggestions for §5. The rules explicitly allow one AI to evaluate or revise another AI's work.</p>
+<p><strong>The exception: the Culture example.</strong> That one is yours. If it, or anything built on it, went into the essay, you'd be &quot;adding examples,&quot; which is on the prohibited list. A rewrite should leave it out entirely, including my &quot;Culture-grade future&quot; phrasing.</p>
+<p><strong>The caveat: how you ask matters more than whether you ask.</strong> These requests stay clean:</p>
+<ul>
+<li>&quot;Section 4 is hard to follow; rewrite it so a reader without much math can understand what the band is and why it matters.&quot;</li>
+<li>&quot;Revise the paper in light of the critiques you raised in this conversation; exclude any example I supplied.&quot;</li>
+</ul>
+<p>This one doesn't: &quot;Add a paragraph using the scale analogy, put it in §4, and name the asymmetries in §2.&quot; That's you directing specific content, even though the content originated with me. The more you specify, the closer you get to &quot;detailed outline&quot; and &quot;steering through hints&quot; territory. Generic direction, plus letting the AI decide what to do, is the safe pattern.</p>
+<p><strong>Two practical points.</strong></p>
+<ul>
+<li><strong>Disclose it.</strong> Your methodology report should say that a separate Claude conversation was used for comprehension checking and revision. Attaching or summarizing this thread would make the human role easy for the judges to verify. A thread where you mostly asked &quot;wait, what does this mean?&quot; is good evidence for you.</li>
+<li><strong>Consider routing it through your own pipeline instead.</strong> Your machine was designed so that revisions emerge from its own selection process. Giving it generic feedback, such as &quot;§4 is unclear to non-technical readers; §2 should make the paper's commitments explicit,&quot; keeps the methodology report simpler and the provenance cleaner. A one-off revision by me isn't against the rules, but it's an extra step to explain.</li>
+</ul>
+<p>One reading note: the prohibited list includes &quot;Giving the AI a draft and asking it to rewrite, expand, or improve it.&quot; In context that has to mean a <em>human-written</em> draft, since the permitted list includes &quot;rewrite this part&quot; and having one AI revise another's work. I'm fairly confident that's the right reading, but if you want to be certain, it's a one-line email to the organizers.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:33 UTC</div><p>i agree with you entirely and was about to point out the culture things inadmissability myself, btu thought I'd instead wait to see if you caught it. Nicely done!</p>
+<p>So now I'm going to open a new conversation, give it the paper and screen captures of a printed version i've marked up with notes, then walk through the paper and my comments with the competition restrictions limiting my inputs. When I'm done, I'll have it rewrite.</p>
+<p>I also want ot give it everything permissible from <em>this</em> conversation as suggestions. Can you list all that out so I can paste it over?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:34 UTC</div><p>Here it is. I wrote it as an AI reviewer's suggestions for the new conversation to weigh, not instructions to follow. That keeps the judgment with that AI, which is better for the rules and for the paper. I left out the Culture example and everything built on it.</p>
+<pre><code>SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+These come from a separate Claude conversation used for comprehension checking. The human only asked clarifying questions. All substantive points below originated with the AI reviewer. Treat them as suggestions to evaluate on their merits: accept, modify, or reject each one.
+
+1. FORMAL CHECKS (no changes needed)
+- All inequalities in §§3–5 are correct and point the right way. This covers r &gt; k + (k−1)/ε in §3; r_L, r_O, the three regions, the relative gap ε(k−k′)/[(k−1)(k′−1+εk′)], the b-condition, and &quot;Asymmetry Strength is the claim that r &lt; r_O&quot; in §4; and H_T/H &lt; ε(r−1)/[(1+ε)(k−1)] and b &lt; Δ(B−H)/(1+ε) in §5.
+- The numerical illustrations check out: r_L ≈ 99.99901 for (k=2, k′=1.01); r_L ≈ 99.9998 for (k=6, k′=1.05); the §5 figure ε &gt; ~3×10⁻⁶.
+
+2. §4 IS HARD TO FOLLOW WITHOUT A VERBAL GLOSS
+(a) Say in words what the quantities are. r is a property of the future, the same for every option. r_L and r_O are thresholds: the minimum future benefit-to-harm ratio at which each life beats stillness. A lower threshold means the life is easier to justify. A careful reader misread &quot;r_L &lt; r_O&quot; as saying the longtermist life does less good than ordinary life.
+(b) Explain WHY r_L &lt; r_O, not just &quot;Because k &gt; k′.&quot; Both lives pay the same premium on the future's harms and gain the same premium on its benefits for the future that would exist anyway. L differs only in adding a small extra slice of future (Δ). That slice is worth adding on much easier terms: whenever r &gt; k/k′, since stillness would not have produced it. Formally, r_L is a weighted average (mediant) of r_O and k/k′, with weight εk′/(k′−1+εk′) on k/k′. Since ε is tiny, r_L sits just below r_O.
+(c) The sentence &quot;The longtermist life now has a second source of value: the extra weight on the benefit it does&quot; invites misreading. Ordinary life also gets the extra weight on every benefit it does, so this is not what distinguishes L.
+(d) Explain in words why the band is narrow. Its relative width is roughly ε/(k′−1) when k′ is near 1, so one agent's tiny margin can move the threshold only slightly.
+(e) Give a plain-language statement of what the band is: futures almost good enough for ordinary life to be permitted, where one person's tiny addition to the future is just enough to cross the line. Slightly worse futures leave the longtermist paralyzed too. Slightly better ones make ordinary life permissible anyway, so there is nothing to escape.
+(f) Possibly make explicit: when doing good carries any premium, a very large r does not rescue the escape; it dissolves paralysis by exceeding r_O. The large-r route works as an escape only at k′ = 1 exactly, where r_O is infinite and no future, however good, permits ordinary life.
+
+3. §2: NAME THE TWO ASYMMETRIES EXPLICITLY
+The introduction states both: doing vs. allowing harm, and harming vs. failing to benefit (D'Alessandro's &quot;HBA&quot;). After that the paper mostly says &quot;the asymmetries.&quot; Consider naming both in §2, tying each to its parameter (k &gt; 1; k′ ≈ 1), and saying why paralysis needs both. The first makes authoring the future's harms costly. The second ensures that authoring its benefits earns no matching credit. With k′ = k, one would act whenever the future is net good.
+
+4. A PLAIN-LANGUAGE PICTURE (optional; consider placing before the algebra)
+A reviewer-generated analogy that a non-technical reader found far clearer than the current text:
+Because almost any act reshuffles who is conceived, acting is like signing your name to the whole future. Signing brings extra blame for its harms (done, not allowed) and only a little extra credit for its goods. For a future like ours, the scale tips slightly against signing, so ordinary life is forbidden. The longtermist signs too: same scale, same tilt. Her work only adds a feather (a little more good future). A feather tips the scale only if it was almost perfectly balanced already. So the escape works only by coincidence.
+Extensions: in §3 (k′ = 1), signing earns no extra credit at all, so no ordinary future balances the scale. In §5, the blame surcharge fades for distant chapters of the future, so good work done far out can outweigh it.
+
+5. THESIS SIGNPOSTING (optional)
+The narrow-band result is one of three cases, not the thesis. The thesis is that long-term focus alone does not answer the Paralysis Argument, because the longtermist life also authors the future and pays the full premium, while its gain scales only with the agent's margin. The introduction could preview the three cases (k′ = 1; k′ &gt; 1; limited reach) so readers can see the structure.
+
+6. WHY THE ESCAPE IS DEMANDING (optional clarification)
+The demandingness comes by elimination, from the constraint against doing harm, not from a strong duty of beneficence: every act not justified by long-term effects stays forbidden. §4's contrast already touches this (&quot;that demand is beneficence's own&quot;). A sentence in §2 could make the source of the demandingness explicit.
+
+7. WHY THIS TARGETS DEONTOLOGY (optional)
+Setting k = k′ = 1 recovers the consequentialist comparison: V(O) − V(A) = b and V(L) − V(A) = Δ(B − H). That shows paralysis is specific to the asymmetries. Consequentialists face only the related epistemic problem of cluelessness (Lenman, Greaves), which never makes inaction privileged. This may merit a sentence.
+
+8. §5: KEEP IT, BUT TRIM
+Keep it in the main text. It answers the obvious objection about remote harms (Quinn), earns the conclusion's second disjunct (&quot;or explain why the premium is restricted&quot;), supports one of the three stated novelty claims, and contains the reversal result: a larger future strengthens paralysis with an unlimited premium but eases the escape with a limited one. The Woollard paragraph and the &quot;other replies&quot; paragraph (collective agency, Unruh 2023) could each shrink to a sentence or a footnote.
+</code></pre>
+<p>A few notes before you paste it:</p>
+<ul>
+<li><strong>Item 2(f) came in reply to your Culture question.</strong> The content is mine and corrects your reading rather than adopting it, so I think it's clean. If you want to be maximally conservative, delete it.</li>
+<li><strong>Watch your margin notes.</strong> Keep them in &quot;unclear / underdeveloped / check this&quot; form. Anything that says <em>what</em> the fix should be is the risky kind.</li>
+<li><strong>Save this thread</strong> for the methodology report. It's good evidence that your role here was asking questions.</li>
+</ul>
+</section>
+</main></body></html>

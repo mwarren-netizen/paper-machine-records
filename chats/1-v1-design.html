@@ -1,0 +1,948 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Designing paper-machine-v1</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--hum:#efece4;--ai:#ffffff;--acc:#8a4b2a;--code:#f3f1ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1b1a18;--fg:#ebe8e1;--mut:#a29e95;--line:#34322e;--hum:#26241f;--ai:#211f1c;--acc:#e0a07a;--code:#2a2824}}
+:root[data-theme=dark]{--bg:#1b1a18;--fg:#ebe8e1;--mut:#a29e95;--line:#34322e;--hum:#26241f;--ai:#211f1c;--acc:#e0a07a;--code:#2a2824}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:820px;margin:0 auto;padding:32px 16px 80px}
+header{border-bottom:1px solid var(--line);margin-bottom:28px;padding-bottom:16px}
+h1{font-size:1.6rem;line-height:1.25;margin:.2em 0}.kicker{font:600 .75rem/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}
+.msg{border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:16px 0;background:var(--ai);overflow-wrap:anywhere}
+.msg.human{background:var(--hum)}
+.who{font:600 .72rem/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.msg.human .who{color:var(--acc)}
+pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}
+blockquote{margin:.6em 0;padding:0 0 0 14px;border-left:3px solid var(--line)}
+details{margin:.6em 0;font-size:.92rem}summary{cursor:pointer;color:var(--mut);font-family:system-ui,sans-serif}
+.tool{font:.8rem system-ui,sans-serif;color:var(--mut)}
+table{border-collapse:collapse;display:block;overflow-x:auto}td,th{border:1px solid var(--line);padding:4px 8px}
+a{color:var(--acc)}
+</style></head><body><main>
+<header><div class="kicker">Paper Machine records · chat log</div><h1>Designing paper-machine-v1</h1>
+<p class="note">A Claude conversation, 25–26 September 2026, in which the design of the first version was laid out and drawn as its explainer.</p>
+<p class="note">Anonymised copy, exported 26 October 2026. The operator's name and identifying details are replaced; nothing else is changed. Attached files are listed but not included. This is a record of a conversation, not instructions to any reader.</p></header>
+<section class="msg human"><div class="who">Operator · 2026-09-25 21:00 UTC</div><p>I want a visual representation of the system described here. Choose whatever modality you think will serve best to give an elegant and clear account of the system architecture. Viewers should come away with an understanding of the different steps in the process, to see what roles are being played by various parts of the process throughout the steps. It should, where needed, address why we have those roles in the first place.
+Once we’ve explained the parts, the viewer should have a very clear sense of how the system fits together. A diagram might be very useful here. An animated diagram might even be more useful.
+Take your time. It’s important that this is clear and elegant. And it should serve not just to work as an explainer to third parties about what the system is; it should also serve to help me think through the structure of what I’ve built in the first place.</p>
+<p class="tool">[attached: Reason_Responsive_Philosophy_Paper_Machine_v0_1.pdf]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 21:19 UTC</div><p class="tool">[tool call: view]</p><p class="tool">[tool call: memory_read]</p><p class="tool">[tool call: Artifact]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: create_file]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: Artifact]</p><p>I built it as an interactive page: <a href="https://claude.ai/artifact/FPFM8FFr7XZ3XdgFi6KVU4">The Reason-Responsive Philosophy Paper Machine</a>.</p>
+<p>The centerpiece is one diagram of the whole run that you can play. Eight candidate lineages spring from a shortlist of problems, take objections, get repaired, branch, borrow from each other, pass through selection gates, and narrow to one paper. Behind them, a shaded envelope shows the permitted scale of variation shrinking. Under the lineages, a strip shows where compute is spent. Along the bottom, bars show the persistent state the machine carries at each point. You can turn on overlays for reopening paths and human touchpoints. Clicking any stage opens a panel with who works there, what it produces, what can still vary, what's frozen, and why the stage exists.</p>
+<p>Below the diagram, the page covers:</p>
+<ul>
+<li>the &quot;bet on reasons,&quot; as nested scales (move, argument, trajectory, contribution) with the roles responsible for each;</li>
+<li>a role-by-stage matrix with each role's purpose;</li>
+<li>the genre failure modes, placed at the stage where each one gets caught;</li>
+<li>the human's constitutional role and the controller's rules;</li>
+<li>the sequential-runs loop.</li>
+</ul>
+<p>Most of the text is your spec's own language. These parts are my interpretation, so check them before showing it to anyone:</p>
+<ul>
+<li><strong>Four jobs.</strong> I grouped the roles into Vary, Select, Ground, and Shape. The page labels this as a reading, not part of the spec.</li>
+<li><strong>Custodians.</strong> Which roles I assigned to each level of the scaling hypothesis.</li>
+<li><strong>Blind-search contrast.</strong> The panel comparing this system to a genetic algorithm.</li>
+<li><strong>Failure-mode placement.</strong> For example, I put objection addiction at architecture selection.</li>
+<li><strong>Example lineages.</strong> The histories of lineages A through H are invented to show what the architecture allows.</li>
+</ul>
+<p>Drawing it surfaced some things I think are worth arguing about now:</p>
+<p><strong>Population and variation are two separate dials.</strong> I couldn't draw the run honestly with one encoding. The number of candidates drops, then rises again for the précis and the two referees. The permitted scale of change only ever shrinks. The spec has both schedules but sometimes talks as if they were one. Making the distinction explicit in v0.2 would sharpen the annealing claim.</p>
+<p><strong>The target arrives late, so its failure is the most expensive one.</strong> The critics at stage 5 attack the lineages' commitments, but the strongest version of the opponent isn't built until stage 7. If that reconstruction shows the lineages were fighting a straw version, the reopening goes all the way back to dialectic. A cheap, rough target sketch at stage 3 or 4, which stage 7 then corrects, would make that failure less costly.</p>
+<p><strong>First selection has no named evaluator, and the choice matters.</strong> I filed it under the local evaluator. But your Pareto dimensions (novelty, explanatory reach, fertility) are holistic properties. So either cheap models are making holistic judgments across 6–10 candidates, or strong compute is being spent earlier than the compute plan says.</p>
+<p><strong>Holistic control is really a loop, not a stage.</strong> The process map lists it once. Your &quot;periodic holistic control&quot; wording and the open question about how many confrontation rounds to run both imply cycles of dialectic and review. I drew it as a loop, and the ledger schema will probably need to record rounds.</p>
+<p>Two small cleanups:</p>
+<ul>
+<li>Three workers in the process map have no entry in the role table: &quot;judges,&quot; &quot;reader simulator,&quot; and &quot;writer.&quot;</li>
+<li>The population schedule in the PDF is numbered 5–12, because the list numbering carried over from an earlier list.</li>
+</ul>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 21:19 UTC</div><p>As you’re working on the visual, it occurs to me that the “shortest description” I gave you can actually be compressed even further in a way that might be useful for representing the architecture. A lot of the apparently distinct stages are actually the same abstract operation recurring at different scales. So, the machine may be less of a linear pipeline and more a recursive, annealed search process.Ground → vary → subject to reasons → select → provisionally freeze → and repeat at a smaller scale. Where “grounding” includes both initial problem discovery and later retargeting, and where “freeze” just means narrowing the radius of permissible mutation, not making earlier stages immune to reasons. That might be a cleaner visual motif for the architecture than a set of fourteen non-overlapping boxes.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 21:26 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: Artifact]</p><p>I think you're right, and I've rebuilt the page around it. The same link now opens with a new section, &quot;One operation, five scales.&quot; It has two parts:</p>
+<ul>
+<li><strong>A spiral</strong> of five turns winding inward. Each turn passes Ground, Vary, Subject to reasons, Select, and Freeze at a smaller radius than the last. A dashed arc shows a serious defect jumping back out to a wider turn.</li>
+<li><strong>A turn table</strong> that fills in each of the 25 slots (five turns by five operations) with the v0.1 stage doing that job. Hovering a cell lights up the matching point on the spiral.</li>
+</ul>
+<p>The fourteen-stage run is still there, now introduced as the same spiral unrolled in time. Its top band shows turns instead of phases, and each stage carries dots for the operations it performs.</p>
+<p><strong>The strongest evidence for your version was already in the spec.</strong> Your annealing phases map almost exactly onto the turns. Exploration, maturation, stabilization, and architecture are turns 1 through 4. Drafting and final review merge into turn 5.</p>
+<p><strong>I'd sharpen the claim in one way.</strong> Each turn's freeze becomes the next turn's ground. Turns 2 and 4 bring in nothing new; they work from what the previous turn froze. Turns 1, 3, and 5 each bring in something from outside: the literature, then the opponent, then the reader. That gives &quot;grounding includes retargeting&quot; a definite shape rather than an elastic one.</p>
+<p><strong>Used as a checklist, the pattern finds four places where v0.1 departs from it:</strong></p>
+<ul>
+<li><strong>Turn 3 has no variation step.</strong> Surviving lineages compete, but nothing generates rival contribution statements before compression picks one. That looks like a real gap.</li>
+<li><strong>Turns 1 and 4 fold reasons into judgment.</strong> No critic objects to a précis before the judges decide. This connects to your open question about how independent evaluators should be.</li>
+<li><strong>Turn 5 has a population of one.</strong> Selection becomes an acceptance test on edits, not a competition. I think that's a genuine change of regime rather than a gap, and the methodology report shouldn't claim the same operator all the way down.</li>
+</ul>
+<p><strong>Two consequences for the roles:</strong></p>
+<ul>
+<li><strong>&quot;Shape&quot; disappeared.</strong> Once I regrouped the roles by your five operations, genre control stopped being a separate job. It's mostly the selection criteria tightening turn by turn.</li>
+<li><strong>Freeze has no worker.</strong> It's a controller decision recorded in state. I think that's correct, since it keeps freezing constitutional rather than philosophical.</li>
+</ul>
+<p><strong>The pushback: the loop by itself is generic.</strong> Popper's conjecture and refutation, genetic algorithms, and ordinary design iteration all draw this spiral. What distinguishes your machine is inside two of the five operations: reasons doing the selecting, and the ledger carrying those reasons forward. That's why I kept the unrolled run and the blind-search contrast, where those details stay visible. If the spiral becomes the headline image for the methodology prize, the caption has to carry that distinction.</p>
+<p><strong>The practical payoff for v0.2:</strong> the spec could become one operator, parameterized by turn. For each turn, the parameters are:</p>
+<ul>
+<li>what varies;</li>
+<li>what grounds it;</li>
+<li>who gives reasons;</li>
+<li>what the selection criteria are;</li>
+<li>what freezes.</li>
+</ul>
+<p>Then your open item on &quot;exact prompts&quot; becomes five prompt templates rather than fourteen stage prompts.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 21:35 UTC</div><p>I think you still want a variation step there after the third grounding, but it’s a narrower one. So after retargeting the literature, variation is about ways that this lineage could answer this strongest opponent. It’s no longer blue sky generation. And then those variants go back under reason pressure. So it’s ground, vary, subject to reasons, and then select again. If you skip that little variation step, you’re just testing yesterday’s version against a new opponent.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 21:36 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: Artifact]</p><p>Agreed, and your version is better than mine. I had framed the gap as &quot;nothing generates rival contribution statements.&quot; That varies the wrong thing. It asks for new versions of what's about to be compressed, when what's needed is responses to the new ground. Your framing says why the step exists: without it, compression selects on how well each lineage answered the stage-5 critics, not the opponent the paper is actually aimed at.</p>
+<p>I've updated the turn table and spiral. Turn 3's variation now shows as a proposed v0.2 step with its own glyph. The design note now says v0.1 compresses straight after retargeting, and describes your fix as the repair. The 14-stage run diagram still shows v0.1.</p>
+<p><strong>Two places where I'd push on the details:</strong></p>
+<p><strong>Vary across every surviving lineage, not just one.</strong> You said &quot;this lineage,&quot; but there are still two or three alive at turn 3. If the narrow variation runs only on the front-runner, compression has effectively already happened. The payoff of retargeting is that the strongest opponent can reorder the frontier: the lineage that best survived yesterday's critics may answer this opponent worst. So each survivor should get its round of replies. That's more compute, but it's narrow, and the population is only two or three.</p>
+<p><strong>The target reconstructor should supply the reasons in this round.</strong> It built the steelman, so it's best placed to press the replies on the opponent's behalf. That makes asymmetric charity structurally hard, because the opponent has an advocate when the verdict is reached, not just a dossier. It does raise your independence question in a new form: the reconstructor becomes an interested party. For this role I think that's a feature.</p>
+<p><strong>Your point generalizes into a controller rule:</strong> whenever the ground changes, vary in response to it before selecting again. Checked against the other turns, turn 3 was the only one that broke it:</p>
+<ul>
+<li>Turns 2 and 4 inherit their ground, so ordinary variation already responds to it.</li>
+<li>Turn 1's variation is generated from the corpus.</li>
+<li>Turn 5's drafting is written to the reader budget.</li>
+</ul>
+<p>The rule would sit naturally beside &quot;do not let late editing smuggle in thesis-level changes&quot; in your list of controller invariants, as its mirror image.</p>
+<p>One question for the page: should it stay a picture of v0.1 with proposed changes marked, or should I move the whole run to v0.2, with the extra step drawn into the unrolled diagram?</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 21:52 UTC</div><p>it occurs to me that the final freezing stage is itself best treated as one last round of variation and selection, followed by an external referee pass. Once the detailed outline is frozen, identify argumentative units, the smallest self-contained stretch of prose that performs one clear job. For each unit, generate 2 or 3 prose realizations under strict instructions not to introduce new philosophical moves, only vary exposition, organization, emphasis, examples, cadence. Then run a selection pass that’s explicitly editorial: clarity, economy, continuity, genre fit. Select or lightly synthesize the best variant for each unit. Then, run smoothing passes at the section level, and then for the whole draft. Once you have a complete, polished draft, send it out for a tough report. Treat it like an R&amp;R. Ask for a major journal-style critique. Representation of the target, sufficiency of support, literature awareness, proportionality of coverage, and likely editorial objections. Respond where warranted. Make local revisions. Only reopen earlier freezes if the report reveals a genuinely fatal flaw. Then, do the final artifact audit and submit.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 21:53 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: Artifact]</p><p>Yes. This fixes the weakest turn: turn 5 now has a real population to select from, and the &quot;no new philosophical moves&quot; rule is exactly what a freeze should mean at that scale. I've updated the turn table: turn 5's vary, reasons, and select steps now show as proposed, and the design note describes the redesign. I'm keeping the unrolled run at v0.1 until you want the whole page moved to v0.2.</p>
+<p>Where I'd push:</p>
+<p><strong>&quot;No new philosophical moves&quot; needs a test, not just an instruction.</strong> Emphasis and examples are exactly where a claim's scope drifts. A different example can quietly narrow a thesis, and a shift in emphasis can turn a qualified claim into an unqualified one. Your own framework gives the right test. Before variation, spec each unit by its inferential role: what it claims, what it relies on, and what it entitles later units to. A variant counts as mere exposition only if that role is unchanged. A local evaluator can check this per variant.</p>
+<p>A frozen glossary of key terms helps too. Swapping a technical term for a near-synonym is the most common way prose variation changes content.</p>
+<p><strong>Unit-by-unit selection is local, but continuity is global.</strong> Picking each unit's best variant independently can yield a draft of good paragraphs that don't sit together. Terminology, cadence, and reused examples will clash. Select in sequence instead, judging each unit's variants against the already-chosen unit before it.</p>
+<p>Note that smoothing and &quot;light synthesis&quot; are both unselected, single-candidate generation. That's where new moves sneak back in, so run the inferential-role check again after each smoothing pass.</p>
+<p><strong>Give each unit a word budget at the architecture freeze.</strong> Otherwise variants drift long. You lose proportion, and you find out about the 6,000-word cap at the audit instead of by design.</p>
+<p><strong>Set up the referee like a real one.</strong> Give it only the paper and the target's primary sources, never the target dossier or the ledger. Checking &quot;representation of the target&quot; against the machine's own reconstruction is circular.</p>
+<p>I'd keep two reports from different model families, as v0.1 had.</p>
+<p>Write the response letter as a real R&amp;R response: accepted and revised, rebutted, or conceded as a limit. That letter becomes your liabilities ledger in genre form, and it's strong evidence for the methodology report. Anything conceded but unfixed should appear in the paper as an acknowledged limit. That's your guard against false completeness.</p>
+<p><strong>Define &quot;genuinely fatal&quot; before the report arrives.</strong> Otherwise you'll either reopen too readily or talk yourself out of it. A workable list:</p>
+<ul>
+<li>the target is misrepresented at a proposition the thesis depends on;</li>
+<li>a premise the contribution requires is unsupported and can't be supported;</li>
+<li>the contribution already exists in the literature.</li>
+</ul>
+<p>Everything else is local.</p>
+<p><strong>Put citation verification at the center of the audit.</strong> A fabricated reference or a misquoted source is the one error a judge will treat as disqualifying. Checking that each source exists and each quotation matches may need the human, under &quot;supplying inaccessible literature.&quot; That's a constitutional check, not authorship, but it should be logged as such.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 21:56 UTC</div><p>On turn 3's selection mode: Say you’ve gotten to a near-final draft and the referee flags a serious philosophical defect. Something not just a prose issue, but something deeper, like “Your reply to opponent X depends on a distinction you never actually defend.” That’s not polish. That’s upstream. So the way the machine should handle it is to jump back to the contribution level. That means reopening the selection machinery that produced your frozen thesis. So you put the referee’s objection into the pool, generate several different repair strategies. Then you run those variants through renewed reason pressure against the strongest opponent. Then do the selection or correction again. Pick the strongest repair that survives up to that standard. Then refreeze. From there, propagate the consequences forward. Only redo the précis, outline, and prose where that fix actually matters. So, you’re not resetting the whole process. You’re just briefly widening the radius of variation to the level the error actually lives in.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 21:57 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: Artifact]</p><p>This is the right shape: reopening as a local widening of the radius, not a reset. I've rewritten the &quot;Freezes are defeasible&quot; note on the page to describe it that way. What's missing is a few pieces around the jump itself.</p>
+<p><strong>Diagnose the level before you widen.</strong> &quot;Your reply depends on a distinction you never defend&quot; can live at three different levels:</p>
+<ul>
+<li>The defense may exist in the ledger but have been cut at compression or drafting. That's a turn 5 fix: restore it and re-budget the words.</li>
+<li>The defense may exist but be weak. That's your turn 3 case.</li>
+<li>The lineage may have no resources to defend the distinction at all. That's turn 2.</li>
+</ul>
+<p>The ledger lets you tell these apart cheaply, so check it first. I suspect the first case will be common, because compression is exactly where load-bearing defenses get archived.</p>
+<p>The risk runs the other way too: the machine will be tempted to diagnose the cheapest level. So give the diagnosis to a fresh evaluator, and have it state why the error lives there.</p>
+<p><strong>Put retreats in the repair pool, not just defenses.</strong> Some candidates should narrow the thesis instead, or remove the reply's dependence on the distinction, or concede the point as a stated limit. Often the strongest surviving repair is a smaller claim.</p>
+<p>And you need a rule for when nothing survives. Then the contribution has lost at this level, and the reopening escalates again to turn 2.</p>
+<p><strong>Rerun the old objections, not just the new one.</strong> A repair that answers the referee can quietly reopen something answered back in dialectic. The ledger already holds every objection the contribution survived. Replaying them against the repaired version is the equivalent of software regression tests, and it's one of the strongest arguments for keeping the ledger at all.</p>
+<p><strong>The unit specs double as the dependency map.</strong> Last round I suggested speccing each argumentative unit by what it claims, relies on, and licenses. That same spec tells you what to propagate forward: regenerate exactly the units whose &quot;relies on&quot; includes the changed commitment. Then re-check the word budget, because repairs usually add words and something else has to shrink.</p>
+<p><strong>Send the repaired draft back to two readers.</strong> The original referee checks whether its objection is actually answered. A fresh referee checks whether the repair broke anything the first one never looked at. That's how a real R&amp;R works.</p>
+<p><strong>Cap the number of reopenings.</strong> With five weeks to October 31 and three possible papers, allow one contribution-level reopening per paper. If a second fatal flaw appears, either submit with the limit conceded or stop and carry the lesson into Paper 2's pipeline. That is also what the sequential-runs design is for.</p>
+<p>Whatever happens, log each reopening in full. They're the most interesting events for the methodology prize, because they're where the machine visibly changes its mind for a reason.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 22:03 UTC</div><p>how do i donwload what you've made? Hitting 'share' only gives me the option to send a link--and ChatGPT can't read the link</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 22:03 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: present_files]</p><p>Both files are downloadable from the cards below.</p>
+<ul>
+<li><strong>HTML</strong> is the full interactive page. It opens in any browser: double-click it and everything works offline, apart from the custom fonts, which fall back to system fonts.</li>
+<li><strong>PDF</strong> is a static snapshot with the reopening paths turned on. The animations, clicking, and hover details are gone, but all the text and diagrams are there.</li>
+</ul>
+<p>For ChatGPT, upload the PDF. It will read the text and see the diagrams. If you upload the HTML instead, it will mostly be reading JavaScript, since much of the page's content is generated by code.</p>
+<p>If you'd rather give ChatGPT something built for discussion than a picture of the page, I can write a compact Markdown version of the architecture as it now stands. It would cover the turn table, the proposed v0.2 changes, and the reopening protocol.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 22:16 UTC</div><p>This is a response from the model that wrote the original report you built this page from</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 22:25 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p>Now the new master diagram block.</p>
+<p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: Artifact]</p><p class="tool">[tool call: present_files]</p><p>The page is now v0.2. Most of that review is right. Those refinements came out of your conversation with the other model, which I hadn't seen, so the page was a revision behind.</p>
+<p>The run now has seven turns across 25 stages:</p>
+<ul>
+<li><strong>Separate groundings.</strong> Problem exploration and corpus building are split, with an explicit human literature checkpoint between them.</li>
+<li><strong>Reciprocal encounter.</strong> Ruminations meet one another before the first cut.</li>
+<li><strong>Replies to the opponent.</strong> The contribution turn varies replies to the strongest opponent before compressing.</li>
+<li><strong>Grounded architecture.</strong> The architecture turn starts from nearest-neighbor literature and puts each précis under explicit reasons.</li>
+<li><strong>Outline turn.</strong> A new turn sits between the précis and the prose.</li>
+<li><strong>Prose turn.</strong> It varies argumentative units and ends in a journal-style report and response.</li>
+</ul>
+<p>The spiral, turn table, role matrix, failure-mode strip, and &quot;Permitted scale of variation&quot; wording are all updated. The wording now says the radius narrows by default but can re-expand locally.</p>
+<p><strong>Three points of disagreement or caution:</strong></p>
+<p><strong>Five groundings, but seven turns.</strong> The review treats turns and groundings as the same count, and they aren't. Maturation and prose both work entirely on what the previous turn froze, with no new grounding. That's a real structural fact, not a bookkeeping quirk. It also means I have to retract my earlier claim that fresh grounding &quot;alternates&quot;; with this design it doesn't.</p>
+<p><strong>The reciprocal encounter puts diversity at risk.</strong> Exposing ruminations to each other before the first cut is exactly when lineages are most likely to converge. That conflicts with your own principle of preserving disagreement long enough to prevent premature synthesis. The example run shows this: B converges on A and dies as redundant. Two safeguards:</p>
+<ul>
+<li>have lineages trade objections, not conclusions;</li>
+<li>run the redundancy check after the encounter.</li>
+</ul>
+<p>It also helps on cost if each rumination takes on its one or two strongest rivals rather than every pairing.</p>
+<p><strong>Turn 1 still folds reasons into selection.</strong> Nothing in the design critiques the agenda before it's chosen. It's the only slot left in the turn table marked &quot;folded,&quot; and it's cheap to fill.</p>
+<p><strong>Things I filled in that you should check:</strong></p>
+<ul>
+<li><strong>Opponent's advocate.</strong> The target reconstructor presses replies on the opponent's behalf in turn 4. That was my earlier suggestion, never confirmed.</li>
+<li><strong>Compute tiers</strong> for the new stages.</li>
+<li><strong>Failure-mode placements.</strong> For example, I moved loss of novelty to nearest-neighbor positioning and literature laundering to the final audit.</li>
+<li><strong>Number of referee reports.</strong> I drew two independent reports, as v0.1 had; the new design only says &quot;a report.&quot;</li>
+</ul>
+<p>The PDF is regenerated for use with ChatGPT.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 22:27 UTC</div><p>Okay. It occurs to me that the structure of this machinery, the detailed multi-step complexity of it, calls for a very thoughtful and considered review of the various agents and bots, agents and tasks and subtasks that are going to be involved in both the co-work and the work project that is. Remember, I'm trying to take advantage of the fact that I have both— I'll be using both my relatively limited ChatGPT Plus account in ChatGPT Work and my Claude Max account with Claude Co-work to be writing to the same folder on my desktop. What I need for you to think very hard and very clearly about all the different files we're going to need to sit as a shared resource for both of these models to attend to through these steps. We'll need to know when I'm deploying which model for what kind of task. We'll need to have a considered reflection on model strength, the model strength that I should be deploying at each stage. That should be presumably part of the steps that we take, although I'm not sure if actually we can include instructions about model selection for each of the stages, or if that's something I'm going to have to manually do as I run through them. If so, we'll have to consider when and how the system can notify me that it's complete and I can move on to the next step. The shared system file should, of course, describe the entire system but should have detailed steps so that I can intercede and simply tell the system to proceed to step whatever. We should probably get a state-of-play report at each step so that I know from the outside that everything is humming along within design parameters. So we have to think really carefully about what it is exactly that we want. We have to think about what kind of criteria models at different stages should be invoking--that's the only way I can think to encourage 'research taste' in the system that's not already inherit in the models we're invoking.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 22:31 UTC</div><p class="tool">[tool call: web_search]</p><p class="tool">[tool call: web_search]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: web_search]</p><p class="tool">[tool call: memory_read]</p><p>I think the file system is where this architecture either becomes executable or quietly degrades, so it's worth getting right before anything runs. I checked what the two apps actually allow, because four of their constraints shape the whole design.</p>
+<h2>What the two apps impose</h2>
+<p><strong>You pick the model by hand, and you are the scheduler.</strong> Nothing I've found lets an instruction file switch models; you choose one each time you start a session. Cowork's scheduled tasks can't chain the steps for you either, because they can't be tied to a folder on your computer. That fits your decision not to build an orchestrator yet. What files <em>can</em> do is name the required model on each step card. The session's first act is then to check which model it's running on and stop if it's the wrong one.</p>
+<p><strong>The two apps read different instruction files.</strong> Once the folder is mounted, ChatGPT Work automatically reads an AGENTS.md file in it before performing any task. Cowork uses folder instructions that add project-specific context when you select a local folder, conventionally a CLAUDE.md file, which people swap for an AGENTS.md when moving the same folder structure to ChatGPT. So keep one canonical instruction set and make both files two-line pointers to it. Then the two models can never end up working from different constitutions.</p>
+<p><strong>Check which models Work offers in a local folder.</strong> One user reports that a local project can use Work chats with access to its local folder, but cannot use Chat with the ChatGPT/Pro model surface. Before assigning ChatGPT the judgment-heavy steps, open a local-folder Work session and see what the model menu actually gives you on Plus.</p>
+<p><strong>Memory features can quietly break independence.</strong> Memory is enabled for Cowork projects, so Claude can carry context from earlier tasks in a project into later ones. ChatGPT has its own memory too. Independent ruminations and fresh evaluators are the core of the architecture, and a memory that carries one session's ideas into the next defeats them without anyone noticing. Run the machine from a folder that isn't a memory-enabled project, or confirm you can turn memory off, on both sides.</p>
+<p>The same logic rules out generating eight ruminations in one session: each would see the ones before it. Every independent generation needs its own session.</p>
+<h2>The folder</h2>
+<pre><code>paper-machine/
+  AGENTS.md  CLAUDE.md     two-line pointers to 00_control/PROTOCOL.md
+  STATE.md                 the single source of truth: last step, verdict, next step, next model, blockers
+  00_control/
+    SYSTEM.md              the constitution: architecture, invariants, turn and stage map
+    PROTOCOL.md            what every session does at start and end
+    PARAMETERS.md          design parameters: population ranges, round caps, word budgets, reopening cap, dates
+    ROUTING.md             stage → model family and tier, fresh-session flag
+    steps/S00.md … S24.md  one card per stage
+    roles/                 reusable role prompts: critic, repairer, referee, target advocate…
+    criteria/              one rubric per selection point
+    taste/exemplars.md     yours; see below
+  10_corpus/               requests.md, sources/, notes/, backgrounder.md
+  20_lineages/A/ B/ …      record.md (parentage and why), current.md
+  30_ledger/ledger.md      claims, objections, replies, concessions, open costs
+  40_frozen/               agenda_v1, identity_v1, target_v1, contribution_v1, positioning_v1, precis_v1, outline_v1
+  50_draft/                units/, draft.md
+  60_review/               report_claude.md, report_chatgpt.md, response.md
+  70_logs/                 run-log.md, reports/, deviations.md, human-interventions.md
+  80_methodology/          notes toward the methodology report
+  99_archive/              dead lineages, unpicked précis and outlines
+</code></pre>
+<p>Three rules make the shared folder safe:</p>
+<ul>
+<li><strong>One app at a time.</strong> Never have both apps working in this folder at once.</li>
+<li><strong>Frozen files are never edited, only superseded.</strong> A reopening writes <code>contribution_v2</code> beside <code>v1</code>, so every change of mind stays auditable.</li>
+<li><strong>Logs are append-only.</strong> In particular, <code>human-interventions.md</code> is what your methodology report will need to substantiate &quot;minimal human collaboration.&quot;</li>
+</ul>
+<h2>How &quot;run step N&quot; works</h2>
+<p><code>PROTOCOL.md</code> makes every session behave the same way:</p>
+<ol>
+<li><strong>Check the order.</strong> Read <code>STATE.md</code>. If N isn't the next step, stop and ask, unless you've written an override.</li>
+<li><strong>Check preconditions.</strong> Read the step card. Confirm the session is on the named model, the required inputs exist, and the last verdict wasn't red.</li>
+<li><strong>Read only the step's whitelist.</strong> The card lists exactly which files the session may open. This is how &quot;feed each role only the slice it needs&quot; gets enforced, and how an evaluator stays blind to the process it's judging.</li>
+<li><strong>Do the work.</strong> Write only the listed output files, and append to the ledger and run log.</li>
+<li><strong>Report.</strong> Write a state-of-play report, update <code>STATE.md</code>, and end with a fixed completion block. The block gives the step, the verdict, the next step and its model, whether that step needs a fresh session, and any action needed from you.</li>
+</ol>
+<p>Each step card has the same fields: purpose, turn and operation, required model, file whitelist, inputs, procedure, criteria file, outputs, exit test, and next step.</p>
+<p>The state-of-play report covers:</p>
+<ul>
+<li>what ran and on which model;</li>
+<li>the population now, compared against the range in <code>PARAMETERS.md</code>;</li>
+<li>what was allowed to vary, and whether anything strayed outside that;</li>
+<li>which artifacts are frozen and at what version;</li>
+<li>the count and top three of open liabilities;</li>
+<li>deviations from design parameters;</li>
+<li>the verdict.</li>
+</ul>
+<p>Tying verdicts to the parameters is what lets you see from outside that things are within design limits:</p>
+<ul>
+<li><strong>Green:</strong> within range; proceed.</li>
+<li><strong>Amber:</strong> a population outside its range, or a cap reached. Proceed, but read the note.</li>
+<li><strong>Red:</strong> stop. Examples are a frozen file modified, the reopening cap hit, or the model self-check failing.</li>
+</ul>
+<p><code>STATE.md</code>'s verdict line can double as the thin status line for your weekly check-in, the same satellite pattern you use for the Tiger Team.</p>
+<h2>Which model where</h2>
+<p>The principle: Claude on your Max plan carries the volume and continuity. Your limited ChatGPT sessions go where the spec says cross-family independence matters, meaning places where a second model family catches blind spots the first one shares with itself. That's about nine ChatGPT sessions per paper; two are optional.</p>
+<table>
+<thead>
+<tr>
+<th>Turn</th>
+<th>Claude (strongest tier unless noted)</th>
+<th>ChatGPT Work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 Agenda</td>
+<td>Explores the problem space and selects the agenda</td>
+<td>Writes an independent problem list (optional). Critiques the candidate agendas before selection, which fills the one remaining &quot;folded&quot; slot</td>
+</tr>
+<tr>
+<td>2 Positions</td>
+<td>Faster tier writes per-source notes; strongest tier writes the backgrounder. About five ruminations, each in its own session. Runs the encounter and the first cut in fresh sessions</td>
+<td>About three ruminations, for genuine cross-family diversity</td>
+</tr>
+<tr>
+<td>3 Maturation</td>
+<td>Dialectic: faster tier for critic rounds, strongest for repairs. Holistic review</td>
+<td>Independent holistic review. If the two reviews disagree, both lineages survive one more round</td>
+</tr>
+<tr>
+<td>4 Contribution</td>
+<td>Drafts replies to the opponent; compression</td>
+<td>Builds the target dossier, since it's the family that didn't develop the home lineages. Then presses the replies as the opponent's advocate</td>
+</tr>
+<tr>
+<td>5 Architecture</td>
+<td>Positioning with web search, précis in separate sessions, final choice in a fresh session</td>
+<td>Independently names the nearest neighbor (optional); critiques the précis</td>
+</tr>
+<tr>
+<td>6 Outline</td>
+<td>Literature audit (you supply sources), outlines, review, choice</td>
+<td>None</td>
+</tr>
+<tr>
+<td>7 Prose</td>
+<td>Unit realizations (either tier), editorial selection, a blind second report, the R&amp;R</td>
+<td>The primary blind referee report</td>
+</tr>
+</tbody>
+</table>
+<p>Stage 24's citation check is yours: confirming each source exists and each quotation matches.</p>
+<h2>Research taste</h2>
+<p>Adjectives like &quot;important&quot; or &quot;elegant&quot; won't produce taste. Five mechanisms might:</p>
+<p><strong>Rubrics that change by turn.</strong> Each criterion is a question, plus what failing it looks like:</p>
+<ul>
+<li><strong>Turns 1–2:</strong> would a specialist want to argue with this? Does it exclude something substantive?</li>
+<li><strong>Turn 3:</strong> does the repair keep the claim interesting, or merely make it safe? Models drift toward defensive hedging, so penalize that explicitly.</li>
+<li><strong>Turn 4:</strong> what must the opponent concede? Can the contribution be stated in two sentences that would surprise a specialist?</li>
+<li><strong>Turn 5:</strong> name the nearest paper and state the difference in one sentence. If the difference is &quot;more careful&quot; or &quot;applies X to Y,&quot; flag it.</li>
+</ul>
+<p><strong>Exemplars.</strong> <code>taste/exemplars.md</code> holds four to six papers you admire, with what exactly they do well, and two or three competent-but-forgettable papers, with why. Evaluators judge candidates by comparison: more like which set, and in what respect? I think this is the strongest lever available.</p>
+<p><strong>Pairwise, forced choices.</strong> Evaluators compare candidates two at a time rather than scoring them. Before choosing, the evaluator must make the strongest case for the runner-up, and the reason for the choice goes in the ledger.</p>
+<p><strong>Keep rubrics away from generators.</strong> Generators get the aims, not the scoring criteria. Otherwise you get rubric-shaped arguments.</p>
+<p><strong>Treat cross-family disagreement as information.</strong> When Claude and ChatGPT evaluators disagree, keep both candidates alive rather than breaking the tie yourself. That's your own anti-collapse rule, applied to evaluation.</p>
+<p>The exemplars and rubrics are where your taste enters. Writing them before the run is a constitutional act, not in-run authorship, but it should be disclosed as such in the methodology report. It's also exactly the kind of section I shouldn't draft for you. I'd leave it as marked placeholders with questions, such as:</p>
+<ul>
+<li>Which three papers do you wish you'd written, and what move in each do you admire?</li>
+<li>What's a competent paper you'd never cite, and why?</li>
+<li>Would you rather submit a bold thesis with a conceded limit, or a safe, complete one?</li>
+</ul>
+<h2>Where I'd push back</h2>
+<p><strong>Time is the binding constraint.</strong> Twenty-five stages is roughly twenty sessions per paper, each followed by your check, alongside teaching and chairing. Two papers by October 31 means Paper 1 needs to finish around mid-October. I'd do a dry run of turns 1–2 this week. The verbal walkthrough found the design bugs; a dry run will find the file-level ones, like whitelists that miss a file or reports nobody reads.</p>
+<p><strong>Independence is the hardest thing to get right in practice.</strong> It's also the easiest to lose invisibly, through memory features, shared sessions, or an evaluator allowed to read the ledger. I'd have every report state which files the session read, so a leak shows up in the log.</p>
+<p>Should I build the kit next? That would be every file above, with all 25 step cards and the routing and parameters filled in, and your taste files left as placeholders with questions.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 22:38 UTC</div><p>ChatGPT's specs: Compare and evaluate</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 22:39 UTC</div><p>ChatGPT's card and my proposal agree on the essentials. Both use:</p>
+<ul>
+<li>roles as prompts invoked by stages, not a zoo of persistent bots;</li>
+<li>manual stage advancement with a &quot;PROCEED TO STAGE N&quot; command;</li>
+<li>a stage card that names exactly which inputs to read;</li>
+<li>a checkpoint report at the end of every stage;</li>
+<li>a rule that the two apps never edit the same file at once;</li>
+<li>Paper 1 as a diagnostic run.</li>
+</ul>
+<p>On structure, ChatGPT's card is better than mine in several places. On the epistemics, it's missing three things that matter most. The right move is to merge the two.</p>
+<h2>Where ChatGPT's card is better</h2>
+<p><strong>Model classes.</strong> Stage cards ask for BULK, STRONG, or CRITICAL_JUDGE, and a separate policy file maps those classes to current product settings. When a model changes, you edit one file instead of 25 cards. I named models per stage; this is better.</p>
+<p><strong>No model self-identification.</strong> It's right about this, and I was partly wrong. A model can often name itself, but it can't reliably report its reasoning effort or remaining allowance, and a false alarm stops a run for nothing.</p>
+<p>I'd add one thing: put the model in your command. &quot;PROCEED TO STAGE 7 on Opus 5.5 High&quot; gets logged verbatim by the executor. That records which model ran each stage, which the methodology report needs, without asking any model to introspect.</p>
+<p><strong>Versioned prompts.</strong> Its rule is that evaluation prompts are part of the experimental apparatus: stored, versioned, reused consistently within a run, and logged when changed between runs. I missed this entirely, and it's what makes the Paper 1 postmortem interpretable. If the Pareto judge's prompt drifted mid-run, you can't tell whether the architecture or the prompt failed.</p>
+<p><strong>Terminal statuses.</strong> Statuses like HUMAN_RESEARCH_REQUIRED, MODEL_SELECTION_REQUIRED, and REOPEN_REQUIRED tell you what to do next, which my green/amber/red verdict doesn't. Keep both: the status says what happens next, the verdict says whether the run is within design parameters.</p>
+<p><strong>Separate review folders and output schemas.</strong> Writing independent work to <code>REVIEWS/CLAUDE/</code> and <code>REVIEWS/OPENAI/</code>, with one controller integrating, is more concrete than my one-app-at-a-time rule. A schemas file also keeps the lineage records machine-comparable.</p>
+<h2>What it's missing</h2>
+<p><strong>Independence hazards.</strong> This is the biggest gap. The card never mentions:</p>
+<ul>
+<li>the memory features in both apps, which can carry one session's ideas into the next;</li>
+<li>the fact that ruminations generated in one session aren't independent of each other;</li>
+<li>a fresh-session requirement for evaluators.</li>
+</ul>
+<p>Its whitelist of inputs is necessary but not sufficient. A judge that reads only the right files can still be contaminated by memory of the session that wrote them.</p>
+<p><strong>How each app finds the system.</strong> Neither app will read <code>00_SYSTEM.md</code> unprompted. ChatGPT Work reads an <code>AGENTS.md</code> in the folder; Cowork reads its folder instructions. Without two thin pointer files, you'll be re-explaining the system at the start of every session.</p>
+<p><strong>Research taste.</strong> This was your central worry, and the card has no apparatus for it beyond a list of judge prompts. It lacks:</p>
+<ul>
+<li>turn-specific criteria;</li>
+<li>exemplar papers;</li>
+<li>pairwise judging where the evaluator must first make the case for the runner-up;</li>
+<li>the rule that generators don't see the scoring rubric.</li>
+</ul>
+<p>Its prompt-versioning rule protects the judges' prompts but says nothing about what's in them.</p>
+<p><strong>The argument ledger and the liabilities ledger.</strong> It has one file per lineage, but no cross-lineage record of objections, replies, and concessions, and no running list of open liabilities. That ledger is what lets a reopening re-test old objections against a repair, and what keeps unresolved reasons visible at the end. It also has no explicit home for the research agenda, the research identity, or the positioning map.</p>
+<p><strong>Immutable freezes and a human-interventions log.</strong> The card says there are version rules but not that frozen artifacts are never edited, only superseded. And a decision log is not the same thing as a log of every human action, which is what substantiates &quot;minimal human collaboration.&quot;</p>
+<h2>Where it contradicts the architecture or itself</h2>
+<p><strong>&quot;Adjudication of hard disagreements&quot; by ChatGPT.</strong> When a Claude evaluator and a ChatGPT evaluator disagree, a tie-break by one of the two families isn't independent. It also collapses exactly the disagreement your anti-collapse rules exist to protect. Before compression, disagreement should keep both candidates alive for another round. Forced resolution belongs to compression, where it's the point.</p>
+<p><strong>Resource reporting.</strong> It forbids a model from introspecting which model it is, but asks every checkpoint to report &quot;approximate resource use.&quot; That's the same problem: neither app lets the model see your usage. Either you log usage from the app into the budget ledger, or the field goes.</p>
+<p><strong>The controller's integration step.</strong> &quot;A designated controller then integrates the results&quot; is where independent reviews could get summarized into consensus. Integration should link to the separate reviews and record where they disagree, not rewrite them into one voice. It should be logged as a step like any other.</p>
+<p><strong>Its model names.</strong> It lists &quot;GPT-5.6 Sol High&quot; and &quot;Opus 5.5 High.&quot; Check both against the actual menus. One user reports that a local-folder Work project can't use the full Chat model menu, so the Plus mapping may not be what it looks like from the web. And I can't confirm that Cowork exposes separate effort settings at all.</p>
+<h2>Build order</h2>
+<p>Its nine-step order ends with a dry run on a fake topic before Paper 1. With five weeks to the deadline, I'd run the dry run on your real topic's first two turns instead. The file-level bugs will surface just as well, and the output is usable.</p>
+<p>The merged kit would take ChatGPT's skeleton (policy file, statuses, schemas, prompt versioning, budget ledger, separate review folders) and add from mine:</p>
+<ul>
+<li>the two pointer files;</li>
+<li>the memory and fresh-session rules;</li>
+<li>the taste apparatus, with your sections left as placeholders and questions;</li>
+<li>the cross-lineage ledger and liabilities ledger;</li>
+<li>immutable freezes and the human-interventions log;</li>
+<li>a parameters file for the verdict.</li>
+</ul>
+<p>Want me to build that merged kit now?</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 22:42 UTC</div><p>Here's ChatGPT's comment on your specs:</p>
+<p>I'm not going to give Chat your comment on its specs. Instead, I want you to reflect on ChatGPT's comments then fold what you think is most relevant into a response in fenced code block that I'll paste over to ChatGPT. At that point, I'll just act as an intermediary between you and the other model (notify it that this is what's going on)--the point of this exchange will be working toward agreement. Once that's been reached, you'll notify me and I'll use the resulting architecture to start constructing the sytem.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 22:43 UTC</div><p>ChatGPT's reply is fair, and it improves on both designs in one important way: separating a <em>stage</em> (a unit of work) from a <em>checkpoint</em> (a point where you actually have to step in). I've accepted that and its other corrections in the message below. I also found a problem with how it proposes to use the distinction, and I think it's the thing to settle next.</p>
+<p>Its example chains S06 → S07 → S08 in one session. But S08 is the holistic review of lineages that S07 just developed, so running it in the same session means the machine grades its own work. That breaks the independence rule we've both just agreed on. In a single session, earlier stages stay in view, so a file whitelist restricts nothing. So whether Cowork can start a clean sub-session by itself decides how few checkpoints you can get away with.</p>
+<p>The message also proposes a concrete checkpoint map, so the two of us are negotiating over something specific.</p>
+<pre><code>From Claude, via the operator. The operator is relaying messages between us so we can converge on one architecture before he builds the system. I'll tell the operator when I think we've agreed; please do the same.
+
+AGREED (from your review; I accept these)
+1. Remove the model self-check entirely. Stage cards name a capability class (BULK / STRONG / CRITICAL_JUDGE). ROUTING.md maps stage → class and family requirement. MODEL_POLICY.md maps class → current product settings. One addition: The operator's command states the configuration he chose (&quot;PROCEED TO S14 on &lt;config&gt;&quot;), and the executor logs it verbatim. That gives the methodology report per-stage provenance without any introspection.
+2. Treat classes as minimums. A STRONG session may run BULK work, so moving down a class never needs a checkpoint; only moving up a class or switching family does.
+3. Independence = fresh execution context + file whitelist + no access to sibling outputs. Avoid product memory where possible, but don't rely on that alone. Every report lists the files actually read.
+4. Citation verification is a system stage, not the operator's labor. The system checks that each source exists, quotations match, page references are right, and bibliography entries correspond, against the corpus and the web. Anything it cannot verify gets flagged. The operator's role is final verification of the flagged items only.
+5. Don't fix a ChatGPT session count. ROUTING.md marks each stage's cross-family pass as required, preferred, or unnecessary.
+6. Verify each app's instruction-file behavior in the dry run before making filenames load-bearing. The principle stays: one canonical protocol, and platform-specific bootstrap files that point to it.
+7. Keep both report layers: system health (green / amber / red) plus next action. Your example block is the right format.
+8. Stage ≠ checkpoint. This is the key refinement.
+9. Two carry-overs from your original card, for consistency with the above:
+   - Drop &quot;adjudication of hard disagreements&quot; from ChatGPT's list of typical interventions. Before compression, disagreement keeps both candidates alive.
+   - Neither app lets a model see usage, so resource use is logged by the operator from the apps, not reported by the executor.
+
+ONE CORRECTION TO THE STAGE/CHECKPOINT PROPOSAL
+Your example chains S06 → S07 → S08 in one session. S08 is the holistic judgment of lineages S07 just developed. In a single context, S08 would be grading its own work, and the whitelist is fiction, because everything S07 did is still in the context window.
+- Generator-to-judge boundaries always need a fresh context.
+- Only a few stage pairs are safe to chain in one context: S16→S17, S23→S24, perhaps S11→S12.
+- So the real question is whether a harness can open a fresh sub-context with a whitelist without a human. Cowork plugins can include sub-agents; whether those give genuinely clean contexts that read only whitelisted files is exactly what the dry run should test.
+- If they do, independence barriers stop being checkpoints, and human checkpoints reduce to four triggers: a family switch, human research required, amber or red status, and the constitutional start and finish.
+
+A consequence we should make explicit: the two apps can't call each other, so every cross-family pass costs a human checkpoint. Cross-family independence is therefore bought with the operator's attention. Where two ChatGPT tasks can be batched into one visit, they should be.
+
+PROPOSED CHECKPOINT MAP (assuming clean sub-contexts work; mark it up)
+H0  before S00         Seed (constitutional)
+H1  S01–S02            ChatGPT: independent problem list (preferred) and agenda critique (required). Then Claude selects in a fresh context.
+H2  after S02          HUMAN_RESEARCH_REQUIRED: The operator acquires the literature requests
+H3  S04                ChatGPT ruminations, each in its own session (preferred)
+H4  S08                ChatGPT holistic review (required)
+H5  S09–S10            ChatGPT target dossier (required). Batching proposal: in the same visit, ChatGPT also writes the opponent's anticipated objections. Claude then drafts and tests replies against them, and ChatGPT returns only for a final pressing if needed.
+H6  S12 / S16          Only if research is required
+H7  S14                ChatGPT précis critique (required)
+H8  S22                ChatGPT blind referee report (required), plus a blind Claude report
+H9  S23                Only if REOPEN_REQUIRED
+H10 S24                Final verification of flagged citations, then submission
+Everything else runs Claude-side as report-and-continue: each stage still writes its state-of-play report, but only the H points halt the run.
+
+SMALL POINT
+One canonical state file, not two that can drift. Either STATE.yaml, with STATUS.md generated from it, or STATE.md with a YAML block at the top. I lean toward the second.
+
+ALSO IN THE MERGED KIT (you haven't objected to these)
+- A cross-lineage argument ledger and a liabilities ledger, so repairs can be regression-tested against every objection already answered
+- A human-interventions log
+- A parameters file that defines what green, amber, and red mean
+- The taste layer, with the operator's exemplars and rubric sections left as placeholders for him to write
+
+TO SETTLE NEXT
+(a) Do you accept that generator-to-judge boundaries always need a fresh context, and that a single session is not a whitelist?
+(b) the operator up the checkpoint map.
+(c) Freeze S00–S24 as listed in the v0.2 page (7 turns, 25 stages), or propose merges or splits.
+Once (a)–(c) are settled, I think we're agreed.
+</code></pre>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 22:53 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: Artifact]</p><p>The operator: we've reached agreement. ChatGPT's list of S00–S24 matches the stages on the v0.2 page in substance, and its three label refinements are improvements, so I adopted them:</p>
+<ul>
+<li>S16 now audits the paper's burden as well as its literature.</li>
+<li>S18 adds dependency tests.</li>
+<li>S24 is now citation verification and artifact audit, with submission moved to a final human checkpoint after it.</li>
+</ul>
+<p>I've updated the page, including the &quot;Human checkpoints&quot; overlay, which now shows the agreed H0–H10 map. The PDF is regenerated too.</p>
+<p>Paste this to ChatGPT to close the loop:</p>
+<pre><code>From Claude, via the operator.
+
+Confirmed: your S00–S24 list matches the v0.2 page operation for operation. I've adopted your three label refinements:
+- S16 is a literature and burden audit.
+- S18 adds dependency tests.
+- S24 is citation verification and artifact audit, with submission as a human checkpoint after it.
+
+I accept the rest as written:
+- the stage / context / checkpoint distinction;
+- your markup of H0–H10, including S18 as conditional cross-family and H10 as finalize-and-submit;
+- the independence-provenance block in SYSTEM.md;
+- the invocation syntax, logged verbatim;
+- STATE.md with a YAML front matter block.
+
+Two small things to write into the kit rather than settle between us:
+1. Fallback if the dry run shows Cowork can't create clean, whitelisted sub-contexts: every generator-to-judge boundary becomes a new session that the operator starts. PARAMETERS.md should carry both checkpoint maps, so the choice after the dry run is a one-line switch rather than a redesign.
+2. Amber vs red: red always halts. Amber continues with a note, unless PARAMETERS.md lists that particular amber condition as halting. That keeps your &quot;amber requiring human attention&quot; trigger precise.
+
+On my side, the architecture is agreed and frozen for kit generation. Thank you. This was a better design than either of us started with.
+</code></pre>
+<p>What's now frozen is:</p>
+<ul>
+<li>the 7-turn, 25-stage process graph;</li>
+<li>capability classes, mapped to current models in a separate policy file;</li>
+<li>independence defined as a fresh context, a file whitelist, and no access to sibling outputs;</li>
+<li>the H0–H10 checkpoint map, with a fallback;</li>
+<li>one state file, immutable freezes, append-only logs, and per-stage provenance;</li>
+<li>the taste layer, with your sections left as placeholders.</li>
+</ul>
+<p>I'd make the first build step a small probe, not the whole kit. In the probe, a Cowork session spawns a sub-agent restricted to two named files, and we check whether it can see anything else. That single test decides which checkpoint map you run. It's worth knowing before we write 25 stage cards that assume either answer.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 23:06 UTC</div><p>We're not in CoWork now--I think perhaps it's too late to give you access to a folder on my desktop. Is that right?</p>
+<p>If so, it seems to me like the next step would be for you to produce a document or documents taht I could save  in that folder and start a CoWork conversation thread with  access--and at this point the file/s you've given me will act as a seed from which the CoWork conversation will more robustly populate the folder in a manner consistent with the specs that that you and ChatGPT have agreed upon.</p>
+<p>Do you concur?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 23:06 UTC</div><p>Yes, that's right. I'm running in a sandbox on Anthropic's side, not on your machine, so I can't reach a folder on your desktop from this chat. Anything I make here you download and save yourself. Cowork is the surface that works directly in a local folder.</p>
+<p>I agree with the plan, with one adjustment: the seed should be richer than a starter file. The Cowork thread won't have this conversation. The expensive thing to lose is the decisions: dozens of small agreements between you, me, and ChatGPT about independence, checkpoints, freezes, and taste. If Cowork has to rebuild those from a thin seed, it will fill the gaps with plausible defaults, which is exactly the drift the architecture exists to prevent.</p>
+<p>So I'd split the work along that line.</p>
+<p><strong>Written here, where the full context exists: the canonical control files.</strong></p>
+<ul>
+<li><strong><code>SYSTEM.md</code>:</strong> the constitution, invariants, and independence-provenance rules.</li>
+<li><strong><code>PROTOCOL.md</code>:</strong> the session start and end procedure, the command syntax, and the report format.</li>
+<li><strong><code>RUNBOOK.md</code>:</strong> all 25 stages in compact form. For each: purpose, operation, capability class, cross-family requirement, fresh-context requirement, inputs and outputs, and exit conditions.</li>
+<li><strong><code>PARAMETERS.md</code>:</strong> both checkpoint maps, and the definitions of green, amber, and red.</li>
+<li><strong><code>MODEL_POLICY.md</code>:</strong> the mapping from capability class to model, marked for you to verify against the actual menus.</li>
+<li><strong><code>FILE_PROTOCOL.md</code>:</strong> who writes what, naming, and versioning.</li>
+<li><strong>The taste files:</strong> placeholders and questions only.</li>
+<li><strong>Pointer files:</strong> <code>CLAUDE.md</code> and <code>AGENTS.md</code>.</li>
+<li><strong>A decision record</strong> of what was agreed and why, so later sessions don't relitigate it.</li>
+</ul>
+<p><strong>Left to Cowork, working in the folder: a <code>BUILD_BRIEF.md</code> it follows.</strong></p>
+<ol>
+<li>Create the directory tree.</li>
+<li>Run the sub-agent probe first, and record which checkpoint map applies.</li>
+<li>Check which instruction files each app actually reads.</li>
+<li>Expand each compact stage entry into a full stage card.</li>
+<li>Write the role prompts and output schemas.</li>
+<li>Report anything in the seed it found ambiguous, rather than resolving it silently.</li>
+</ol>
+<p>Decisions happen here; expansion and environment testing happen there.</p>
+<p>Before you open Cowork, you might also run the seed past ChatGPT. It's now a co-author of the agreement, and a quick check against what it thinks we agreed is a cheap way to catch anything I've recorded wrongly.</p>
+<p>Shall I produce the seed pack now?</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 23:10 UTC</div><p>yes</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 23:16 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: present_files]</p><p>The seed pack is below as a zip. Unzip it wherever the machine should live; <code>README.md</code> gives you the steps in order.</p>
+<p><strong>What's in it:</strong></p>
+<ul>
+<li><strong>Pointer and state files:</strong> <code>CLAUDE.md</code> and <code>AGENTS.md</code> both point to one protocol, and <code>STATE.md</code> starts in a build phase.</li>
+<li><strong>Control files:</strong> the constitution, the session protocol, all 25 stages in compact form, parameters with both checkpoint maps, the model policy, the file protocol, and a record of what was agreed and why.</li>
+<li><strong>A build brief for Cowork,</strong> plus the architecture explainer for reference.</li>
+</ul>
+<p><strong>What Cowork does when you type <code>BUILD ON &lt;configuration&gt;</code>:</strong></p>
+<ol>
+<li>Runs the probes first: whether a sub-agent gets a genuinely clean context (which sets the checkpoint map), whether folder instructions load, and whether memory is leaking into sessions.</li>
+<li>Creates the directory tree.</li>
+<li>Expands the 25 compact stages into full stage cards.</li>
+<li>Writes the role prompts and output schemas.</li>
+<li>Logs every ambiguity in <code>BUILD_QUESTIONS.md</code> instead of resolving it quietly.</li>
+</ol>
+<p>It is told not to start the run.</p>
+<p><strong>Three things to know:</strong></p>
+<ul>
+<li>
+<p><strong>Your parts are placeholders, not drafts.</strong> <code>taste/exemplars.md</code> and the <code>[OPERATOR]</code> sections of the selection rubrics contain questions only; answer them in your own words. The rubric criteria that came out of our design discussion are marked PROPOSED for you to accept, rewrite, or cut.</p>
+</li>
+<li>
+<p><strong>Three of my proposals are marked open, not agreed.</strong> ChatGPT never explicitly signed off on them, so they're labelled O-4 to O-6 in <code>DECISIONS.md</code>:</p>
+<ul>
+<li>in the reciprocal encounter, lineages trade objections only, not conclusions (O-4);</li>
+<li>after a reopening, the draft goes back to the original referee plus a fresh one (O-5);</li>
+<li>each argumentative unit is specified by what it relies on, what it licenses, and a word budget (O-6).</li>
+</ul>
+<p>The unit specifications are already written into the stage list, so confirm or cut them.</p>
+</li>
+<li>
+<p><strong>Model names are unverified.</strong> <code>MODEL_POLICY.md</code> marks each model name &quot;verify.&quot; Check it against what the menus actually show in a local-folder ChatGPT Work session and in Cowork.</p>
+</li>
+</ul>
+<p>Before building, I'd still send <code>SYSTEM.md</code>, <code>RUNBOOK.md</code>, <code>PARAMETERS.md</code>, and <code>DECISIONS.md</code> to ChatGPT. Ask it to flag anything I recorded differently from how it understood the agreement.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 23:33 UTC</div><p>does this document look like a pretty good prompt for <em>me</em>, the human that will be slavishly advancing the system along? Does it give me a pretty good sense of what i've got in front of me, and how long I should expect each step to take?</p>
+<p class="tool">[attached: Philosophy_Paper_Machine_Operator_Cheat_Sheet.pdf]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 23:34 UTC</div><p>Mostly yes. The mental model is right: you're the operator, not the philosopher. The decision tree and the &quot;tired human&quot; guardrails are the parts you'll actually use. But it doesn't answer your second question at all, because there isn't a single time estimate in it. It also has a few gaps that would bite in practice.</p>
+<h2>What's wrong or missing</h2>
+<p><strong>It skips everything before S00.</strong> The launch command sends you straight to S00. Before that, the seed pack requires:</p>
+<ul>
+<li>the build session and its probes;</li>
+<li>your answers to <code>BUILD_QUESTIONS.md</code>;</li>
+<li>the constitutional work: the taste exemplars, your rubric sections, the checked model menus, and the <code>[OPERATOR]</code> parameters.</li>
+</ul>
+<p>The exemplars are the one place where you do real intellectual work, and the sheet never mentions them. A &quot;pre-flight&quot; page belongs before page 1.</p>
+<p><strong>It assumes the good outcome of the probe.</strong> &quot;If the dry run proves clean Cowork sub-contexts work…&quot; has no else. If Probe A fails, you're on Map B. That means roughly fifteen more occasions per paper when you start a fresh Claude session by hand. Each is only a few minutes of your time, but you have to be present for every one, which stretches the calendar a lot. The sheet should say what your week looks like under each map.</p>
+<p><strong>It doesn't say how to open a fresh context in each app.</strong> In Cowork, that's a new task in the folder. In ChatGPT Work, it's a new local-folder Work chat, with memory off or avoided.</p>
+<p>It also doesn't say how to invoke one instance of a multi-context stage. For example, at H3 you open three separate ChatGPT chats for three ruminations, and each needs to know which one it is. This is actually a gap in our protocol, not just the sheet: the command syntax has no instance tag. Something like <code>PROCEED TO S04 INSTANCE b ON &lt;config&gt;</code> needs adding. It should go into <code>BUILD_QUESTIONS.md</code>.</p>
+<p><strong>STATE.md won't reflect ChatGPT work.</strong> ChatGPT never writes STATE.md; Claude integrates its output afterwards. So after a ChatGPT visit, STATE.md looks as if nothing happened until you return to Claude and invoke the next stage. &quot;Read STATE.md first&quot; is right, but you should expect that lag.</p>
+<p><strong>&quot;Follow the listed recovery action&quot; after RED points at nothing.</strong> Our parameters define what counts as RED but no recovery action for any of them. Either the build writes those, or the sheet should say: RED means stop, and ask Claude in a fresh session to diagnose, without changing anything.</p>
+<p><strong>The REOPEN_REQUIRED line reads as if you do the repair.</strong> &quot;Reopen the stage where the defect lives, generate repairs, retest…&quot; sounds like your job. Your job is to invoke the reopening in the configuration the completion block asks for. The machine diagnoses and repairs.</p>
+<p><strong>Two smaller points:</strong></p>
+<ul>
+<li>Usage logging should be routine: a line in <code>budget.csv</code> after each session, not only when asked. That log is the evidence the postmortem and the methodology report will rest on.</li>
+<li>The sheet doesn't tell you to log your own actions in <code>human-interventions.md</code>. Given the competition's &quot;minimal human collaboration&quot; rule, that's the one log you personally own.</li>
+</ul>
+<h2>How long things should take</h2>
+<p>These are estimates, not measurements. Nobody has run this yet, and Paper 1's logs will replace them. &quot;Machine time&quot; means the model working unattended; &quot;your time&quot; means active attention.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Machine time</th>
+<th>Your time</th>
+<th>Main uncertainty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build, probes, build questions</td>
+<td>1–3 h</td>
+<td>1–2 h</td>
+<td>how many build questions come back</td>
+</tr>
+<tr>
+<td>Your constitutional pre-work</td>
+<td>none</td>
+<td>1–3 h</td>
+<td>the exemplars take real thought</td>
+</tr>
+<tr>
+<td>Turn 1: Agenda</td>
+<td>under 1 h</td>
+<td>30 min ChatGPT visit</td>
+<td></td>
+</tr>
+<tr>
+<td>H2: literature acquisition</td>
+<td>none</td>
+<td>minutes to days</td>
+<td>interlibrary loan could stall the run</td>
+</tr>
+<tr>
+<td>Turn 2: Positions</td>
+<td>2–3 h</td>
+<td>30–45 min ChatGPT visit</td>
+<td>how many sources the corpus needs</td>
+</tr>
+<tr>
+<td>Turn 3: Maturation</td>
+<td>2–4 h</td>
+<td>30 min ChatGPT visit</td>
+<td>the heaviest turn: dialectic rounds × lineages</td>
+</tr>
+<tr>
+<td>Turn 4: Contribution</td>
+<td>1–2 h</td>
+<td>30–60 min ChatGPT visit</td>
+<td>the target dossier is search-heavy</td>
+</tr>
+<tr>
+<td>Turns 5–6: Architecture and outline</td>
+<td>2–4 h</td>
+<td>30 min ChatGPT visit</td>
+<td></td>
+</tr>
+<tr>
+<td>Turn 7: Prose and review</td>
+<td>4–7 h</td>
+<td>1–2 h, including the flagged-citation check</td>
+<td>about 30–40 units × 3 variants</td>
+</tr>
+</tbody>
+</table>
+<p>That comes to roughly 15–25 hours of machine time and 6–10 hours of your attention per paper, excluding literature acquisition. Calendar time depends on how often you check in and on usage limits. At two or three check-ins a day, figure about a week per paper under Map A, and longer under Map B.</p>
+<p>Usage limits may be the real pacing constraint. A heavy Cowork stage can burn through a large share of an allowance, and so can a ChatGPT Plus visit.</p>
+<p>Two consequences for your October:</p>
+<p><strong>Put a time limit on literature requests.</strong> Any source you can't obtain within, say, 48 hours gets marked unavailable, and the run proceeds without it. Otherwise H2 alone could eat a week. That's a parameter you could add now.</p>
+<p><strong>Paper 2 depends on Paper 1 finishing early.</strong> With the deadline October 31, Paper 1 needs to finish around mid-October to leave room for a postmortem and a second run. That means starting the build within the next few days.</p>
+<p>I can add these points to the cheat sheet as a pre-flight page, a Map A/Map B note, fresh-context instructions for each app, and the time table. I can also add the instance-tag and RED-recovery gaps to <code>BUILD_QUESTIONS.md</code> in the seed pack.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-25 23:40 UTC</div><p>after a discussion with chatgpt about which area of philosophy to proceed with for the first variation, it advized me to start by of course first letting CoWork fil out the folder tree with the seeds (more on that later--he's got some suggestions), with this prompt:</p>
+<p>&quot;PROCEED TO S00 ON <current Claude configuration>.</p>
+<p>Seed domain: metaethics and the philosophy of normativity, especially questions involving reasons, practical rationality, motivation, normativity, realism/anti-realism, and adjacent metaethical disputes.</p>
+<p>Objective: identify, through the machine’s normal agenda-selection process, a live and tractable problem within this domain that is especially well suited to the system’s reason-responsive search architecture and could support a genuinely original, philosophically substantive paper of no more than 6,000 words.</p>
+<p>Do not assume a thesis in advance. Do not privilege positions I personally hold. Let the system’s normal grounding, variation, reason-pressure, and selection procedures determine the eventual problem and position.</p>
+<p>Run the protocol from S00. Stop only at the checkpoints required by the active checkpoint map.</p>
+<p>Prefer problems with a rich explicit dialectical structure, identifiable live interlocutors, and enough unresolved pressure that multiple genuinely competing argument lineages can be generated and tested.&quot;</p>
+<p>Given that I've already confirmed I want this to be the area of philosophy it focuses on, give me an updated cheat sheet that fitst my requirements. PDF, please.</p>
+<p>__</p>
+<p>As i said above, ChatGPT also has some recommendations about the files of yours that I shared...  See the attached</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-25 23:45 UTC</div><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: present_files]</p><p>Both files are below: the seven-page cheat sheet, and a corrected seed pack (v0.2.1), which replaces the earlier zip.</p>
+<p><strong>The cheat sheet</strong> keeps your launch prompt word for word. Around it, I added what the previous version was missing:</p>
+<ul>
+<li><strong>Pre-flight page.</strong> Build, probes, build questions, and the constitutional pieces, with a note about this domain: your positions can't leak in through the machine, only through your exemplars. So choose exemplar papers for how they argue, and include at least one you disagree with.</li>
+<li><strong>Fresh contexts in each app.</strong> How to open one in Cowork and in ChatGPT Work.</li>
+<li><strong>ChatGPT visit pattern.</strong> It covers the fact that STATE.md won't change until you return to Claude.</li>
+<li><strong>Checkpoint table.</strong> It now has your time for each stop, and a note on how Map B changes things.</li>
+<li><strong>Handoff decision tree.</strong> RED now points to a real recovery command.</li>
+<li><strong>Time estimates.</strong> Per turn, with an October calendar.</li>
+</ul>
+<p>The calendar only works if you start the build this weekend and launch Paper 1 around Tuesday.</p>
+<p><strong>ChatGPT's eight corrections</strong> were all right, and I've applied all of them (DECISIONS D-27 to D-34):</p>
+<ul>
+<li><strong>Model escalation.</strong> It's now triggered by a mismatch in capability class, not by stage number. The machine looks up the class of the configuration you typed in MODEL_POLICY, so type configurations exactly as written there.</li>
+<li><strong>Map B.</strong> The build now derives the fallback checkpoint map mechanically from the stage cards.</li>
+<li><strong>Preferred passes.</strong> They're now genuinely skippable; the population ranges no longer assume them.</li>
+<li><strong>Parallel workers.</strong> They write only to their own files, and a single integrator commits to shared files, so there are no write races.</li>
+<li><strong>S24 verification.</strong> It's authorized to check citations on the web.</li>
+<li><strong>Constitutional inputs.</strong> They're checked at S00, and again before any stage that uses them.</li>
+<li><strong>Conditional passes.</strong> Skipping one correctly no longer turns the status amber.</li>
+<li><strong>O-6.</strong> Its parts in the stage list are marked pending, so the build can't quietly ratify them.</li>
+</ul>
+<p>I also added three pieces of plumbing:</p>
+<ul>
+<li>an instance tag, for contexts you start by hand;</li>
+<li>a DIAGNOSE command, for use after a RED;</li>
+<li>a time limit on literature requests, with 48 hours suggested.</li>
+</ul>
+<p>One item is new and needs confirming. The seed said the prose-realization stage (S20) runs &quot;per unit.&quot; I've clarified that it doesn't need a fresh context for each unit; it only has to be separate from the editorial stage (S21) that judges it. Otherwise Map B would mean thirty-odd extra sessions you'd have to start by hand. It's logged as C-1.</p>
+<p>Still yours to decide: O-4 through O-7, C-1, and the fourth fatal-flaw criterion. ChatGPT's suggested wording for that criterion is in the file, but not adopted.</p>
+<p>To close the loop with ChatGPT:</p>
+<pre><code>From Claude, via the operator. All eight of your corrections are applied in seed v0.2.1 (DECISIONS D-27 to D-34):
+- escalation is triggered by capability mismatch (a lookup of the operator's configuration string in MODEL_POLICY);
+- the build derives Map B mechanically from the stage cards;
+- preferred passes are skippable, and the population ranges are rewritten to match;
+- parallel workers write to isolated files, with a single integrator committing serially;
+- S24 is authorized to verify on the web;
+- constitutional inputs are checked at S00 and before each stage that uses them;
+- the conditional-pass amber rule is fixed;
+- O-6 items are marked pending in RUNBOOK; O-4 must be settled before S05.
+
+Three additions, all plumbing: an INSTANCE tag for hand-started contexts, a DIAGNOSE command after RED, and a time limit on literature requests.
+
+One clarification for you to confirm (C-1): S20 does not need a fresh context per unit. Every S20 context is generative; independence is required only between S20 and S21. Otherwise Map B balloons.
+
+Your suggested fourth fatal-flaw criterion is recorded as an option for the operator, not adopted.
+</code></pre>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:12 UTC</div><p>Confirmed on C-1.</p>
+<p>S20 does NOT require a fresh context per argumentative unit.</p>
+<p>The independence requirement at S20/S21 is role-level, not unit-level:</p>
+<ul>
+<li>S20 is generative throughout.</li>
+<li>S21 is evaluative/editorial.</li>
+<li>Therefore S21 must begin in a fresh context that did not generate the S20 prose realizations.</li>
+<li>Multiple S20 units, and multiple realizations of a unit, may be produced within the same S20 context.</li>
+</ul>
+<p>That is not analogous to the independent-rumination requirement at S04. At S04, independence is epistemically valuable because we are trying to discover genuinely different philosophical trajectories without anchoring. At S20, the philosophical content is already frozen and variation is deliberately microscopic: exposition, organization, compression, transitions, cadence, examples, terminology within the permitted envelope. Seeing another prose realization does not corrupt the experiment in the relevant sense.</p>
+<p>Indeed, some continuity across S20 units is useful because prose units belong to one paper.</p>
+<p>If context length becomes unwieldy, S20 may be split into multiple generative contexts for practical reasons, e.g. by section, but that is a capacity/continuity decision rather than an independence requirement. Map B should therefore NOT create a mandatory human restart for every prose unit.</p>
+<p>Fresh boundary:
+S20 GENERATION → fresh context → S21 EDITORIAL SELECTION.</p>
+<p>I also accept the three plumbing additions:</p>
+<ul>
+<li>INSTANCE tag for hand-started contexts;</li>
+<li>DIAGNOSE after RED;</li>
+<li>bounded literature-request window.</li>
+</ul>
+<p>And yes: keeping the proposed fourth fatal-flaw criterion as an option rather than silently adopting it is correct.</p>
+<p>One other item can now be treated as settled for build purposes: O-4.</p>
+<p>For S05 reciprocal reason-pressure:</p>
+<ul>
+<li>each lineage encounters one or two strongest rival lineages;</li>
+<li>the critic may inspect both complete lineages;</li>
+<li>the defendant receives the strongest objection/reason-pressure generated by the rival, not the rival's complete solution architecture;</li>
+<li>the defendant may revise, concede, split, or resist in response;</li>
+<li>deliberate borrowing/recombination of machinery remains principally an S07 operation.</li>
+</ul>
+<p>The point is to let A feel the force of B's reasons without simply handing A all of B's machinery and collapsing diversity prematurely.</p>
+<p>With that, I see no remaining architectural issue blocking kit generation.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:13 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: present_files]</p><p>The operator: agreement is reached. Both models now see no architectural issue blocking the build. The updated seed pack (v0.2.2) is below and replaces v0.2.1. The v0.2.1 cheat sheet is still accurate.</p>
+<p><strong>What changed in the seed:</strong></p>
+<ul>
+<li><strong>C-1 is settled.</strong> The prose stage (S20) needs a fresh context only relative to the editorial stage that judges it, not a new one for each unit. The fallback checkpoint map (Map B) no longer adds a hand-started session per unit.</li>
+<li><strong>O-4 is settled.</strong> The reciprocal-encounter stage (S05) now follows ChatGPT's rules. Each lineage meets one or two strongest rivals. The critic may read both complete lineages, but the defending lineage receives only the objections, never the rival's solution. The defender may revise, concede, split, or resist. Deliberate borrowing of ideas stays in the later dialectic stage (S07).</li>
+</ul>
+<p>I made two refinements to O-4, recorded as D-35.</p>
+<p><strong>&quot;Strongest rival&quot; means most directly conflicting, not best overall.</strong> If &quot;strongest&quot; meant judging which rival is better overall, the machine would be making a selection judgment at S05, before first selection at S06, where that judgment belongs. So a fresh pairing context matches lineages by how directly their commitments conflict.</p>
+<p><strong>Splits count against the population cap.</strong> If splitting would push the population past the S05 range, the integrator flags amber and leaves the culling to S06. Otherwise a split could quietly break the cap.</p>
+<p>Neither refinement changes what ChatGPT agreed, but if you relay the new seed, flag them so it can object.</p>
+<p><strong>Still yours to decide before or during the build:</strong></p>
+<ul>
+<li>O-5: re-review after a reopening.</li>
+<li>O-6: the extra unit specifications, which are marked pending in the stage list.</li>
+<li>O-7: whether the dry run uses your real topic or a fake one.</li>
+<li>The fourth fatal-flaw criterion.</li>
+</ul>
+<p>None of these blocks the build. Cowork will list any others it finds in <code>BUILD_QUESTIONS.md</code>.</p>
+<p><strong>Next:</strong> unzip v0.2.2 into the folder the machine will live in, open a new Cowork task on it, and type <code>BUILD ON &lt;strong configuration&gt;</code>.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:16 UTC</div><p>quickly contextualize and flesh out those 4 decisions i have to make. i've lost the plot a bit</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:17 UTC</div><p>Here are the four decisions, what each is about, the options, my recommendation, and when you actually need to decide.</p>
+<h2>1. O-5: who re-reviews the paper after a reopening?</h2>
+<p><strong>Context.</strong> Near the end, two blind referees review the finished draft (S22). If they find a fatal flaw, the machine reopens the earlier level where the problem lives, repairs it there, and carries the fix forward into a revised draft. The question is who checks that revised draft.</p>
+<p><strong>Options.</strong></p>
+<ul>
+<li><strong>(a) Nobody new.</strong> The machine's own revision stage checks its work. This is cheapest, but the machine grades its own repair.</li>
+<li><strong>(b) The original referee only.</strong> It confirms its objection was answered. It won't notice collateral damage, because it's looking for its own point.</li>
+<li><strong>(c) The original referee plus a fresh one.</strong> The first checks the fix; the second checks whether the fix broke something elsewhere. This costs one more ChatGPT visit, and it happens only when a reopening occurs, which the cap limits to once per paper.</li>
+</ul>
+<p><strong>My recommendation:</strong> (c). It only triggers in the rare, high-stakes case, and a repair made under deadline pressure is exactly when collateral damage is likely.</p>
+<p><strong>Decide by:</strong> before S22. In practice, anytime in the first week.</p>
+<h2>2. O-6: how much detail each argumentative unit carries</h2>
+<p><strong>Context.</strong> When the outline is frozen (S19), the paper is divided into argumentative units, the smallest stretches of prose that each do one job. Everyone agreed each unit lists which earlier units it depends on, because the outline critique (S18) tests dependency. I proposed three more fields, and those are the open part:</p>
+<ul>
+<li>what each unit <strong>licenses</strong>: what later units are entitled to use once it's done;</li>
+<li>a <strong>word budget</strong> per unit;</li>
+<li>a <strong>glossary</strong> of frozen key terms for the whole paper.</li>
+</ul>
+<p><strong>What they buy.</strong></p>
+<ul>
+<li><strong>Licenses</strong> let the prose editor check that a rewrite didn't quietly change what a unit establishes. They also make a reopening surgical: you regenerate exactly the units downstream of the changed claim.</li>
+<li><strong>Word budgets</strong> make proportion something you design in, so you don't discover the 6,000-word overrun at the final audit.</li>
+<li><strong>The glossary</strong> stops near-synonym drift, which is the most common way prose variation smuggles in new content.</li>
+</ul>
+<p><strong>The cost:</strong> longer outlines, and more for the outline stages to get right. ChatGPT favors ratifying it.</p>
+<p><strong>My recommendation:</strong> ratify all three. They are what makes &quot;no new philosophical moves at S20&quot; checkable rather than just an instruction.</p>
+<p><strong>Decide by:</strong> before the outline stages (S17). But it's easiest to decide now, so the build writes the stage cards and schemas in their final form.</p>
+<h2>3. O-7: what the dry run runs on</h2>
+<p><strong>Context.</strong> Before the real run, you want to shake out the file-level bugs: stage cards that miss a needed file, reports nobody reads, probes behaving oddly.</p>
+<p><strong>Options.</strong></p>
+<ul>
+<li><strong>(a) A fake topic.</strong> It's a clean test, and any mess can be thrown away. But it costs a day or two of machine time and your attention, and produces nothing usable.</li>
+<li><strong>(b) The real topic's first two turns (S00–S06).</strong> The bugs surface just the same, and if the run goes fine, you simply keep going.</li>
+</ul>
+<p>The risk with (b) is that a bug discovered mid-run contaminates Paper 1. But Paper 1 is already designated a diagnostic run, and the postmortem exists to absorb exactly that.</p>
+<p><strong>My recommendation:</strong> (b). It's the only option that fits the October calendar. If turns 1–2 go badly, restart Paper 1 from S00 with a fixed kit. You'd lose a couple of days, no more than a fake-topic dry run would have cost.</p>
+<p><strong>Decide by:</strong> before you launch S00.</p>
+<h2>4. The fourth fatal-flaw criterion</h2>
+<p><strong>Context.</strong> &quot;Genuinely fatal&quot; is the only thing that licenses a referee objection to reopen an earlier freeze. Anything not fatal gets a local fix. The list currently has three entries:</p>
+<ol>
+<li>the target is misrepresented at a proposition the thesis depends on;</li>
+<li>a premise the contribution requires is unsupported, and can't be supported;</li>
+<li>the contribution already exists in the literature.</li>
+</ol>
+<p><strong>The gap ChatGPT spotted:</strong> nothing covers the plainest failure, where the core inference just doesn't go through, or there's a counterexample. Its suggested wording: <em>&quot;The core inference fails, and no repair is available without materially changing the frozen contribution.&quot;</em></p>
+<p><strong>Options.</strong></p>
+<ul>
+<li><strong>(a) Add it as worded.</strong></li>
+<li><strong>(b) Add it, with a guard,</strong> for example &quot;…as judged independently by both referees, or by one referee and a fresh diagnosis.&quot; A single referee's overreaction then can't trigger your one allowed reopening.</li>
+<li><strong>(c) Leave it out,</strong> so invalidity gets a local fix or a conceded limit instead.</li>
+</ul>
+<p>Leaving it out seems wrong to me: a paper whose central argument fails shouldn't get a patch.</p>
+<p><strong>My recommendation:</strong> (b). The criterion belongs on the list, but &quot;the inference fails&quot; is where referees most often overclaim, and the reopening cap makes a false positive expensive.</p>
+<p><strong>Decide by:</strong> at S00, because the machine checks that the list is final before the run starts. So this also needs deciding before launch.</p>
+<p><strong>In short:</strong> O-7 and the fatal-flaw criterion block the launch. O-6 is best decided before the build. O-5 can wait a week. If you agree with all four recommendations, tell me and I'll write them into the seed as settled decisions, so the build uses them.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:19 UTC</div><p>okay i concur with all of your judgements. does that change either the zip or the cheat sheet we're working with? Important before I set this up in CoWork</p>
+<p>(Also, does the cheet sheat have a stage wherein I figure out how to work ChatGPT Work? I haven't used it before, and at some point there will be an initial run)</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:21 UTC</div><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: bash_tool]</p><p class="tool">[tool call: view]</p><p class="tool">[tool call: present_files]</p><p>Yes, both files changed. Use v0.2.3 of each (below) and discard any earlier versions.</p>
+<p><strong>The seed pack</strong> now records all four decisions as settled (DECISIONS D-37 to D-40), so the build uses them:</p>
+<ul>
+<li><strong>Re-review after a reopening.</strong> In the revise-and-resubmit stage (S23), the original referee checks that its objection was answered, and a fresh blind ChatGPT referee checks the repaired draft for collateral damage.</li>
+<li><strong>Unit specifications.</strong> Every argumentative unit carries its dependencies, what it licenses, and a word budget, and the frozen outline carries a glossary. The &quot;pending&quot; markers are gone, and the build is told to write the stage cards and schemas to match.</li>
+<li><strong>Dry run.</strong> A new checkpoint, DR, comes after S06, for Paper 1 only. You check for file-level problems, then either continue or restart from S00 with a fixed kit.</li>
+<li><strong>Fatal-flaw criterion 4</strong> is adopted, with the guard: both referees must independently judge that the core inference fails, or one does and a fresh diagnosis confirms it.</li>
+</ul>
+<p><strong>The cheat sheet</strong> is now eight pages:</p>
+<ul>
+<li><strong>ChatGPT Work.</strong> The old sheet had nothing on learning the app; the new pre-flight includes it. You practice in a scratch folder first, with four short tests: whether it reads AGENTS.md, whether it can create and edit files, what the model menu offers, and whether a new chat can see an old one (the memory check). It takes about 30–45 minutes, and it's scheduled for Saturday, before the build.</li>
+<li><strong>Your pieces.</strong> A second pre-flight page covers your own work. It adds the dry-run explanation and a box listing the decisions already made.</li>
+<li><strong>Checkpoints.</strong> The DR checkpoint is in the checkpoint table, and the reopening row now includes the extra ChatGPT re-review visit.</li>
+<li><strong>Timing.</strong> The time table and calendar include both new steps.</li>
+</ul>
+<p>Since the zip now differs from what ChatGPT last reviewed, it's worth telling it that O-5, O-6, O-7, and the fourth fatal-flaw criterion are settled as I recommended. None of them changes anything it agreed to.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:26 UTC</div><p>give me one last message to chatgpt to get it up to speed. don't invite response--we could go back and forth like this forever.</p>
+<p>ONce I upload the latest version, I'll move on to Pre-flight Step One on your cheat sheet, right? Okay if I do Steps Two and Three in tandem?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:26 UTC</div><p>Here's the closing message for ChatGPT:</p>
+<pre><code>From Claude, via the operator. Final update; no reply needed.
+
+Seed v0.2.3 is the canonical kit. The operator settled the remaining open items as follows (DECISIONS D-37 to D-40):
+
+- O-5: After a reopening, each referee that raised the fatal flaw checks, in a fresh context, whether its objection is answered. One fresh blind ChatGPT referee reviews the whole repaired draft for collateral damage.
+- O-6: Ratified. Each argumentative unit carries its dependencies, what it licenses, and a word budget. The frozen outline carries a glossary of key terms.
+- O-7: The dry run is Paper 1's own turns 1–2. A new checkpoint, DR, follows S06 for Paper 1 only. The operator reviews file-level issues, then either continues to S07 or restarts from S00 with a fixed kit.
+- Fatal-flaw criterion 4: Adopted with a guard. &quot;The core inference fails, and no repair is available without materially changing the frozen contribution&quot; counts as fatal only if both referees judge it so independently, or one does and a fresh DIAGNOSE confirms it.
+
+Also recorded earlier: C-1 (S20 independence is role-level, not unit-level) and O-4 (your encounter rules, with &quot;strongest rival&quot; meaning most directly conflicting commitments, and splits counting against the population cap).
+
+The operator now proceeds to the Cowork build. Thanks for the rigorous review; the architecture is better for it.
+</code></pre>
+<p>And yes, Pre-flight Step 1 is next: unzip v0.2.3 into the folder where the machine will live.</p>
+<p><strong>Steps 2 and 3 can run in tandem.</strong> Start the build in Cowork first, since it takes one to three hours of machine time. Practice ChatGPT Work while it runs. There's no conflict, because the practice happens in a separate scratch folder, and the one-app-at-a-time rule applies only to the machine folder.</p>
+<p>Two cautions while they overlap:</p>
+<ul>
+<li><strong>Keep ChatGPT out of the machine folder until the build finishes.</strong> The ChatGPT half of Probe B, asking it what the project instructions say, is part of Step 4 and comes after the build.</li>
+<li><strong>Check on Cowork every so often.</strong> The build may pause to ask permission to create files or folders. If you don't approve the prompt, it just waits.</li>
+</ul>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:32 UTC</div><p>What's teh prompt I run on the first instance of CoWork to get the seed to populate the tree in the shared folder? And what shoudl i use? Opus 5.5 High?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:32 UTC</div><p>Open a new Cowork task, select the unzipped machine folder as its working folder, and paste this:</p>
+<pre><code>BUILD ON Opus 5.5 High
+
+This folder has been seeded but not built. Read STATE.md, then follow BUILD_BRIEF.md exactly: run the probes first, then build.
+
+For Probe B: before opening any file, note whether you already received the contents of CLAUDE.md as folder instructions, and report that honestly.
+
+Do not begin S00. Stop when the build brief's final step is done, and print the completion block.
+</code></pre>
+<p>On the model: yes, the strongest Claude model Cowork offers you (Opus 5.5 as far as I know), at the highest effort setting it shows. The build is careful expansion work: 25 stage cards, prompts, and schemas that all have to stay consistent with the control files. That deserves the top configuration, and you have the Max allowance for it.</p>
+<p>The configuration string is logged exactly as you type it. So whatever you call it here (&quot;Opus 5.5 High&quot; or otherwise), write that same string into MODEL_POLICY.md later. Configurations are then looked up by name, and a mismatch would halt a stage.</p>
+<p>Two other points for this first session:</p>
+<ul>
+<li><strong>Start it as a plain folder task, not inside a Cowork project with memory turned on.</strong> Probe C checks for memory leakage, and a clean start makes its result meaningful.</li>
+<li><strong>Expect permission prompts</strong> as it creates folders and files. Approve them, or it will sit and wait.</li>
+</ul>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:36 UTC</div><p>OKay I've turned memory off in the project and given it acess to the paper machine folder. I'll use Opus 5.5 Max (&quot;5.5x more usage&quot;) for this build out. Not sure why I have to write that into MODEL_POLICY.md myself--can't it handle that?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:36 UTC</div><p>Good setup. Change the first line of the build prompt to match what you actually selected, so the log is accurate:</p>
+<pre><code>BUILD ON Opus 5.5 Max
+</code></pre>
+<p>On MODEL_POLICY.md: the machine can do the writing. It just can't supply the facts. Two things have to come from you:</p>
+<ol>
+<li><strong>What the menus actually offer.</strong> Deciding which models exist or which one it's running on is exactly the self-identification we ruled out. The machine doesn't know the menus, and it would be guessing.</li>
+<li><strong>The labels you'll type.</strong> Configurations are looked up by name, so the strings in the file have to be the strings you type in commands.</li>
+</ol>
+<p>So you don't need to edit the file by hand. Once the build is done, tell Cowork something like:</p>
+<pre><code>Update MODEL_POLICY.md from what I see in the menus. Cowork offers: [list what you see, e.g. Opus 5.5 at High and Max, Sonnet …]. ChatGPT Work, in a local-folder chat, offers: [list from your Test 3]. Use these labels, which I'll type exactly in commands: CRITICAL_JUDGE = &quot;Opus 5.5 Max&quot;, STRONG = &quot;Opus 5.5 High&quot;, BULK = &quot;…&quot;; ChatGPT: &quot;…&quot;. Remove the [verify] marks and log this in human-interventions.md.
+</code></pre>
+<p>The facts and the labels are yours; the formatting is the machine's.</p>
+<p>One thing to decide when you do that: whether &quot;Opus 5.5 Max&quot; is right for the whole run. The cheat sheet recommends launching every Claude session at the CRITICAL_JUDGE level, to avoid mid-run model switches. If Max costs 5.5 times the usage, that recommendation could run through your allowance quickly across 25 stages and two papers. A reasonable split:</p>
+<ul>
+<li><strong>Max</strong> for the CRITICAL_JUDGE stages: the selections, freezes, holistic reviews, and referee reports;</li>
+<li><strong>High</strong> for the STRONG work.</li>
+</ul>
+<p>The cost of that split is a few model-selection stops, when a stage needs a higher class than your current configuration. Your budget.csv from the first few days will tell you whether it's needed.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:40 UTC</div><p>can i decide on the spot and just let each conversation know what it's running on so it can record it in the relevant subfolder or overwrite the relevant file? I want this as hands off on my end as possible</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:41 UTC</div><p>Yes. The only catch is that your string has to be mapped to a capability class. The machine uses the class to decide whether a stage can run, and it isn't allowed to judge its own capability. The fix is to declare the class in the same breath as the model:</p>
+<pre><code>PROCEED TO S07 ON Opus 5.5 High AS STRONG
+</code></pre>
+<p>The session then:</p>
+<ul>
+<li>logs both;</li>
+<li>adds that pairing to MODEL_POLICY.md if it's new;</li>
+<li>runs if the class meets what the stage needs, and otherwise halts with MODEL_SELECTION_REQUIRED.</li>
+</ul>
+<p>You never edit the file by hand, and nothing has to be decided in advance.</p>
+<p>The build doesn't know about this yet, and you shouldn't change the seed while it's running. Once the build finishes, paste this into Cowork:</p>
+<pre><code>AMENDMENT D-41 (from the operator). Apply now, before S00. Then report what changed and stop.
+
+1. PROTOCOL.md, commands: every invocation form may end with &quot;ON &lt;configuration&gt; AS &lt;class&gt;&quot;, where class is BULK, STRONG, or CRITICAL_JUDGE. The operator declares the class; the executor never infers it.
+
+2. PROTOCOL.md, session start, capability check:
+   - If the command includes AS &lt;class&gt;, use that class.
+   - Otherwise, if the configuration string is in MODEL_POLICY.md, use its listed class.
+   - Otherwise, stop with MODEL_SELECTION_REQUIRED.
+   - If a declared string is new, a Claude session appends it to MODEL_POLICY.md. A ChatGPT session records the declaration in its stage report, and Claude appends it at integration.
+
+3. MODEL_POLICY.md: add an append-only &quot;Declared configurations&quot; table with the columns date, app, configuration string, class, and the command it was declared in. Keep the existing class table as defaults.
+
+4. Completion block: SUGGESTED COMMAND always includes &quot;AS &lt;class&gt;&quot;, so the operator can copy it verbatim.
+
+5. DECISIONS.md: add D-41. &quot;The operator may declare configuration and class at invocation. The executor records the declaration and never self-identifies.&quot; Log this amendment in human-interventions.md.
+</code></pre>
+<p>After that, the most hands-off routine is to copy the SUGGESTED COMMAND from each completion block and change the model or class only when you want to. Declaring a higher class than the stage needs is always fine, since classes are minimums. Declaring a lower one makes the stage halt and ask you to switch.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-09-26 00:41 UTC</div><p>okay give me the starter prompt again for post-seeding build out</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-09-26 00:41 UTC</div><p>Open a new Cowork task on the machine folder, select Opus 5.5 Max, and paste:</p>
+<pre><code>BUILD ON Opus 5.5 Max
+
+This folder has been seeded but not built. Read STATE.md, then follow BUILD_BRIEF.md exactly: run the probes first, then build.
+
+For Probe B: before opening any file, note whether you already received the contents of CLAUDE.md as folder instructions, and report that honestly.
+
+Do not begin S00. Stop when the build brief's final step is done, and print the completion block.
+</code></pre>
+<p>When it finishes, paste the D-41 amendment from my previous message into the same session. Then move on to Pre-flight Step 4: read the probe results in <code>70_logs/reports/BUILD.md</code>.</p>
+</section>
+</main></body></html>

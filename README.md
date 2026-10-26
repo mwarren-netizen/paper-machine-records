@@ -19,7 +19,7 @@ These are anonymised copies of the files behind three essays written by Claude i
 ## What was changed for anonymity
 
 - The operator's first name is replaced with "the operator" throughout, including in identifiers derived from it (for example `for_mark` became `for_operator`).
-- The three reference manuscripts used to calibrate the outside review are not included. Their titles are replaced with "Reference A", "Reference B" and "Reference C", and their file names likewise.
+- The three reference manuscripts used to calibrate the outside review are not included. Their titles are replaced with "Reference A", "Reference B" and "Reference C", and their file names likewise. Where a comparison describes a reference manuscript in detail, that passage is omitted and marked, because the description could identify the author.
 - The review logs in `review/` are the copies kept in the harness folder at the time, from which the operator's own wording had already been removed wherever a note was withheld or stripped of his wording. The full logs are available to the organisers on request.
 - Nothing else is changed.
 

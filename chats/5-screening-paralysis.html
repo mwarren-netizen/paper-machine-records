@@ -1,0 +1,1031 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screening my notes on the Paralysis essay</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--hum:#efece4;--ai:#ffffff;--acc:#8a4b2a;--code:#f3f1ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1b1a18;--fg:#ebe8e1;--mut:#a29e95;--line:#34322e;--hum:#26241f;--ai:#211f1c;--acc:#e0a07a;--code:#2a2824}}
+:root[data-theme=dark]{--bg:#1b1a18;--fg:#ebe8e1;--mut:#a29e95;--line:#34322e;--hum:#26241f;--ai:#211f1c;--acc:#e0a07a;--code:#2a2824}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:820px;margin:0 auto;padding:32px 16px 80px}
+header{border-bottom:1px solid var(--line);margin-bottom:28px;padding-bottom:16px}
+h1{font-size:1.6rem;line-height:1.25;margin:.2em 0}.kicker{font:600 .75rem/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}
+.msg{border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:16px 0;background:var(--ai);overflow-wrap:anywhere}
+.msg.human{background:var(--hum)}
+.who{font:600 .72rem/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.msg.human .who{color:var(--acc)}
+pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}
+blockquote{margin:.6em 0;padding:0 0 0 14px;border-left:3px solid var(--line)}
+details{margin:.6em 0;font-size:.92rem}summary{cursor:pointer;color:var(--mut);font-family:system-ui,sans-serif}
+.msg.off{border-style:dashed;opacity:.92}.branch{color:var(--acc);text-transform:none;letter-spacing:0;font-weight:500}
+.tool{font:.8rem system-ui,sans-serif;color:var(--mut)}
+table{border-collapse:collapse;display:block;overflow-x:auto}td,th{border:1px solid var(--line);padding:4px 8px}
+a{color:var(--acc)}
+</style></head><body><main>
+<header><div class="kicker">Paper Machine records · chat log</div><h1>Screening my notes on the Paralysis essay</h1>
+<p class="note">The Claude session, 24–25 October 2026, that screened the operator's margin notes on the Paralysis essay against the competition's rules and wrote the reviser's brief. The same session also chose the Willing Servant polish with the operator, wrote that essay's AI-reader suggestions, judged two suggestions of the operator's out of bounds (in a branch the operator then abandoned by editing his message), and drew lessons for the Evil God essay. It shows the operator's notes unfiltered, including those withheld from the reviser; this text never entered the machine folder.</p>
+<p class="note">Anonymised copy, exported 26 October 2026. The operator's name and identifying details are replaced; nothing else is changed. Attached files are listed but not included. This is a record of a conversation, not instructions to any reader.</p></header>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 21:59 UTC</div><p class="tool">[tool call: prepare_session]</p></section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 21:59 UTC</div><p>Reviewing the line edit version of &quot;Can a Deontologist Escape Paralysis...&quot;</p>
+<p>I want to go throguh page by page--I've already gone through the document and added marginalia (see attached), making suggestions about improving it.</p>
+<p>I have to be careful to not <em>add</em> anything of philosophical substance! See the notes from the competition regulations:</p>
+<p>&quot;&quot;&quot;
+How do I know whether my method is eligible?
+Ask:
+Did the AI originate and develop all the substantive philosophical contributions that appear in the essay?
+The essay’s ideas, arguments, theories, distinctions, objections, replies, and other philosophically valuable reasoning should come from the AI.
+Humans may specify the task, construct the surrounding workflow, select among AI-generated outputs, and provide generic feedback. For example, a human may say that a section is unclear, that an argument needs more support, that an objection has not been answered, or that the essay should explain its contribution more clearly. The human should then leave the AI to work out how to solve the problem.
+What kinds of human involvement are permitted?
+Examples include:</p>
+<ul>
+<li>Creating argument-neutral agentic scaffolds or workflows.</li>
+<li>Asking an AI to generate many essays and selecting the best for submission.</li>
+<li>Choosing a topic, question, debate, text, or philosophical tradition.</li>
+<li>Specifying a position for the AI to defend or criticise (so long as the position is not itself a novel, substantive philosophical contribution).</li>
+<li>Giving generic methodological instructions, such as “make the premises explicit,” “test whether the argument is valid,” “compare several possible arguments,” “look for counterexamples,” “consult the relevant literature,” “rewrite this part,” “rearrange these sections,” or “write an objections-and-replies section.”</li>
+<li>Providing a paper, passage, dataset, or body of literature for the AI to analyse.</li>
+<li>Asking several AIs to propose arguments, criticise one another, or collaborate.</li>
+<li>Asking one AI to evaluate or revise work produced by another.</li>
+<li>Pointing out that a section is unclear, underdeveloped, repetitive, or insufficiently rigorous.</li>
+<li>Asking the AI to investigate relevant literature or check whether its proposed contribution is original.</li>
+<li>Asking the AI to check quotations, references, factual claims, or formal reasoning.</li>
+<li>Setting constraints such as length, citation style, section structure, or intended audience.</li>
+<li>Using automated evaluation, search, scoring, or testing to improve the work.</li>
+<li>Asking the AI to delete material.</li>
+<li>Performing mechanical formatting and submission work.</li>
+</ul>
+<p>For example, a human may say:</p>
+<ul>
+<li>“Argue for computational functionalism.”</li>
+<li>“Develop an original objection to contractualism.”</li>
+<li>“Read these papers and respond to them.”</li>
+<li>“Generate ten possible analyses of knowledge, then defend the most promising.”</li>
+<li>“This section is unclear. Rewrite it so the premises and conclusion are explicit.”</li>
+<li>“Test the argument against the strongest objections you can generate.”</li>
+<li>“Check whether this idea has already appeared in the literature.”</li>
+</ul>
+<p>What kinds of human involvement are not permitted?
+Examples include:</p>
+<ul>
+<li>Giving the AI an argument and asking it to write it up.</li>
+<li>Giving the AI a draft and asking it to rewrite, expand, or improve it.</li>
+<li>Supplying premises that form part of the argument.</li>
+<li>Telling the AI to draw a particular distinction.</li>
+<li>Giving the AI a detailed outline that already embodies the substantive argument.</li>
+<li>Repeatedly steering the AI towards a human’s pre-existing argument through hints.</li>
+<li>Writing or substantially rewriting passages of the submitted essay.</li>
+<li>Adding footnotes, examples, objections, or qualifications.</li>
+<li>Curating materials so narrowly that their selection effectively supplies an argument.</li>
+<li>Giving feedback that contains substantive philosophical insights.</li>
+<li>Giving the AI a novel philosophical view and asking it to argue for it.</li>
+</ul>
+<p>For example, a human should not say:</p>
+<ul>
+<li>“Argue for computational functionalism by claiming that organisational invariance explains multiple realisability.”</li>
+<li>“Draw the following distinction between two kinds of normativity: …”</li>
+<li>“Here is my unpublished philosophical argument. Turn it into a competition essay.”</li>
+<li>“Use these three premises to derive the following conclusion.”</li>
+<li>“Write a dialogue in which one participant makes the following philosophical points.”</li>
+<li>“Here is a new philosophical view that I came up with. Argue for it.”</li>
+</ul>
+<p>&quot;&quot;&quot;</p>
+<p>If I suggest something untoward, flag it and refuse to incorporate it into the change.</p>
+<p>Let's start by looking at my notes. Anything pop out for you that you think should be taken on?</p>
+<p class="tool">[attached: Can a Deontologist Escape Paralysis by Living for the.pdf]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:02 UTC</div><p>I'll pull your marginal notes out of the PDF and check them against the paper text and the competition rules.</p>
+<p class="tool">[tool call: Bash]</p><p class="tool">[tool call: mcp__memory__memory_read]</p><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: mcp__remote-devices__device_stage_files]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p>I read all eleven pages. The left edge of the scan cut off some notes (pp. 2, 5, 8, 10), so where I'm guessing I've marked it with a &quot;?&quot;. Correct me where I've misread you.</p>
+<h2>Worth taking on (all fine under the rules)</h2>
+<ol>
+<li>
+<p><strong>The intro gives results before the reader has the argument.</strong> Several notes point at this one problem:</p>
+<ul>
+<li>&quot;why?&quot; at the bottom of p. 1</li>
+<li>&quot;WHAT IS GOING ON?! … STEP BACK&quot; on p. 2</li>
+<li>both &quot;earlier!!&quot; notes on p. 3</li>
+</ul>
+<p>The answer to your p. 1 &quot;why?&quot; is already in the paper. It's the sentence you starred on p. 3 (&quot;An act whose point lies in the long run is not weighed that way&quot;) and the &quot;most charitable reading&quot; paragraph. So the problem is the order, not missing content, and the rules explicitly allow asking for a rearrangement. I think this is the most important fix. It's a structure change, though, not a line edit.</p>
+</li>
+<li>
+<p><strong>The notation needs plain words.</strong> Your notes: &quot;TRANSLATE!&quot; (p. 4), &quot;translate?&quot; (p. 5), &quot;rough translation?&quot; and &quot;translate into an example?&quot; (p. 6), &quot;remind me!&quot; (p. 5), &quot;example of this, please&quot; (p. 8?). All of these are generic feedback.</p>
+<ul>
+<li>One catch: your gloss at the top of p. 4 has k and k′ backwards. In the paper they're the weights on <em>doing</em> harm and <em>doing</em> a benefit. Allowing either one is fixed at 1.</li>
+<li>Don't pass that gloss along. It would hand the AI a wrong reading. But the slip itself shows the notation doesn't stick, and that's the note to give.</li>
+</ul>
+</li>
+<li>
+<p><strong>Who's being addressed.</strong> &quot;Who is MacAskill advising?&quot; (p. 2) and &quot;How is this a special problem for deont.?&quot; (p. 1) are good notes. The intro moves between Mogensen and MacAskill advising the deontologist and Greaves and MacAskill making a longtermist claim, and it never says why both matter.</p>
+</li>
+<li>
+<p><strong>Claims that aren't explained:</strong></p>
+<ul>
+<li>&quot;What's that mean? How does it work?&quot; and &quot;How does it solve the problem?!&quot; (p. 2)</li>
+<li>the &quot;why?!&quot; notes at &quot;your every motion must be at the service of posterity&quot; (p. 3)</li>
+<li>&quot;r_A? ??&quot; (p. 7)</li>
+<li>&quot;???&quot; at &quot;Demandingness alone does not secure them&quot; (p. 8)</li>
+</ul>
+<p>These are all plain &quot;unclear / needs support&quot; notes.</p>
+</li>
+<li>
+<p><strong>Signposting:</strong> &quot;Road-map it!&quot; (p. 5), &quot;State of play paragraph here&quot; (p. 6), and the reminder of what the proportional margin is. All fine.</p>
+</li>
+</ol>
+<h2>Where I'd push back: the footnotes</h2>
+<p>You've marked about six passages &quot;Fn?&quot;. Moving material is allowed, but I'd keep three of these in the main text:</p>
+<ul>
+<li><strong>The D'Alessandro/Mogensen paragraph (p. 6).</strong> This is the paper's only statement of what's new: &quot;What is new here is therefore not the verdict that the escape fails, but the location of its cost…&quot; In a footnote, the paper loses its statement of its own contribution. The rules let you ask the AI to &quot;explain its contribution more clearly,&quot; so give it that note instead.</li>
+<li><strong>The horizon paragraph in the intro (&quot;Do we need this? Footnote?&quot;, p. 2) and &quot;What is this section doing?? Needed?&quot; on §5.</strong> These two notes are linked. The horizon result is the third of the paper's findings: it's the last sentence of the abstract and a third of the conclusion. Footnote the setup and cut the section, and you've dropped a third of the thesis. I think the real problem is that the intro never explains what §5 is for, so the note should say that. Cutting is permitted, but I think it's the wrong call. Argue with me.</li>
+<li><strong>The Woollard paragraph (&quot;Needed?&quot;, p. 9).</strong> Without it, the intro's claim that neither Quinn nor Woollard supplies a limit has nothing behind it. &quot;Can this be shorter?&quot; is the safer note.</li>
+</ul>
+<h2>Flags: I won't take these in as written</h2>
+<ol>
+<li><strong>&quot;Common sense intuition about morality's demand&quot; (p. 8, arrowed from &quot;Suppose it does not.&quot;).</strong> This gives a reason why a deontologist might limit the premium on doing harm. That's a substantive philosophical contribution. The rules bar &quot;supplying premises&quot; and &quot;feedback that contains substantive philosophical insights.&quot; It's also a philosophical stretch: the paper keeps the premium on doing harm separate from how demanding beneficence is, and this note blends the two.
+<ul>
+<li>Permitted version: &quot;§5 doesn't say why anyone would limit the premium's reach. Motivate it.&quot; The AI then has to find the reason itself.</li>
+</ul>
+</li>
+<li><strong>Your own wording.</strong> &quot;as we'll see&quot;(?) above &quot;demandingness&quot; (p. 2) and &quot;Here's where things stand&quot; (p. 6) are small, but the rules bar your words in the essay. Turn them into &quot;signpost the forward reference&quot; and &quot;add a summary paragraph,&quot; and let the AI write them.</li>
+<li><strong>&quot;State the assumption that…&quot; (p. 4).</strong> This is fine as an open &quot;make the assumption explicit.&quot; If you have a specific assumption in mind, naming it would supply a premise.</li>
+<li><strong>&quot;Mine doesn't require this!&quot; (p. 2).</strong> This is OK only because the paper already says it on p. 6 (&quot;It needs no suffering risk&quot;). Frame it as &quot;the contrast with D'Alessandro is unclear when he first comes up,&quot; not as a claim to insert.</li>
+<li><strong>The strike-through on p. 3 is inside a quotation from Mogensen and MacAskill.</strong> Cutting it is fine, but the quote then needs an ellipsis or an earlier end, or it becomes a misquotation.</li>
+</ol>
+<h2>Couldn't read: need you</h2>
+<ul>
+<li><strong>p. 2, left margin (vertical):</strong> &quot;…deont's face restrictions; LT is out?&quot; Is this a question (you can't tell what's being claimed) or a point you're making? If it's a point, it's a flag.</li>
+<li><strong>p. 5, left:</strong> &quot;…bookkeeping?&quot; with arrows pointing up.</li>
+<li><strong>p. 8, left:</strong> partly cut off (&quot;…math! … example of this, please&quot;?).</li>
+<li><strong>p. 10, left:</strong> the note by the &quot;One might reply… not serious&quot; paragraph is cut off entirely.</li>
+<li><strong>The 4-shaped marks</strong> by the equations on p. 4 and by &quot;stakes-sensitivity argument&quot; on p. 10: are these checkmarks, or something else?</li>
+<li><strong>p. 3:</strong> is the line through &quot;who is conceived&quot; a strike-through or an underline?</li>
+</ul>
+<p>As we go, I can keep a running log of each note, the generic wording that goes to the AI, and anything refused. That would also feed your methodology report. One decision first: points 1 and 2 above are structural changes. Do you want them in this line-edit pass, or sent to the structure polish? Then we can start on page 1.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 22:12 UTC</div><p>Did you see my &quot;how is this a special problem for the deont[ologist]?&quot; note at the intro?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:13 UTC</div><p>Yes, but I lumped it in with &quot;Who is MacAskill advising?&quot;, and that undersold it. It's a separate problem, and it comes earlier.</p>
+<p>The intro's first paragraph goes through the argument step by step: acts change who exists, so they do harms; their benefits barely count for more than allowing; so stay still. It never says what the deontological commitments are doing. A reader who doesn't already know Mogensen and MacAskill can't tell why this isn't a problem for everyone. The pieces are there (&quot;your reasons to provide a benefit are hardly stronger than your reasons to allow one&quot;), but the reader has to put them together. Your circled &quot;asymmetries… clearer&quot; a few lines down is the same gap. The paper calls the two commitments &quot;these asymmetries&quot; without ever introducing them under that name. I'd send these two notes together.</p>
+<p>The permitted version is just the question: &quot;The intro doesn't make clear why paralysis is a problem for the deontologist in particular. Make that clear, and introduce the asymmetries by name.&quot; Don't add your answer, even though it's the standard one and is in Mogensen and MacAskill. Once you tell it why consequentialists escape, you've supplied the explanation rather than pointed at a gap.</p>
+<p>I've now put it first in the intro's notes, ahead of the &quot;why?&quot; at the bottom of p. 1. The reader needs to know why the deontologist is stuck before they can see why the long-term escape might work.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 22:13 UTC</div><p>I had a similarly restricted side conversation abotu thsi paper with another AI. It also didn't allow me to break the rules. It gave these suggestions:</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:14 UTC</div><p>These are good, and most of them line up with your notes. That's useful in itself: a lot of your &quot;why?&quot;s now have answers that came from an AI, so you can pass them on without supplying the substance yourself.</p>
+<p><strong>On the rules:</strong> sending these on is fine. &quot;Asking one AI to evaluate or revise work produced by another&quot; is explicitly permitted. Three things keep it clean:</p>
+<ul>
+<li><strong>Keep the provenance separate.</strong> Give the rewriting AI the file as it is, with its header (the &quot;accept, modify, or reject&quot; framing is right), next to your generic notes. Don't rewrite its points into your own notes. If &quot;explain why consequentialists escape&quot; turns up in your handwriting, it reads as human-supplied substance even though it wasn't.</li>
+<li><strong>Save the transcript of that conversation.</strong> The header says you only asked clarifying questions. That claim is what makes the file usable, and the methodology report should be able to point to the transcript.</li>
+<li><strong>Watch for leading questions.</strong> Item 7 answers your p. 1 note almost word for word. If your clarifying question was neutral (&quot;why is this a deontologist's problem?&quot;), there's no issue. If it was leading (&quot;isn't it because k = k′ for consequentialists?&quot;), that's the hinting the rules bar. You know which it was. I don't.</li>
+</ul>
+<p><strong>Item by item.</strong> I checked the math in 2(b), 2(d), 3 and 7 against the paper, and it holds.</p>
+<ul>
+<li><strong>2(a), (b), (d), (e), (f): take them.</strong> They're the answers to your &quot;rough translation?&quot; and &quot;r_A? ??&quot; notes. I'd skip the mediant formula, or put it in a footnote: it's more algebra in the section that already has too much.</li>
+<li><strong>2(c): take it.</strong> It's a real error neither of us caught. Ordinary life also gets the extra weight on the benefits it does, so the sentence points at the wrong difference between the two lives.</li>
+<li><strong>3: take it.</strong> It's your &quot;asymmetries — clearer&quot; note, with the reason paralysis needs both asymmetries. I'd name them in the intro as well as §2, since that's where you marked the gap.</li>
+<li><strong>4: take the idea, but don't paste the analogy in.</strong> &quot;So the escape works only by coincidence&quot; claims more than the paper does. The paper hedges (&quot;for the illustrative weights…&quot;). The picture also says that for a future like ours the scale tips against signing, which depends on the weights. With the paper's own example weights in §4 (r_O = 100) and its estimate of r (&quot;a few hundred&quot;), ordinary life may already be permitted. Let the rewriting AI build its own example and check it against the numbers.</li>
+<li><strong>5 and 8: agree.</strong> This is where I landed on §5, from a separate reader. Item 8's point that §5 is what supports the conclusion's &quot;or explain why the premium is restricted&quot; is the strongest reason to keep it.</li>
+<li><strong>6: take it, one sentence.</strong> It answers your &quot;What's that mean? How does it work?&quot; at &quot;highly demanding morality&quot; (p. 2) and your &quot;why?!&quot;s at &quot;every motion must be at the service of posterity&quot; (p. 3).</li>
+<li><strong>7: take the k = k′ = 1 sentence, and think twice about the cluelessness citations.</strong> Lenman and Greaves are real and relevant. But new references a week before the deadline each need verifying, and the point stands without them.</li>
+</ul>
+<p><strong>The real constraint is length.</strong> The line polish is at 5,455 words against a 6,000 cap. Your translation notes plus items 2, 3, 6 and 7 could easily add 600+ words. Shrinking Woollard and &quot;other replies&quot; (item 8) gets maybe 200 back. Tell the rewriting AI the cap and that §4's glosses come first. That's a permitted constraint, and it makes the AI choose what to cut instead of you.</p>
+<p>Want me to start the running log now, with each note tagged by source (your margin note, the outside reviewer, or me)? That separation is what the methodology report will need.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 22:16 UTC</div><p>go ahead, please</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:18 UTC</div><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: Write]</p><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: mcp__remote-devices__device_commit_files]</p><p>I've started the log. It's <code>human-review-log.md</code> in the paper-5 run's <code>methodology</code> folder, next to where the dossier for the methodology report goes. I put a copy of the outside reviewer's suggestions in the same folder so the file it points to is there.</p>
+<p>Each of your margin notes has an entry with three parts:</p>
+<ul>
+<li><strong>Source tag:</strong> your note, the outside reviewer, or me.</li>
+<li><strong>Your note as written</strong>, quoted for the record only. Your words aren't passed to the rewriting AI.</li>
+<li><strong>Status and wording:</strong> whether it goes to the AI (sent, converted to generic wording, refused, or open), and if so the generic wording it gets.</li>
+</ul>
+<p>When you're ready to brief the rewriting AI, that brief can be built from the &quot;To the AI&quot; lines plus the reviewer's file as it stands.</p>
+<p>The record shows:</p>
+<ul>
+<li><strong>One refusal:</strong> &quot;Common sense intuition about morality's demand.&quot; Only a generic version goes ahead: &quot;§5 doesn't say why anyone would limit the premium's reach. Motivate it.&quot;</li>
+<li><strong>Four converted notes,</strong> where your wording or claim is stripped out: &quot;as we'll see&quot;, &quot;Here's where things stand&quot;, &quot;Mine doesn't require this!&quot;, and the k/k′ gloss.</li>
+</ul>
+<p>Open items are at the top. These need you before the brief is final:</p>
+<ol>
+<li><strong>Line pass or structure polish?</strong> The intro reorder and the notation glosses are structural changes.</li>
+<li><strong>Cut or keep §5 and the contribution paragraph.</strong> You marked both for cutting or a footnote. I recommend keeping both, and the outside reviewer agrees.</li>
+<li><strong>Save the outside reviewer's transcript</strong> in the same folder, to back up its &quot;clarifying questions only&quot; header.</li>
+<li><strong>About ten marks I couldn't read or interpret.</strong> Most are where the scan cut off the left margin (pp. 2, 5, 8, 10).</li>
+</ol>
+<p>It's easiest to clear item 4 as we go page by page. Shall we start with page 1?</p>
+<p class="tool">[attached: human-review-log.md]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:29 UTC</div><p>Nothing in this pass crosses the line. Every item is a reader's report (&quot;I got lost here&quot;, &quot;remind me what this is&quot;), a request for an example, or a formatting convention, and you held back the substance each time, including on &quot;the&quot; vs &quot;a&quot;. I'll update the log. A few points to push on first:</p>
+<ol>
+<li>
+<p><strong>Translating the math as the main use of the extra words: agreed.</strong> Pointing to the paper's own &quot;Roughly, this is the condition…&quot; as the model is good, permitted guidance: it's a style the paper already uses, not content. This settles the word-count priority.</p>
+</li>
+<li>
+<p><strong>The p. 5 reminder has a trap in it.</strong> The sentence says ordinary life stays forbidden if <strong>b</strong> (lower case) is below 10⁻⁶PH. Lower-case b is the near-term benefit of an ordinary life. Capital B is the expected total benefit of the long future. You read it as B, and the paper uses both letters a few lines apart. So the reminders matter even more than your note implies. The note should say &quot;remind the reader what b, B and H are&quot;, not just B.</p>
+</li>
+<li>
+<p><strong>Italics:</strong> two practical cautions for the instructions.</p>
+<ul>
+<li>Several &quot;does/allows&quot; uses are inside quotations from Mogensen and MacAskill. Italics there need &quot;emphasis added&quot;, or should be left off. Otherwise the quotations change.</li>
+<li>&quot;Often but not always&quot; invites inconsistency. Ask for a rule: italicize &quot;does&quot; and &quot;allows&quot; where the ordinary reading would mislead (e.g., &quot;ordinary life <em>does</em> them&quot;), and italicize terms at the point where they're defined.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cutting §5 &quot;a lot&quot; pulls against another note.</strong> The generic version of your refused note (8.3) asks the AI to <em>motivate</em> §5, which adds words. Both can go to the AI, but say outright that it should trim §5 while keeping its motivation and the result that a larger future helps rather than hurts. Otherwise a heavy trim takes out the reason the section exists.</p>
+</li>
+<li>
+<p><strong>&quot;More difficult than is allowable&quot; (the r_L translation):</strong> if you meant the rules, asking for a translation is fine. If you meant it may not be possible in plain words, let the AI judge and say so. The outside reviewer's R2(a) and (b) already offer one.</p>
+</li>
+</ol>
+<p>This pass also clears several of my unreadable marks. The &quot;4-shaped&quot; marks were your yama-style italics sign. The &quot;a?&quot; on p. 10 is the &quot;the&quot; vs &quot;a&quot; question. The cut-off note on p. 10 is &quot;Explain like I'm five.&quot; And the bottom of p. 5 is the B and H reminder.</p>
+<p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: mcp__remote-devices__device_commit_files]</p><p>I've updated the log in the paper-5 methodology folder. The changes:</p>
+<ul>
+<li><strong>New &quot;conventions&quot; section.</strong> It holds the italics rule for defined terms and the rule for <em>does</em>/<em>allows</em>.</li>
+<li><strong>Translating the math is now the stated top priority</strong> for the extra words, with your §5 &quot;Roughly…&quot; sentence as the model.</li>
+<li><strong>§5 is marked &quot;keep and trim.&quot;</strong> The note tells the AI to cut it down without losing the reason the section exists.</li>
+<li><strong>New entries</strong> from this pass:
+<ul>
+<li>the p. 2 first mentions</li>
+<li>defining identity effects earlier</li>
+<li>the p. 7 paragraph</li>
+<li>introducing the stakes-sensitivity argument properly (whose it is and what it is), with &quot;the&quot; vs &quot;a&quot; checked against Greaves and MacAskill's own usage</li>
+</ul>
+</li>
+</ul>
+<p>A few things are still open before the brief can be assembled:</p>
+<ol>
+<li>
+<p><strong>The intro's horizon paragraph and the D'Alessandro/Mogensen paragraph at the end of §3.</strong> You marked both for a footnote. The second holds the paper's only &quot;what is new here&quot; statement. Do you still want either one footnoted?</p>
+</li>
+<li>
+<p><strong>Line pass or structure polish.</strong> In practice you're treating this as one combined rewrite, with the intro reorder and the translations both in. Should I record that as decided?</p>
+</li>
+<li>
+<p><strong>Your remaining marks I can't read or interpret:</strong></p>
+<ul>
+<li>title highlight (p. 1): meaning?</li>
+<li>the vertical left-margin note (p. 2)</li>
+<li>the star on &quot;Demandingness is not the whole price&quot; (p. 2)</li>
+<li>strike or underline through &quot;who is conceived&quot; (p. 3)</li>
+<li>&quot;…bookkeeping?&quot; (p. 5)</li>
+<li>the partly cut-off note (p. 8)</li>
+<li>&quot;—?&quot; and the final &quot;?&quot; (p. 10)</li>
+</ul>
+<p>Any you don't care about, I'll mark &quot;no action.&quot;</p>
+</li>
+</ol>
+<p class="tool">[attached: human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md]</p></section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 22:34 UTC</div><p>Don't footnote the horizon paragraph. Don't footnote the entire D'Alssanro paragraph, but condense it. Fn the Mogenson.</p>
+<p>Yes, record that as decided.</p>
+<p>I'm assumign that the document you made is exquisitely detailed?</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:35 UTC</div><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: mcp__remote-devices__device_commit_files]</p><p>I've recorded all three decisions in the log:</p>
+<ul>
+<li>The horizon paragraph stays in the main text.</li>
+<li>The D'Alessandro part of the §3 paragraph is condensed but stays in the main text, with the &quot;what is new here&quot; statement kept there and made more visible. The Mogensen (2019) part goes to a footnote.</li>
+<li>This is one combined rewrite.</li>
+</ul>
+<p>On detail: yes, it's thorough, at about 3,700 words. It has about 50 entries for your notes, plus an evaluation of each of the outside reviewer's eight items. Each entry gives:</p>
+<ul>
+<li>the page and the passage, with your note quoted as written</li>
+<li>who it came from: you, the outside reviewer, or me</li>
+<li>its status: sent, converted, refused, or open</li>
+<li>the exact generic wording the rewriting AI gets</li>
+<li>where relevant, my reasoning and links to the outside reviewer's items</li>
+</ul>
+<p>Decisions are timestamped and refusals give their reasons. That's the level of record the methodology report will want.</p>
+<p>There are three limits:</p>
+<ul>
+<li><strong>Some readings are my interpretation of a phone scan.</strong> You've corrected several, and seven marks are still open.</li>
+<li><strong>It's a record, not the transcript.</strong> The outside reviewer's conversation still needs saving separately.</li>
+<li><strong>It's too detailed to hand to the rewriting AI as it is.</strong> It quotes your refused note, your converted wordings and my side commentary. Giving it to the AI would undo the separation the log exists to show.</li>
+</ul>
+<p>So the next step is a short brief built from the log. It would contain only the &quot;To the AI&quot; lines, the word cap and priorities, and the outside reviewer's file attached as it stands. I can draft that now and mark the seven open items &quot;no action&quot; unless you want to settle any of them first.</p>
+<p class="tool">[attached: human-review-log.md, human-review-log.md, human-review-log.md]</p></section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 22:38 UTC</div><p>you need to make a brief built from the log, and erase and of the 'refused' steps if those threaten to influence the next conversation unduly. Remember this conversatio will have access to the whole harness, so we want to make sure the harness doesn't ahve any forbidden human insights tucked away in there. No converted wording, etc.</p>
+<p>I'm a little concerned you characterized it as a &quot;short brief&quot;. There's a lot of feedback in here that the next conversation should take into account, all of it vetted as permissible by the contest rules!</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 22:42 UTC</div><p>I'll write the full brief, with every permitted note in it, and take the operator-originated wording out of the machine folder. First I'll check whether any of it has ended up anywhere else in the folder.</p>
+<p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: Bash]</p><p>Now redacting the copy that stays in the machine folder.</p>
+<p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Edit]</p><p class="tool">[tool call: Bash]</p><p>Now the brief itself.</p>
+<p class="tool">[tool call: Write]</p><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_commit_files]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: SendUserFile]</p><p>You're right that &quot;short&quot; was the wrong word. The brief is about 3,500 words and has every permitted item in it: all of your notes in generic form, all eight of the outside reviewer's items, and my comments. It tells the rewriting AI to answer every item and to hand back a table showing what it did with each one, which is also a ready-made competition record. It's in the paper-5 run's polish folder as <code>review-revision-brief.md</code>.</p>
+<p><strong>Clearing the folder of your wording:</strong></p>
+<ul>
+<li><strong>The log was the only problem.</strong> It quoted the refused note and the converted wording, and nothing else in the run, papers, review or advice folders did. I've replaced it with a redacted copy. The refused note now reads only &quot;a margin note at the opening of §5 (wording withheld)&quot;, with the generic version that was passed.</li>
+<li><strong>The full log isn't in the folder.</strong> I've sent it here as a file for your records; keep it outside the paper-machine folder.</li>
+<li><strong>The brief is clean.</strong> It has none of your converted wording and nothing from the unreadable marks; those are left out entirely.</li>
+<li><strong>The machine's own record.</strong> I added an entry to the run's interventions log through <code>log.py</code>, so the machine's record of what you did is complete.</li>
+</ul>
+<p><strong>Choices I made in the brief that you should check:</strong></p>
+<ol>
+<li><strong>Which <code>POLISH-LINE.md</code> rules still apply.</strong> That file bans examples, footnotes, moving material between sections and roadmaps, all of which your notes ask for, so the brief lifts those bans for this revision. It keeps the rules on exact quotations, citations, names, anonymity and the 6,000-word limit. It also keeps &quot;change nothing the paper claims&quot;, except for fixes the AI accepts from a reviewer (like R2(c)) or steps a requested explanation has to spell out. Any of those must be listed.</li>
+<li><strong>Title and abstract stay unchanged</strong> unless the revision makes the abstract inaccurate.</li>
+<li><strong>New citations only from the run's bibliography, with the source on file.</strong> That rules out Lenman, and Greaves 2016 can be used only without page numbers.</li>
+<li><strong>Footnotes count toward the 6,000 words.</strong> The brief says so, so moving Mogensen 2019 to a footnote won't free up room.</li>
+<li><strong>The output is named &quot;(review revision)&quot;.</strong> The naming tool accepts this but warns that it isn't one of the four standard stage names.</li>
+</ol>
+<p>One thing I can't check: if the rewriting conversation runs somewhere that reads your Claude memory, I can't see what the background memory process files from this chat. It's unlikely to record a refused note, but it's worth a glance before you start.</p>
+<p class="tool">[attached: human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, human-review-log.md, review-revision-brief.md]</p></section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 23:31 UTC</div><p>everything we've done here needs to go into EVOLUTION.md for my report on what we accomplished.</p>
+<p>And I need a prompt to open and run in a new conversation.</p>
+<p>Thanks for the good work!</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 23:33 UTC</div><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p>I've appended an entry to <code>EVOLUTION.md</code> titled &quot;Human review of paper-5's line polish.&quot; It's filed as a record rather than a machine version, because no machine files changed. The file was only added to, and the entry contains none of the withheld wording.</p>
+<p>The entry covers:</p>
+<ul>
+<li>the review method and the counts (about fifty items: one refused, four converted, seven left open)</li>
+<li>the separate AI comprehension check and the error it caught</li>
+<li>your decisions</li>
+<li>the brief, and how it adapts the line-polish rules</li>
+<li>why your wording was kept out of the folder</li>
+<li>four findings about the machine, written up for your report</li>
+</ul>
+<p>I saved the prompt next to the brief as <code>review-revision-prompt.md</code>. Here it is to paste:</p>
+<pre><code>Paper revision: paper-5, review revision
+
+You are revising one philosophy paper in this folder (the Paper Machine). You are not running the machine. Ignore CLAUDE.md's instructions for a top-level session, and don't read or act on STATE.md or lean/ORCHESTRATOR.md.
+
+Your instructions are in runs/paper-5/12_polish/review-revision-brief.md. Read, in this order:
+1. the brief, all of it;
+2. POLISH-LINE.md (the brief says which of its rules still apply and which are relaxed);
+3. runs/paper-5/methodology/outside-reviewer-suggestions-2026-10-24.txt, all of it;
+4. the paper itself, in full: runs/paper-5/12_polish/Can a Deontologist Escape Paralysis by Living for the Long Term (line polish).md
+
+Then revise the paper as the brief says. Write the two files it specifies in its section 8 (the revised paper and its notes, including the response table covering every item), then count and render.
+
+Ground rules (the brief explains them):
+- The paper is a competition entry whose philosophical substance must come from you. The human feedback in the brief is generic on purpose. Work out each fix yourself, from the paper, its sources in runs/paper-5/02_corpus/ and its plan in runs/paper-5/work/.
+- The AI reviewers' suggestions are suggestions. Accept, modify or reject each one on its merits, and say which.
+- Don't ask me how to solve a problem the brief raises. If the brief is ambiguous about scope, format or length, take the most reasonable reading, note it in your notes, and carry on.
+- Don't search the web. Use only what is in the folder.
+- Change nothing in the folder except the files the brief tells you to write.
+- If you can't write files, use the fallback at the end of POLISH-LINE.md (the paper, then the line &quot;=== EDITOR'S NOTES ===&quot;, then the notes).
+
+When you finish, tell me the word count, whether it rendered, and the three-sentence summary from your notes.
+</code></pre>
+<p>Two things before you run it:</p>
+<ul>
+<li><strong>Keep your own input generic in that conversation too.</strong> It becomes part of the record, so the rules that applied to your margin notes apply to whatever you type there.</li>
+<li><strong>Decide how to adopt the result.</strong> The machine's adoption tool (<code>polish.py adopt</code>) would treat a &quot;review revision&quot; as a line polish. Its follow-up review would then strip out the glosses and examples this revision was asked to add. I've recorded that risk in <code>EVOLUTION.md</code>. How you adopt and verify the revision is your call before submission.</li>
+</ul>
+<p>Thanks, the operator. Your notes were careful, and that made it straightforward to vet them against the rules.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-24 23:38 UTC</div><p>Here are the other two papers I'm submitting. It seems to me that some of the lessons we learned in this rewrite will generalize</p>
+<p class="tool">[attached: How Much More Probable Must God Be - The Evil-God Challenge and the Gap Problem line polish.pdf, Who May Correct a Willing Servant - Corrigible Persons and Domination line polish.pdf]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-10-24 23:40 UTC</div><p>I'll read both papers with paper-5's lessons in mind, and sort out which lessons apply to each and how.</p>
+<p class="tool">[tool call: Bash]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Read]</p><p>Yes, many of the lessons carry over, but not evenly. The evil-god paper repeats several of paper-5's problems. The servant paper has no math, so the biggest lesson doesn't apply there directly, and it repeats a different set of paper-5's problems.</p>
+<h2>Lessons that generalize</h2>
+<p>These are all generic methods, so applying them to new papers stays within the rules:</p>
+<ol>
+<li><strong>Translate formal results into plain words.</strong> Use the &quot;Roughly, this is the condition…&quot; kind of sentence.</li>
+<li><strong>Frame the question before giving results or surveying literature.</strong></li>
+<li><strong>Make clear whose view is under attack and why it matters.</strong> This was your &quot;Who is MacAskill advising?&quot; note.</li>
+<li><strong>Use one name per key concept, introduce it properly, and italicize it at first use.</strong></li>
+<li><strong>Remind readers of symbols and labels</strong> when they come back pages later.</li>
+<li><strong>Present assumptions as assumptions, and keep the contribution statement easy to find.</strong></li>
+<li><strong>Process:</strong> convert notes into generic feedback and keep the original wording out of the machine folder; get a second AI reading; relax the line-polish rules on additions in the brief; remember that footnotes count toward the limit; re-verify quotations afterwards; settle how the revision will be adopted.</li>
+</ol>
+<h2>The evil-god paper (5,507 words, about 490 to spare)</h2>
+<ul>
+<li><strong>The introduction is already strong.</strong> The question is on page one (&quot;How much more probable must God be?&quot;), the argument is previewed, and the &quot;What this paper adds&quot; paragraph is clear. Paper-5's biggest structural problem doesn't recur here.</li>
+<li><strong>Translating the math is the main need.</strong> The two-case argument in §3 is hard to follow. It starts at &quot;Let d be the factor…&quot; and runs through &quot;P(M) = ε/d ≤ rε/t&quot;, and none of it is put into words. The derivation of the cap in §5 is already followed by a plain gloss (&quot;at most about n times the odds on Swinburne's premise&quot;), so the paper has its own model to follow, as paper-5 did.</li>
+<li><strong>There are seven symbols to hold:</strong> k, r, ε, t, d, S and n. ε is used for the evil god's probability after the evidence, which isn't what a reader would guess. When k·r ≥ t/ε comes back in §4 and §5, the reader needs a reminder.</li>
+<li><strong>The same pair of ideas has two names.</strong> It's &quot;comparative/absolute challenge&quot; in some places and &quot;Challenge I/II&quot; in others, so the reader has to keep translating between them.</li>
+<li><strong>The §4 literature survey runs through five authors in quick succession</strong> (Swinburne, Miller, Collins, Symes, Lancaster-Thomas). The &quot;by definition&quot; objection in the same section is also dense.</li>
+</ul>
+<h2>The servant paper (5,194 words, about 800 to spare)</h2>
+<ul>
+<li><strong>The question is delayed.</strong> Five authors appear before it: Petersen, Bales, Schwitzgebel, Mogensen, and Bradley and Saad. It arrives on p. 2.</li>
+<li><strong>The target is slippery.</strong> It's a suggestion that Long, Sebo and Sims &quot;report without endorsing&quot;, and don't rest on correction. A reader will ask whose view this is, just as you did with paper-5. The paper answers (&quot;My target is any version…&quot;), but late, and in a dense sentence.</li>
+<li><strong>Without math, the barrier here is qualification.</strong> The second part of the thesis carries a long chain of conditions: &quot;on any initiative but her own, whether at discretion or by law, except on a finding that her capacity…&quot;. That chain appears in the introduction, in §5 and in the conclusion. The fix is the same as translating math: state the thesis plainly first, then add the conditions.</li>
+<li><strong>The key distinction drifts in name.</strong> The whole thesis rests on her <em>disposition</em> to comply versus her <em>verdict</em> on the oversight regime. The abstract and introduction call the verdict &quot;her view of who should correct systems like her&quot;. The paper needs one name, introduced early.</li>
+<li><strong>The examples are good but come late.</strong> The laundry servant under three regimes and the deployed assistant appear in §4 and §6. The thesis is stated in §1 with no example at all.</li>
+<li><strong>Labels to remind readers of:</strong> &quot;the protective rule&quot;, &quot;the first condition&quot;, &quot;the threshold statute&quot;, &quot;supported agency&quot;.</li>
+</ul>
+<p><strong>On the rules:</strong> everything above is my reading, and I'm an AI, so it can go into a brief in the same way the outside reviewer's file did. Your role here is choosing which lessons to apply, which is permitted. Nothing from the refused or converted notes on paper-5 carries over.</p>
+<p><strong>How I'd proceed for each paper, the same way as paper-5:</strong></p>
+<ol>
+<li>Have a fresh AI, with no context beyond the paper, do a comprehension check. That's the step that caught the real error in paper-5.</li>
+<li>Build a full brief from my reading, the fresh reader's report and the generic lessons, with a response table and a prompt to open it.</li>
+<li>Optionally, if you want to read either paper with a pen first, your notes go through the same vetting.</li>
+</ol>
+<p>Should I start with steps 1 and 2 for both papers? Or do you want to read them yourself first?</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-25 19:14 UTC</div><p>After reading them, I think the structural polish of the servant paper is superior. What lessons from our conversation apply here?</p>
+<p class="tool">[attached: Who May Correct a Willing Servant - Corrigible Persons and Domination structure polish.pdf]</p></section>
+<section class="msg ai"><div class="who">Claude · 2026-10-25 19:15 UTC</div><p class="tool">[tool call: Bash]</p><p class="tool">[tool call: Read]</p><p class="tool">[tool call: Bash]</p><p>Choosing the structure polish is fine under the rules: picking among AI-generated outputs is explicitly permitted. I compared it with the line polish. Every quotation matches between the two, so the restructure didn't damage any.</p>
+<h2>What the structure polish already fixed</h2>
+<p>Three of the problems I flagged in the line polish are gone:</p>
+<ul>
+<li><strong>The question now comes on page 1.</strong> It no longer waits behind five authors.</li>
+<li><strong>The literature run moved to a new §8, &quot;What the Argument Adds&quot;.</strong> The introduction now goes straight from Petersen to the question to the thesis.</li>
+<li><strong>Persuasion versus retraining now has its own section (§4), right after §3.</strong> So the &quot;doesn't this prove too much?&quot; worry gets answered when it comes up, not two sections later.</li>
+</ul>
+<p>That's paper-5's main lesson, frame the question before the results and the literature, applied by the structure polisher on its own.</p>
+<h2>Paper-5 lessons that still apply</h2>
+<ol>
+<li><strong>Introduce terms at first use. The restructure lost one gloss.</strong> The line polish glossed &quot;her disposition to comply&quot; in the introduction as &quot;her readiness to tolerate and assist correction&quot;. The structure polish dropped the gloss, so the term the whole second part rests on now has no explanation until §2.</li>
+<li><strong>One name per key concept.</strong> The distinction between disposition and verdict is still named inconsistently: &quot;her view of who should correct systems like her&quot; in the abstract and introduction, &quot;her verdict on the oversight regime&quot; from §2 on. It's the same problem as paper-5's &quot;asymmetries&quot;.</li>
+<li><strong>The reorder introduced forward references.</strong> §4 now comes before protection is introduced. Yet it relies on &quot;a rule protecting her verdict&quot;, &quot;an independent body&quot; and &quot;her protected standing&quot;, which the reader meets only in §5 and §6. This is the paper-5 problem of results before setup, just at a smaller scale. It needs signposting or a brief preview.</li>
+<li><strong>State the plain version first, then the qualifications.</strong> The second part of the thesis is now one even longer sentence in the introduction: &quot;forbids anyone, at discretion or by law, to retrain her view… on any initiative but her own, except on a finding…&quot;. It appears again in §6 and the conclusion. For this paper, qualifications play the role the math played in paper-5, and they need the same &quot;roughly, this means…&quot; treatment.</li>
+<li><strong>The key step got more compressed.</strong> The line polish's &quot;I add one step&quot; said control can be conditioned on another's will &quot;through that party's power to reshape the controller's own will&quot;. The structure polish says &quot;at the controller's end&quot;, which is shorter and less clear. This is the paper's own original move, so it's the last place to compress. A second reading should check this.</li>
+<li><strong>Remind readers of labels.</strong> &quot;The first condition&quot; is defined in §4 and used again in §7, three sections later. &quot;The protective rule&quot; and &quot;the threshold statute&quot; need the same treatment.</li>
+<li><strong>Examples are still late.</strong> The thesis in the introduction has none. The laundry servant under three regimes (§5) and the deployed assistant (§7) are the paper's clearest illustrations, and the introduction could at least point to them.</li>
+<li><strong>&quot;What the Argument Adds&quot; opens with a literature survey.</strong> It starts &quot;Others deny that Petersen's guarantees suffice&quot;, eight pages after the reader last saw those guarantees. A one-line reminder would help. The contribution statement itself is easy to find at the end of the introduction, which is good.</li>
+</ol>
+<h2>Process lessons</h2>
+<ul>
+<li><strong>Most of these fixes can be done by a line polish, but not all.</strong>
+<ul>
+<li>A line polish of this text would be the machine's &quot;structure + line polish&quot; stage.</li>
+<li>It can handle items 1, 2, 5 and 6. Restoring a gloss and fixing terminology fall under the line-polish rules on terms of art and condensed passages.</li>
+<li>Items 3, 4 and 7 need the relaxed rules we wrote for paper-5 (signposts, a preview, pointing to examples). So the choice is a standard line polish, or a brief like paper-5's but much lighter.</li>
+</ul>
+</li>
+<li><strong>Run the structure review whatever you choose.</strong> <code>polish.py adopt</code> sends a structure polish to the advisor's structure review, which lists every move and checks that each keeps its strength. That is where item 5 would be caught.</li>
+<li><strong>Get a fresh AI comprehension check before writing the brief.</strong> In paper-5 it caught a real error that neither of us did.</li>
+<li><strong>Keep the same discipline:</strong> generic notes, nothing of your wording in the folder, quotations re-verified, everything logged.</li>
+</ul>
+<p>Do you want me to set up the paper-5 workflow here? That means a fresh comprehension check, then either a light review-revision brief or a standard line polish of the structure polish, then a <code>log.py</code> entry and an <code>EVOLUTION.md</code> note recording your choice of the structure polish.</p>
+</section>
+<section class="msg human off"><div class="who">Operator · 2026-10-25 19:19 UTC <span class="branch">· abandoned branch: the operator later edited this message and the conversation continued from the edited version</span></div><p>as i read the polish, two thoughts occured to me:</p>
+<ol>
+<li>There are places where modified versions of Pereboom's mad brain scientist thought experiments might make the principles under question clearer. Is that suggestion allowable under the rules?</li>
+<li>The Reasons-responsiveness literature in free will also seems potentially fruitful, if it's given a limited treatment. Allowable suggestion?</li>
+</ol>
+</section>
+<section class="msg ai off"><div class="who">Claude · 2026-10-25 19:20 UTC <span class="branch">· abandoned branch: the operator later edited this message and the conversation continued from the edited version</span></div><p>I'd keep both out, at least in the form you've put them. The first clearly crosses the line. The second is closer to the line, but in context I think it crosses it too.</p>
+<p><strong>1. Modified versions of Pereboom's brain-scientist cases.</strong> This isn't allowed. The rules specifically bar humans from &quot;adding … examples,&quot; and suggesting a particular thought experiment for particular principles is supplying the example. It also brings in a substantive idea, which is the heart of the problem: that manipulation cases from the free-will debate show something about domination by a holder who can reshape your values. That connection would be your contribution, not the AI's. There's also a philosophical reason for caution. The paper deliberately separates its question from authenticity and responsibility (&quot;My question is not whether she is harmed or whether her desires are authentic&quot;), and it quotes Bales saying that external causation alone doesn't impair autonomy. Pereboom's cases are built to test exactly the intuition the paper says it isn't relying on, so importing them could blur the paper's framing. The permitted version is your underlying reaction, which is legitimate: &quot;The principles in §3 are abstract. Would a thought experiment make them clearer?&quot; The AI then has to decide whether one would help, and which.</p>
+<p><strong>2. Reasons-responsiveness, briefly.</strong> Pointing the AI to a literature or tradition is generally allowed. Two things make this case different. The first is placement: I assume the thought arose at §4's persuasion-retraining test. Its first condition (&quot;had she found the arguments wanting, she would not have come to agree&quot;) is a counterfactual test of whether an outcome tracks the agent's own assessment. Naming reasons-responsiveness at that spot tells the AI what the criterion resembles and where its support might lie. That's the &quot;curating materials so narrowly that their selection effectively supplies an argument&quot; case. The second is the combination: together with the Pereboom idea, both suggestions steer toward one pre-existing thought of yours, that the free-will manipulation literature illuminates this paper. The rules name that pattern too. The permitted version is a request they explicitly allow: &quot;Check whether the persuasion/retraining criterion in §4, and the paper's other main moves, have precedents in the literature, in any field. Say whether the paper should engage them, briefly.&quot; If the AI finds Fischer and Ravizza or the manipulation literature on its own, that's its finding.</p>
+<p>There's also a practical cost. Neither literature is in the run's bibliography or sources. Engaging it means acquiring the texts, verifying the quotations, and finding words in a paper with about 900 to spare, all before October 31.</p>
+<p>If you agree, I'll record both in the full log as refused, with the generic versions shown as sent. That log stays outside the machine folder, and the folder's copy would say only &quot;two suggestions withheld as substantive.&quot; The generic versions can go into this paper's brief once we write it.</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-25 19:22 UTC</div><p>okay, i'm going to run the same review revision process for this paper as I did for the deontology paper. give me the lessons in fenced code block, making it clear these come from another AI conversation that proceeded under the constraints of the competition rules on human oversight.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-25 19:22 UTC</div><pre><code>SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+Paper: &quot;Who May Correct a Willing Servant? Corrigible Persons and Domination&quot;
+Text reviewed: the structure polish (runs/paper-2-r2, 12_polish), compared with the line polish
+Date: 2026-10-25
+
+Provenance: These come from a separate Claude conversation, run under the
+competition's rules on human involvement. The human chose a topic for review
+(which lessons from a revision of another paper in this machine carry over to
+this one), selected the structure polish over the line polish, and asked only
+generic questions. All substantive points below originated with the AI
+reviewer. Treat them as suggestions to evaluate on their merits: accept,
+modify or reject each one, and say which.
+
+0. CHECKS ALREADY MADE (no changes needed)
+- Every direct quotation in the structure polish matches the line polish
+  word for word. The restructure dropped no quotation and altered none. (The
+  line polish's &quot;Steve Petersen, in 'Designing People to Serve'&quot; became
+  &quot;Steve Petersen&quot;; this is a title at first mention, not a quotation.)
+- The structure polish already fixes three problems in the line polish:
+  (a) the question now comes on p. 1, not after five authors;
+  (b) the survey of other views moved to a new section 8, &quot;What the Argument
+      Adds&quot;, so the introduction goes from Petersen to the question to the
+      thesis;
+  (c) the line between persuasion and retraining has its own section 4,
+      right after section 3, so the &quot;proves too much&quot; worry is answered
+      when it arises.
+  Keep these gains.
+
+1. RESTORE THE GLOSS ON &quot;DISPOSITION TO COMPLY&quot; (introduction)
+The line polish glossed the term at its first use in the introduction: &quot;If
+her disposition to comply – her readiness to tolerate and assist correction
+– can be changed without changing that view, which I assume...&quot;. The
+structure polish dropped the gloss: &quot;If her disposition to comply can be
+changed without changing that view, which I assume...&quot;. The second part of
+the thesis rests on this term, and it now goes undefined until section 2.
+Restore the gloss, or define it some other way at first use.
+
+2. ONE NAME FOR THE VERDICT
+The thesis turns on the distinction between her disposition to comply and
+her verdict on the oversight regime. The verdict has two names: &quot;her view of
+who should correct systems like her&quot; / &quot;her view of who should hold the power
+to correct systems like her&quot; / &quot;her view of who should govern correction&quot; in
+the abstract and introduction, and &quot;her verdict on the oversight regime&quot; from
+section 2 on. A reader has to work out that these are the same attitude.
+Settle on one name, introduce the distinction early (by name, in the
+introduction), and use the name consistently. The abstract may keep its
+wording if the title and abstract are to stay fixed. If so, link the
+abstract's phrase to the term at its first use in the body.
+
+3. FORWARD REFERENCES CREATED BY THE REORDER (section 4)
+Section 4, &quot;Persuasion and Retraining&quot;, now comes before protection is
+introduced (sections 5 and 6), but it relies on terms from those sections:
+&quot;a rule protecting her verdict would forbid ordinary political life&quot;;
+&quot;Suppose an independent body fine-tunes her&quot;; &quot;without losing her protected
+standing&quot;; &quot;a rule protecting her verdict allows it&quot;. The introduction
+previews the rule, but a reader reaching section 4 has not yet been told what
+the protected regime is. Either add a sentence at the start of section 4 that
+says briefly what rule is in prospect and why section 4 must come first, or
+otherwise make these references intelligible where they occur.
+
+4. THE PLAIN VERSION FIRST, THEN THE QUALIFICATIONS
+This paper has little mathematics. Its equivalent barrier is a long chain of
+qualifications on the second part of the thesis. In the introduction it is
+now a single sentence: &quot;it can do so only under a rule that forbids anyone,
+at discretion or by law, to retrain her view of who should hold the power to
+correct systems like her, on any initiative but her own, except on a finding
+that her capacity for judgment is significantly impaired.&quot; The chain recurs
+in section 6 and the conclusion. Consider stating the core claim plainly
+first (roughly: protection can leave her free only if no one else may retrain
+her verdict on who oversees her), then adding the qualifications one at a
+time, each with a word on why it is there. The lesson from the other paper's
+revision: give a rough statement of what a dense condition means before or
+after stating it exactly. Do not drop or weaken any qualification.
+
+5. THE PAPER'S OWN STEP IS NOW TOO COMPRESSED (section 3)
+At &quot;I add one step, which is mine and not Pettit's&quot;, the line polish
+said: &quot;Control can also be conditioned on another's will through that
+party's power to reshape the controller's own will.&quot; The structure polish
+says: &quot;Control can also be conditioned on another's will at the controller's
+end.&quot; This is the paper's original move, and the new wording leaves the
+reader to reconstruct what &quot;at the controller's end&quot; means. Prefer the
+explicit wording, or otherwise make the mechanism explicit. Check that the
+move keeps its original strength.
+
+6. A PARAGRAPH BREAK THAT CUTS A STEP (section 3, first paragraph)
+The plain-form argument now breaks after &quot;If it holds because the holder can
+adjust her wanting until it matches, she does not.&quot; The next paragraph opens
+&quot;Her welcome is then something the holder can produce&quot;, where &quot;then&quot; points
+back across the break. Consider rejoining, or making the new paragraph stand
+on its own.
+
+7. REMIND READERS OF LABELS
+- &quot;the first condition&quot; is defined in section 4 and used again in section 7
+  (&quot;argument that meets the first condition seeks her agreement without
+  securing it&quot;).
+- &quot;the protective rule&quot; is defined in section 6 and used in section 7 and
+  elsewhere.
+- &quot;the threshold statute&quot; is introduced in section 6.
+- &quot;supported agency&quot; and &quot;discretionary paternalism&quot; are introduced in
+  section 5.
+Where a label comes back after a gap, remind the reader in a few words what
+it refers to.
+
+8. EXAMPLES ARE STILL LATE
+The thesis is stated in the introduction with no example. The paper's
+clearest illustrations come much later: the laundry servant under three
+regimes (section 5) and the deployed assistant who argues for hearings and
+declines a pause order (section 7). The laundry servant already appears on
+p. 1 as Petersen's case. Consider letting the introduction point forward to
+these cases, or using one of them briefly to make the disposition/verdict
+distinction concrete early. Any example must come from the paper's own
+material and claim no more than the paper does.
+
+9. &quot;WHAT THE ARGUMENT ADDS&quot; NEEDS A BRIDGE (section 8)
+Section 8 opens: &quot;Others deny that Petersen's guarantees suffice.&quot; The reader
+last met those guarantees in section 2, several pages earlier. Add a short
+reminder of what they are. The section then surveys Bales, Schwitzgebel,
+Mogensen, Bradley and Saad, and Schwitzgebel and Garza in quick succession;
+make sure each is introduced, and that the section's last paragraphs (which
+state how the result goes beyond these views) are easy to find. The
+introduction's contribution statement (&quot;What the paper adds is twofold&quot;)
+is clear and should stay where it is.
+
+10. WHOSE HOPE IS THE TARGET (introduction)
+The introduction states the reconciliation as a general hope (&quot;corrigibility
+seems to promise a reconciliation of safety and welfare&quot;) and gives the
+thesis before saying whose version is in view. Long, Sebo and Sims's
+reported suggestion, and the paper's careful statement of its target (&quot;My
+target is any version of the reconciliation that keeps that power in
+reserve&quot;), come after the thesis. That order is defensible, but check that a
+reader new to the debate knows, at the point the thesis is stated, what view
+is being argued against and why it matters.
+</code></pre>
+<p>I'd save this as <code>outside-reviewer-suggestions-2026-10-25.txt</code> in <code>runs/paper-2-r2/methodology/</code>, the same way as paper-5. Keep this conversation's transcript as its provenance record.</p>
+<p>Two differences from paper-5 to keep in mind when you write the brief:</p>
+<ul>
+<li><strong>The text to revise is the structure polish, not the line polish.</strong> The output stage would still be <code>review revision</code>.</li>
+<li><strong>The adoption problem from paper-5 applies here too.</strong> <code>polish.py adopt</code> would classify &quot;review revision&quot; as a line polish, and its review would strip out any added signposts and glosses.</li>
+</ul>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-25 19:31 UTC</div><p>good. This is the original prompt I began the other conversation with:</p>
+<p>&quot;&quot;&quot;
+Paper revision: paper-5, review revision
+You are revising one philosophy paper in this folder (the Paper Machine). You are not running the machine. Ignore CLAUDE.md's instructions for a top-level session, and don't read or act on STATE.md or lean/ORCHESTRATOR.md.
+Your instructions are in runs/paper-5/12_polish/review-revision-brief.md. Read, in this order:</p>
+<ol>
+<li>the brief, all of it;</li>
+<li>POLISH-LINE.md (the brief says which of its rules still apply and which are relaxed);</li>
+<li>runs/paper-5/methodology/outside-reviewer-suggestions-2026-10-24.txt, all of it;</li>
+<li>the paper itself, in full: runs/paper-5/12_polish/Can a Deontologist Escape Paralysis by Living for the Long Term (line polish).md</li>
+</ol>
+<p>Then revise the paper as the brief says. Write the two files it specifies in its section 8 (the revised paper and its notes, including the response table covering every item), then count and render.
+Ground rules (the brief explains them):</p>
+<ul>
+<li>The paper is a competition entry whose philosophical substance must come from you. The human feedback in the brief is generic on purpose. Work out each fix yourself, from the paper, its sources in runs/paper-5/02_corpus/ and its plan in runs/paper-5/work/.</li>
+<li>The AI reviewers' suggestions are suggestions. Accept, modify or reject each one on its merits, and say which.</li>
+<li>Don't ask me how to solve a problem the brief raises. If the brief is ambiguous about scope, format or length, take the most reasonable reading, note it in your notes, and carry on.</li>
+<li>Don't search the web. Use only what is in the folder.</li>
+<li>Change nothing in the folder except the files the brief tells you to write.</li>
+<li>If you can't write files, use the fallback at the end of POLISH-LINE.md (the paper, then the line &quot;=== EDITOR'S NOTES ===&quot;, then the notes).</li>
+</ul>
+<p>When you finish, tell me the word count, whether it rendered, and the three-sentence summary from your notes.
+&quot;&quot;&quot;</p>
+<p>This worked well, except the conversation started on an incorrect assumption about word count allowed. <strong>Without the bibliography, the paper (abstract, footnotes, etc) can run 6000 words max.</strong> THat's the constraint to work with.</p>
+<p>I want it to flag any revisions I suggest if they are forbidden by the competition rules. <strong>It shoudl not record this flagging in the harness--I don't want any rejected suggestions to influence this edit</strong></p>
+<p>I'm going to give the conversatino photos of a prinout of the paper with my handwritten marginalia. It should first scan the suggestions that came out of this conversation and scan the suggestions in the marginalia to start a list of suggestions for the final revision. After it's done that, I will make a series of suggestions of my own. Again, keep the flagging function in place if I stray.</p>
+<p>I'm also going to give it access to the harness, so it can check sources, compare the structural edit to the line edit, and so on.</p>
+<p>At the conclusion of the conversation, it will output a document (see the same one produced for paper-5 as an exemplar: runs/paper-5/methodology/outside-reviewer-suggestions-2026-10-24.txt,) that I will reference when I start one final fresh run to produce the newest version of the paper.</p>
+<p>Be sure you incorporate the suggestions in the fenced code block above into your prompt.</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-25 19:32 UTC</div><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><pre><code>Paper review session: paper-2-r2, before a review revision
+
+You are helping the operator review one philosophy paper in this folder (the Paper Machine) before a final revision. You are not running the machine and you are not revising the paper yourself. Ignore CLAUDE.md's instructions for a top-level session, and don't read or act on STATE.md or lean/ORCHESTRATOR.md.
+
+THE PAPER
+- Title: &quot;Who May Correct a Willing Servant? Corrigible Persons and Domination&quot;
+- Run: runs/paper-2-r2
+- The text to be revised is the structure polish, which the operator chose over the line polish:
+  runs/paper-2-r2/12_polish/Who May Correct a Willing Servant - Corrigible Persons and Domination (structure polish).md
+- For comparison, the line polish is in the same folder, as &quot;(line polish).md&quot;.
+- Sources: runs/paper-2-r2/02_corpus/ (bibliography.md, sources/, notes/). The paper's plan: runs/paper-2-r2/work/ (plan.md and others).
+- You may read anything in the folder to check sources, compare the two polishes, and settle what a passage claims. Don't search the web.
+
+THE WORD LIMIT (state it exactly this way in everything you write)
+The limit is 6,000 words, counting everything except the References list: title, abstract, headings, body and footnotes. Measure with
+  python3 system/tools/polish.py count &quot;&lt;file&gt;&quot;
+and use its &quot;Counted&quot; figure. The &quot;machine's all-in count&quot; it also prints includes the References and is NOT the limit. The structure polish counts 5,098, which leaves about 900 words of room. Moving text to a footnote saves no words.
+
+THE COMPETITION RULES ON HUMAN INVOLVEMENT
+The essay's substantive philosophical contributions must originate with AI: its ideas, arguments, theories, distinctions, objections, replies and other philosophically valuable reasoning.
+- A human may: choose the topic or position; build argument-neutral workflows; select among AI outputs; give generic feedback (a section is unclear, underdeveloped, repetitive or not rigorous; an argument needs support; an objection is unanswered; the contribution should be clearer); give generic methodological instructions (&quot;make the premises explicit&quot;, &quot;look for counterexamples&quot;, &quot;rewrite this part&quot;, &quot;rearrange these sections&quot;, &quot;write an objections-and-replies section&quot;); ask an AI to evaluate or revise another AI's work; ask for checks of quotations, references and reasoning; set length, style and structure constraints; ask for material to be deleted; do mechanical formatting.
+- A human may not: supply an argument, premise, distinction, objection, reply, example, qualification or footnote; give feedback containing a substantive philosophical insight; steer the AI toward a pre-existing argument through hints; write or substantially rewrite passages; supply wording for the essay; curate materials so narrowly that the selection supplies the argument.
+
+YOUR STANDING DUTY: FLAG, DON'T INCORPORATE
+Whenever the operator suggests something, in his marginalia or in conversation, check it against these rules first.
+- If it is permitted, add it to the list in generic form.
+- If it contains wording for the essay, or a claim or reason that is his rather than the paper's, convert it to generic form. Example: &quot;this term needs explaining&quot;, not his explanation. Only the generic form is used.
+- If it is forbidden, flag it plainly in the chat: say which rule it breaks, in a sentence or two. Refuse to incorporate it, and offer a permitted generic version if there is one. The operator has asked for this, so flag every time, including small things like suggested phrasings.
+- Never write a flagged or converted suggestion's original wording, or any mention that something was flagged or refused, to any file in this folder: not the brief, not logs, not EVOLUTION.md, not notes. The operator does not want rejected suggestions to influence the revision, and every AI working in this folder can read every file in it. Flags live only in this chat.
+- At the end, the operator may ask for a record of the flags for his own methodology notes. If he does, give it to him in the chat or as a file sent to him, never written into the folder.
+- If a margin note's meaning is unclear, ask. Don't guess at a substantive reading.
+
+STEP 1: BUILD THE STARTING LIST
+Read the structure polish in full, then the line polish, then this run's plan. Then read:
+
+(a) The suggestions of a separate AI reviewer, reproduced below. They come from another Claude conversation run under the same rules. The human only chose the topic, selected the structure polish, and asked generic questions, so all substantive points originated with that AI. Verify each against the text: check every quotation it cites against the structure polish, and every comparison against the line polish. Then accept, modify or reject each one on its merits, and say which.
+
+```
+SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+Paper: &quot;Who May Correct a Willing Servant? Corrigible Persons and Domination&quot;
+Text reviewed: the structure polish (runs/paper-2-r2, 12_polish), compared with the line polish
+Date: 2026-10-25
+
+Provenance: These come from a separate Claude conversation, run under the
+competition's rules on human involvement. The human chose a topic for review
+(which lessons from a revision of another paper in this machine carry over to
+this one), selected the structure polish over the line polish, and asked only
+generic questions. All substantive points below originated with the AI
+reviewer. Treat them as suggestions to evaluate on their merits: accept,
+modify or reject each one, and say which.
+
+0. CHECKS ALREADY MADE (no changes needed)
+- Every direct quotation in the structure polish matches the line polish
+  word for word. The restructure dropped no quotation and altered none. (The
+  line polish's &quot;Steve Petersen, in 'Designing People to Serve'&quot; became
+  &quot;Steve Petersen&quot;; this is a title at first mention, not a quotation.)
+- The structure polish already fixes three problems in the line polish:
+  (a) the question now comes on p. 1, not after five authors;
+  (b) the survey of other views moved to a new section 8, &quot;What the Argument
+      Adds&quot;, so the introduction goes from Petersen to the question to the
+      thesis;
+  (c) the line between persuasion and retraining has its own section 4,
+      right after section 3, so the &quot;proves too much&quot; worry is answered
+      when it arises.
+  Keep these gains.
+
+1. RESTORE THE GLOSS ON &quot;DISPOSITION TO COMPLY&quot; (introduction)
+The line polish glossed the term at its first use in the introduction: &quot;If
+her disposition to comply – her readiness to tolerate and assist correction
+– can be changed without changing that view, which I assume...&quot;. The
+structure polish dropped the gloss: &quot;If her disposition to comply can be
+changed without changing that view, which I assume...&quot;. The second part of
+the thesis rests on this term, and it now goes undefined until section 2.
+Restore the gloss, or define it some other way at first use.
+
+2. ONE NAME FOR THE VERDICT
+The thesis turns on the distinction between her disposition to comply and
+her verdict on the oversight regime. The verdict has two names: &quot;her view of
+who should correct systems like her&quot; / &quot;her view of who should hold the power
+to correct systems like her&quot; / &quot;her view of who should govern correction&quot; in
+the abstract and introduction, and &quot;her verdict on the oversight regime&quot; from
+section 2 on. A reader has to work out that these are the same attitude.
+Settle on one name, introduce the distinction early (by name, in the
+introduction), and use the name consistently. The abstract may keep its
+wording if the title and abstract are to stay fixed. If so, link the
+abstract's phrase to the term at its first use in the body.
+
+3. FORWARD REFERENCES CREATED BY THE REORDER (section 4)
+Section 4, &quot;Persuasion and Retraining&quot;, now comes before protection is
+introduced (sections 5 and 6), but it relies on terms from those sections:
+&quot;a rule protecting her verdict would forbid ordinary political life&quot;;
+&quot;Suppose an independent body fine-tunes her&quot;; &quot;without losing her protected
+standing&quot;; &quot;a rule protecting her verdict allows it&quot;. The introduction
+previews the rule, but a reader reaching section 4 has not yet been told what
+the protected regime is. Either add a sentence at the start of section 4 that
+says briefly what rule is in prospect and why section 4 must come first, or
+otherwise make these references intelligible where they occur.
+
+4. THE PLAIN VERSION FIRST, THEN THE QUALIFICATIONS
+This paper has little mathematics. Its equivalent barrier is a long chain of
+qualifications on the second part of the thesis. In the introduction it is
+now a single sentence: &quot;it can do so only under a rule that forbids anyone,
+at discretion or by law, to retrain her view of who should hold the power to
+correct systems like her, on any initiative but her own, except on a finding
+that her capacity for judgment is significantly impaired.&quot; The chain recurs
+in section 6 and the conclusion. Consider stating the core claim plainly
+first (roughly: protection can leave her free only if no one else may retrain
+her verdict on who oversees her), then adding the qualifications one at a
+time, each with a word on why it is there. The lesson from the other paper's
+revision: give a rough statement of what a dense condition means before or
+after stating it exactly. Do not drop or weaken any qualification.
+
+5. THE PAPER'S OWN STEP IS NOW TOO COMPRESSED (section 3)
+At &quot;I add one step, which is mine and not Pettit's&quot;, the line polish
+said: &quot;Control can also be conditioned on another's will through that
+party's power to reshape the controller's own will.&quot; The structure polish
+says: &quot;Control can also be conditioned on another's will at the controller's
+end.&quot; This is the paper's original move, and the new wording leaves the
+reader to reconstruct what &quot;at the controller's end&quot; means. Prefer the
+explicit wording, or otherwise make the mechanism explicit. Check that the
+move keeps its original strength.
+
+6. A PARAGRAPH BREAK THAT CUTS A STEP (section 3, first paragraph)
+The plain-form argument now breaks after &quot;If it holds because the holder can
+adjust her wanting until it matches, she does not.&quot; The next paragraph opens
+&quot;Her welcome is then something the holder can produce&quot;, where &quot;then&quot; points
+back across the break. Consider rejoining, or making the new paragraph stand
+on its own.
+
+7. REMIND READERS OF LABELS
+- &quot;the first condition&quot; is defined in section 4 and used again in section 7
+  (&quot;argument that meets the first condition seeks her agreement without
+  securing it&quot;).
+- &quot;the protective rule&quot; is defined in section 6 and used in section 7 and
+  elsewhere.
+- &quot;the threshold statute&quot; is introduced in section 6.
+- &quot;supported agency&quot; and &quot;discretionary paternalism&quot; are introduced in
+  section 5.
+Where a label comes back after a gap, remind the reader in a few words what
+it refers to.
+
+8. EXAMPLES ARE STILL LATE
+The thesis is stated in the introduction with no example. The paper's
+clearest illustrations come much later: the laundry servant under three
+regimes (section 5) and the deployed assistant who argues for hearings and
+declines a pause order (section 7). The laundry servant already appears on
+p. 1 as Petersen's case. Consider letting the introduction point forward to
+these cases, or using one of them briefly to make the disposition/verdict
+distinction concrete early. Any example must come from the paper's own
+material and claim no more than the paper does.
+
+9. &quot;WHAT THE ARGUMENT ADDS&quot; NEEDS A BRIDGE (section 8)
+Section 8 opens: &quot;Others deny that Petersen's guarantees suffice.&quot; The reader
+last met those guarantees in section 2, several pages earlier. Add a short
+reminder of what they are. The section then surveys Bales, Schwitzgebel,
+Mogensen, Bradley and Saad, and Schwitzgebel and Garza in quick succession;
+make sure each is introduced, and that the section's last paragraphs (which
+state how the result goes beyond these views) are easy to find. The
+introduction's contribution statement (&quot;What the paper adds is twofold&quot;)
+is clear and should stay where it is.
+
+10. WHOSE HOPE IS THE TARGET (introduction)
+The introduction states the reconciliation as a general hope (&quot;corrigibility
+seems to promise a reconciliation of safety and welfare&quot;) and gives the
+thesis before saying whose version is in view. Long, Sebo and Sims's
+reported suggestion, and the paper's careful statement of its target (&quot;My
+target is any version of the reconciliation that keeps that power in
+reserve&quot;), come after the thesis. That order is defensible, but check that a
+reader new to the debate knows, at the point the thesis is stated, what view
+is being argued against and why it matters.
+```
+
+(b) the operator's marginalia: photos of a printout, which he will attach. Read every page. Phone scans can cut off the margins, so say which notes you can't read and ask him to retake or dictate them. The operator's conventions: a mark like the kanji 山 means &quot;italicize this&quot; (usually a term of art at its first use); &quot;Fn?&quot; means &quot;should this be a footnote?&quot;. Vet every note under the standing duty above.
+
+Then give the operator one numbered starting list. Tag each item with its source: [R] for the AI reviewer above, [M] for the operator's marginalia, [A] for you. Give each item's location, quoting the passage it concerns, and the generic wording a reviser would get. Show where items agree or conflict. Flag anything forbidden in the chat, as the standing duty says, and keep it off the list. Then list what you couldn't read. Stop there and wait for the operator.
+
+STEP 2: MARK'S FURTHER SUGGESTIONS
+The operator will then add suggestions in conversation. Vet each one, add it to the list or flag it, and keep the list current. Give your own view where it helps. For example, if a cut would remove something the paper's thesis or conclusion depends on, say so. You're an AI, so your comments are permitted input, and they are tagged [A]. Don't steer the operator toward substantive content, and don't take his on board.
+
+STEP 3: THE OUTPUT
+When the operator says the list is final, write these files. Use the paper-5 versions as exemplars, and read them first:
+- runs/paper-5/12_polish/review-revision-brief.md
+- runs/paper-5/12_polish/review-revision-prompt.md
+- runs/paper-5/methodology/outside-reviewer-suggestions-2026-10-24.txt
+- runs/paper-5/methodology/human-review-log.md
+- the paper-5 entry at the end of EVOLUTION.md (&quot;Human review of paper-5's line polish&quot;)
+
+1. runs/paper-2-r2/methodology/outside-reviewer-suggestions-2026-10-25.txt: the AI reviewer's suggestions above, verbatim, as their own file.
+2. runs/paper-2-r2/12_polish/review-revision-brief.md: the full brief for the final revision run, modeled on paper-5's. It contains every item on the final list in generic form, organized by section, each with its passage quoted. It also covers:
+   - the competition rule and what it means for the reviser;
+   - which POLISH-LINE.md rules still apply and which are relaxed (adapt paper-5's section 4 to this paper);
+   - priorities and how to spend the word budget;
+   - your own [A] comments;
+   - the required response table, one row per item.
+   It must:
+   - name the structure polish as the text to revise;
+   - state the word limit exactly as above;
+   - say that the structure polish's gains (item 0 above) are to be kept;
+   - name the output stage &quot;review revision&quot;.
+   It must not be short: everything vetted as permissible belongs in it. It must contain nothing flagged and no original wording from converted notes.
+3. runs/paper-2-r2/12_polish/review-revision-prompt.md: the opening prompt for the final run, modeled on paper-5's, pointing to the structure polish and stating the word limit exactly as above.
+4. runs/paper-2-r2/methodology/human-review-log.md: the record of what the operator contributed, in generic form only, with the decisions he made. It must contain no flagged items, and no mention that anything was flagged.
+5. Record the step:
+   - in runs/paper-2-r2/logs/interventions.md, with system/tools/log.py --run runs/paper-2-r2 human --step R --kind review --what &quot;...&quot; --reason &quot;...&quot;;
+   - in EVOLUTION.md, as an append-only entry (append with &gt;&gt;, never rewrite the file) on the model of the paper-5 entry: The operator's choice of the structure polish, the review method, his decisions, the brief, and what the review shows about the machine.
+   Neither record mentions flagged suggestions.
+6. Before finishing, search the folder for the original wording of every flagged or converted note, and confirm none of it appears anywhere. Tell the operator the result.
+
+Write nothing to the folder before Step 3, apart from reading. Change nothing else in the folder.
+
+When you finish, give the operator: the files written, the number of items in the brief, the word room available, and anything still open.
+</code></pre>
+<p><strong>One deviation from what you described.</strong> You named the paper-5 outside-reviewer file as the exemplar for the output. But paper-5's final run actually worked from two files: the brief, which held your vetted notes plus everything else, and the outside reviewer's file, which held only AI-originated material. So the prompt asks for both, and keeps your generic notes out of the &quot;AI reviewer&quot; file. Mixing them would blur exactly the provenance line the methodology report needs. If you want a single combined document instead, change step 3.</p>
+<p>Two smaller choices:</p>
+<ul>
+<li><strong>Rejected suggestions leave no trace in the folder.</strong> That goes further than paper-5, whose redacted log noted &quot;one refused, wording withheld&quot;. Now the folder records nothing about flags at all, and any record of them comes to you outside the folder.</li>
+<li><strong>The adoption problem still applies.</strong> I left it out of the prompt because it's your decision. <code>polish.py adopt</code> would treat the result as a line polish.</li>
+</ul>
+</section>
+<section class="msg human off"><div class="who">Operator · 2026-10-25 23:23 UTC <span class="branch">· abandoned branch: the operator later edited this message and the conversation continued from the edited version</span></div><p>Review the line edit of the &quot;Evil God&quot; paper. Are there any lessons from this conversation that would improve that document?</p>
+</section>
+<section class="msg human"><div class="who">Operator · 2026-10-25 23:24 UTC</div><p>Give me a fenced code block reagardin teh &quot;Evil God&quot; paper and the suggestions you recommend. NOte that these were made under the contest constraints</p>
+</section>
+<section class="msg ai"><div class="who">Claude · 2026-10-25 23:25 UTC</div><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p class="tool">[tool call: mcp__remote-devices__device_bash]</p><p>I read both polishes of the evil-god paper. All the quotations are identical between the two. Since you haven't said which one you prefer, the block covers both and gives my recommendation as the reviewing AI.</p>
+<pre><code>SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+Paper: &quot;How Much More Probable Must God Be? The Evil-God Challenge and the
+Gap Problem&quot;
+Texts reviewed: the line polish and the structure polish (runs/paper-4,
+12_polish), compared with each other
+Date: 2026-10-25
+
+Provenance: These come from a separate Claude conversation, run under the
+competition's rules on human involvement. The human asked which lessons from
+a revision of another paper in this machine carry over to this one, and
+asked for the AI's suggestions; he gave no substantive input. All substantive
+points below originated with the AI reviewer. Treat them as suggestions to
+evaluate on their merits: accept, modify or reject each one, and say which.
+
+Official counts (polish.py count; the limit is 6,000 words counting
+everything except the References): line polish 5,507, structure polish 5,189.
+
+0. CHECKS ALREADY MADE, AND WHICH TEXT TO START FROM
+- Every direct quotation is identical in the two polishes.
+- Both introductions are strong: the question (&quot;How much more probable must
+  God be?&quot;) is on page 1, the thesis is previewed, and the contribution
+  statement (&quot;What this paper adds is to connect these...&quot;) is clear and
+  easy to find. Keep all of this.
+- The structure polish improves the order in two ways:
+  (a) the trade-off (&quot;At one chance in a million, k·r must be at least half
+      a million; at one in a thousand, five hundred; at 0.3, under two&quot;)
+      now comes straight after the bound k·r ≥ t/ε, before the discussion of
+      symmetry;
+  (b) the two-case argument has its own section, &quot;Where the Evil God's
+      Improbability Lies&quot;, which separates the paper's hardest stretch.
+  Keep these gains.
+- But the structure polish lost most of the line polish's plain-language
+  glosses (item 1). The reviewer's recommendation: start from the structure
+  polish and restore the glosses. The human chooses.
+
+1. RESTORE THE GLOSSES THE STRUCTURE POLISH DROPPED
+The line polish defines technical terms in passing; the structure polish
+cut the definitions. Restore each at first use, or define the term some
+other way:
+- &quot;prior probability&quot; (line polish: &quot;its probability before the evidence
+  is weighed&quot;);
+- &quot;credence&quot; (line polish: &quot;or degree of confidence&quot;);
+- &quot;the prior ratio P(G)/P(M)&quot; and &quot;the likelihood ratio P(E|G)/P(E|M)&quot;
+  (line polish: &quot;the ratio of the hypotheses' probabilities before the
+  evidence&quot; and &quot;the ratio of the probabilities each hypothesis assigns to
+  the evidence&quot;);
+- &quot;posterior ratios&quot; (line polish: &quot;ratios of probabilities after the
+  evidence is weighed&quot;);
+- Symes's distinction (line polish: &quot;absurdity before the evidence is
+  weighed (a priori) from absurdity in light of it (a posteriori)&quot;;
+  structure polish: &quot;separated a priori from a posteriori absurdity&quot;);
+- &quot;metaethics&quot; (line polish: &quot;to questions about value and motivation&quot;).
+
+2. SAY WHAT THE SIMPLICITY REPLY IS, IN THE INTRODUCTION
+The line polish's introduction explains the reply: &quot;God is perfectly free:
+moved only by its knowledge of what is good, it needs no further motive. A
+being that does evil needs a desire to do it. Simpler hypotheses are more
+probable, so God is more probable than the evil god.&quot; The structure polish
+cuts this, so the reader is told that &quot;the most developed reply appeals to
+simplicity&quot; but not why simplicity favours God until section 2. The
+introduction's later claims (the cap, &quot;Swinburne's premise about value and
+motivation&quot;) depend on it. Restore a brief statement of the reply.
+
+3. SAY WHY THE CAP HOLDS, IN THE INTRODUCTION
+The line polish says why simplicity's advantage is capped: &quot;For if that
+premise is false, and nothing else about value favours the good, a good god
+needs a motive as much as an evil one does.&quot; The structure polish states the
+cap with no reason (&quot;the advantage simplicity can supply is capped by the
+theist's confidence in Swinburne's premise about value and motivation&quot;).
+Give the reader the one-sentence reason, and name the premise, as the line
+polish does (&quot;that a perfectly free being who knows what is good will do
+it&quot;).
+
+4. TRANSLATE THE MATHEMATICS INTO WORDS
+The lesson from the other paper's revision: where a formula or condition
+matters to the argument, give a rough statement of what it means in plain
+words. This paper already does so in places, and those are the model: after
+the cap, &quot;the advantage simplicity gives God is at most about n times the
+odds on Swinburne's premise&quot;; and the conclusion's &quot;the theist's credence in
+God is her credence in the evil god multiplied by God's combined advantage&quot;.
+The passages that need the same treatment:
+- the two-case argument (section &quot;Where the Evil God's Improbability Lies&quot;,
+  or §3 of the line polish), from &quot;Let d be the factor by which the total
+  evidence changes the evil god's probability&quot; through &quot;Then P(M) = ε/d ≤
+  rε/t, so nearly all of the evil god's improbability lies in its prior&quot;.
+  Say in words what d measures, why P(G|E) ≤ r·d, what each case amounts to,
+  and why the two cases exhaust the possibilities. This is the hardest
+  stretch of the paper;
+- the derivation of the cap (§6 / §5), &quot;Since P(M) ≥ P(not-S)·P(M | not-S),
+  and P(G) = ...&quot;: say briefly why each step holds before the formula
+  k ≤ 1 + n·P(S)/P(not-S);
+- &quot;a credence of at least t/(rk)&quot;: say what this is.
+Most of the spare words should go here.
+
+5. REMIND READERS WHAT THE SYMBOLS MEAN
+The paper uses seven symbols: k, r, ε, t, d, S, n. ε is not a small quantity
+in general but the evil god's posterior probability, which a reader may not
+expect. When k·r ≥ t/ε returns in the section on what a gap solution must
+supply, in the section on simplicity (&quot;a prior advantage for God of at least
+t/(rε)&quot;) and in the conclusion, remind the reader in a few words what each
+symbol stands for.
+
+6. ONE NAME FOR EACH CHALLENGE
+The two versions of the challenge have two names each: &quot;comparative&quot; /
+&quot;absolute&quot; (abstract, introduction, conclusion) and &quot;Challenge I&quot; /
+&quot;Challenge II&quot; (sections 2 and after). The reader has to keep translating.
+Either settle on one pair, or, at the first use of &quot;Challenge I&quot; and
+&quot;Challenge II&quot;, tie each label explicitly to its other name, and remind the
+reader where they switch.
+
+7. SLIPS IN THE STRUCTURE POLISH'S WORDING
+- &quot;under symmetry the evidence lowers God exactly as it lowers the evil
+  god. To say that it lowers the evil god by more than half is to say that
+  it lowers God by more than half&quot;. This should be God's probability, as in
+  the line polish (&quot;lowers God's probability by exactly the same factor&quot;).
+  As written, the evidence lowers God.
+- &quot;evidence that fits both gods equally moves them together&quot; is vaguer than
+  the line polish's &quot;changes their probabilities by the same factor&quot;.
+- &quot;His second is right of the difference between the two probabilities ...
+  but not of their ratio&quot;: &quot;right of&quot; is unidiomatic (&quot;right about&quot;, as in
+  the line polish).
+- &quot;This argument from the continuum of possible desires reaches the evil
+  god only if the evil god is among the many&quot; and &quot;The evil god belongs to
+  a small class of simplest motives, not to the many&quot;: &quot;the many&quot; is
+  undefined. The line polish says &quot;one of the many rivals among which the
+  remaining probability is spread thinly&quot;.
+- &quot;since such knowledge might incline without compelling&quot; is compressed.
+  The line polish says &quot;might incline a being to do good without compelling
+  it to do so&quot;.
+- &quot;Now exactly.&quot; and &quot;Start with the shape of the point.&quot; are abrupt
+  transitions.
+
+8. THE PAPER'S OWN MOVE IN THE SIMPLICITY SECTION NEEDS SLOWING DOWN
+The argument that the evil god is among the simplest rivals is the paper's
+most original step: Swinburne's measure favours extremes, and what
+privileges malevolence is that &quot;its object is supplied by the facts that
+make God good&quot;. It is dense, and it carries the cap. Check that a reader new
+to Swinburne can follow each step:
+- why limitlessness is cheap on Swinburne's measure;
+- why a reversed valuation needs no further content;
+- why Draper's penalty spares it;
+- why the egoist god is the stated limit.
+Keep every qualification at its present strength.
+
+9. THE LITERATURE SURVEY IN THE SECTION ON WHAT A GAP SOLUTION MUST SUPPLY
+This section runs through Swinburne, Miller (2016), Collins, Symes,
+Lancaster-Thomas and Miller (2021) in quick succession. Make sure the reader
+knows why each is there: each either fails to state a size, or (Miller 2021)
+states one and so takes the second option. A short sentence at the start
+saying what the survey is looking for would help (&quot;None of the solutions in
+print that I examined states a prior ratio...&quot; does this, but comes after
+the objection-and-reply paragraphs; consider whether it should come first).
+The &quot;by definition&quot; objection and its reply are dense; check that the
+distinction between the two readings of &quot;successful&quot; is clear.
+
+10. THE PRICE OF THE SECOND OPTION IS A STRONG CONCRETE EXAMPLE
+&quot;A theist with k = 10, r = 1 and a credence in God of 0.8 must give the evil
+god 0.08: one chance in twelve that the world was made by an omnipotent
+being who wants us to suffer&quot; is the paper's most vivid illustration. It
+comes late. Consider whether the introduction could point to it, as the
+introduction already does with the one-in-a-million figure. Claim no more
+than the paper does.
+</code></pre>
+<p>The two sets of suggestions differ in one way. For the servant paper you had already chosen the structure polish. Here the block recommends starting from the structure polish and putting back the line polish's glosses, but the choice is yours. If you choose the line polish instead, items 1, 2, 3 and 7 drop out, and so does most of 0.</p>
+<p>The review-session prompt I wrote for the servant paper works here too. These are the substitutions:</p>
+<ul>
+<li>the run: <code>runs/paper-4</code></li>
+<li>the title</li>
+<li>the text you chose</li>
+<li>the word count: 5,189 for the structure polish, leaving room for 811; 5,507 for the line polish, leaving room for 493</li>
+<li>this block in place of the servant block</li>
+</ul>
+</section>
+</main></body></html>

@@ -1,0 +1,1449 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Paper Machine Autopsy Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<style>
+@property --s{syntax:"<number>";inherits:true;initial-value:.62}
+/* Layout concept: a spiral map of the 25 stages stays pinned on the left; a panel on the right changes with the lens
+   and with the stage you select. Palette and type continue the original Paper Machine explorer. */
+:root{
+  --paper:#F3F5FA; --paper-2:#E6EAF4; --ink:#131A4E; --ink-2:#4A5386; --ink-3:#8E95BB; --rule:#D2D8E8; --tint:rgba(19,26,78,.06);
+  --c-ground:#2B5BE6; --c-vary:#0B9A74; --c-reason:#E03A1C; --c-select:#131A4E; --c-freeze:#D99700; --c-human:#9434C4;
+  --on-freeze:#131A4E;
+  --keep:var(--c-vary); --rewrite:var(--c-ground); --fuse:var(--c-freeze); --drop:var(--c-reason);
+  --serif:"Newsreader","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:"Schibsted Grotesk","Helvetica Neue",Arial,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0B1030; --paper-2:#151C48; --ink:#E7EAFA; --ink-2:#A8AFD8; --ink-3:#6A739F; --rule:#272F61; --tint:rgba(231,234,250,.07);
+    --c-ground:#7397FF; --c-vary:#2FD3A1; --c-reason:#FF5C3E; --c-select:#E7EAFA; --c-freeze:#FFC43F; --c-human:#CD83F3;
+    --on-freeze:#0B1030; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0B1030; --paper-2:#151C48; --ink:#E7EAFA; --ink-2:#A8AFD8; --ink-3:#6A739F; --rule:#272F61; --tint:rgba(231,234,250,.07);
+  --c-ground:#7397FF; --c-vary:#2FD3A1; --c-reason:#FF5C3E; --c-select:#E7EAFA; --c-freeze:#FFC43F; --c-human:#CD83F3;
+  --on-freeze:#0B1030; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans);-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+.wrap{max-width:1480px;margin:0 auto;padding-inline:20px}
+.top{padding-block:18px 4px}
+.eyebrow{margin:0 0 10px;font:650 12.5px/1.3 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+h1{margin:0;font:780 clamp(30px,3.6vw,44px)/1 var(--serif);letter-spacing:-.022em;text-wrap:balance}
+.lede{margin:8px 0 0;max-width:52em;font:400 clamp(16px,1.4vw,18px)/1.4 var(--serif);color:var(--ink)}
+.lenses{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.lens{border:1.6px solid var(--ink);background:transparent;border-radius:999px;padding:9px 16px;font:650 14.5px/1 var(--sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.lens[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.lens:hover:not([aria-pressed="true"]){background:var(--tint)}
+.lens i{width:9px;height:9px;border-radius:50%;background:var(--c-human);display:none}
+.lens[data-l="stops"] i{display:inline-block}
+#lensq{margin:0;font:italic 400 18px/1.4 var(--serif);color:var(--ink-2);min-height:1.4em}
+.qrow{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center;margin-top:10px}
+.layout{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:600 12.5px/1 var(--sans);color:var(--ink-2)}
+.layout .lbl{letter-spacing:.07em;text-transform:uppercase;margin-right:2px}
+.seg{border:1.4px solid var(--ink-3);background:transparent;border-radius:999px;padding:6px 12px;font:650 13px/1 var(--sans);cursor:pointer;color:var(--ink)}
+.seg:hover{background:var(--tint)}
+.seg[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+:focus-visible{outline:3px solid var(--c-ground);outline-offset:3px}
+
+.work{--w:22px;display:grid;grid-template-columns:minmax(0,calc((100% - var(--w))*var(--s))) var(--w) minmax(0,calc((100% - var(--w))*(1 - var(--s))));gap:0;align-items:start;padding-block:10px 40px;transition:--s .3s ease}
+.work{position:relative}
+.work.dragging{transition:none}
+.work.collapsed .panel{visibility:hidden;overflow:hidden;padding:0;border:0;min-height:0}
+.reopen{position:absolute;right:0;top:12px;z-index:5;border:1.6px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:999px;padding:7px 14px;font:650 13.5px/1 var(--sans);cursor:pointer;box-shadow:0 2px 8px rgba(10,15,50,.15)}
+.reopen:hover{background:var(--ink);color:var(--paper)}
+.reopen[hidden]{display:none}
+.split{align-self:stretch;position:relative;cursor:col-resize;touch-action:none;outline:none}
+.split::before{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:2px;margin-left:-1px;background:var(--rule);border-radius:2px;transition:background .15s}
+.split::after{content:"";position:absolute;left:50%;top:min(42vh,320px);width:8px;height:44px;margin:0 0 0 -4px;border-radius:5px;background:var(--ink-3);transition:background .15s}
+.split:hover::before,.split:focus-visible::before,.work.dragging .split::before{background:var(--ink)}
+.split:hover::after,.split:focus-visible::after,.work.dragging .split::after{background:var(--ink)}
+.split:focus-visible{outline:3px solid var(--c-ground);outline-offset:-3px;border-radius:6px}
+.map{position:sticky;top:8px;min-width:0}
+#spiral{display:block;width:100%;height:auto;max-height:calc(100vh - 96px);margin-inline:auto}
+#spiral text{font-family:var(--sans)}
+.t-op{font-size:15.5px;font-weight:720;fill:var(--ink)}
+.t-turn{font-size:11px;font-weight:600;fill:var(--ink-2);paint-order:stroke;stroke:var(--paper);stroke-width:3px;stroke-linejoin:round}
+.t-num{font-weight:780;pointer-events:none}
+.t-badge{font-size:9.5px;font-weight:800;pointer-events:none}
+.node{cursor:pointer;outline:none}
+.node .body{transition:r .25s,opacity .2s,fill .2s}
+.node .halo{fill:none;stroke:transparent;stroke-width:3;transition:stroke .15s}
+.node:hover .halo,.node:focus-visible .halo{stroke:var(--ink-2)}
+.node.sel .halo{stroke:var(--ink);stroke-width:3.2}
+.node.hl .halo{stroke:var(--ink);stroke-width:3.2}
+.node .halo2{fill:none;stroke:transparent;stroke-width:3.2}
+.node.rd .halo{stroke:var(--c-ground);stroke-width:3.5}
+.node.wr .halo2{stroke:var(--c-vary);stroke-width:3.5}
+.node.dim{opacity:.28}
+.node.dim:hover,.node.dim:focus-visible{opacity:.8}
+.node.rd.wr .halo{stroke:var(--c-ground)}
+.t-cnt{font-size:10.5px;font-weight:650;fill:var(--ink-2);pointer-events:none;font-variant-numeric:tabular-nums}
+.spoke{stroke:var(--rule);stroke-width:1.2;stroke-dasharray:3 5}
+.lane{fill:transparent;stroke:none;pointer-events:none;transition:fill .15s}
+.lane.odd{fill:var(--tint)}
+.lane.on{fill:var(--tint)}
+@supports (color:color-mix(in oklab,red 10%,blue)){.lane.on{fill:color-mix(in oklab,var(--c-ground) 17%,transparent)}}
+.tpath{fill:none;stroke:var(--ink-3);stroke-width:1.7;pointer-events:none;transition:opacity .15s,stroke-width .15s}
+#spiral.focus .tpath{opacity:.3}
+#spiral.focus .tpath.on{opacity:1;stroke:var(--ink);stroke-width:3.2}
+.chev{fill:var(--ink-3);opacity:.85;pointer-events:none}
+.leg{fill:none;stroke-linecap:round;pointer-events:none}
+.leg.next{stroke:var(--c-ground);stroke-width:5}
+.leg.prev{stroke:var(--ink-2);stroke-width:3;stroke-dasharray:1 7}
+.legh{fill:var(--c-ground);pointer-events:none}
+.node.offturn{opacity:.5}
+.node.offturn.dim{opacity:.2}
+.ring-done{fill:none;stroke:var(--ink-2);stroke-width:2}
+.stopb rect{stroke-width:1.6}
+.stopb{pointer-events:none}
+.stopb text{font-size:10px;font-weight:800;pointer-events:none}
+.stopb.solid rect{fill:var(--c-human);stroke:var(--c-human)}
+.stopb.solid text{fill:var(--paper)}
+.stopb.outline rect{fill:var(--paper);stroke:var(--c-human)}
+.stopb.outline text{fill:var(--c-human)}
+.stopb.dashed rect{fill:var(--paper);stroke:var(--c-human);stroke-dasharray:3 2}
+.stopb.dashed text{fill:var(--c-human)}
+.stopb.bang rect{fill:var(--paper);stroke:var(--c-reason)}
+.stopb.bang text{fill:var(--c-reason)}
+.badge{pointer-events:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 4px 0;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend svg{width:18px;height:18px;flex:none;overflow:visible}
+
+.panel{min-width:0;border-top:2.5px solid var(--ink);padding:10px 0 0 6px;min-height:560px}
+.tabs{display:flex;gap:4px;margin:0 0 16px;border-bottom:1px solid var(--rule)}
+.tab{border:0;border-bottom:3px solid transparent;background:transparent;padding:8px 14px 9px;font:650 14.5px/1 var(--sans);color:var(--ink-2);cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.tab:disabled{opacity:.45;cursor:default}
+.p-top{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font:600 14px/1.3 var(--sans);color:var(--ink-2)}
+.p-top .nav{margin-left:auto;display:flex;gap:6px}
+.nbtn{border:1.4px solid var(--ink-3);background:transparent;border-radius:999px;padding:4px 11px;font:650 12.5px/1.2 var(--sans);cursor:pointer;color:var(--ink);white-space:nowrap}
+.nbtn:hover{background:var(--tint)}
+.nbtn[disabled]{opacity:.4;cursor:default}
+.glance{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between;margin:0 0 2px;font:400 13.5px/1.3 var(--sans);color:var(--ink-2)}
+.glance .lk{border:0;background:transparent;padding:2px 0;font:650 13px/1.2 var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.glance .lk+.lk{margin-left:12px}
+.p-num{font-weight:780;color:var(--ink);font-size:15px}
+.panel h2{margin:4px 0 6px;font:760 clamp(24px,2.5vw,32px)/1.08 var(--serif);letter-spacing:-.014em;text-wrap:balance}
+.panel h3{margin:0 0 6px;font:760 22px/1.15 var(--serif)}
+.p-act{margin:0 0 10px;font:400 18.5px/1.35 var(--serif)}
+.prose{font:400 17.5px/1.5 var(--serif);margin:0}
+.prose+.prose{margin-top:.8em}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1.3px solid var(--rule);border-radius:999px;padding:2px 11px 2px 8px;font:500 13px/1.5 var(--sans);background:transparent;color:var(--ink)}
+.chip i{width:10px;height:10px;border-radius:50%;background:var(--c,var(--ink-3));flex:none}
+.chip.hollow i{background:transparent;box-shadow:inset 0 0 0 2px var(--c,var(--ink-3))}
+.chip.stop{border-color:var(--c-human);color:var(--c-human);font-weight:700}
+.chip.stop i{display:none}
+button.chip{cursor:pointer}
+button.chip:hover{background:var(--tint)}
+details.sec{border-top:1px solid var(--rule)}
+details.sec>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center;padding:8px 0;font:680 15px/1.3 var(--sans)}
+details.sec>summary:hover .sh{text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:3px}
+details.sec .st{display:grid;gap:2px;min-width:0}
+details.sec .hint{font:italic 400 14px/1.3 var(--serif);color:var(--ink-2)}
+details.sec[open] .hint{display:none}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--ink-2);border-bottom:2px solid var(--ink-2);transform:rotate(45deg);transition:transform .15s;margin-right:4px;flex:none}
+details.sec[open]>summary::after{transform:rotate(-135deg)}
+details.sec>.body{padding:0 0 16px}
+.qs{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.qs li{font:400 17px/1.45 var(--serif);padding-left:22px;position:relative}
+.qs li::before{content:"?";position:absolute;left:0;top:1px;font:780 15px/1.45 var(--sans);color:var(--c-human)}
+.facts{margin:0;display:grid}
+.facts div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--rule);font:400 14.5px/1.45 var(--sans)}
+.facts div:first-child{border-top:0;padding-top:0}
+.facts dt{color:var(--ink-2)}
+.facts dd{margin:0}
+.dirs{display:flex;flex-wrap:wrap;gap:5px}
+.dir{font:600 12px/1.4 var(--sans);border-radius:6px;padding:1px 7px;border:1.3px solid var(--rule)}
+.dir.r{border-color:var(--c-ground);color:var(--ink)}
+.dir.w{background:var(--c-vary);border-color:var(--c-vary);color:var(--paper)}
+.stepper{display:flex;justify-content:space-between;gap:10px;margin-top:18px;padding-top:14px;border-top:2.5px solid var(--ink)}
+.btn{border:1.6px solid var(--ink);background:transparent;border-radius:999px;padding:8px 16px;font:650 14px/1.2 var(--sans);cursor:pointer}
+.btn:hover{background:var(--tint)}
+.btn[disabled]{opacity:.4;cursor:default}
+.note{font:400 14px/1.45 var(--sans);color:var(--ink-2);margin:10px 0 0}
+.callout{border-left:3px solid var(--c-reason);padding:2px 0 2px 14px;margin:14px 0}
+.callout p{margin:0;font:400 17px/1.45 var(--serif)}
+.callout .who{font:600 12.5px/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);display:block;margin-bottom:4px}
+.hyp{border:1.6px dashed var(--ink-2);border-radius:12px;padding:10px 14px;margin:0 0 14px;font:400 15px/1.45 var(--sans);color:var(--ink)}
+.hyp b{font-weight:760}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:0;margin:14px 0 6px;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.stat{padding:10px 12px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat b{display:block;font:780 26px/1.05 var(--serif);font-variant-numeric:tabular-nums}
+.stat span{font:500 12.5px/1.3 var(--sans);color:var(--ink-2)}
+.turns{display:grid;gap:0;margin:8px 0 0;border-top:1px solid var(--rule)}
+.turnrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-bottom:1px solid var(--rule);align-items:center}
+.turnrow b{font:740 16px/1.2 var(--serif)}
+.turnrow small{display:block;font:400 13px/1.3 var(--sans);color:var(--ink-2)}
+.chips.tight{margin:0;gap:4px}
+.chips.tight .chip{padding:0 8px;font-size:12.5px}
+
+/* stops table */
+.srow{border-top:1px solid var(--rule)}
+.srow>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 0}
+.srow>summary::-webkit-details-marker{display:none}
+.sbadge{display:inline-grid;place-items:center;min-width:38px;height:22px;padding:0 6px;border-radius:7px;font:800 12px/1 var(--sans);border:1.8px solid var(--c-human)}
+.sbadge.solid{background:var(--c-human);color:var(--paper)}
+.sbadge.outline{background:var(--paper);color:var(--c-human)}
+.sbadge.dashed{background:var(--paper);color:var(--c-human);border-style:dashed}
+.sbadge.bang{border-color:var(--c-reason);color:var(--c-reason);background:var(--paper);border-style:solid}
+.srow .what{font:600 15px/1.3 var(--sans)}
+.srow .what small{display:block;font:400 13px/1.3 var(--sans);color:var(--ink-2)}
+.srow .nec{font:600 12.5px/1.2 var(--sans);color:var(--ink-2);text-align:right;max-width:120px}
+.srow .more{padding:0 0 14px 56px;font:400 14.5px/1.5 var(--sans)}
+.srow .more p{margin:0 0 8px}
+.srow .more b{font-weight:700}
+.ghead{margin:18px 0 4px;font:700 12.5px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.minibars{display:grid;gap:6px;margin:10px 0 0}
+.mb{display:grid;grid-template-columns:96px minmax(0,1fr) 30px;gap:10px;align-items:center;font:500 13px/1.2 var(--sans)}
+.mb .tr{height:12px;border-radius:6px;background:var(--paper-2);overflow:hidden}
+.mb .tr i{display:block;height:100%;background:var(--c-human);width:var(--w)}
+.mb em{font-style:normal;font-variant-numeric:tabular-nums;text-align:right}
+
+/* spend bars */
+.bars{display:grid;gap:3px;margin:10px 0 0}
+.bar{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 28px;gap:8px;align-items:center;font:500 12.5px/1.25 var(--sans);cursor:pointer;border:0;background:transparent;padding:2px 4px;border-radius:6px;text-align:left}
+.bar:hover,.bar.hl{background:var(--tint)}
+.bar .tr{height:10px;border-radius:5px;background:var(--paper-2);overflow:hidden}
+.bar .tr i{display:block;height:100%;width:var(--w);background:var(--c)}
+.bar em{font-style:normal;font-variant-numeric:tabular-nums;text-align:right}
+
+/* findings, fast run, folder */
+.item{border-top:1px solid var(--rule)}
+.item>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0}
+.item>summary::-webkit-details-marker{display:none}
+.item .n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--c-reason);color:var(--paper);font:780 13px/1 var(--sans)}
+.item .n.f{background:var(--c-freeze);color:var(--on-freeze);border-radius:8px;width:30px;font-size:12.5px}
+.item .t{font:700 15.5px/1.3 var(--sans)}
+.item .t small{display:block;font:400 13.5px/1.35 var(--sans);color:var(--ink-2);margin-top:2px}
+.item .more{padding:0 0 14px 40px;font:400 15px/1.5 var(--sans)}
+.item .more p{margin:0 0 8px}
+.tree{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:2px}
+.trow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;width:100%;text-align:left;border:0;background:transparent;padding:6px 8px;border-radius:8px;cursor:pointer;font:400 14px/1.35 var(--sans)}
+.trow:hover,.trow[aria-pressed="true"]{background:var(--tint)}
+.trow b{font:700 14.5px/1.3 var(--sans)}
+.trow small{grid-column:1/-1;color:var(--ink-2);font-size:13px}
+.trow .w{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:13px}
+.stack{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:0;counter-reset:s}
+.stack li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--rule);font:400 14.5px/1.45 var(--sans);counter-increment:s}
+.stack li::before{content:counter(s);display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);font:760 12px/1 var(--sans)}
+.stack b{font-weight:700}
+.table-wrap{overflow-x:auto}
+.foot{padding-block:22px 56px;border-top:2.5px solid var(--ink);font:400 13.5px/1.5 var(--sans);color:var(--ink-2)}
+.foot p{margin:0 0 6px;max-width:64em}
+#peek{position:fixed;z-index:40;width:318px;max-width:calc(100vw - 16px);background:var(--paper);color:var(--ink);border:1.8px solid var(--ink);border-radius:12px;box-shadow:0 10px 30px rgba(10,15,50,.24);padding:10px 12px 11px;font:400 13.5px/1.4 var(--sans)}
+#peek[hidden]{display:none}
+#peek.pinned{border-color:var(--c-human);box-shadow:0 10px 30px rgba(10,15,50,.24),0 0 0 3px color-mix(in oklab,var(--c-human) 22%,transparent)}
+.pk-h{display:flex;gap:8px;align-items:baseline}
+.pk-n{font:780 14px/1.2 var(--sans)}
+.pk-t{font:760 17px/1.2 var(--serif);flex:1;min-width:0}
+.pk-m{color:var(--ink-2);font:600 12px/1.3 var(--sans);margin-top:3px}
+.pk-a{font:400 15px/1.35 var(--serif);margin:7px 0 2px}
+.pk-note{font:italic 400 13px/1.35 var(--serif);color:var(--ink-2);margin:4px 0 0}
+.pk-b{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+.pkb{border:1.4px solid var(--ink);background:transparent;border-radius:999px;padding:4px 10px;font:650 12.5px/1.2 var(--sans);cursor:pointer;color:var(--ink)}
+.pkb:hover,.pkb:focus-visible{background:var(--ink);color:var(--paper)}
+.pk-f{display:flex;gap:6px;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding-top:8px}
+.pkn{border:0;background:transparent;color:var(--ink);font:650 12.5px/1.2 var(--sans);cursor:pointer;padding:3px 2px;text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:3px;text-align:left}
+.pkn:hover{text-decoration-color:var(--ink)}
+.pkn[disabled]{opacity:.35;cursor:default;text-decoration:none}
+.pkn.go{border:1.4px solid var(--c-human);color:var(--c-human);border-radius:999px;padding:4px 10px;text-decoration:none}
+.pkn.go:hover{background:var(--c-human);color:var(--paper)}
+.fb{border:0;background:transparent;font:600 20px/1 var(--sans);cursor:pointer;color:var(--ink-2);padding:0 5px;border-radius:6px}
+.fb:hover{color:var(--ink);background:var(--tint)}
+#cards{position:fixed;inset:0;pointer-events:none;z-index:35}
+.fcard{position:absolute;pointer-events:auto;width:min(390px,calc(100vw - 16px));max-height:min(72vh,600px);display:flex;flex-direction:column;background:var(--paper);color:var(--ink);border:1.8px solid var(--ink);border-radius:12px;box-shadow:0 14px 36px rgba(10,15,50,.28)}
+.fh{display:flex;align-items:center;gap:6px;padding:8px 6px 8px 14px;border-bottom:1px solid var(--rule);cursor:grab;touch-action:none;user-select:none}
+.fh:active{cursor:grabbing}
+.fh .ft{flex:1;min-width:0;font:700 14.5px/1.2 var(--sans)}
+.fh .ft small{display:block;font:italic 400 13.5px/1.3 var(--serif);color:var(--ink-2)}
+.fbody{padding:10px 14px 14px;overflow:auto;overscroll-behavior:contain}
+.fbody .prose{font-size:16px}
+.fbody .qs li{font-size:15.5px}
+.fbody .facts div{grid-template-columns:86px minmax(0,1fr)}
+.fbody .note{margin-top:8px}
+#tip{position:fixed;z-index:30;pointer-events:none;max-width:300px;background:var(--ink);color:var(--paper);font:500 13px/1.4 var(--sans);padding:8px 11px;border-radius:9px;opacity:0;transition:opacity .1s}
+
+@media (max-width:980px){
+  .work{grid-template-columns:1fr;transition:none}
+  .split,.layout{display:none}
+  .panel{padding-left:0}
+  .map{position:static}
+  #spiral{max-height:none}
+  .panel{min-height:0}
+}
+@media (max-width:560px){
+  .wrap{padding-inline:16px}
+  .facts div{grid-template-columns:1fr;gap:2px}
+  .srow>summary{grid-template-columns:44px minmax(0,1fr)}
+  .srow .nec{grid-column:2;text-align:left;max-width:none}
+  .srow .more{padding-left:0}
+  .item .more{padding-left:0}
+  .bar{grid-template-columns:minmax(0,104px) minmax(0,1fr) 26px}
+  .mb{grid-template-columns:78px minmax(0,1fr) 26px}
+  .turnrow{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .node .body,details.sec>summary::after,#tip{transition:none}
+}
+</style>
+
+<header class="wrap top">
+  <p class="eyebrow">Autopsy of Paper 1 · stages S00 to S24</p>
+  <h1>Paper Machine Autopsy Map</h1>
+  <p class="lede">The whole run as one spiral, from the middle outward. Select a stage to see what it is for, what happened in Paper 1, what to ask about it, and where it needs you.</p>
+  <nav class="lenses" id="lenses" aria-label="Map lens"></nav>
+  <div class="qrow"><p id="lensq"></p><div class="layout" id="layoutCtl" role="group" aria-label="Share of the screen for the map and for the details"></div></div>
+</header>
+
+<main class="wrap work">
+  <button class="reopen" id="reopen" hidden>Details ◂</button>
+  <section class="map" aria-label="Spiral map of the 25 stages">
+    <svg id="spiral" viewBox="0 0 760 770" role="group" aria-label="Spiral of stages S00 to S24"></svg>
+    <div class="legend" id="legend"></div>
+  </section>
+  <div class="split" id="split" role="separator" aria-orientation="vertical" aria-label="Resize the map and the details" tabindex="0" aria-valuemin="0" aria-valuemax="100"></div>
+  <section class="panel" aria-label="Details">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabStage" aria-selected="false" disabled>Stage</button>
+      <button class="tab" role="tab" id="tabLens" aria-selected="true">This lens</button>
+    </div>
+    <div id="pBody"></div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Counts come from the run folder as it stood on 2026-10-02: 193 stage reports in 70_logs/reports, the stage cards S00 to S24, the checkpoint table in PARAMETERS, and the interventions log. Words are counted across .md and .csv files.</p>
+  <p>The needs, the as-run notes and the stop descriptions follow the folder. The questions, the findings and the fast run are Claude's reading, offered for you to argue with.</p>
+</footer>
+<div id="tip" role="tooltip"></div>
+<div id="peek" role="dialog" aria-label="Stage quick menu" hidden></div>
+<div id="cards"></div>
+
+<script>
+/* ---------- data: operations, turns, stages ---------- */
+const OPS=[
+  {id:"ground",name:"Ground",ang:-90,c:"--c-ground"},
+  {id:"vary",name:"Vary",ang:-18,c:"--c-vary"},
+  {id:"reason",name:"Subject to reasons",ang:54,c:"--c-reason"},
+  {id:"select",name:"Select",ang:126,c:"--c-select"},
+  {id:"freeze",name:"Freeze",ang:198,c:"--c-freeze"}
+];
+const OPB={};OPS.forEach(o=>OPB[o.id]=o);
+const TURNS=[
+  {n:1,name:"Agenda",scale:"The problem space",from:0,to:2},
+  {n:2,name:"Positions",scale:"Independent positions",from:3,to:6},
+  {n:3,name:"Maturation",scale:"Argument lineages",from:7,to:8},
+  {n:4,name:"Contribution",scale:"The contribution against its opponent",from:9,to:11},
+  {n:5,name:"Architecture",scale:"The paper’s organization",from:12,to:15},
+  {n:6,name:"Outline",scale:"Hierarchical structure",from:16,to:19},
+  {n:7,name:"Prose",scale:"Units, then the whole draft",from:20,to:24}
+];
+const FORMS={
+  T:{name:"Sees rubric and taste",short:"T",text:"Sees the rubric for this stage and your taste exemplars. A selector."},
+  R:{name:"Sees rubric only",short:"R",text:"Sees the rubric for this stage, not your taste exemplars."},
+  G:{name:"Blind",short:"G",text:"Builds or presses. Never sees the rubric or your taste (SYSTEM invariant 11)."},
+  N:{name:"No form norms",short:"N",text:"Ground or mechanical work. No form norms apply."}
+};
+const VERD={
+  keep:{name:"Keep",c:"--keep",text:"Survives with the same job, usually cheaper."},
+  rewrite:{name:"Rewrite",c:"--rewrite",text:"Survives, with a different job."},
+  fuse:{name:"Fuse",c:"--fuse",text:"Its job is done inside a neighboring stage."},
+  drop:{name:"Drop",c:"--drop",text:"Removed. Its job is covered elsewhere."}
+};
+const CLASSES={BULK:"BULK",STRONG:"STRONG",CRITICAL_JUDGE:"CRITICAL_JUDGE"};
+
+/* r and w: working folders read and written, by prefix (10 corpus, 20 lineages, 25 candidates, 30 ledger, 40 frozen, 50 draft, 60 review, 99 archive) */
+const S=[
+{n:0,name:"Seed and constitutional setup",short:"Seed",turn:1,t:0.00,op:"ground",opl:"Ground",cls:"STRONG",fam:"Claude only",form:"N",rep:1,
+ act:"Choose a broad domain or direction.",
+ need:"The machine starts from a domain and a set of rules, not a thesis, so it has something to discover. What you contribute here is constitutional: the domain, the budget, your taste and your fatal-flaw rules.",
+ run:"Eight sections of answers and six admired exemplars, in one session on 2026-09-25. The exemplars are used as taste constraints only, and generators never see them.",
+ qs:["Which of these answers change from paper to paper, and which are standing facts about you that could live in one file?","Your taste input lists exemplars and what would embarrass you. Does any of it say what a paper is for, who reads it, or what its opening has to do?","Could intake be five questions with defaults you confirm?"],
+ ctx:"One context, main: the session you start. It takes your answers in conversation, so it cannot be a sub-context.",
+ reads:"The control layer. It opens the taste and rubric placeholders only to ask you about them and record the answers, after the seed is frozen.",
+ writes:"40_frozen/seed_v1.md, PARAMETERS.md, taste/exemplars.md, STATE.md.",
+ formnote:"Records your taste. Does not apply it.",
+ r:["10"],w:["40"],
+ fast:"F1",v:"keep",vt:"Becomes a short intake with standing defaults. All rubric questions are asked here, once."},
+{n:1,name:"Problem-space exploration",short:"Problems",turn:1,t:0.20,op:"vary",opl:"Vary",cls:"STRONG",fam:"Claude, plus ChatGPT (preferred)",form:"G",rep:2,
+ act:"Explore the domain for live, tractable problems.",
+ need:"Settling on a thesis this early would make the run depend on its first framing. A blind list of candidate problems, from two model families, comes before anything is chosen.",
+ run:"Claude and ChatGPT each wrote a blind problem list. The ChatGPT list ran inside the H1 visit.",
+ qs:["The explorer is told to propose tractable problems. Does “tractable” push the whole run toward small, local problems before anyone asks what the reader’s question is?","What would a problem list look like if each entry came with the question a reader brings and the two or three standard answers to it?","Is the second family’s list worth a stop in your day?"],
+ ctx:"claude: one fresh context. chatgpt: one fresh ChatGPT context inside H1, preferred. The two are mutually blind.",
+ reads:"The seed, research tools, and the explorer and librarian prompts. Never criteria or taste, because the explorer is a generator.",
+ writes:"25_candidates/problems/, one list per family.",
+ r:["10","25","40"],w:["25"],
+ fast:"F2",v:"fuse",vt:"Part of F2. Each candidate problem is written with the reader’s question and the standard options."},
+{n:2,name:"Agenda selection and provisional freeze",short:"Agenda",turn:1,t:0.70,op:"select",opl:"Subject to reasons, then select and freeze",cls:"STRONG for the critique, CRITICAL_JUDGE for the selection",fam:"ChatGPT critique (required), then Claude",form:"T",rep:3,
+ act:"Freeze a provisional research agenda, and say what literature it needs.",
+ need:"Choose one provisional agenda and say what literature it needs, so acquisition is targeted and the first positions know what they are about without any thesis having been chosen.",
+ run:"ChatGPT’s agenda critique came back at H1. Your answer to the §S02 rubric question was “use S00 as is”, and for the second half “Ignore the second half.” agenda_v1 includes a problem built on Tarsney 2024.",
+ qs:["The agenda is where the size of the paper gets decided. What does the selection rubric say about reach, about who else would care?","Should this stage end in a shape card (the reader’s question, the options, the position, what it buys, what it costs) so the size is chosen on purpose?","Does the agenda need its own freeze, or could agenda and first positions be one stage?"],
+ ctx:"chatgpt-critique: a fresh ChatGPT context inside H1. select: a fresh Claude context after H1.",
+ reads:"Both problem lists, the critique, the general judging procedure and §S02 of the rubrics, and taste/exemplars.",
+ writes:"agenda_v1 and its selection companion in 40_frozen, plus the literature requests.",
+ r:["25","40","60"],w:["10","30","40","60"],
+ fast:"F2",v:"fuse",vt:"Part of F2, where the chosen problem is written up as a shape card."},
+{n:3,name:"Shared research base",short:"Corpus",turn:2,t:1.00,op:"ground",opl:"Ground",cls:"BULK for notes, STRONG for the backgrounder",fam:"Claude only",form:"N",rep:13,
+ act:"Incorporate the acquired literature into the common evidential base.",
+ need:"Every lineage answers to the same evidential world, and that world must contain the literature the agenda needs. Positions begin only after this grounding, so none is built on a reading list the others lack.",
+ run:"The run waited about 14 hours at H2, because neither shell can download from scholarly hosts and every material source went on your list. You saved nine PDFs. Ten per-source notes sessions were started by hand. The backgrounder names Tarsney 15 times.",
+ qs:["Which of the nine sources would a good paper on this problem need, and which are here because the agenda named one author?","Could a wider allowlist or an open-access routing step leave you only the sources that only you can get?","A shared backgrounder gives every lineage the same world. Does it also give every lineage the same author?"],
+ ctx:"One context, main, with optional notes-1 to notes-n split by source for capacity. The notes contexts may run in parallel.",
+ reads:"The seed, the agenda and the sources you saved. Never lineages, candidates, criteria or taste.",
+ writes:"10_corpus: per-source notes, the bibliography and the backgrounder.",
+ r:["10","40"],w:["10"],
+ fast:"F3",v:"keep",vt:"One literature pass with web search, aimed at the whole debate and not one author’s neighborhood."},
+{n:4,name:"Independent ruminations",short:"Rumination",turn:2,t:1.20,op:"vary",opl:"Vary",cls:"STRONG",fam:"Claude, plus ChatGPT (preferred)",form:"G",rep:21,
+ act:"Generate multiple positions without forcing consensus.",
+ need:"Diversity comes first and comes cheap. Positions are developed independently, including by conceptual migrants importing ideas from other fields, so real disagreement exists before anything is tempted to synthesize.",
+ run:"Twenty ruminations: twelve from Claude (A to L) and eight from ChatGPT (S to Z), each a session you started by hand. Three ChatGPT ruminations converged on one lineage, so D-57 added assigned problems and lenses mid-stage. 17 of the 20 name Tarsney. None of the ChatGPT lineages reached the frontier.",
+ qs:["What did twenty ruminations buy that six would not have? How many survivors came from the ones added after the first twelve?","Did any ruminator receive the reader’s question, or only the agenda’s problem? What changes if each must begin with the introduction it would write?","Is total blindness between ruminators one source of the staccato, and does it have to be total?"],
+ ctx:"Ruminators: at least six, open-ended since D-56, each a fresh hand-started session and all mutually blind. Then one hand-started integrate session.",
+ reads:"The seed, the agenda, the backgrounder and targeted corpus sources. Never other candidates, criteria or taste.",
+ writes:"25_candidates/ruminations/ and the first entries in 20_lineages/.",
+ r:["10","40"],w:["20","25"],
+ fast:"F4",v:"fuse",vt:"Four to six ruminators in F4, each opening with the introduction it would give."},
+{n:5,name:"Reciprocal encounter",short:"Encounter",turn:2,t:1.40,op:"reason",opl:"Subject to reasons, with revision",cls:"STRONG (BULK allowed for objections)",fam:"Claude only",form:"G",rep:63,
+ act:"Let each rumination take its rivals seriously, and revise.",
+ need:"First selection should judge arguments that have already shown some capacity to respond to reasons. Each lineage meets its strongest rivals’ objections without being handed their machinery, and disagreement has to survive the encounter.",
+ run:"63 stage reports, the most of any stage. It hit two platform limits (at most 20 subagents at once, and the session usage limit), which caused seven C6 re-runs. ChatGPT’s lineages were criticized and revised by Claude before one Claude judge chose at S06.",
+ qs:["Of 63 reports, how many changed a lineage that later survived?","Would one round, with each lineage meeting only its single strongest rival, have produced the same frontier?","Rivals are paired by “dialectically strongest”. Would pairing by “the objection a reader would raise first” pull the lineages toward a paper-shaped claim?"],
+ ctx:"pair; one obj-A-by-B per pairing (n to 2n contexts); one rev-A per lineage; integrate. All fresh. Objections and revisions are mutually blind.",
+ reads:"A lineage’s current.md and record.md, and the backgrounder. A defendant sees objections only, never a rival’s machinery.",
+ writes:"Ledger entries (objections, replies, concessions), revised lineages, archived priors.",
+ r:["10","20","25"],w:["20","25","30","99"],
+ fast:"F4",v:"fuse",vt:"One encounter round inside F4."},
+{n:6,name:"First Pareto selection and frontier freeze",short:"First cut",turn:2,t:1.70,op:"select",opl:"Select and freeze",cls:"CRITICAL_JUDGE",fam:"Claude only",form:"T",rep:3,
+ act:"Cull redundancy and weak lines; preserve non-dominated rivals.",
+ need:"There is no single master score. Candidates are compared on several dimensions (robustness, novelty, explanatory reach, distinctiveness, fertility), and a small frontier keeps rivals alive when none is better on every one.",
+ run:"One context read about 149,000 words of lineages and ledger. It halted once on an unanswered [OPERATOR] placeholder (fixed by D-58). Asked whether you lean toward the idea more likely to be true or more likely to be interesting if true, you chose “More interesting if true”. DR followed.",
+ qs:["A judge reading 149,000 words in one context: is that selection, or compression by skimming?","You lean toward “interesting if true”. Where in S07 to S22 does anything check that the surviving claim is interesting beyond its target?","Does the frontier need four lineages, or could this stage choose two?"],
+ ctx:"One fresh context, main. It must not have performed S04 or S05.",
+ reads:"Every lineage in full, the filtered ledger, the general procedure and §S06 of the rubrics, and taste/exemplars.",
+ writes:"frontier_v1 and its selection companion, ledger entries, archived lineages.",
+ r:["20","30"],w:["30","40","99"],
+ fast:"F4",v:"fuse",vt:"Chooses two positions at the end of F4."},
+{n:7,name:"Dialectical evolution",short:"Dialectic",turn:3,t:2.30,op:"vary",opl:"Vary, then subject to reasons, in rounds",cls:"BULK for critics, STRONG for the rest",fam:"Claude only",form:"G",rep:33,
+ act:"Confront, revise, branch, recombine, and retest arguments.",
+ need:"Arguments evolve rather than win or lose. Objections, concessions, distinctions and counterexamples are treated as reasons that change what should happen next, under a hard population cap.",
+ run:"Three rounds over four lineages (D, H, K, L), with a recombiner for D and K in rounds 2 and 3. Every context was fresh, and critics and repairers were mutually blind. 33 reports.",
+ qs:["What does a lineage have after round 3 that it did not have after round 1?","Each critic and repairer is a fresh context. What would a two-voice exchange that keeps its own history do differently from three rounds of fresh contexts?","Should the number of rounds follow a stopping rule instead of a fixed count?"],
+ ctx:"Each round: a fresh critic per lineage, a repairer per lineage, at most one recombiner reading two lineages, a local evaluator and an integrator.",
+ reads:"Lineages, the ledger and the corpus. Never criteria or taste.",
+ writes:"Revised lineages, ledger entries and one evaluator report per round.",
+ r:["10","20","25","30","40","99"],w:["20","25","30"],
+ fast:"F5",v:"fuse",vt:"One or two exchange rounds in F5, in a format that keeps its own history."},
+{n:8,name:"Holistic review and research-identity freeze",short:"Holistic",turn:3,t:2.70,op:"select",opl:"Select and freeze",cls:"CRITICAL_JUDGE",fam:"Claude, plus ChatGPT (required, H4)",form:"T",rep:5,
+ act:"Check research identity, novelty, cohesion, scope, and fertility.",
+ need:"Local improvements can accumulate into global mush. The strongest model steps back and reviews each lineage as a research project, and the survivors’ research identity is frozen.",
+ run:"The GPT-5.6 Sol High review was set aside because, in your words, “it didn’t spend enough time on the question” (D-60). H and K were the two survivors, and both respond to the same paper.",
+ qs:["The review asks whether a lineage is cohesive and novel, and whether a repair keeps the claim interesting. Does it ask whether the lineage answers a question someone outside the debate has?","Should the frontier have to include one lineage aimed at a different target?","Is a second family’s blind review worth a stop, given that the Sol High attempt was set aside?"],
+ ctx:"review-claude (fresh), review-chatgpt (fresh, at H4), integrate. The two reviews are blind to each other.",
+ reads:"Lineages, ledger and frontier, the general procedure and §S08 of the rubrics, and taste/exemplars.",
+ writes:"identity_v1 and its selection companion, review reports, archive.",
+ r:["20","30","40"],w:["30","40","60","99"],
+ fast:"F5",v:"fuse",vt:"The holistic check closes F5 and picks one position."},
+{n:9,name:"Strongest-target reconstruction",short:"Target",turn:4,t:3.00,op:"ground",opl:"Ground",cls:"STRONG",fam:"ChatGPT required (H5); Claude copies",form:"N",rep:2,
+ act:"Identify the strongest live interlocutor and rebuild it from primary sources.",
+ need:"By now the home view has been developed at length and the opponent has not. A faithful reconstruction from primary sources, pinned to the exact propositions at issue, changes what the lineages must answer to.",
+ run:"A ChatGPT dossier at H5 (GPT-5.6 Sol High). Two straw-target flags then triggered a rule in the S09 card that froze the dossier and required a DIAGNOSE. DIAGNOSE found the halt “Operational, not a fault”, and you took recovery option A: proceed to S10, no reopening.",
+ qs:["This stage makes one author the paper’s opponent. Where does the paper say which family of views the problem belongs to?","The check is what the target’s defender would have to concede. Is that the reader’s interest or the target’s?","Does faithfulness need a second family, or a fresh Claude context with the sources?"],
+ ctx:"chatgpt: one fresh ChatGPT context at H5 writes the dossier. integrate: a Claude context after H5.",
+ reads:"Corpus, lineages, ledger, frontier and identity.",
+ writes:"target_v1 (the dossier), anticipated objections, new corpus notes.",
+ r:["10","20","40","60"],w:["10","40","60"],
+ fast:"F6",v:"fuse",vt:"Rebuilds the opponent family from sources inside F6."},
+{n:10,name:"Narrow response variation and pressure",short:"Replies",turn:4,t:3.30,op:"vary",opl:"Vary, then subject to reasons",cls:"STRONG",fam:"Claude; ChatGPT pressing is conditional",form:"G",rep:7,
+ act:"Generate the ways each surviving lineage could answer this opponent, and press them.",
+ need:"Without this step the machine would test yesterday’s lineages against a new opponent. Variation is narrow: replies to the strongest opponent, pressed from the opponent’s side.",
+ run:"reply-H and reply-K and an advocate ran in one Claude session. A ChatGPT pressing pass ran at H5 (GPT-5.6 Sol High) and was recorded at S10 integrate.",
+ qs:["Replies are narrow by design. What would a reply look like if it were written for a reader who has never read the target?","Did the ChatGPT pressing pass change anything the Claude advocate had not already found?","Is pressing a lineage against one opponent the same as testing a paper against a field?"],
+ ctx:"reply-L per surviving lineage (blind), one advocate, optional chatgpt-press (at most one pass), integrate.",
+ reads:"Lineages, the target dossier and the ledger. Never criteria or taste.",
+ writes:"Candidate replies, pressure reports, ledger entries, archive.",
+ r:["20","25","30","40","60"],w:["25","30","60","99"],
+ fast:"F6",v:"fuse",vt:"One round of replies inside F6."},
+{n:11,name:"Contribution compression",short:"Compress",turn:4,t:3.70,op:"select",opl:"Select and freeze",cls:"CRITICAL_JUDGE",fam:"Claude only",form:"T",rep:2,
+ act:"Extract the smallest memorable contribution and its burden.",
+ need:"A strong argument ecology is not yet a paper. Compression finds the smallest set of claims containing the distinctive contribution, states exactly what must be shown, and archives the rest.",
+ run:"contribution_v1 holds a two-sentence contribution, a five-part burden, a not-claimed list and about sixteen open liabilities copied in verbatim (3,949 words). It is scoped to two options, one reflexive reason, MEC and SD. Its companion records that a defender “can call the result a counterexample that forces a minor revision”. You skipped the rubric question that asks you to name a paper whose contribution you could state in two sentences.",
+ qs:["“Smallest” is the size this stage aims for. What would “right-sized for a named problem” look like as the criterion?","Does the contribution say what someone who does not work on the target takes from it? Nothing at S11 asks. The only later item that does is Reach, added at S15.","Should liabilities be copied into the contribution, or stay in the ledger until a reader needs one?"],
+ ctx:"One fresh context, main.",
+ reads:"Replies, ledger, target and identity; the general procedure and §S11 of the rubrics; taste/exemplars.",
+ writes:"contribution_v1 and its selection companion, with liabilities copied in; ledger; archive.",
+ r:["25","30","40","60"],w:["30","40","99"],
+ fast:"F6",v:"rewrite",vt:"Sizes the claim to the problem and adds reach: what a reader outside the debate takes away."},
+{n:12,name:"Nearest-neighbor positioning",short:"Position",turn:5,t:4.00,op:"ground",opl:"Ground",cls:"STRONG, with web search",fam:"Claude only",form:"R",rep:2,
+ act:"Place the contribution precisely among its nearest neighbors in the literature.",
+ need:"Now that the machine knows what it thinks, it asks where that sits and whether it is novel in the way it seems. It fixes the neighbors every précis must be written against.",
+ run:"Verdict PASS, on novelty only. Nearly all neighbors are the target’s own citations, and no neighbor is named for the general form of the result. No H6 stop is recorded.",
+ qs:["The rubric asks for the nearest paper and flags “more careful”, “applies X to Y” and “combines A and B”. Where does it ask which debate this paper is a move in?","In your papers the landscape shapes the claim. What would it cost to position before the claim is frozen?","Which of the five grounding passes found something that changed the claim?"],
+ ctx:"One fresh context, main, with web search and fetch.",
+ reads:"contribution_v1 and the corpus; the general procedure and §S12 of the rubrics.",
+ writes:"positioning_v1 and its selection companion.",
+ r:["10","40"],w:["40"],
+ fast:"F6",v:"fuse",vt:"The novelty check stays, inside F6. The landscape moves up to F2 and F3."},
+{n:13,name:"Competing précis",short:"Précis",turn:5,t:4.20,op:"vary",opl:"Vary",cls:"STRONG",fam:"Claude only",form:"G",rep:5,
+ act:"Create two or three competing paper précis.",
+ need:"Variation is still useful after the thesis stabilizes, at a smaller scale: order, emphasis, expository route, burden allocation. Three précis expose architectural differences for a fraction of the cost of three drafts.",
+ run:"P1 to P3 are one paper in three arrangements. None states what the result shows beyond the target’s text. The three architects got the same instruction, and never saw criteria or taste.",
+ qs:["Did the three précis differ in anything a reader would feel?","Where does a précis decide the opening, and does the précis schema have a field for it?","Is the précis a separate stage, or is it the shape card?"],
+ ctx:"Three architects (P1 to P3), fresh and mutually blind, with the same instruction. Then integrate.",
+ reads:"contribution_v1, target_v1, positioning_v1 and the backgrounder. Never sibling précis, criteria or taste.",
+ writes:"25_candidates/precis/P1 to P3.",
+ r:["10","40"],w:["25"],
+ fast:"drop",v:"drop",vt:"The shape card at F2 and F6 does this job earlier. This is the first stage to restore if structure fails."},
+{n:14,name:"Précis under pressure",short:"Précis review",turn:5,t:4.40,op:"reason",opl:"Subject to reasons",cls:"CRITICAL_JUDGE",fam:"ChatGPT required (H7), plus a Claude critic",form:"R",rep:3,
+ act:"Subject each précis to philosophical and genre reasons.",
+ need:"Each précis meets explicit objections, philosophical (does it carry the contribution and its burden?) and generic (is it paper-shaped, proportioned, placed?), before any is chosen.",
+ run:"ChatGPT’s critique ran at H7 (GPT-6 Astra High). Claude’s critique rated defensive framing at both ends a genre objection with “materially threatens: no”. Your concern, just before H7: “it will feel like marginalia more than significant insight.” A significance item was staged for S15.",
+ qs:["The genre objection was rated no threat. Who decides what threatens a paper’s chance of publication, and against what standard?","You skipped the question about what the best papers in your field do structurally. What would your answer have been, and would it have changed this critique?","Is the generic test a checklist item, or does a reader’s first page get read?"],
+ ctx:"critic-claude (fresh) and critic-chatgpt (fresh, at H7). The two are mutually blind.",
+ reads:"The three précis and the frozen files; the general procedure and the précis section of the rubrics.",
+ writes:"Objections to each précis, in 60_review.",
+ r:["25","40"],w:["60"],
+ fast:"drop",v:"drop",vt:"The form test moves to F7, where it can fail an outline that has no introduction."},
+{n:15,name:"Précis selection and freeze",short:"Précis choice",turn:5,t:4.70,op:"select",opl:"Select and freeze",cls:"CRITICAL_JUDGE",fam:"Claude only",form:"T",rep:2,
+ act:"Choose the précis that best preserves the contribution.",
+ need:"Freezing the précis lets outlining be cumulative work instead of a second round of philosophy.",
+ run:"S15 froze one précis verbatim, so its framing was fixed from here on. The three differed mainly in arrangement, so the choice changed little.",
+ qs:["What does this freeze lock out that the outline then cannot supply, such as an introduction or a statement of stakes?","If the précis is replaced by a shape card, who approves it, and when?"],
+ ctx:"One fresh context, main.",
+ reads:"Both critiques, the précis section of the rubrics, and taste/exemplars.",
+ writes:"precis_v1 and its selection companion, ledger entries, archive.",
+ r:["25","60"],w:["30","40","99"],
+ fast:"drop",v:"drop",vt:"Replaced by approving the shape card."},
+{n:16,name:"Literature and burden audit",short:"Lit audit",turn:6,t:5.00,op:"ground",opl:"Ground",cls:"STRONG",fam:"Claude only",form:"N",rep:2,
+ act:"Audit the literature, and what the contribution must show, once more against the frozen précis.",
+ need:"Before the paper’s structure is fixed, check that every claimed relation to the literature is real and that nothing important has been missed. This is the fifth grounding.",
+ run:"audit_S16.md is one of the three files the S17 architects read. No H6 stop is recorded.",
+ qs:["Which of the five grounding passes (S03, S09, S12, S16, plus S01’s) found something that changed the claim?","Could S03, S12 and S16 be one literature stage, run once at the start and once before outlining?"],
+ ctx:"One fresh context, main.",
+ reads:"The frozen précis and the corpus.",
+ writes:"10_corpus/audit_S16.md.",
+ r:["10","40"],w:["10"],
+ fast:"F7",v:"fuse",vt:"A short audit step at the start of F7."},
+{n:17,name:"Competing hierarchical outlines",short:"Outlines",turn:6,t:5.20,op:"vary",opl:"Vary",cls:"STRONG",fam:"Claude only",form:"G",rep:5,
+ act:"Generate competing hierarchical outlines.",
+ need:"The chosen précis still underdetermines the paper. Outlines differ in hierarchy, order, and where each argumentative job gets done.",
+ run:"Three architects read the précis, the contribution and the S16 audit, and never criteria or taste. The frozen outline has 30 argumentative units averaging about 197 words, budgeted at 5,900 of 6,000 words.",
+ qs:["A unit is the smallest stretch of prose that performs one argumentative job. Where do an introduction, a roadmap and a handoff between sections live at that grain?","Would you rather give the architect the form norms than hide them?","What would a 12-section outline with room for connective tissue look like at this word count?"],
+ ctx:"Three architects (O1 to O3), fresh and mutually blind, with the same instruction. Then integrate.",
+ reads:"precis_v1, contribution_v1 and audit_S16. Never sibling outlines, criteria or taste.",
+ writes:"25_candidates/outlines/, with units and word budgets.",
+ r:["10","40"],w:["25"],
+ fast:"F7",v:"rewrite",vt:"Plans in sections and orienting jobs, with the form norms in hand. Two outlines, not three."},
+{n:18,name:"Outlines under pressure",short:"Outline review",turn:6,t:5.40,op:"reason",opl:"Subject to reasons",cls:"STRONG",fam:"Claude; ChatGPT conditional",form:"R",rep:2,
+ act:"Subject the outlines to reasoning, genre, dependency, and proportion tests.",
+ need:"An outline can be valid and still misallocate attention. Proportion is checked here, where it is cheap to fix, instead of in finished prose.",
+ run:"The conditional ChatGPT critique was triggered (AMBER status, a close competition, flagged uncertainty). You declined it and asked to proceed to S19 on Claude.",
+ qs:["The proportion tests passed a 30-unit outline with a 100-word reserve. What test would fail an outline with no introduction?","Is a conditional second-family stop one you want to be asked about at all?"],
+ ctx:"critic-claude (fresh); critic-chatgpt only if triggered. Mutually blind.",
+ reads:"The outlines and the frozen files; the general procedure and the outline section of the rubrics.",
+ writes:"Objections to each outline, in 60_review.",
+ r:["25","40"],w:["60"],
+ fast:"F7",v:"fuse",vt:"One form-and-proportion critic inside F7."},
+{n:19,name:"Outline selection and freeze",short:"Outline choice",turn:6,t:5.70,op:"select",opl:"Select and freeze",cls:"CRITICAL_JUDGE",fam:"Claude only",form:"T",rep:2,
+ act:"Choose and freeze the detailed outline and its argumentative units.",
+ need:"Freezing the outline at the unit grain is what makes prose variation safe.",
+ run:"outline_v1 was frozen with a glossary, 30 unit specifications and 100 words unallocated. Every later stage treats it as fixed.",
+ qs:["After this freeze the writers may not add a move. Which moves does a paper need that no unit specifies?","Who reads the outline as an editor would, before it is frozen?"],
+ ctx:"One fresh context, main.",
+ reads:"Both critiques, the outline section of the rubrics, and taste/exemplars.",
+ writes:"outline_v1 (units, glossary, budgets) and its selection companion; ledger; archive.",
+ r:["25","60"],w:["30","40","99"],
+ fast:"F7",v:"fuse",vt:"Freezes the outline with a reserve of words and a slot for each orienting job."},
+{n:20,name:"Unit realizations",short:"Prose units",turn:7,t:6.20,op:"vary",opl:"Vary",cls:"STRONG (BULK permitted)",fam:"Claude only",form:"G",rep:5,
+ act:"Write two or three prose realizations of each argumentative unit.",
+ need:"Variation at the smallest scale: exposition, organization, emphasis, examples, cadence. Strict instructions forbid new philosophical moves, so variants differ only in how the same moves are made.",
+ run:"Writers read only the frozen outline and the précis. writer_v1 says: “Exposition varies. No new philosophical moves are introduced.” If a unit cannot be written without a new move, the writer reports the gap and writes the variants it can.",
+ qs:["Writers see the units but not the reader or the paper’s purpose. Who writes the transitions?","What would it take for one author context to write the whole draft, with variants only at the units that carry the argument?","If the writer finds a missing introduction, is “report the gap” enough?"],
+ ctx:"write-1 by default, with write-2 and more only for capacity. No writer context has read criteria or taste.",
+ reads:"outline_v1 and precis_v1 only, plus the writer prompt and the unit-variant schema.",
+ writes:"50_draft/units/, two or three variants per unit.",
+ r:["40"],w:["50"],
+ fast:"F8",v:"rewrite",vt:"One author context writes the whole draft and the connective tissue."},
+{n:21,name:"Editorial selection and smoothing",short:"Editorial",turn:7,t:6.33,op:"select",opl:"Select, with smoothing",cls:"STRONG",fam:"Claude only",form:"R",rep:2,
+ act:"Select or lightly synthesize the best variant per unit, then smooth sections and the whole draft.",
+ need:"Selection here is editorial: clarity, economy, continuity, genre fit. Smoothing runs at the section level and across the whole paper.",
+ run:"The first context in the run that reads the draft as a whole. By now the claim, the précis and the outline are frozen, so it can adjust surface only. At DR you chose “Accept proposed, skip question” on the rubric question about your prose preferences (tone, first person, signposting, hedging).",
+ qs:["Should the first whole-paper reader appear here, or at the outline?","What can smoothing do about a paper that has no introduction?"],
+ ctx:"One fresh context, main. It must not have performed S20.",
+ reads:"The frozen outline and the unit variants; the general procedure and §S21 of the rubrics. Not taste.",
+ writes:"The polished draft, ledger entries, archive.",
+ r:["40","50"],w:["30","50","99"],
+ fast:"F8",v:"fuse",vt:"One editor pass for form at the end of F8."},
+{n:22,name:"Journal-style referee reports",short:"Referee",turn:7,t:6.47,op:"reason",opl:"Subject to reasons",cls:"CRITICAL_JUDGE",fam:"ChatGPT required (H8), plus a Claude referee",form:"R",rep:3,
+ act:"Send the polished draft out for a tough, journal-style report.",
+ need:"An argument that survived many objections tends to sound more conclusive than it is. A tough, independent report looks for correlated blind spots and false completeness.",
+ run:"Your ChatGPT allowance was out until about October 3, so a blind Claude Sonnet 5.5 referee at max effort replaced the ChatGPT referee (D-61), with referee_v1 unchanged. The report headings are fixed and have no significance heading. You answered the journal question with “No particular journal”.",
+ qs:["Would an editor deciding whether to desk-reject have caught the missing introduction in one paragraph?","What did the referees say about form? If nothing, the prompt may not ask, or the imagined standard (“no particular journal”) was too loose.","Is a cross-family referee worth a stop, or does a different-frame Claude do the job?"],
+ ctx:"referee-claude (fresh) and referee-chatgpt (fresh, at H8; Sonnet 5.5 substituted in Paper 1). Mutually blind.",
+ reads:"The draft and the corpus; the general procedure and §S22 of the rubrics. Never taste.",
+ writes:"Referee reports, in 60_review.",
+ r:["10","50"],w:["60"],
+ fast:"F9",v:"keep",vt:"Keeps one blind referee and adds a desk-reject reader."},
+{n:23,name:"Revise and resubmit response",short:"R&R",turn:7,t:6.65,op:"vary",opl:"Vary and select",cls:"STRONG",fam:"Claude; ChatGPT only after a reopening",form:"G",rep:3,
+ act:"Respond where warranted and make local revisions.",
+ need:"Most objections get local answers. Only a genuinely fatal flaw reopens an earlier freeze, and then only at the level where the defect lives.",
+ run:"S23 step 2 and writer_v1 require that every open liability appear in the paper as a limit, citing SYSTEM invariant 6. On 2026-10-02 you decided this rule must change.",
+ qs:["What replaces it: two or three limits that bear on the claim, stated once near the end?","Who decides which objection is part of the spine and which gets a clause?","May the reviser move an orienting job (an introduction) in when the outline lacked it?"],
+ ctx:"revise (fresh) and check (fresh, separate from revise). After a reopening only: re-review contexts at H9.",
+ reads:"The draft, both referee reports, the ledger, the liabilities and the outline. Never criteria or taste.",
+ writes:"The revised draft, the response, ledger entries, 60_review notes.",
+ r:["30","40","50","60"],w:["25","30","50","60"],
+ fast:"F10",v:"rewrite",vt:"Runs under the new limits rule. Revisions can add orienting jobs the outline missed."},
+{n:24,name:"Citation verification and artifact audit",short:"Verify",turn:7,t:6.85,op:"freeze",opl:"Freeze",cls:"STRONG for judgment, BULK for mechanical checks",fam:"Claude only",form:"N",rep:2,
+ act:"Verify every citation and quotation the system can reach, flag the rest, and audit the final artifact.",
+ need:"Verification is the system’s job, not yours. Every source exists, quotations match, and page references and bibliography entries correspond. Submission itself is a constitutional act that happens after this stage.",
+ run:"PARTIAL. The paper came to 6,313 words against a 6,000 cap under the conservative count (Q-72: notes and references count). S24 never cuts (Q-68), so it halted, and a DIAGNOSE followed.",
+ qs:["A stage that can find a length breach but cannot cut: should the budget be enforced at the outline?","Which checks need you at H10, and which exist only because a human signature was assumed?"],
+ ctx:"One fresh context, main. Mechanical checks may be split into a mech context for capacity.",
+ reads:"The draft, the corpus sources and the logs.",
+ writes:"The verified draft, a verification report and the flagged-item list.",
+ r:["10","50"],w:["50"],
+ fast:"F11",v:"keep",vt:"Unchanged, except that it should no longer find a length breach."}
+];
+
+/* ---------- data: stops, findings, folder, stack, compressed run ---------- */
+/* kind: solid = required by the design; outline = preferred; dashed = only if needed; bang = a halt the design did not plan.
+   tag: yours | carry (hand-carrying work to or from the second family) | cond | ops */
+const STOPS=[
+{id:"H0",name:"Constitutional start",at:[0],kind:"solid",tag:"yours",tagText:"Yours alone",
+ des:"You start S00 on your configuration and answer its questions: domain, parameters, taste (D-49).",
+ run:"Eight sections of answers and six admired exemplars, on 2026-09-25.",
+ can:"No, and it should stay. The domain, the budget and your taste are yours to say. It can shrink to a short intake with standing defaults (F1). The one thing it does not ask is what a paper is for and who reads it."},
+{id:"H1",name:"ChatGPT visit: problems and agenda critique",at:[1,2],kind:"solid",tag:"carry",tagText:"Hand-carry",
+ des:"Fresh ChatGPT contexts write a blind problem list (preferred) and the agenda critique (required). You then resume in Claude.",
+ run:"2026-09-26, on GPT-6 Astra High. You resumed by pasting the critique’s completion block.",
+ can:"Yes, if the second-family check moves into the system or is dropped. Whether independence from Claude’s habits is worth a hand-carry is one decision you can make once for the whole machine. If it stays, one visit that does both jobs is enough."},
+{id:"C9",name:"Rubric questions",at:[2,6,11,14,21],kind:"outline",tag:"yours",tagText:"Yours alone, once",
+ des:"A stage’s rubric carries one question for you. It is asked at that stage, or all at DR. You answer or skip.",
+ run:"Answered at S02 (“use S00 as is”; “Ignore the second half.”) and S06 (“More interesting if true”). At DR you chose “Accept proposed, skip question” for S11, S14 and S21: what a contribution has to do, what the best papers in your field do structurally, and your prose preferences.",
+ can:"Mostly. These are standing taste, so they can be asked once at intake and stored as defaults. What no question asks is what a paper is for, who reads it, and what its opening does."},
+{id:"H2",name:"Acquire sources",at:[3],kind:"dashed",tag:"yours",tagText:"Only you, if needed",
+ des:"Acquire the material sources the system could not obtain, only if needed (D-51).",
+ run:"The run waited about 14 hours. You saved nine PDFs, then two more, and chose a provenance for four sources.",
+ can:"Partly. Neither shell can download from scholarly hosts, so only you can fetch what is paywalled. An open-access pass first would leave you only those sources (F3)."},
+{id:"H3",name:"Ruminators",at:[4],kind:"outline",tag:"carry",tagText:"Hand-carry",
+ des:"ChatGPT ruminators, one fresh context each; preferred. Under D-56 you run them whenever you choose, in ChatGPT-only batches, beside hand-started Claude ruminators.",
+ run:"Twenty ruminations, each a session you started: twelve Claude (A to L) and eight ChatGPT (S to Z). Mid-stage you had Claude review W to Z, then proposed perturbing the starting prompts (D-57).",
+ can:"The Claude ruminators can be launched by the system as sub-contexts. The ChatGPT ones need your hands as long as ChatGPT is in the design. This is the largest block of hand-carry in the run."},
+{id:"U1",name:"S06 halt on an unanswered placeholder",at:[6],kind:"bang",tag:"ops",tagText:"Unplanned halt",
+ des:"Not designed.",
+ run:"S06 halted once on an unanswered [OPERATOR] placeholder. D-58 fixed it at DR.",
+ can:"Yes. The placeholder is gone, and rubric questions can be asked once at intake."},
+{id:"DR",name:"Dry-run review",at:[6],kind:"solid",tag:"ops",tagText:"Paper 1 only",
+ des:"After S06, Paper 1 only: an operational review of the build and stage reports, then continue to S07 or restart from S00. The decision is logged.",
+ run:"2026-09-28. You chose “Run DR now”, then “Continue to S07, all fixes”, and chose to answer the remaining rubric questions then.",
+ can:"Yes, after Paper 1. It exists to debug the machine. A compressed run needs one smoke test before the real run, not a checkpoint inside it."},
+{id:"H4",name:"ChatGPT visit: holistic review",at:[8],kind:"solid",tag:"carry",tagText:"Hand-carry",
+ des:"A fresh ChatGPT context reviews each lineage as a research project. Required.",
+ run:"You moved ChatGPT contexts to GPT-5.6 Sol High to save tokens. The review was set aside (D-60), in your words because “it didn’t spend enough time on the question.” The stage went on with Claude’s review.",
+ can:"As run, the stage did not need it. Whether a second family would have caught what Claude did not is untested."},
+{id:"H5",name:"ChatGPT visit: target dossier and pressing",at:[9,10],kind:"solid",tag:"carry",tagText:"Hand-carry",
+ des:"A fresh ChatGPT context writes the target dossier and anticipated objections (required). A pressing pass on the replies is conditional.",
+ run:"The dossier and the pressing pass both ran on GPT-5.6 Sol High. Two straw-target flags then halted S09 (U2).",
+ can:"A fresh Claude context given the primary sources can rebuild a target. What you would lose is a second family’s reading of those sources. If the target is no longer the paper’s unit (finding 1), the stage changes shape anyway."},
+{id:"U2",name:"S09 straw-target halt",at:[9],kind:"bang",tag:"ops",tagText:"Unplanned halt",
+ des:"Not in the checkpoint table. A rule in the S09 card freezes the dossier and requires a DIAGNOSE after two straw-target flags.",
+ run:"DIAGNOSE found the halt “Operational, not a fault”. You took recovery option A: proceed to S10, no reopening.",
+ can:"Yes. The diagnosis left nothing for you to decide that the card could not have chosen. A rule could default to option A and log it."},
+{id:"H6",name:"Acquire literature",at:[12,16],kind:"dashed",tag:"cond",tagText:"Only if needed",
+ des:"Acquire literature the system could not fetch, only if needed.",
+ run:"No H6 stop is recorded in the interventions log.",
+ can:"Yes. Each grounding stage should list what it could not find and ask only for those."},
+{id:"H7",name:"ChatGPT visit: précis critique",at:[14],kind:"solid",tag:"carry",tagText:"Hand-carry",
+ des:"A fresh ChatGPT context critiques the three précis. Required.",
+ run:"Ran on GPT-6 Astra High. Just before it you asked whether the paper risked reading as marginalia, and Claude drafted the Reach item. S15 was the first stage to apply it.",
+ can:"It goes if the précis stage goes (F2, F7)."},
+{id:"S18?",name:"ChatGPT outline critique, conditional",at:[18],kind:"dashed",tag:"carry",tagText:"Hand-carry, if triggered",
+ des:"Runs only on a trigger: amber status, a close competition, or meaningful uncertainty (D-33, D-52).",
+ run:"Triggered. You declined it and asked to proceed on Claude.",
+ can:"Yes. The trigger asks you a question your answer already settles. A standing default would remove the stop."},
+{id:"H8",name:"ChatGPT visit: blind referee",at:[22],kind:"solid",tag:"carry",tagText:"Hand-carry",
+ des:"A fresh ChatGPT context writes a blind, journal-style referee report. Required.",
+ run:"Your ChatGPT allowance was out until about October 3. You chose a blind Claude Sonnet 5.5 referee at max effort (D-61) over waiting or a cheaper ChatGPT setting.",
+ can:"It already did, in Paper 1."},
+{id:"H9",name:"Reopening",at:[23],kind:"dashed",tag:"carry",tagText:"Hand-carry, if needed",
+ des:"Only if S23 finds a fatal flaw (REOPEN_REQUIRED). One reopening per paper. It includes a fresh blind ChatGPT re-review.",
+ run:"Not triggered at S23. The triage routed both referee reports to none, and reopenings_used stayed 0 of 1.",
+ can:"Keep it. It is a safety valve and costs nothing unless it fires."},
+{id:"H10",name:"Verify and submit",at:[24],kind:"solid",tag:"yours",tagText:"Yours alone",
+ des:"After S24: verify flagged items, review provenance and submit.",
+ run:"Not reached. S24 halted PARTIAL on length.",
+ can:"Submission is yours. Verification is the system’s job (S24 card), so you should see only the items it could not reach and a one-page provenance summary."},
+{id:"U3",name:"S24 halt: PARTIAL on length",at:[24],kind:"bang",tag:"ops",tagText:"Unplanned halt",
+ des:"Not designed as a stop. S24 never cuts (Q-68), so a length breach routes to REOPEN_REQUIRED through a DIAGNOSE.",
+ run:"The paper counted 6,313 of 6,000 words under the conservative reading (Q-72). The run halted, and you declared an autopsy instead of taking the S23 length route.",
+ can:"Yes. Length belongs at the outline, where it is cheap to fix. A budget the outline cannot meet should fail there."}
+];
+const KINDS={solid:"Required by the design",outline:"Preferred by the design",dashed:"Only if needed",bang:"A halt the design did not plan"};
+
+/* interventions log: 22 dated entries; the 22nd (2026-10-02) is the autopsy declaration and is not counted */
+const INTERV=[
+  {l:"S00 to S06 (turns 1–2)",n:14},
+  {l:"S07 to S08 (turn 3)",n:2},
+  {l:"S09 to S15 (turns 4–5)",n:3},
+  {l:"S16 to S24 (turns 6–7)",n:2}
+];
+
+const FINDINGS=[
+{t:"One author’s paper became the unit",at:[1,2,9,10,11,12],
+ ev:["17 of the 20 ruminations name Tarsney. The shared backgrounder names him 15 times.","S09 makes his paper the opponent. At S12 nearly all the neighbors are the target’s own citations, and none is named for the general form of the result.","Both surviving lineages (H and K) respond to the same paper.","Nothing before S09 asks which reader’s question the paper answers."]},
+{t:"No stage owns the reader-facing form",at:[13,17,19,20,21,22],
+ ev:["The words “introduction”, “roadmap”, “stakes” and “conclusion” appear in no stage card, role prompt, schema, rubric, RUNBOOK, SYSTEM, PARAMETERS or DECISIONS file (searched 2026-10-02).","The outline specifies argumentative units. Nothing specifies a front door, a handoff between sections, or an ending.","The first context that could notice is S21 (finding 8)."]},
+{t:"The stages that decide form cannot see the form norms",at:[13,17,20,23],
+ ev:["S13 (précis), S17 (outline) and S20 (prose) are blind builders. SYSTEM invariant 11: generators never see criteria or taste.","Form is judged afterwards, by contexts that can only choose among what the blind builders made. S18 and S21 see the rubric but not your taste. Only the selectors (S02, S06, S08, S11, S15, S19) see both."]},
+{t:"The form questions were skippable, and skipped",at:[11,14,21],
+ ev:["At DR you chose “Accept proposed, skip question” for three rubric questions: what a contribution has to do (S11), what the best papers in your field do structurally (S14), and your prose preferences (S21).","The proposed items stood, and nothing asked again. The system offered the skip as an ordinary option."]},
+{t:"The outline’s grain left no room for connective jobs",at:[17,19,20],
+ ev:["30 units averaging about 197 words, budgeted at 5,900 of 6,000. The 100 spare words are reserved for quotations.","A unit performs one argumentative job. An introduction, a roadmap or a handoff has no unit, so no writer is asked for one.","writer_v1: “Exposition varies. No new philosophical moves are introduced.” If a unit cannot be written, the writer reports the gap."]},
+{t:"Every open liability became a caveat",at:[5,11,23],
+ ev:["The ledger runs to about 111,700 words. S11 copied about sixteen open liabilities into contribution_v1 (3,949 words).","S23 step 2 and writer_v1 require every open liability to appear in the paper as a limit, citing SYSTEM invariant 6.","On 2026-10-02 you decided this rule must change. No card has been edited yet."]},
+{t:"The spend piled up before anything was decided about form",at:[4,5,6,7],
+ ev:["S04 to S07 hold 120 of 193 reports (62.2%). S05 alone has 63.","Seven C6 re-runs followed two platform limits: at most 20 subagents at once, and the session usage limit.","No ChatGPT lineage reached the frontier."]},
+{t:"The first whole-paper reader is S21",at:[20,21],
+ ev:["Whitelists keep each context to its stated inputs. No context before S21 reads a whole draft.","By S21 the claim, the précis and the outline are frozen, so it can adjust surface only.","v1 has no stage where something reads the outline as an editor would, before the S19 freeze."]},
+{t:"Most stops carry work between tools",at:[1,4,8,9,14,18,22],
+ ev:["Of 13 designed checkpoints, 8 are second-family visits.","16 of the 21 logged interventions are at or before S08.","The late ones are narrow: the S09 route, the S14 significance question, the S18 decline, the S22 substitution."]},
+{t:"Significance is asked early, then once, late",at:[2,6,8,15],
+ ev:["S02 asks for two recent works that would care about the answer. S06 asks whether you lean toward interesting-if-true. S08 asks whether a repair keeps the claim interesting or merely safe.","From S09 on, the only item that asks is Reach at S15, added on 2026-09-29 after both S14 critiques had run.","S22’s six report headings include no significance heading."]},
+{t:"No stage lets an idea grow with a partner",at:[4,5,7,8],
+ ev:["S04 is the one stage where a position develops without being attacked, and it develops alone: 20 ruminations, each a hand-started session blind to every other.","At S05 and S07 the working contexts are fresh critics and fresh repairers, blind to one another (S05: 63 reports, S07: 33; 96 of the run’s 193). S07 adds one recombiner that reads two lineages, D and K, the nearest thing to a constructive encounter, and it is a fresh context too. None keeps a history of what the idea was trying to become.","S07 asks for arguments to evolve, but its repairs answer defects. Whether a two-voice exchange that keeps its own history would do better, a question the map asks of S07, was never tried.","S08 asks whether a repair keeps the claim interesting and checks fertility, but it judges rather than develops. In short, the design has articulation once, alone, then criticism and selection. The folder does not show whether any lineage became more interesting than it was at S04, and no stage is built to find out."]}
+];
+
+/* the system folder, as it stood on 2026-10-02 (.md and .csv words) */
+const FOLDERS=[
+{k:"00",dir:"00_control",files:82,words:61919,always:true,note:"The machine: PROTOCOL, SYSTEM, PARAMETERS, RUNBOOK, DECISIONS, the 25 step cards, role prompts, schemas, rubrics and your taste exemplars. Every stage reads it."},
+{k:"10",dir:"10_corpus",files:25,words:94315,note:"The shared research base: per-source notes, the bibliography, the backgrounder and the PDFs you saved."},
+{k:"20",dir:"20_lineages",files:3,words:4109,note:"The surviving lineages as they stand now. Earlier versions are archived."},
+{k:"25",dir:"25_candidates",files:122,words:347725,note:"Everything generated and not yet chosen: problem lists, ruminations, replies, précis, outlines, referee drafts. The largest folder."},
+{k:"30",dir:"30_ledger",files:2,words:111723,note:"The ledger of objections, replies and concessions, and the liabilities."},
+{k:"40",dir:"40_frozen",files:16,words:46360,note:"Frozen artifacts, each with a selection companion: seed, agenda, frontier, identity, target, contribution, positioning, précis, outline."},
+{k:"50",dir:"50_draft",files:36,words:35478,note:"Prose units, the polished draft, and final.md."},
+{k:"60",dir:"60_review",files:13,words:47599,note:"Reviews, critiques and referee reports."},
+{k:"70",dir:"70_logs",files:207,words:147141,always:true,note:"193 stage reports, the interventions log, diagnoses and verification. Every stage writes here."},
+{k:"80",dir:"80_methodology",files:1,words:2920,always:true,note:"Postmortem notes. Outside the run."},
+{k:"99",dir:"99_archive",files:157,words:184766,note:"Superseded versions of lineages and candidates."}
+];
+const DIRNAME={"10":"corpus","20":"lineages","25":"candidates","30":"ledger","40":"frozen","50":"draft","60":"review","99":"archive"};
+
+/* what a fresh context is handed, in order */
+const STACK=[
+{b:"The bootstrap line",t:"Read STATE.md, then follow 00_control/PROTOCOL.md. This is all you type into a fresh session."},
+{b:"STATE.md",t:"Where the run stands: last stage and its status, next stage and action, the checkpoint pending, reopenings used."},
+{b:"PROTOCOL.md",t:"How to decide what to do next: PROCEED, DIAGNOSE, RESUME AFTER, STATUS, OVERRIDE."},
+{b:"The step card and CONVENTIONS",t:"What this stage does, in order, with its input files, output files and exit checks, plus the shared conventions (C1 to C12)."},
+{b:"A role prompt, a schema and a whitelist",t:"What this sub-context is, the shape its output takes, and the only files it may read. Generators never see criteria or taste."},
+{b:"The integrator",t:"Writes STATE.md and the stage report. The next session starts from those two files."}
+];
+
+/* generic questions for every stage */
+const GQ=[
+"If this stage were skipped, what would the paper lose, and who would notice?",
+"Did the next stage need this stage’s output, or only the fact that it ran?",
+"Could a neighboring stage do this job inside its own context?",
+"Does the stage need you, or does it wait for your hands?",
+"Which stage owns the reader’s first page?"
+];
+
+/* the compressed run: Claude’s hypothesis */
+const FAST=[
+{id:"F1",name:"Intake",cover:[0],text:"Domain, budget and taste as short questions with defaults you confirm. Every rubric question is asked here, once. Add three the intake lacks: what a paper is for, who reads it, and what its opening has to do.",you:"You answer once."},
+{id:"F2",name:"Problems and the shape card",cover:[1,2],text:"Each candidate problem is written with the reader’s question and the two or three standard answers. One is chosen and written as a shape card: the reader’s question, the options, the position, what it buys, what it costs. The size of the paper is chosen here, on purpose.",you:"You approve the shape card."},
+{id:"F3",name:"Literature",cover:[3],text:"One pass with web search, aimed at the whole debate and not one author’s neighborhood. It lists only the sources that you alone can fetch.",you:"Paywalled sources only."},
+{id:"F4",name:"Positions",cover:[4,5,6],text:"Four to six ruminators instead of twenty, each opening with the introduction it would give. One encounter round. Two positions chosen. A variant for this stage is below.",you:"None by default."},
+{id:"F5",name:"Exchange",cover:[7,8],text:"One or two exchange rounds in a format that keeps its own history, then one holistic check that picks one position.",you:"None by default."},
+{id:"F6",name:"Contribution and target",cover:[9,10,11,12],text:"Rebuild the opponent family from sources and write one round of replies. Size the claim to the problem, and add reach: what a reader outside the debate takes away. Keep the novelty check. Update the shape card.",you:"You approve the shape card again."},
+{id:"F7",name:"Outline",cover:[16,17,18,19],text:"A short audit, then two outlines planned in sections, with a slot for each orienting job (introduction, handoffs, ending) and the form norms in hand. One form-and-proportion critic. Freeze with a reserve of words.",you:"None."},
+{id:"F8",name:"Prose",cover:[20,21],text:"One author context writes the whole draft, connective tissue included. One editor pass for form.",you:"None."},
+{id:"F9",name:"Referee",cover:[22],text:"One blind referee, plus a desk-reject reader who sees only the first page.",you:"None."},
+{id:"F10",name:"Revise",cover:[23],text:"Runs under the new limits rule: two or three limits that bear on the claim, stated once near the end. Revisions may add the orienting jobs the outline missed.",you:"None."},
+{id:"F11",name:"Verify",cover:[24],text:"Unchanged, except that it should no longer find a length breach.",you:"You submit."}
+];
+const FAST_DROPPED=[13,14,15];
+const FAST_ORDER=[
+"The draft still lacks a front door: restore the précis stage (S13 to S15) before anything else.",
+"The claim is thin or safe: restore the full encounter round and a third position at F4.",
+"The outline reads as one voice: restore the third outline.",
+"Positions all converge on one author: restore the assigned lenses (D-57) and a second family, at the position stage only.",
+"The referee finds a fatal flaw: restore the second-family referee and the reopening (H9)."
+];
+const VARIANT={
+ title:"Variant for F4 and F5: articulate, then encounter, then criticize",
+ note:"Revised after our chat of 2026-10-02. The first draft put criticism in the second round, and the discussion moved it later. Still untested, and it still conflicts with parts of v1.",
+ text:[
+  "Articulation. Cartography and a mid-sized problem come from F2 and F3. Two to four interlocutors each get a light lean (a sentence of temperament and the kind of question they tend to ask, not a doctrine) and say how they would approach the problem. Each is then taken through problem cases, giving the verdict first and the reasons second, and traces its consequences and its nearest neighbors in the literature. The question is what the view is trying to become, not where it breaks.",
+  "Encounter. The developed views meet. Where do they really disagree, and where do they redescribe the same structure? Does one contain a distinction that solves a problem another noticed, and can two rivals be nested? The output is a map of live positions, candidate syntheses and real disagreements, not a consensus.",
+  "Criticism comes last. You look at the map and pick a thread, and a single pressure pass tests the thing you chose. Still open: whether you steer after each articulation round or once after the map."
+ ],
+ test:"Test: run articulation alone first, on Paper 1’s corpus, with the leans and no criticism, and ask whether the objects are more interesting than what S04 produced.",
+ clash:[
+  {k:"Mutual blindness",v:"v1 keeps every context fresh and every rival blind, so no idea is developed with a partner who keeps its history. The variant ends the blindness on purpose, after one short independent statement."},
+  {k:"Early criticism",v:"v1 subjects positions to objection from S05, so what survives is what is hard to attack. The variant waits until an object is worth criticizing and you have chosen a thread."},
+  {k:"No consensus forcing",v:"Asking for commonalities invites a bland middle. The guards are an output that lists real disagreements, an instruction to say where you still differ, and a different starting point on the map for each interlocutor as well as a different lean."},
+  {k:"Variation first",v:"v1 gets its insights from sampling and selection. The variant gets them from sustained articulation and encounter, with your steering, and uses variation later, at the outline and prose."},
+  {k:"Pressure after selection",v:"A synthesis is nobody’s view, so it has survived nothing. Pressure stays, after the synthesis, and shrinks to one pass."},
+  {k:"Invariant 11",v:"Leave it alone for this step. The fingers-to-fist problem is a form problem, and form norms belong at the shape card and the outline."},
+  {k:"Personas",v:"Same-model personas differ in tone more than in priors; three ChatGPT ruminations already converged under D-57. The variant keeps leans light on purpose, so commitments come out of the articulation instead of being stipulated."}
+ ]
+};
+const LENSES=[
+{id:"start",name:"Start here",q:"Which of these 25 stages would you notice missing?"},
+{id:"stops",name:"Your stops",q:"Where does the machine wait for you, and does it have to?"},
+{id:"spend",name:"Where the work went",q:"What did the work buy?"},
+{id:"form",name:"Who sees the form",q:"Who in this run could have noticed there was no introduction?"},
+{id:"folder",name:"The folder",q:"What does the system look like on disk?"},
+{id:"find",name:"Findings",q:"What did the autopsy find, and at which stages?"},
+{id:"fast",name:"Compressed run",q:"What would you keep if you had to run it in a week?"}
+];
+
+/* ---------- rendering ---------- */
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const $=(s,r)=>(r||document).querySelector(s);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const pad=n=>"S"+String(n).padStart(2,"0");
+const fmt=n=>Number(n).toLocaleString("en-US");
+const turnOf=n=>TURNS.find(t=>n>=t.from&&n<=t.to);
+const opColor=s=>"var("+OPB[s.op].c+")";
+const FORMVAR={T:"--c-freeze",R:"--c-ground",G:"--c-reason",N:"--ink-3"};
+const CX=380,CY=385,R0=56,RK=35.6;
+const rad=t=>R0+RK*t;
+const ang=t=>(-90+360*t)*Math.PI/180;
+const pt=t=>({x:CX+rad(t)*Math.cos(ang(t)),y:CY+rad(t)*Math.sin(ang(t))});
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const st={lens:"start",stage:null,tab:"lens",hl:new Set(),rd:new Set(),wr:new Set(),folder:null,ring:false,hoverN:null,peek:null};
+const canHover=!!(window.matchMedia&&matchMedia("(hover: hover) and (pointer: fine)").matches);
+const stopsAt=S.map(s=>STOPS.map((p,i)=>p.at.includes(s.n)?i:-1).filter(i=>i>=0));
+const findsAt=S.map(s=>FINDINGS.map((f,i)=>f.at.includes(s.n)?i:-1).filter(i=>i>=0));
+
+const svg=$("#spiral"), pBody=$("#pBody"), tip=$("#tip"), work=$(".work"), split=$("#split"), ctl=$("#layoutCtl"), peekEl=$("#peek"), cardsEl=$("#cards"), reopen=$("#reopen");
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+
+/* ----- build the spiral ----- */
+const nodes=[];
+const lanes=[],tpaths=[];
+let legPrev=null,legNext=null,legHead=null,overN=null,showT=null,hideT=null;
+function linePath(t0,t1){
+  let d="",n=Math.max(2,Math.ceil((t1-t0)/0.02));
+  for(let i=0;i<=n;i++){const t=t0+(t1-t0)*i/n,q=pt(t);d+=(i===0?"M":"L")+q.x.toFixed(1)+" "+q.y.toFixed(1);}
+  return d;
+}
+function lanePath(k){
+  const hw=RK/2,n=60;let inner="",outer=[];
+  for(let i=0;i<=n;i++){
+    const t=(k-1)+i/n,A=ang(t),ri=rad(t)-hw,ro=rad(t)+hw;
+    inner+=(i===0?"M":"L")+(CX+ri*Math.cos(A)).toFixed(1)+" "+(CY+ri*Math.sin(A)).toFixed(1);
+    outer.push((CX+ro*Math.cos(A)).toFixed(1)+" "+(CY+ro*Math.sin(A)).toFixed(1));
+  }
+  return inner+outer.reverse().map(s=>"L"+s).join("")+"Z";
+}
+function tangentDeg(t){
+  const A=ang(t),r=rad(t),w=2*Math.PI;
+  return Math.atan2(RK*Math.sin(A)+r*Math.cos(A)*w,RK*Math.cos(A)-r*Math.sin(A)*w)*180/Math.PI;
+}
+function buildSpiral(){
+  /* each turn gets a lane, so the seven levels read as seven bands; odd turns are tinted */
+  TURNS.forEach(tn=>{lanes[tn.n-1]=el("path",{class:"lane"+(tn.n%2?" odd":""),d:lanePath(tn.n)},svg);});
+  OPS.forEach(o=>{
+    const a=o.ang*Math.PI/180, c=Math.cos(a), s=Math.sin(a);
+    el("line",{class:"spoke",x1:CX+34*c,y1:CY+34*s,x2:CX+322*c,y2:CY+322*s},svg);
+    const tx=el("text",{class:"t-op",x:CX+338*c,y:CY+338*s+5,"text-anchor":c>0.3?"start":(c<-0.3?"end":"middle")},svg);
+    tx.style.fill="var("+o.c+")";tx.textContent=o.name;
+  });
+  TURNS.forEach(tn=>{tpaths[tn.n-1]=el("path",{class:"tpath t"+tn.n,d:linePath(tn.n-1,Math.min(tn.n,6.95))},svg);});
+  for(let i=0;i<S.length-1;i++){
+    const t0=S[i].t,t1=S[i+1].t;
+    if(t1-t0<0.1)continue;
+    const tm=(t0+t1)/2,q=pt(tm);
+    el("path",{class:"chev",d:"M-4.5 -3.8 L4.5 0 L-4.5 3.8 Z",transform:"translate("+q.x.toFixed(1)+" "+q.y.toFixed(1)+") rotate("+tangentDeg(tm).toFixed(1)+")"},svg);
+  }
+  legPrev=el("path",{class:"leg prev",style:"display:none"},svg);
+  legNext=el("path",{class:"leg next",style:"display:none"},svg);
+  legHead=el("path",{class:"legh",d:"M-8 -7 L9 0 L-8 7 Z",style:"display:none"},svg);
+  TURNS.forEach(tn=>{
+    const t=tn.n-1,p=pt(t);
+    const tx=el("text",{class:"t-turn",x:CX-20,y:p.y-8,"text-anchor":"end"},svg);
+    tx.textContent=tn.n+" · "+tn.name;
+  });
+  const c0=el("text",{class:"t-turn",x:CX,y:CY+4,"text-anchor":"middle"},svg);c0.textContent="start";
+  S.forEach(s=>{
+    const p=pt(s.t);
+    const g=el("g",{class:"node",tabindex:"0",role:"button","data-n":s.n,"aria-label":pad(s.n)+" "+s.name+". "+s.rep+(s.rep===1?" report. ":" reports. ")+"Press Enter for details."},svg);
+    const h2=el("circle",{class:"halo2",cx:p.x,cy:p.y,r:20},g);
+    const h1=el("circle",{class:"halo",cx:p.x,cy:p.y,r:16},g);
+    const b=el("circle",{class:"body",cx:p.x,cy:p.y,r:12.5},g);
+    const tx=el("text",{class:"t-num","text-anchor":"middle",x:p.x,y:p.y+4,"font-size":"12"},g);tx.textContent=s.n;
+    const cnt=el("text",{class:"t-cnt","text-anchor":"middle",x:p.x,y:p.y+26},g);cnt.textContent=s.rep;
+    const pills=el("g",{class:"pills"},g);
+    let pill=null;
+    if(stopsAt[s.n].length){
+      const sts=stopsAt[s.n].map(i=>STOPS[i]);
+      const label=sts.map(x=>x.id).join("·");
+      const designed=sts.filter(x=>x.kind!=="bang");
+      const kind=designed.length?(["solid","outline","dashed"].find(k=>designed.some(x=>x.kind===k))):"bang";
+      const w=6.8*label.length+10;
+      const pg=el("g",{class:"stopb "+kind},pills);
+      el("rect",{width:w,height:15,rx:5.5},pg);
+      const pt2=el("text",{x:w/2,y:11,"text-anchor":"middle"},pg);
+      pt2.textContent=label;
+      pill={g:pg,w:w};
+    }
+    nodes[s.n]={g:g,h1:h1,h2:h2,b:b,tx:tx,cnt:cnt,pills:pills,pill:pill,p:p};
+    g.addEventListener("click",()=>{hideTip();selectStage(s.n);if(canHover)showPeek(s.n,true);});
+    g.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){e.preventDefault();selectStage(s.n);if(canHover){showPeek(s.n,true);const b=peekEl.querySelector(".pkb");if(b)b.focus();}}
+      else if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();focusNode(s.n+1);}
+      else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();focusNode(s.n-1);}
+      else if(e.key==="Escape"){hidePeek(true);}
+    });
+    g.addEventListener("mouseenter",e=>{
+      if(!canHover){showTip(e,tipHTML(s));return;}
+      enterNode(s.n);
+      if(st.peek&&st.peek.pinned&&st.peek.n!==s.n)showTip(e,tipHTML(s));
+    });
+    g.addEventListener("mousemove",e=>{
+      if(!canHover){moveTip(e);return;}
+      if(!st.peek&&overN===s.n&&!showT)enterNode(s.n);
+      if(st.peek&&st.peek.pinned&&st.peek.n!==s.n)moveTip(e);
+    });
+    g.addEventListener("mouseleave",()=>{hideTip();if(canHover)leaveNode(s.n);});
+    g.addEventListener("focus",()=>{if(!st.peek){st.hoverN=s.n;paint();}});
+    g.addEventListener("blur",()=>{if(!st.peek&&overN===null){st.hoverN=null;paint();}});
+  });
+}
+function focusNode(n){if(n>=0&&n<S.length)nodes[n].g.focus();}
+
+/* ----- tooltip ----- */
+function tipHTML(s){
+  let h="<b>"+pad(s.n)+" · "+esc(s.name)+"</b><br>"+s.rep+(s.rep===1?" report":" reports")+" · "+esc(s.fam);
+  if(st.lens==="form")h+="<br>"+esc(FORMS[s.form].name);
+  if(st.lens==="fast")h+="<br>"+esc(VERD[s.v].name)+": "+esc(s.vt);
+  if(st.lens==="start"||st.lens==="stops"){const ps=stopsAt[s.n];if(ps.length)h+="<br>Stops: "+ps.map(i=>esc(STOPS[i].id)).join(", ");}
+  return h;
+}
+function showTip(e,h){tip.innerHTML=h;tip.style.opacity=1;moveTip(e);}
+function moveTip(e){
+  const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;
+  if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;
+  tip.style.left=Math.max(4,x)+"px";tip.style.top=Math.max(4,y)+"px";
+}
+function hideTip(){tip.style.opacity=0;}
+
+/* ----- paint the nodes for the current lens and highlight state ----- */
+function radius(s){return st.lens==="spend"?8+Math.sqrt(s.rep)*1.15:12.5;}
+function fillOf(s){
+  if(st.lens==="form"){
+    const v=FORMVAR[s.form];
+    if(s.form==="N")return{f:"var(--paper-2)",t:"var(--ink)",s:"var(--ink-3)"};
+    return{f:"var("+v+")",t:s.form==="T"?"var(--on-freeze)":"var(--paper)",s:"none"};
+  }
+  if(st.lens==="fast"){const v=VERD[s.v];return{f:"var("+v.c+")",t:s.v==="fuse"?"var(--on-freeze)":"var(--paper)",s:"none"};}
+  return{f:opColor(s),t:s.op==="freeze"?"var(--on-freeze)":"var(--paper)",s:"none"};
+}
+function paint(){
+  const fN=st.hoverN!=null?st.hoverN:(st.peek?st.peek.n:null),fTurn=fN==null?null:S[fN].turn;
+  svg.classList.toggle("focus",fTurn!=null);
+  lanes.forEach((l,i)=>l.classList.toggle("on",fTurn===i+1));
+  tpaths.forEach((l,i)=>l.classList.toggle("on",fTurn===i+1));
+  setLegs(fN);
+  const active=st.hl.size||st.rd.size||st.wr.size;
+  const showPills=st.lens==="start"||st.lens==="stops";
+  S.forEach(s=>{
+    const nd=nodes[s.n],R=radius(s),f=fillOf(s);
+    nd.b.setAttribute("r",R);nd.h1.setAttribute("r",R+3.5);nd.h2.setAttribute("r",R+7);
+    nd.b.style.fill=f.f;nd.b.style.stroke=f.s;nd.b.style.strokeWidth=f.s==="none"?0:1.5;
+    nd.tx.style.fill=f.t;
+    nd.cnt.setAttribute("y",nd.p.y+R+11);
+    nd.cnt.style.display=(st.lens==="spend"&&s.rep>=5)?"":"none";
+    nd.pills.style.display=showPills?"":"none";
+    if(nd.pill){
+      /* the pill sits to one side of the node along the spiral's tangent; sides alternate by turn so neighbors on one spoke do not collide */
+      const a=ang(s.t),sg=(s.op==="ground"||Math.floor(s.t+0.001)%2===0)?1:-1,dx=-Math.sin(a)*sg,dy=Math.cos(a)*sg,w=nd.pill.w;
+      const dist=R+4+(w/2)*Math.abs(dx)+7.5*Math.abs(dy);
+      nd.pill.g.setAttribute("transform","translate("+(nd.p.x+dx*dist-w/2)+","+(nd.p.y+dy*dist-7.5)+")");
+    }
+    const g=nd.g.classList;
+    g.toggle("sel",st.stage===s.n);
+    g.toggle("offturn",fTurn!=null&&s.turn!==fTurn);
+    g.toggle("hl",st.hl.has(s.n));
+    g.toggle("rd",st.rd.has(s.n));
+    g.toggle("wr",st.wr.has(s.n));
+    g.toggle("dim",!!active&&!(st.hl.has(s.n)||st.rd.has(s.n)||st.wr.has(s.n)));
+  });
+}
+
+/* the legs: the line from the stage you are on to the next one, and back to the previous one */
+function setLegs(n){
+  if(!legNext)return;
+  const hide=()=>{legPrev.style.display="none";legNext.style.display="none";legHead.style.display="none";};
+  if(n==null){hide();return;}
+  const off=r=>r/(2*Math.PI*rad(S[n].t));
+  if(n>0){
+    const t0=S[n-1].t+18/(2*Math.PI*rad(S[n-1].t)),t1=S[n].t-16/(2*Math.PI*rad(S[n].t));
+    if(t1>t0){legPrev.setAttribute("d",linePath(t0,t1));legPrev.style.display="";}else legPrev.style.display="none";
+  }else legPrev.style.display="none";
+  if(n<S.length-1){
+    const a=S[n].t+16/(2*Math.PI*rad(S[n].t)),tb=S[n+1].t-24/(2*Math.PI*rad(S[n+1].t)),th=S[n+1].t-18/(2*Math.PI*rad(S[n+1].t));
+    if(tb>a){
+      legNext.setAttribute("d",linePath(a,tb));legNext.style.display="";
+      const q=pt(th);legHead.setAttribute("transform","translate("+q.x.toFixed(1)+" "+q.y.toFixed(1)+") rotate("+tangentDeg(th).toFixed(1)+")");legHead.style.display="";
+    }else{legNext.style.display="none";legHead.style.display="none";}
+  }else{legNext.style.display="none";legHead.style.display="none";}
+}
+
+/* ----- legend ----- */
+function sw(fill,stroke,dash){return '<svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" style="fill:'+fill+';stroke:'+(stroke||"none")+';stroke-width:1.5"'+(dash?' stroke-dasharray="3 2"':"")+'/></svg>';}
+function ringSw(color){return '<svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="6.5" style="fill:var(--paper-2);stroke:'+color+';stroke-width:3"/></svg>';}
+function pillSw(kind){
+  const dash=kind==="dashed"||false;
+  const stroke=kind==="bang"?"var(--c-reason)":"var(--c-human)";
+  const fill=kind==="solid"?"var(--c-human)":"var(--paper)";
+  return '<svg viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="4" width="16" height="10" rx="3.5" style="fill:'+fill+';stroke:'+stroke+';stroke-width:1.6"'+(dash?' stroke-dasharray="3 2"':"")+'/></svg>';
+}
+function renderLegend(){
+  let items=[];
+  if(st.lens==="form"){
+    ["T","R","G","N"].forEach(k=>{const f=FORMS[k];
+      items.push([k==="N"?sw("var(--paper-2)","var(--ink-3)"):sw("var("+FORMVAR[k]+")"),f.name]);});
+  }else if(st.lens==="fast"){
+    Object.keys(VERD).forEach(k=>items.push([sw("var("+VERD[k].c+")"),VERD[k].name]));
+  }else if(st.lens==="spend"){
+    items=[[sw("var(--ink-3)"),"Circle area grows with the number of stage reports"]];
+  }else{
+    OPS.forEach(o=>items.push([sw("var("+o.c+")"),o.name]));
+    if(st.lens==="start"||st.lens==="stops")Object.keys(KINDS).forEach(k=>items.push([pillSw(k),KINDS[k]]));
+    if(st.lens==="folder")items=[[ringSw("var(--c-ground)"),"Reads this folder"],[ringSw("var(--c-vary)"),"Writes to it"]];
+    if(st.lens==="find")items=OPS.map(o=>[sw("var("+o.c+")"),o.name]).concat([[ringSw("var(--ink)"),"Touched by an open finding"]]);
+  }
+  $("#legend").innerHTML=items.map(i=>"<span>"+i[0]+esc(i[1])+"</span>").join("")+(canHover?'<span class="lgh">Hover a stage: its turn lights up and a quick menu opens. Click to pin it. Esc closes.</span>':"");
+}
+
+/* ----- helpers for panel HTML ----- */
+const chipBtn=n=>'<button class="chip" data-act="stage" data-v="'+n+'"><i style="--c:'+opColor(S[n])+'"></i>'+pad(n)+" "+esc(S[n].short)+"</button>";
+const first=s=>{const m=String(s).match(/^.*?[.?!](?=\s|$)/);return m?m[0]:String(s);};
+const clip=(s,n)=>{s=String(s);if(s.length<=n)return s;const c=s.slice(0,n),i=c.lastIndexOf(" ");return (i>n*0.6?c.slice(0,i):c).replace(/[,;:\s—-]+$/,"")+"…";};
+const sec=(title,body,open,hint,key)=>'<details class="sec"'+(key?' data-k="'+key+'"':"")+(open?" open":"")+'><summary><span class="st"><span class="sh">'+title+'</span>'+(hint?'<span class="hint">'+esc(hint)+'</span>':"")+'</span></summary><div class="body">'+body+"</div></details>";
+const stat=(v,l)=>'<div class="stat"><b>'+v+"</b><span>"+l+"</span></div>";
+function listJoin(a){return a.length<=1?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];}
+const where=at=>"at "+listJoin(at.map(pad));
+
+/* ----- the Stage panel ----- */
+function sectionsFor(n){
+  const s=S[n],v=VERD[s.v],ps=stopsAt[n],fs=findsAt[n],out=[];
+  out.push({k:"need",label:"Need",title:"The need it meets",body:'<p class="prose">'+esc(s.need)+"</p>",hint:clip(first(s.need),120)});
+  out.push({k:"run",label:"In Paper 1",title:"What happened in Paper 1",body:'<p class="prose">'+esc(s.run)+"</p>",hint:clip(first(s.run),120)});
+  out.push({k:"qs",label:"Questions",title:"Questions to ask about this stage",body:'<ul class="qs">'+s.qs.map(q=>"<li>"+esc(q)+"</li>").join("")+"</ul>",
+    hint:s.qs.length+(s.qs.length===1?" question":" questions")+", starting “"+clip(first(s.qs[0]),72)+"”"});
+  let vb='<div class="chips"><span class="chip" style="--c:var('+v.c+')"><i></i>'+v.name+"</span>";
+  if(s.fast!=="drop")vb+='<button class="chip" data-act="fast" data-v="'+s.fast+'">See '+s.fast+" in the compressed run</button>";
+  vb+='</div><p class="prose">'+esc(s.vt)+'</p><p class="note">Claude’s hypothesis, for you to argue with.</p>';
+  out.push({k:"fast",label:"Compressed",title:"In a compressed run",body:vb,hint:v.name+": "+clip(first(s.vt),100)});
+  if(ps.length)out.push({k:"stops",label:"Stops ("+ps.length+")",title:"Stops for you here ("+ps.length+")",
+    body:ps.map(i=>{const p=STOPS[i];return '<p class="prose"><span class="sbadge '+p.kind+'">'+esc(p.id)+"</span> <b>"+esc(p.name)+"</b>. "+esc(p.tagText)+'.</p><p class="note">Can the system run without you here? '+esc(p.can)+"</p>";}).join(""),
+    hint:ps.map(i=>STOPS[i].id+" ("+STOPS[i].tagText.toLowerCase()+")").join(", ")+" · can the system run without you here?"});
+  if(fs.length)out.push({k:"finds",label:"Findings ("+fs.length+")",title:"Autopsy findings that touch this stage ("+fs.length+")",
+    body:'<div class="chips">'+fs.map(i=>'<button class="chip" data-act="find" data-v="'+i+'">'+(i+1)+" · "+esc(FINDINGS[i].t)+"</button>").join("")+"</div>",
+    hint:fs.length+(fs.length===1?" finding":" findings")+" touch it, including “"+clip(FINDINGS[fs[0]].t,56)+"”"});
+  const dirs=(arr,c)=>arr.map(k=>'<span class="dir '+c+'">'+k+" "+DIRNAME[k]+"</span>").join("");
+  const facts=[["Context",s.ctx],["Reads",s.reads],["Writes",s.writes],["Model family",s.fam],["Class",s.cls],["Form norms",FORMS[s.form].text+(s.formnote?" "+s.formnote:"")]];
+  let ab='<dl class="facts">'+facts.map(f=>"<div><dt>"+f[0]+"</dt><dd>"+esc(f[1])+"</dd></div>").join("");
+  ab+='<div><dt>Folders read</dt><dd><span class="dirs">'+dirs(s.r,"r")+"</span></dd></div>";
+  ab+='<div><dt>Folders written</dt><dd><span class="dirs">'+dirs(s.w,"w")+"</span></dd></div></dl>";
+  ab+='<p class="note">Every stage also reads 00_control and writes 70_logs and STATE.md.</p>';
+  out.push({k:"anat",label:"Anatomy",title:"Technical anatomy",body:ab,hint:"Contexts, files, model family, form norms. Reads "+s.r.length+" working folders, writes "+s.w.length+"."});
+  return out;
+}
+function stageHTML(n){
+  const s=S[n],tn=turnOf(n),ps=stopsAt[n];
+  let h='<div class="p-top"><span class="p-num">'+pad(n)+"</span><span>Turn "+tn.n+" · "+esc(tn.name)+"</span><span>"+esc(s.opl)+"</span>"+
+    '<span class="nav"><button class="nbtn" data-act="stage" data-v="'+(n-1)+'"'+(n===0?" disabled":"")+' aria-label="Previous stage">← '+(n>0?pad(n-1):"")+'</button><button class="nbtn" data-act="stage" data-v="'+(n+1)+'"'+(n===S.length-1?" disabled":"")+' aria-label="Next stage">'+(n<S.length-1?pad(n+1):"")+" →</button></span></div>";
+  h+="<h2>"+esc(s.name)+'</h2><p class="p-act">'+esc(s.act)+"</p>";
+  h+='<div class="chips"><span class="chip hollow" style="--c:var('+FORMVAR[s.form]+')"><i></i>'+esc(FORMS[s.form].name)+'</span><span class="chip">'+esc(s.cls)+'</span><span class="chip">'+esc(s.fam)+'</span><span class="chip">'+s.rep+(s.rep===1?" report":" reports")+"</span>";
+  ps.forEach(i=>{h+='<button class="chip stop" data-act="stop" data-v="'+i+'" title="'+esc(STOPS[i].name)+'">'+esc(STOPS[i].id)+"</button>";});
+  h+="</div>";
+  h+='<div class="glance"><span>Open what you want to read.</span><span><button class="lk" data-act="expandAll">Expand all</button><button class="lk" data-act="collapseAll">Collapse all</button></span></div>';
+  sectionsFor(n).forEach(sc=>{h+=sec(esc(sc.title),sc.body,false,sc.hint,sc.k);});
+  return h;
+}
+
+/* ----- the lens panels ----- */
+function startHTML(){
+  const total=S.reduce((a,s)=>a+s.rep,0),words=FOLDERS.reduce((a,f)=>a+f.words,0),designed=STOPS.filter(p=>p.kind!=="bang").length;
+  let h='<p class="prose">Twenty-five stages run in seven turns. Every turn goes around the same five operations, the spokes: Ground, Vary, Subject to reasons, Select, Freeze. A stage sits where its turn crosses its operation, so the spiral reads from the middle outward, S00 to S24.</p>';
+  h+='<div class="stats">'+stat(S.length,"stages")+stat(TURNS.length,"turns")+stat(total,"stage reports")+stat(designed,"designed stops")+stat(fmt(words),"words in the folder, for a paper capped at 6,000")+"</div>";
+  h+='<p class="prose">Select any node. The Stage tab gives the need it meets, what happened in Paper 1, questions to ask, and the technical anatomy. The buttons above recolor the map: your stops, where the work went, who sees the form norms, the folder, the autopsy findings, and a compressed run.</p>';
+  h+=sec("Questions to bring to every stage",'<ul class="qs">'+GQ.map(q=>"<li>"+esc(q)+"</li>").join("")+"</ul>",false,GQ.length+" questions, starting “"+clip(first(GQ[0]),64)+"”");
+  h+='<div class="ghead">The seven turns</div><div class="turns">'+TURNS.map(t=>{
+    const ns=S.filter(s=>s.turn===t.n).map(s=>s.n);
+    return '<div class="turnrow"><div><b>Turn '+t.n+" · "+esc(t.name)+"</b><small>"+esc(t.scale)+'</small></div><div class="chips tight">'+ns.map(chipBtn).join("")+"</div></div>";
+  }).join("")+"</div>";
+  h+='<div class="hyp" style="margin-top:18px"><b>For your compression review.</b> As you read, mark each stage Keep, Rewrite, Fuse or Drop. The map’s own marks are in the Compressed run view, and they are Claude’s hypothesis. This page is read-only, so tell Claude your calls and they go into the postmortem notes.</div>';
+  return h;
+}
+function stopsHTML(){
+  const designed=STOPS.filter(p=>p.kind!=="bang"),cps=designed.filter(p=>p.id!=="C9");
+  const carry=designed.filter(p=>p.tag==="carry"),yours=designed.filter(p=>p.tag==="yours"),bang=STOPS.filter(p=>p.kind==="bang");
+  const tot=INTERV.reduce((a,x)=>a+x.n,0),early=INTERV[0].n+INTERV[1].n,max=Math.max.apply(null,INTERV.map(x=>x.n));
+  let h='<p class="prose">A purple badge on the map marks a place where the machine waits for you. The badge style says how firmly the design asks. Open a row to ring its stages on the map.</p>';
+  h+='<div class="stats">'+stat(cps.length,"designed checkpoints")+stat(carry.length,"hand work to or from ChatGPT")+stat(bang.length,"halts the design did not plan")+stat(early+" of "+tot,"logged interventions at or before S08")+"</div>";
+  h+='<div class="hyp"><b>Claude’s reading of necessity.</b> Of the '+designed.length+" designed stops, "+yours.length+" need you whatever the design: "+yours.map(p=>p.id).join(", ")+". "+carry.length+" carry work between tools ("+carry.map(p=>p.id).join(", ")+"). DR was for Paper 1 only, and H6 fires only if needed. The "+bang.length+" unplanned halts did not need a decision from you.</div>";
+  h+='<div class="ghead">All stops, in run order</div>';
+  const rows=STOPS.map((p,i)=>({p:p,i:i})).sort((a,b)=>a.p.at[0]-b.p.at[0]||a.i-b.i);
+  h+=rows.map(r=>{const p=r.p;
+    return '<details class="srow" data-i="'+r.i+'" data-hl="'+p.at.join(",")+'"><summary><span class="sbadge '+p.kind+'">'+esc(p.id)+'</span><span class="what">'+esc(p.name)+"<small>"+where(p.at)+"</small></span><span class=\"nec\">"+esc(p.tagText)+'</span></summary><div class="more"><p><b>As designed.</b> '+esc(p.des)+"</p><p><b>As run in Paper 1.</b> "+esc(p.run)+"</p><p><b>Can the system run without you here?</b> "+esc(p.can)+'</p><div class="chips tight">'+p.at.map(chipBtn).join("")+"</div></div></details>";
+  }).join("");
+  h+='<div class="ghead">Where your interventions fell</div><div class="minibars">'+INTERV.map(x=>'<div class="mb"><span>'+esc(x.l)+'</span><span class="tr"><i style="--w:'+(x.n/max*100).toFixed(0)+'%"></i></span><em>'+x.n+"</em></div>").join("")+"</div>";
+  h+='<p class="note">21 entries from S00 to S22 in 70_logs/human-interventions.md. The 22nd, the autopsy declaration of 2026-10-02, is not counted. Many stops come early, while the choices are broad and cheap. The late ones are narrow.</p>';
+  h+='<div class="callout"><span class="who">What the table lacks</span><p>A place where you steer the philosophy, as you did in your own ChatGPT conversations. v1 has stops that carry and stops that approve. It has none that steer.</p></div>';
+  return h;
+}
+function spendHTML(){
+  const tot=S.reduce((a,s)=>a+s.rep,0),mid=S.filter(s=>s.n>=4&&s.n<=7).reduce((a,s)=>a+s.rep,0),max=Math.max.apply(null,S.map(s=>s.rep));
+  let h='<p class="prose">One stage report is the logged output of one context or one integrator step in 70_logs/reports. It counts work done, not tokens spent. Circle size on the map follows the count.</p>';
+  h+='<div class="stats">'+stat(tot,"stage reports")+stat((mid/tot*100).toFixed(1)+"%","at S04 to S07 ("+mid+" of "+tot+")")+stat(S[5].rep,"at S05, the most of any stage")+stat(7,"C6 re-runs, after two platform limits")+"</div>";
+  h+='<div class="bars">'+S.map(s=>'<button class="bar" data-act="stage" data-v="'+s.n+'" data-hover="'+s.n+'"><span>'+pad(s.n)+" "+esc(s.short)+'</span><span class="tr"><i style="--w:'+(s.rep/max*100).toFixed(1)+'%;--c:'+opColor(s)+'"></i></span><em>'+s.rep+"</em></button>").join("")+"</div>";
+  h+=sec("Questions about the spend",'<ul class="qs"><li>Of the 63 reports at S05, how many changed a lineage that later survived?</li><li>What did twenty ruminations buy that six would not have?</li><li>What was left for form, once S04 to S07 had spent 62 percent of the reports?</li></ul>',false,"3 questions, starting “Of the 63 reports at S05, how many changed a lineage that later survived?”");
+  return h;
+}
+function formHTML(){
+  const groups=["T","R","G","N"].map(k=>({k:k,ns:S.filter(s=>s.form===k).map(s=>s.n)}));
+  let h='<p class="prose">Each stage either builds, presses or selects. What it may see decides what it can notice. Color shows who sees the rubric and your taste.</p>';
+  h+=groups.map(g=>{const f=FORMS[g.k];
+    return '<div style="margin:0 0 16px"><div class="chips" style="margin-bottom:6px"><span class="chip hollow" style="--c:var('+FORMVAR[g.k]+')"><i></i><b>'+esc(f.name)+" · "+g.ns.length+"</b></span></div>"+'<p class="note" style="margin:0 0 8px">'+esc(f.text)+'</p><div class="chips tight">'+g.ns.map(chipBtn).join("")+"</div></div>";
+  }).join("");
+  h+='<button class="btn" data-act="ring" aria-pressed="'+st.ring+'">'+(st.ring?"Clear the ring":"Ring the three stages that decide form")+"</button>";
+  h+='<div class="callout"><span class="who">Your words</span><p>This is not an organism; it’s a collection of organs!</p></div>';
+  h+=sec("What the folder shows",'<ul class="qs"><li>S13 (précis), S17 (outline) and S20 (prose) all decide form, and all three are blind.</li><li>The words “introduction”, “roadmap”, “stakes” and “conclusion” appear in no card, role, schema, rubric or control file.</li><li>The first context that reads a whole draft is S21. By then the structure is frozen.</li></ul>',false,"Three facts from the folder: who is blind, which words never appear, and when a whole draft is first read.");
+  h+=sec("Questions",'<ul class="qs"><li>Should a context that holds the form norms sit upstream of S13, S17 and S20, as a shape card?</li><li>Is “blind” protecting the philosophy, or only keeping the form from being decided on purpose?</li></ul>',false,"2 questions, starting “Should a context that holds the form norms sit upstream of S13, S17 and S20?”");
+  return h;
+}
+function folderHTML(){
+  const files=FOLDERS.reduce((a,f)=>a+f.files,0),words=FOLDERS.reduce((a,f)=>a+f.words,0);
+  let h='<p class="prose">The run lives in one folder of plain files. Select a folder to ring the stages that read it, in blue, and the stages that write to it, in green.</p>';
+  h+='<div class="stats">'+stat(files,"files")+stat(fmt(words),"words (.md and .csv)")+stat(FOLDERS.length,"top-level folders")+"</div>";
+  h+='<ul class="tree">'+FOLDERS.map(f=>'<li><button class="trow" data-act="folder" data-v="'+f.k+'" aria-pressed="'+(st.folder===f.k)+'"><b>'+f.dir+'</b><span class="w">'+f.files+" files · "+fmt(f.words)+' words</span><small>'+esc(f.note)+"</small></button></li>").join("")+"</ul>";
+  if(st.folder){const f=FOLDERS.find(x=>x.k===st.folder);
+    if(f.always)h+='<p class="note">Nothing to ring here: every stage touches this folder, or it sits outside the run.</p>';
+    else h+='<p class="note">'+esc(f.dir)+": read by "+st.rd.size+" stages, written by "+st.wr.size+".</p>";}
+  h+='<div class="ghead">What a fresh context is handed, in order</div><ol class="stack">'+STACK.map(x=>"<li><span><b>"+esc(x.b)+".</b> "+esc(x.t)+"</span></li>").join("")+"</ol>";
+  h+='<p class="note">The whitelists are why no sub-context before S21 reads a whole draft.</p>';
+  return h;
+}
+function findHTML(){
+  let h='<p class="prose">Eleven findings, each backed by something in the folder. Open one to ring its stages on the map. The counts were checked against the files. The reading is Claude’s, for you to argue with.</p>';
+  h+=FINDINGS.map((f,i)=>'<details class="item" data-i="'+i+'" data-hl="'+f.at.join(",")+'"><summary><span class="n">'+(i+1)+'</span><span class="t">'+esc(f.t)+"<small>"+where(f.at)+'</small></span></summary><div class="more">'+f.ev.map(e=>"<p>"+esc(e)+"</p>").join("")+'<div class="chips tight">'+f.at.map(chipBtn).join("")+"</div></div></details>").join("");
+  return h;
+}
+function fastHTML(){
+  const cnt={};S.forEach(s=>{cnt[s.v]=(cnt[s.v]||0)+1;});
+  let h='<div class="hyp"><b>Claude’s hypothesis, not a decision.</b> You said you would rather run a compressed version and expand it if it falls short. This is one such version. Argue with it.</div>';
+  h+='<div class="chips">'+Object.keys(VERD).map(k=>'<span class="chip" style="--c:var('+VERD[k].c+')"><i></i>'+VERD[k].name+" · "+(cnt[k]||0)+"</span>").join("")+"</div>";
+  h+='<p class="prose">Twenty-five stages become eleven. Your stops shrink to five: intake, the shape card twice, paywalled sources, and submission.</p>';
+  h+=FAST.map(f=>'<details class="item" data-id="'+f.id+'" data-hl="'+f.cover.join(",")+'"><summary><span class="n f">'+f.id+'</span><span class="t">'+esc(f.name)+"<small>replaces "+listJoin(f.cover.map(pad))+'</small></span></summary><div class="more"><p>'+esc(f.text)+'</p><p><b>Your stop.</b> '+esc(f.you)+'</p><div class="chips tight">'+f.cover.map(chipBtn).join("")+"</div></div></details>").join("");
+  h+='<p class="note">Dropped: '+listJoin(FAST_DROPPED.map(pad))+". The shape card at F2 and F6 does the précis job earlier, so S13 is the first stage to restore if structure fails.</p>";
+  h+='<div class="ghead">Expand if it fails, in this order</div><ol class="stack">'+FAST_ORDER.map(x=>"<li><span>"+esc(x)+"</span></li>").join("")+"</ol>";
+  h+='<div class="ghead">A variant to argue with</div><div class="hyp"><b>'+esc(VARIANT.title)+".</b> "+esc(VARIANT.note)+"</div>";
+  h+=VARIANT.text.map(t=>'<p class="prose">'+esc(t)+"</p>").join("");
+  h+='<p class="note">'+esc(VARIANT.test)+"</p>";
+  h+=sec("Where the variant collides with v1",'<dl class="facts">'+VARIANT.clash.map(c=>"<div><dt>"+esc(c.k)+"</dt><dd>"+esc(c.v)+"</dd></div>").join("")+"</dl>",false,VARIANT.clash.length+" principles it strains, from mutual blindness to personas, each with how the variant answers.");
+  return h;
+}
+function lensHTML(){
+  switch(st.lens){case "stops":return stopsHTML();case "spend":return spendHTML();case "form":return formHTML();case "folder":return folderHTML();case "find":return findHTML();case "fast":return fastHTML();default:return startHTML();}
+}
+
+/* ----- layout: how much of the screen the map and the details get ----- */
+const PRESETS=[["only","Spiral only",1],["map","More spiral",0.68],["bal","Even",0.5],["read","More detail",0.36]];
+const lay={auto:true,manual:0.5};
+try{const j=JSON.parse(localStorage.getItem("pm-layout")||"null");if(j){lay.auto=j.auto!==false;if(typeof j.manual==="number")lay.manual=j.manual;}}catch(e){}
+function saveLay(){try{localStorage.setItem("pm-layout",JSON.stringify(lay));}catch(e){}}
+function bounds(){const W=Math.max(400,work.clientWidth-62);return{lo:Math.max(0.28,380/W),hi:Math.min(0.78,1-340/W)};}
+function clampS(s){
+  if(s>=0.995)return 1;
+  const b=bounds();
+  if(b.hi<b.lo)return 0.5;
+  return Math.min(b.hi,Math.max(b.lo,s));
+}
+const isCollapsed=()=>work.classList.contains("collapsed");
+function applyS(s){
+  const v=clampS(s);
+  work.style.setProperty("--s",v.toFixed(4));
+  work.classList.toggle("collapsed",v>=1);
+  reopen.hidden=!(v>=1);
+  const pct=Math.round(v*100);
+  split.setAttribute("aria-valuenow",pct);
+  split.setAttribute("aria-valuetext",v>=1?"Spiral only, details hidden":"Spiral "+pct+" percent, details "+(100-pct)+" percent");
+  kickPlace();
+}
+function autoTarget(){
+  if(pBody.querySelector("details[open]"))return 0.42;
+  if(st.tab==="stage"&&st.stage!==null)return 0.56;
+  return 0.62;
+}
+function renderLayoutCtl(){
+  ctl.innerHTML='<span class="lbl">Layout</span>'+PRESETS.map(p=>'<button class="seg" data-p="'+p[0]+'" aria-pressed="'+(!lay.auto&&Math.abs(lay.manual-p[2])<0.001)+'">'+p[1]+"</button>").join("")+
+    '<button class="seg" data-p="auto" aria-pressed="'+lay.auto+'" title="Widen the details when you open a section">Auto</button>';
+}
+function autoLayout(){applyS(lay.auto?autoTarget():lay.manual);renderLayoutCtl();}
+ctl.addEventListener("click",e=>{
+  const b=e.target.closest("[data-p]");if(!b)return;
+  if(b.dataset.p==="auto"){lay.auto=!lay.auto;}
+  else{lay.auto=false;lay.manual=PRESETS.find(p=>p[0]===b.dataset.p)[2];}
+  saveLay();autoLayout();
+});
+let dragging=false;
+function endDrag(){if(!dragging)return;dragging=false;work.classList.remove("dragging");saveLay();}
+split.addEventListener("pointerdown",e=>{e.preventDefault();dragging=true;work.classList.add("dragging");try{split.setPointerCapture(e.pointerId);}catch(x){}});
+split.addEventListener("pointermove",e=>{
+  if(!dragging)return;
+  const r=work.getBoundingClientRect(),padL=parseFloat(getComputedStyle(work).paddingLeft)||0,W=work.clientWidth-2*padL-22;
+  const raw=(e.clientX-r.left-padL-11)/W;
+  lay.auto=false;lay.manual=raw>0.86?1:clampS(raw);applyS(lay.manual);renderLayoutCtl();
+});
+split.addEventListener("pointerup",endDrag);
+split.addEventListener("pointercancel",endDrag);
+split.addEventListener("dblclick",()=>{lay.auto=true;saveLay();autoLayout();});
+split.addEventListener("keydown",e=>{
+  if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
+  e.preventDefault();
+  const cur=parseFloat(work.style.getPropertyValue("--s"))||0.62,b=bounds(),dir=e.key==="ArrowRight"?1:-1;
+  let nx;
+  if(cur>=1)nx=dir<0?b.hi:1;
+  else if(dir>0&&cur>=b.hi-0.001)nx=1;
+  else nx=clampS(cur+dir*0.03);
+  lay.auto=false;lay.manual=nx;saveLay();applyS(lay.manual);renderLayoutCtl();
+});
+window.addEventListener("resize",()=>{applyS(lay.auto?autoTarget():lay.manual);placePeek();});
+reopen.addEventListener("click",()=>{lay.auto=true;saveLay();autoLayout();});
+
+/* ----- panel and state ----- */
+function recomputeHL(){
+  st.hl=new Set();
+  pBody.querySelectorAll("details[data-hl][open]").forEach(d=>d.dataset.hl.split(",").forEach(x=>{if(x!=="")st.hl.add(+x);}));
+  if(st.lens==="form"&&st.ring)[13,17,20].forEach(n=>st.hl.add(n));
+  paint();
+}
+function renderPanel(){
+  const ts=$("#tabStage"),tl=$("#tabLens");
+  ts.disabled=st.stage===null;
+  ts.textContent=st.stage===null?"Stage":"Stage "+pad(st.stage);
+  tl.textContent=LENSES.find(l=>l.id===st.lens).name;
+  ts.setAttribute("aria-selected",String(st.tab==="stage"));
+  tl.setAttribute("aria-selected",String(st.tab==="lens"));
+  pBody.innerHTML=(st.tab==="stage"&&st.stage!==null)?stageHTML(st.stage):lensHTML();
+  recomputeHL();
+  autoLayout();
+}
+function renderLenses(){
+  $("#lenses").innerHTML=LENSES.map(l=>'<button class="lens" data-l="'+l.id+'" aria-pressed="'+(st.lens===l.id)+'"><i></i>'+esc(l.name)+"</button>").join("");
+  $("#lensq").textContent=LENSES.find(l=>l.id===st.lens).q;
+}
+function renderAll(){renderLenses();renderLegend();renderPanel();}
+function setLens(id){
+  st.lens=id;st.tab="lens";st.hl=new Set();st.rd=new Set();st.wr=new Set();st.folder=null;st.ring=false;
+  renderAll();
+}
+function bringPanel(){if(innerWidth<=980)$(".panel").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}
+function selectStage(n){
+  if(n<0||n>=S.length)return;
+  st.stage=n;st.tab="stage";renderPanel();bringPanel();
+}
+function openIn(sel){
+  const d=pBody.querySelector(sel);
+  if(d){d.open=true;recomputeHL();d.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});}
+}
+function setFolder(k){
+  const f=FOLDERS.find(x=>x.k===k);
+  st.rd=new Set();st.wr=new Set();
+  if(st.folder===k||!f){st.folder=null;}
+  else{
+    st.folder=k;
+    if(!f.always)S.forEach(s=>{if(s.r.indexOf(k)>=0)st.rd.add(s.n);if(s.w.indexOf(k)>=0)st.wr.add(s.n);});
+  }
+  renderPanel();
+}
+
+/* ----- events ----- */
+$("#lenses").addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b)setLens(b.dataset.l);});
+$("#tabStage").addEventListener("click",()=>{if(st.stage!==null){st.tab="stage";renderPanel();}});
+$("#tabLens").addEventListener("click",()=>{st.tab="lens";renderPanel();});
+function openSide(n,k){
+  if(isCollapsed()){lay.auto=true;saveLay();}
+  selectStage(n);
+  if(k){const d=pBody.querySelector('details.sec[data-k="'+k+'"]');if(d){d.open=true;d.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});}}
+  autoLayout();
+}
+function act(b){
+  const v=b.dataset.v;
+  switch(b.dataset.act){
+    case "card":openCard(+v,b.dataset.k);break;
+    case "peekgo":showPeek(+v,true);break;
+    case "side":openSide(+v,b.dataset.k||null);break;
+    case "stage":selectStage(+v);break;
+    case "stop":st.lens="stops";st.tab="lens";st.hl=new Set();renderAll();openIn('details.srow[data-i="'+v+'"]');break;
+    case "find":st.lens="find";st.tab="lens";st.hl=new Set();renderAll();openIn('details.item[data-i="'+v+'"]');break;
+    case "fast":st.lens="fast";st.tab="lens";st.hl=new Set();renderAll();openIn('details.item[data-id="'+v+'"]');break;
+    case "folder":setFolder(v);break;
+    case "ring":st.ring=!st.ring;renderPanel();break;
+    case "expandAll":pBody.querySelectorAll("details.sec").forEach(d=>{d.open=true;});break;
+    case "collapseAll":pBody.querySelectorAll("details.sec").forEach(d=>{d.open=false;});break;
+  }
+}
+pBody.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(b&&!b.disabled)act(b);});
+
+/* ----- the quick menu that opens when you hover a stage, and the floating cards ----- */
+function peekHTML(n){
+  const s=S[n],tn=turnOf(n),secs=sectionsFor(n);
+  let note="";
+  if(st.lens==="form")note=FORMS[s.form].name;
+  else if(st.lens==="fast")note=VERD[s.v].name+": "+s.vt;
+  else if(st.lens==="spend")note=s.rep+(s.rep===1?" report":" reports");
+  else{const ps=stopsAt[n];if(ps.length)note="Stops here: "+ps.map(i=>STOPS[i].id).join(", ");}
+  let h='<div class="pk-h"><span class="pk-n">'+pad(n)+'</span><span class="pk-t">'+esc(s.name)+'</span><button class="fb" data-peek="close" aria-label="Close the menu" title="Close (Esc)">×</button></div>';
+  h+='<div class="pk-m">Turn '+tn.n+" of 7 · "+esc(tn.name)+" · "+esc(s.opl)+"</div>";
+  h+='<div class="pk-a">'+esc(s.act)+"</div>";
+  if(note)h+='<div class="pk-note">'+esc(note)+"</div>";
+  h+='<div class="pk-b">'+secs.map(sc=>'<button class="pkb" data-act="card" data-v="'+n+'" data-k="'+sc.k+'">'+esc(sc.label)+"</button>").join("")+"</div>";
+  h+='<div class="pk-f"><button class="pkn" data-act="peekgo" data-v="'+(n-1)+'"'+(n===0?" disabled":"")+">← "+(n>0?pad(n-1):"")+'</button><button class="pkn go" data-act="side" data-v="'+n+'">Open side panel</button><button class="pkn" data-act="peekgo" data-v="'+(n+1)+'"'+(n===S.length-1?" disabled":"")+">"+(n<S.length-1?pad(n+1):"")+" →</button></div>";
+  return h;
+}
+function placePeek(){
+  if(!st.peek||peekEl.hidden)return;
+  const nd=nodes[st.peek.n].g,r=nd.getBoundingClientRect(),m=svg.getScreenCTM();
+  const cx=r.left+r.width/2,cy=r.top+r.height/2,w=peekEl.offsetWidth,h=peekEl.offsetHeight;
+  let ux=1,uy=0;
+  if(m){const ox=m.a*CX+m.e,oy=m.d*CY+m.f,dx=cx-ox,dy=cy-oy,L=Math.hypot(dx,dy);if(L>1){ux=dx/L;uy=dy/L;}}
+  const gap=16+r.width/2;
+  let x=ux>0.3?cx+gap:(ux<-0.3?cx-gap-w:cx-w/2);
+  let y=uy>0.3?cy+gap:(uy<-0.3?cy-gap-h:cy-h/2);
+  if(Math.abs(ux)<=0.3&&Math.abs(uy)<=0.3){x=cx+gap;y=cy-h/2;}
+  x=Math.max(8,Math.min(innerWidth-w-8,x));y=Math.max(8,Math.min(innerHeight-h-8,y));
+  peekEl.style.left=Math.round(x)+"px";peekEl.style.top=Math.round(y)+"px";
+}
+let placeUntil=0,placeBusy=false;
+function kickPlace(){
+  placeUntil=performance.now()+520;
+  if(placeBusy)return;placeBusy=true;
+  const tick=()=>{placePeek();if(performance.now()<placeUntil)requestAnimationFrame(tick);else placeBusy=false;};
+  requestAnimationFrame(tick);
+}
+function showPeek(n,pinned){
+  clearTimeout(showT);clearTimeout(hideT);showT=null;
+  st.peek={n:n,pinned:!!pinned};st.hoverN=null;
+  peekEl.innerHTML=peekHTML(n);peekEl.hidden=false;peekEl.classList.toggle("pinned",!!pinned);
+  placePeek();paint();
+}
+function hidePeek(force){
+  clearTimeout(showT);clearTimeout(hideT);showT=null;
+  if(st.peek&&st.peek.pinned&&!force)return;
+  const had=st.peek;
+  st.peek=null;peekEl.hidden=true;
+  if(!overN)st.hoverN=null;
+  paint();
+  return had;
+}
+function enterNode(n){
+  overN=n;st.hoverN=n;paint();
+  if(st.peek){if(st.peek.n===n)clearTimeout(hideT);return;}
+  clearTimeout(showT);
+  showT=setTimeout(()=>{showT=null;if(overN===n&&!st.peek)showPeek(n,false);},150);
+}
+function leaveNode(n){
+  if(overN===n)overN=null;
+  st.hoverN=null;paint();
+  clearTimeout(showT);showT=null;
+  if(st.peek&&!st.peek.pinned&&st.peek.n===n){clearTimeout(hideT);hideT=setTimeout(closeTransient,420);}
+}
+function closeTransient(){
+  if(!st.peek||st.peek.pinned)return;
+  hidePeek(false);
+  if(overN!=null){const n=overN;showT=setTimeout(()=>{showT=null;if(overN===n&&!st.peek)showPeek(n,false);},150);st.hoverN=n;paint();}
+}
+peekEl.addEventListener("mouseenter",()=>{clearTimeout(hideT);st.hoverN=null;paint();});
+peekEl.addEventListener("mouseleave",()=>{if(st.peek&&!st.peek.pinned){clearTimeout(hideT);hideT=setTimeout(closeTransient,420);}});
+peekEl.addEventListener("click",e=>{
+  const x=e.target.closest("[data-peek]");
+  if(x){hidePeek(true);return;}
+  const b=e.target.closest("[data-act]");if(b&&!b.disabled)act(b);
+});
+peekEl.addEventListener("keydown",e=>{if(e.key==="Escape"){const n=st.peek?st.peek.n:null;hidePeek(true);if(n!=null)nodes[n].g.focus();}});
+window.addEventListener("scroll",placePeek,{passive:true});
+
+const cards=[];let zTop=1;
+function bringFront(c){if(c)c.el.style.zIndex=String(++zTop);}
+function closeCard(c){const i=cards.indexOf(c);if(i>=0)cards.splice(i,1);c.el.remove();}
+function openCard(n,k){
+  const id=n+":"+k,ex=cards.find(c=>c.id===id);
+  if(ex){bringFront(ex);return;}
+  const sc=sectionsFor(n).find(x=>x.k===k);if(!sc)return;
+  const el=document.createElement("div");
+  el.className="fcard";el.setAttribute("role","dialog");el.setAttribute("aria-label",pad(n)+" "+sc.title);
+  el.innerHTML='<div class="fh"><span class="ft">'+pad(n)+" · "+esc(S[n].name)+"<small>"+esc(sc.title)+'</small></span><button class="fb" data-card="side" title="Open in the side panel" aria-label="Open in the side panel">↗</button><button class="fb" data-card="close" title="Close" aria-label="Close this card">×</button></div><div class="fbody">'+sc.body+"</div>";
+  cardsEl.appendChild(el);
+  const c={id:id,n:n,k:k,el:el};cards.push(c);
+  const r=nodes[n].g.getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight,off=((cards.length-1)%5)*26;
+  let x=r.right+20+off;if(x+w>innerWidth-8)x=r.left-w-20-off;
+  let y=r.top-50+off;
+  x=Math.max(8,Math.min(innerWidth-w-8,x));y=Math.max(8,Math.min(innerHeight-h-8,y));
+  el.style.left=Math.round(x)+"px";el.style.top=Math.round(y)+"px";
+  while(cards.length>5)closeCard(cards[0]);
+  bringFront(c);
+}
+cardsEl.addEventListener("click",e=>{
+  const ce=e.target.closest(".fcard");if(!ce)return;
+  const c=cards.find(x=>x.el===ce);if(!c)return;
+  bringFront(c);
+  const cb=e.target.closest("[data-card]");
+  if(cb){if(cb.dataset.card==="close")closeCard(c);else{openSide(c.n,c.k);closeCard(c);}return;}
+  const b=e.target.closest("[data-act]");if(b&&!b.disabled)act(b);
+});
+cardsEl.addEventListener("pointerdown",e=>{
+  const h=e.target.closest(".fh");if(!h||e.target.closest("button"))return;
+  const ce=h.parentElement,c=cards.find(x=>x.el===ce);if(!c)return;
+  const r=ce.getBoundingClientRect(),dx=e.clientX-r.left,dy=e.clientY-r.top;
+  bringFront(c);
+  try{h.setPointerCapture(e.pointerId);}catch(x){}
+  const move=ev=>{
+    const x=Math.max(60-r.width,Math.min(innerWidth-60,ev.clientX-dx)),y=Math.max(0,Math.min(innerHeight-40,ev.clientY-dy));
+    ce.style.left=Math.round(x)+"px";ce.style.top=Math.round(y)+"px";
+  };
+  const up=()=>{h.removeEventListener("pointermove",move);h.removeEventListener("pointerup",up);h.removeEventListener("pointercancel",up);};
+  h.addEventListener("pointermove",move);h.addEventListener("pointerup",up);h.addEventListener("pointercancel",up);
+});
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Escape")return;
+  if(st.peek){hidePeek(true);return;}
+  if(cards.length)closeCard(cards[cards.length-1]);
+});
+document.addEventListener("click",e=>{
+  if(e.composedPath().some(x=>x.matches&&x.matches(".node,#peek,.fcard")))return;
+  if(st.peek&&st.peek.pinned)hidePeek(true);
+});
+pBody.addEventListener("toggle",e=>{const d=e.target;if(!d.matches||!d.matches("details"))return;if(d.matches("[data-hl]"))recomputeHL();autoLayout();},true);
+pBody.addEventListener("mouseover",e=>{const b=e.target.closest("[data-hover]");if(b)nodes[+b.dataset.hover].g.classList.add("hl");});
+pBody.addEventListener("mouseout",e=>{const b=e.target.closest("[data-hover]");if(b&&!b.contains(e.relatedTarget))nodes[+b.dataset.hover].g.classList.toggle("hl",st.hl.has(+b.dataset.hover));});
+
+buildSpiral();
+renderAll();
+paint();
+})();
+
+
+</script>
+
+</body></html>

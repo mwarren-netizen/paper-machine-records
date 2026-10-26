@@ -1,0 +1,1213 @@
+<title>Paper Machine v3 Contraption</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
+<style>
+/* Layout: a patent drawing of a Rube Goldberg contraption (light) that turns into a blueprint (dark).
+   One big lettered drawing, a caption in the cartoonist's cadence, a parts list, then the record. */
+:root{
+  --paper:#F2F5FA; --paper-2:#E2E9F3; --card:#FFFFFF; --ink:#111A2C; --ink-2:#38445C; --ink-3:#6B7790;
+  --rule:#C5D0E1; --grid:rgba(29,78,216,.075); --track:#B3BFD3; --housing:#FFFFFF;
+  --e-pre:#5E6A84; --e-core:#1D4ED8; --e-tests:#7C3AED; --e-review:#047857; --e-prose:#D97706; --e-polish:#BE185D;
+  --e-human:#4D7C0F; --trap:#DC2626; --mark:#0E7490; --hi:#FACC15; --tape-ink:#FFFFFF; --tape-ink-2:#111A2C;
+  --display:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --body:"Newsreader","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0A2149; --paper-2:#102E5D; --card:#0E2853; --ink:#EAF2FF; --ink-2:#BCCBE8; --ink-3:#8499C0;
+  --rule:#2A4A7E; --grid:rgba(255,255,255,.06); --track:#3E5F96; --housing:#0E2853;
+  --e-pre:#AEB8CF; --e-core:#86A8FF; --e-tests:#BC9EFF; --e-review:#3ED99A; --e-prose:#FBBF24; --e-polish:#F78CBE; --e-human:#A3E635;
+  --trap:#FF7070; --mark:#5FE0F3; --hi:#FDE047; --tape-ink:#0A2149; --tape-ink-2:#0A2149; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0A2149; --paper-2:#102E5D; --card:#0E2853; --ink:#EAF2FF; --ink-2:#BCCBE8; --ink-3:#8499C0;
+  --rule:#2A4A7E; --grid:rgba(255,255,255,.06); --track:#3E5F96; --housing:#0E2853;
+  --e-pre:#AEB8CF; --e-core:#86A8FF; --e-tests:#BC9EFF; --e-review:#3ED99A; --e-prose:#FBBF24; --e-polish:#F78CBE; --e-human:#A3E635;
+  --trap:#FF7070; --mark:#5FE0F3; --hi:#FDE047; --tape-ink:#0A2149; --tape-ink-2:#0A2149; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+a{color:var(--e-core)}
+:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.prose{max-width:68ch}
+.prose p{margin:.6em 0}
+
+/* header plate */
+.plate{border:3px solid var(--ink);background:var(--card);padding:22px 24px 20px;position:relative}
+.plate::after{content:"";position:absolute;inset:6px;border:1px solid var(--ink);pointer-events:none}
+.patent{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:14px}
+.plate h1{font-size:clamp(44px,7.4vw,96px);font-weight:800;line-height:.88;letter-spacing:-.005em;text-transform:uppercase}
+.plate h1 .v{color:var(--e-core)}
+.plate h1 .sm{display:block;font-size:.34em;font-weight:600;letter-spacing:.06em;color:var(--ink-2);margin-top:.35em}
+.dek{font-size:19px;max-width:62ch;margin:14px 0 18px}
+.dek em{font-style:italic}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{border:2px solid var(--ink);padding:10px 12px;background:var(--paper)}
+.stat b{display:block;font-family:var(--display);font-size:36px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-family:var(--mono);font-size:12px;line-height:1.35;color:var(--ink-2);margin-top:4px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.toc a{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);padding:5px 10px;background:var(--card)}
+.toc a:hover{background:var(--ink);color:var(--paper)}
+
+section{margin-top:56px}
+.sechead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;border-bottom:3px solid var(--ink);padding-bottom:6px;margin-bottom:16px}
+.sechead h2{font-size:clamp(30px,4.4vw,46px);font-weight:800;text-transform:uppercase;line-height:1}
+.sechead .eyebrow{margin-left:auto}
+
+/* controls */
+.controls{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.3fr);gap:12px;align-items:stretch}
+@media (max-width:1000px){.controls{grid-template-columns:1fr}}
+.ctl{border:2px solid var(--ink);background:var(--card);padding:10px 12px;min-width:0}
+.ctl > .eyebrow{display:block;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:13px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);padding:5px 9px;cursor:pointer;line-height:1.2}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip:hover{border-color:var(--e-core)}
+input[type=range]{width:100%;accent-color:var(--e-core)}
+.vread{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-top:2px;flex-wrap:wrap}
+.vread b{color:var(--ink);font-weight:600}
+.vhead{font-family:var(--body);font-size:15px;line-height:1.35;margin-top:4px;min-height:2.7em}
+.rp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+select,.btn{font-family:var(--mono);font-size:13px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);padding:5px 8px;min-width:0}
+select{max-width:100%}
+.btn{cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--paper);font-weight:600;min-width:74px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin:12px 0 0;min-height:24px}
+.legend .sw{display:inline-block;width:14px;height:14px;border:1.5px solid var(--ink);vertical-align:-2px;margin-right:6px}
+.legend .lt{font-family:var(--body);font-size:15px;color:var(--ink);flex-basis:100%}
+
+/* ticker */
+.ticker{border:2px solid var(--ink);border-top:none;background:var(--ink);color:var(--paper);padding:8px 12px;font-family:var(--mono);font-size:13px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 14px;align-items:center}
+.ticker .n{font-weight:600;white-space:nowrap}
+.ticker .what{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticker .cum{white-space:nowrap;opacity:.85}
+.ticker .note{grid-column:1/-1;font-family:var(--body);font-size:15px;opacity:.92;white-space:normal}
+.segs{grid-column:1/-1;display:flex;gap:2px;height:10px;margin-top:2px}
+.segs button{flex:1 1 0;min-width:2px;border:none;padding:0;cursor:pointer;background:var(--ink-3);opacity:.55}
+.segs button.o{background:var(--paper);opacity:.5}
+.segs button.x{background:var(--mark);opacity:.6}
+.segs button.done{opacity:1}
+.segs button.cur{background:var(--hi);opacity:1}
+@media (max-width:640px){.ticker{grid-template-columns:1fr}.ticker .what{white-space:normal}}
+
+/* the drawing */
+.stage{border:2px solid var(--ink);border-top:none;background:var(--paper);overflow-x:auto;-webkit-overflow-scrolling:touch}
+#rig{display:block;width:100%;min-width:1080px;height:auto}
+.hint{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin:6px 0 0}
+@media (min-width:1100px){.hint{display:none}}
+
+.rail{fill:none;stroke:var(--track);stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+.rail-c{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:2 9;stroke-linecap:round;opacity:.55}
+.chute{fill:none;stroke:var(--trap);stroke-width:9;stroke-linejoin:round;stroke-linecap:round;opacity:.85}
+.chute-c{fill:none;stroke:var(--paper);stroke-width:2;stroke-dasharray:6 6}
+.arc{fill:none;stroke:var(--trap);stroke-width:2.5;stroke-dasharray:6 4}
+.bypass{fill:none;stroke:var(--e-tests);stroke-width:4;stroke-dasharray:10 6;stroke-linecap:round}
+.loop{fill:none;stroke:var(--e-tests);stroke-width:2.5}
+.annex{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:3 5}
+.annex-l{font:600 13px var(--mono);letter-spacing:.08em;fill:var(--ink-2)}
+.hand{font-family:var(--hand);font-size:23px;font-weight:600;fill:var(--ink-2)}
+.monol{font:600 12px var(--mono);letter-spacing:.1em;fill:var(--trap)}
+.tag rect{fill:var(--card);stroke:var(--ink);stroke-width:1.5}
+.tag text{font:500 12px var(--mono);fill:var(--ink)}
+.arrowhead{fill:var(--trap)}
+
+.st{cursor:pointer;transition:opacity .25s}
+.st .hs{fill:var(--housing);stroke:var(--ink);stroke-width:2.5}
+.st.chat .hs{stroke-dasharray:7 4}
+.st.off .hs{stroke-dasharray:2 4}
+.st .band{fill:var(--era)}
+.st .nm{font:700 17px var(--display);letter-spacing:.06em;text-transform:uppercase;fill:var(--ink);text-anchor:middle}
+.st .sub{font:500 10.5px var(--mono);fill:var(--ink-2);text-anchor:middle}
+.st .badge circle{fill:var(--ink);stroke:var(--paper);stroke-width:2}
+.st .badge text{font:800 15px var(--display);fill:var(--paper);text-anchor:middle;dominant-baseline:central}
+.st .tape rect{fill:var(--era);opacity:.95}
+.st .tape text{font:600 10.5px var(--mono);fill:var(--tape-ink);text-anchor:middle;dominant-baseline:central}
+.st.e-prose .tape text{fill:var(--tape-ink-2)}
+.st:hover .hs,.st:focus-visible .hs,.st.sel .hs{stroke:var(--e-core);stroke-width:4}
+.st:focus{outline:none}
+.st:focus-visible .hs{stroke:var(--hi)}
+.st.hot .hs{stroke:var(--hi);stroke-width:6}
+.st.hot .band{fill:var(--hi)}
+.gl *{fill:none;stroke:var(--ink);stroke-width:2.3;stroke-linejoin:round;stroke-linecap:round}
+.gl .thin{stroke-width:1.4}
+.gl .thick{stroke-width:5}
+.gl .dash{stroke-dasharray:4 4;stroke-width:1.4}
+.gl .acc{stroke:var(--era);stroke-width:3}
+.gl .accf{fill:var(--era)}
+.gl .dot{fill:var(--ink);stroke:none}
+.gl .gtx{font:600 13px var(--mono);fill:var(--ink);stroke:none}
+.lb{display:none}
+.lb circle{stroke:var(--paper);stroke-width:2}
+.lb text{font:700 12px var(--mono);fill:var(--paper);text-anchor:middle;dominant-baseline:central}
+.cost{display:none}
+.cost rect{fill:var(--ink)}
+.cost text{font:600 11px var(--mono);fill:var(--paper);text-anchor:middle;dominant-baseline:central}
+.ghost{opacity:.12 !important;pointer-events:none}
+.st.ghost .hs{stroke-dasharray:4 4}
+#marble{pointer-events:none}
+
+/* lenses */
+#rig:not([data-lens="era"]) .st .band,#rig:not([data-lens="era"]) .st .tape rect{fill:var(--ink-3)}
+#rig:not([data-lens="era"]) .st .gl .acc{stroke:var(--ink-3)}
+#rig:not([data-lens="era"]) .st .gl .accf{fill:var(--ink-3)}
+#rig[data-lens="fresh"] .st:not(.has-fresh),#rig[data-lens="mark"] .st:not(.has-mark),#rig[data-lens="relic"] .st:not(.has-relic),#rig[data-lens="cost"] .st:not(.has-cost){opacity:.25}
+#rig[data-lens="fresh"] .st.has-fresh .band{fill:var(--e-review)}
+#rig[data-lens="fresh"] .st.has-blind .band{fill:var(--ink)}
+#rig[data-lens="fresh"] .lb.fresh,#rig[data-lens="mark"] .lb.mark,#rig[data-lens="relic"] .lb.relic{display:inline}
+#rig[data-lens="mark"] .st.has-mark .band{fill:var(--mark)}
+#rig[data-lens="relic"] .st.has-relic .band{fill:var(--trap)}
+#rig[data-lens="cost"] .cost{display:inline}
+#rig[data-lens="cost"] .st.has-cost .band{fill:var(--e-core)}
+#rig:not([data-lens="era"]) .lensdim{opacity:.35}
+
+/* caption + parts */
+.caption{border:2px solid var(--ink);border-top:none;background:var(--card);padding:18px 22px}
+.caption h3{font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.caption p{font-size:18px;line-height:1.6;margin:.5em 0 0;max-width:none}
+.caption .lt{font-family:var(--display);font-weight:800;font-size:17px;border:none;background:none;color:var(--e-core);cursor:pointer;padding:0 1px}
+.caption .lt:hover{text-decoration:underline}
+.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:22px}
+.zone{border:2px solid var(--ink);background:var(--card);min-width:0}
+.zone h3{font-size:19px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:8px 12px 2px}
+.zone .zs{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding:0 12px 8px;border-bottom:1px solid var(--rule)}
+.pl{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:2px 10px;align-items:center;width:100%;text-align:left;border:none;border-bottom:1px solid var(--rule);background:none;padding:8px 12px;cursor:pointer;color:var(--ink);font:inherit}
+.pl:last-child{border-bottom:none}
+.pl:hover{background:var(--paper-2)}
+.pl .ltr{font-family:var(--display);font-weight:800;font-size:18px;background:var(--ink);color:var(--paper);text-align:center;line-height:28px;border-radius:50%;width:28px;height:28px}
+.pl .ltr.dbl{font-size:13px}
+.pl .pn{font-family:var(--display);font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.03em;line-height:1.1}
+.pl .pd{grid-column:2/4;font-size:14.5px;line-height:1.35;color:var(--ink-2)}
+.vt{font-family:var(--mono);font-size:11px;padding:2px 6px;color:var(--tape-ink);background:var(--era);white-space:nowrap}
+.vt.e-prose{color:var(--tape-ink-2)}
+
+/* side panel */
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,100vw);background:var(--card);border-left:3px solid var(--ink);z-index:40;transform:translateX(105%);transition:transform .28s ease;overflow-y:auto;padding:calc(18px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(30px + env(safe-area-inset-bottom,0px)) 20px;box-shadow:-10px 0 0 rgba(0,0,0,.08)}
+#panel.open{transform:none}
+@media (prefers-reduced-motion: reduce){#panel{transition:none}}
+.ph{display:flex;align-items:flex-start;gap:12px;border-bottom:3px solid var(--ink);padding-bottom:10px}
+.ph .big{flex:none;width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--paper);font:800 28px/52px var(--display);text-align:center}
+.ph .big.dbl{font-size:21px}
+.ph h2{font-size:32px;font-weight:800;text-transform:uppercase;line-height:1}
+.ph .who{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.close{margin-left:auto;flex:none;font:600 22px/1 var(--mono);border:2px solid var(--ink);background:var(--paper);color:var(--ink);width:38px;height:38px;cursor:pointer}
+.pchips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.pchips span{font-family:var(--mono);font-size:12px;border:1.5px solid var(--ink);padding:3px 7px}
+#panel h3{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:18px 0 4px}
+#panel p{margin:.35em 0;font-size:16.5px}
+#panel dl{display:grid;grid-template-columns:96px minmax(0,1fr);gap:6px 10px;margin:8px 0;font-size:15px}
+#panel dt{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);padding-top:3px}
+#panel dd{margin:0;min-width:0;overflow-wrap:anywhere}
+#panel code{font-family:var(--mono);font-size:.86em}
+.callout{border-left:5px solid var(--c,var(--ink));background:var(--paper);padding:8px 12px;margin:10px 0;font-size:15.5px}
+.callout b{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;display:block;color:var(--c,var(--ink))}
+.pnav{display:flex;gap:8px;margin-top:20px}
+.pnav button{flex:1}
+
+/* laws */
+.laws{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.law{border:2px solid var(--ink);background:var(--card);padding:14px 16px;min-width:0}
+.law .no{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.1em;color:var(--ink-3)}
+.law h3{font-size:25px;font-weight:800;text-transform:uppercase;line-height:1.02;margin:2px 0 8px}
+.law .rule{font-size:15.5px;border-left:4px solid var(--e-core);padding-left:10px;margin:6px 0}
+.law .why{font-size:15.5px;color:var(--ink-2);margin:8px 0 0}
+.law .why b{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+
+/* charts */
+.charts{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
+@media (max-width:980px){.charts{grid-template-columns:1fr}}
+.panelbox{border:2px solid var(--ink);background:var(--card);padding:14px 16px;min-width:0}
+.panelbox h3{font-size:22px;font-weight:800;text-transform:uppercase;line-height:1.05}
+.panelbox .sub{font-size:15px;color:var(--ink-2);margin:4px 0 8px}
+.chartwrap{overflow-x:auto}
+#wchart{display:block;width:100%;min-width:520px;height:auto}
+.ax{font:500 11px var(--mono);fill:var(--ink-3)}
+.axl{stroke:var(--rule);stroke-width:1}
+.ln{fill:none;stroke-width:3;stroke-linejoin:round}
+.ann{font:600 12px var(--mono);fill:var(--ink)}
+.annh{font-family:var(--hand);font-size:19px;font-weight:600;fill:var(--ink-2)}
+.runs{display:grid;gap:6px;font-family:var(--mono);font-size:12.5px}
+.rr{display:grid;grid-template-columns:96px minmax(0,1fr) 92px;gap:8px;align-items:center}
+.rr .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr .bar{position:relative;height:18px;background:var(--paper-2)}
+.rr .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink-3)}
+.rr .bar i.send{background:var(--e-review)}
+.rr .bar i.stop{background:var(--trap)}
+.rr .bar em{position:absolute;left:6px;top:0;line-height:18px;font-style:normal;color:var(--paper);font-weight:600;mix-blend-mode:normal}
+.rr .bar .aim{position:absolute;top:-3px;bottom:-3px;border-left:2px dashed var(--ink)}
+.rr .tk{text-align:right;font-variant-numeric:tabular-nums}
+.rr .tk small{display:block;color:var(--ink-3);font-size:10.5px}
+.rlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:10px}
+.rlegend i{display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:-1px}
+
+/* ledger */
+.lfilters{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 12px}
+.ledger{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.vp{border:2px solid var(--ink);background:var(--card);padding:0;min-width:0;display:flex;flex-direction:column}
+.vp .top{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--era);color:var(--tape-ink)}
+.vp.e-prose .top{color:var(--tape-ink-2)}
+.vp .top b{font-family:var(--display);font-size:24px;font-weight:800;line-height:1}
+.vp .top span{font-family:var(--mono);font-size:12px}
+.vp .top .trig{margin-left:auto;font-family:var(--mono);font-size:11px;border:1.5px solid currentColor;padding:1px 6px;text-transform:uppercase;letter-spacing:.06em}
+.vp h4{font-family:var(--display);font-size:20px;font-weight:700;text-transform:uppercase;line-height:1.05;margin:10px 12px 4px}
+.vp p{margin:4px 12px;font-size:15px;line-height:1.42}
+.vp p b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.vp p.obs{margin-top:auto;padding:8px 12px 10px;margin:8px 0 0;border-top:1px dashed var(--rule);background:var(--paper)}
+.vp p.obs b{color:var(--e-review)}
+.vp .sp{height:8px}
+
+/* reading */
+.reading{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:18px;align-items:start}
+@media (max-width:980px){.reading{grid-template-columns:1fr}}
+.pt{border-top:2px solid var(--ink);padding-top:10px;margin-top:18px}
+.pt:first-child{margin-top:0}
+.pt h3{font-size:26px;font-weight:800;text-transform:uppercase;line-height:1.05}
+.pt h3 span{color:var(--ink-3);margin-right:8px}
+.pt p{margin:.45em 0;max-width:70ch}
+.v16{border:3px solid var(--ink);background:var(--card);padding:14px 16px;position:sticky;top:calc(12px + env(safe-area-inset-top,0px))}
+.v16 h3{font-size:24px;font-weight:800;text-transform:uppercase}
+.v16 ol{padding-left:22px;margin:8px 0 0}
+.v16 li{margin:8px 0;font-size:15.5px}
+.v16 .hand2{font-family:var(--hand);font-size:22px;color:var(--ink-2);line-height:1.15;margin-top:10px}
+.srcs{columns:2 300px;column-gap:28px;font-size:15px}
+.srcs li{break-inside:avoid;margin:3px 0}
+.srcs code{font-family:var(--mono);font-size:.85em}
+.rflow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:18px 0}
+@media (max-width:1100px){.rflow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.rflow{grid-template-columns:1fr}}
+.rstep{position:relative;display:flex;flex-direction:column;gap:6px;text-align:left;border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:12px;cursor:pointer;font:inherit;min-width:0}
+.rstep:hover{border-color:var(--e-human);box-shadow:4px 4px 0 var(--e-human)}
+.rstep .rn{font:800 30px/1 var(--display);color:var(--e-human)}
+.rstep .rl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.rstep b{font-family:var(--display);font-size:20px;text-transform:uppercase;line-height:1.05}
+.rstep .rd{font-size:14.5px;line-height:1.4;color:var(--ink-2)}
+.rstep .rs{font-size:13.5px;line-height:1.35;border-top:1px dashed var(--rule);padding-top:6px;margin-top:auto}
+.rstep .rs i{font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--trap)}
+.rgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:14px;margin-top:14px}
+@media (max-width:980px){.rgrid{grid-template-columns:1fr}}
+.tablewrap{overflow-x:auto}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px;font-variant-numeric:tabular-nums}
+.tablewrap th{font-family:var(--mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;text-align:left;color:var(--ink-3);border-bottom:2px solid var(--ink);padding:6px 8px;vertical-align:bottom}
+.tablewrap td{border-bottom:1px solid var(--rule);padding:8px;vertical-align:top}
+.tablewrap td.hot{color:var(--trap);font-weight:600}
+.muted{color:var(--ink-3);font-size:13px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media (max-width:640px){.cmp{grid-template-columns:1fr}}
+.cmp > div{border:1.5px solid var(--ink);padding:8px 10px;background:var(--paper);min-width:0}
+.cmp p{margin:4px 0 0;font-size:15px;line-height:1.4}
+.redacted{background:repeating-linear-gradient(-45deg,transparent 0 6px,var(--paper-2) 6px 12px);padding:4px 6px}
+.checks{margin:8px 0 0;padding-left:18px;font-size:15px;line-height:1.45}
+.checks li{margin:6px 0}
+.foot{margin-top:28px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+<header class="plate">
+  <div class="patent"><span>Fig. 1</span><span>paper-machine-v3</span><span>machine v15.1</span><span>updated 26 October 2026</span><span>parts A to MM</span></div>
+  <h1>The Self-Operating Paper Machine, <span class="v">v3</span><span class="sm">The harness as it stands, part by part, with the reason each part was bolted on</span></h1>
+  <p class="dek">The operator wanted a harness that writes a philosophy paper for the AI Philosophy Competition. The v3 folder began on 12 October as a cathedral of 386 calls, was knocked down on 14 October to a lean machine of about a dozen, and has spent the nine days since growing back into a contraption. Click any lettered part to see what it does, why it is there, and what it did in the runs. The lenses show who is blind, where the operator’s hands go, what each part costs and which parts do nothing any more. The slider rebuilds the machine one version at a time. The replay rolls a marble through a real run, one logged call at a time. The last row is the human review of 24 and 25 October, and the section after the drawing shows how it kept every human idea out of the papers.</p>
+  <div class="stats" id="stats"></div>
+  <nav class="toc" aria-label="Sections"><a href="#machine">The machine</a><a href="#rules">Keeping the philosophy the AI’s</a><a href="#laws">Eight rules that hold it together</a><a href="#growth">How it grew</a><a href="#reading">Where it creaks</a><a href="#sources">Sources</a></nav>
+</header>
+
+<section id="machine" aria-label="The machine">
+  <div class="sechead"><h2>Fig. 1 · The machine</h2><span class="eyebrow">click a part · switch a lens · scrub · replay</span></div>
+  <div class="controls">
+    <div class="ctl"><span class="eyebrow">Lens</span><div class="chips" id="lenses" role="group" aria-label="Lens"></div></div>
+    <div class="ctl"><label class="eyebrow" for="vslider">Build up to version</label><input type="range" id="vslider" min="0" max="19" value="19" step="1"><div class="vread" id="vread"></div><div class="vhead" id="vhead"></div></div>
+    <div class="ctl"><label class="eyebrow" for="runsel">Replay a run from its call log</label>
+      <div class="rp"><select id="runsel"></select><button class="btn" id="back" aria-label="Previous call">◀</button><button class="btn primary" id="play">Play</button><button class="btn" id="fwd" aria-label="Next call">▶</button><select id="speed" aria-label="Speed"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div></div>
+  </div>
+  <div class="legend" id="legend"></div>
+  <div class="ticker" id="ticker" aria-live="polite"></div>
+  <div class="stage"><svg id="rig" viewBox="0 -24 1640 1760" role="img" aria-label="A Rube Goldberg drawing of the paper machine: lettered parts on a winding track" data-lens="era"></svg></div>
+  <p class="hint">The drawing scrolls sideways on a narrow screen. Every part is also in the list below.</p>
+  <div class="caption" id="caption"></div>
+  <div class="parts" id="parts"></div>
+</section>
+
+<section id="rules">
+  <div class="sechead"><h2>Keeping the philosophy the AI’s</h2><span class="eyebrow">the human review, 24 and 25 October</span></div>
+  <div class="prose"><p>The competition allows a human to direct and correct an essay, but not to supply its ideas: “Philosophical arguments and positions must be primarily AI generated.” Its examples allow “expand on this point”, “consider this author” and choosing among drafts. They forbid human-supplied arguments, fine human control over method, “rigorous human critique/dialogue that gives the AI significant ideas”, and human writing.</p>
+  <p>The last stage of the machine is the one where a human reads the papers closely. The operator’s method makes sure that what he contributes is the first kind of thing and never the second. <b>Every note he made was checked against the rules. No note that could carry an idea reached the AI that wrote the final text, and the wording of the ones caught was kept where no AI working on the paper could read it.</b> Click a step to open its part.</p></div>
+  <div class="rflow" id="rulesflow"></div>
+  <div class="panelbox"><h3>Every note, accounted for</h3><p class="sub">From each run’s <code>methodology/human-review-log.md</code> and the EVOLUTION records. Revision words by <code>polish.py count</code> (everything but the References; limit 6,000).</p><div class="tablewrap" id="rulestable"></div></div>
+  <div class="rgrid" style="grid-template-columns:1fr">
+   <div class="panelbox"><h3>What the reviser saw, and what it didn’t</h3>
+    <div class="cmp"><div><span class="eyebrow">The operator’s note at the opening of §5, paper-5</span><p class="redacted">Offered a substantive philosophical consideration. <b>Withheld.</b> Its wording is not in the machine folder.</p></div>
+    <div><span class="eyebrow">What the brief says instead (H-8.3)</span><p>“§5 doesn’t say why anyone would consider limiting the premium’s reach. Motivate it, or say why it is worth considering.”</p></div></div>
+    <div class="cmp"><div><span class="eyebrow">The operator’s wording above “demandingness”</span><p class="redacted">Included his own wording. <b>Passed with his wording removed.</b> The wording is not in the folder.</p></div>
+    <div><span class="eyebrow">What the brief says instead</span><p>“If demandingness is taken up later in the paper, signpost that here.”</p></div></div>
+    <p class="sub" style="margin-top:10px">And the brief tells the reviser: “If you notice that a human note seems to point toward a particular philosophical claim, don’t add the claim on the note’s authority. Decide on the merits, as you would for any change.”</p></div>
+  </div>
+  <div class="rgrid">
+   <div class="panelbox"><h3>Checks on the record</h3><ul class="checks">
+    <li><b>Paper-5:</b> a search of the run, <code>PAPERS/</code>, <code>REVIEW/</code> and <code>ADVICE/</code> found none of the withheld wording (24 October record). On 26 October I confirmed that none of the seven open items appears in the brief, and that the refused note appears there only as the generic H-8.3.</li>
+    <li><b>Paper-2-r2:</b> the log records the operator’s 75 notes only in the generic form passed on. None was withheld or stripped of his wording, so nothing needed withholding.</li>
+    <li><b>Paper-4:</b> the operator gave no margin notes and no feedback on content. Every item in the revision came from the two AI readers or from Claude.</li>
+    <li><b>Decisions, not ideas:</b> the operator’s own choices (which polish to revise; keep and trim §5; condense one comparison, move another to a footnote; italics; two paragraph joins) are logged separately as decisions. They are the kinds of steer the rules’ examples allow: selection, cutting, emphasis and format.</li></ul></div>
+   <div class="panelbox"><h3>Still to do for the record</h3><ul class="checks">
+    <li>Save the transcripts of the AI-reader conversations beside each suggestions file (open in all three records). They are what show that the operator only asked questions.</li>
+    <li>Keep the full human-review logs outside the folder, ready for the judges. The rules use the methodology report to settle unclear cases and recommend chat logs.</li>
+    <li>Settle how the review revisions are adopted and verified before submission: <code>polish.py</code> would treat them as line polishes (part Z), and the shortened quotations need checking again.</li>
+    <li>Paper-4’s revision had no separate reader, since the screening session also wrote it. A fresh read would catch what that session missed.</li></ul></div>
+  </div>
+</section>
+
+<section id="laws">
+  <div class="sechead"><h2>Eight rules that hold it together</h2><span class="eyebrow">the reasons under the parts</span></div>
+  <p class="prose">Under the tangle there are a few standing rules, most of them set at the v12.0 remake and kept through every version since. Each part of the drawing is an application of one or more of them. Each rule is quoted from the files, with the failure that produced it.</p>
+  <div class="laws" id="lawlist"></div>
+</section>
+
+<section id="growth">
+  <div class="sechead"><h2>How it grew</h2><span class="eyebrow">28 versions · 12 to 23 October</span></div>
+  <div class="charts">
+    <div class="panelbox"><h3>Instructions, by version</h3><p class="sub">Words in <code>lean/</code> (COMMON, STYLE, the orchestrator and the role files), and in the orchestrator alone, counted from each snapshot in <code>history/machine/</code>. The v11 machine it replaced ran to more than 24,000.</p><div class="chartwrap"><svg id="wchart" viewBox="0 0 760 330" role="img" aria-label="Line chart: lean instructions grew from 4,409 words at v12.0 to 19,374 at v15.1"></svg></div></div>
+    <div class="panelbox"><h3>Calls and tokens, by run</h3><p class="sub">Calls logged in each run’s <code>calls.csv</code>. Tokens are the sum of the figures the logs report (processed tokens, cache included). Where calls logged no usage, the total is a floor. The dashed line is v12.0’s aim of about a dozen calls.</p><div class="runs" id="runbars"></div><div class="rlegend"><span><i style="background:var(--e-review)"></i>sent</span><span><i style="background:var(--trap)"></i>stopped without a paper</span><span><i style="background:var(--ink-3)"></i>sent back for another run</span></div></div>
+  </div>
+  <div class="lfilters chips" id="lfilters" role="group" aria-label="Filter versions"></div>
+  <div class="ledger" id="ledger"></div>
+</section>
+
+<section id="reading">
+  <div class="sechead"><h2>Where it creaks</h2><span class="eyebrow">Claude’s reading, for argument</span></div>
+  <div class="reading"><div id="points"></div><aside class="v16" id="v16"></aside></div>
+</section>
+
+<section id="sources">
+  <div class="sechead"><h2>Sources</h2><span class="eyebrow">all in the paper-machine-v3 folder</span></div>
+  <ul class="srcs">
+    <li><code>EVOLUTION.md</code>: every version from v3.0 to v15.1, with its diagnosis, changes, prediction and the Observed entries</li>
+    <li><code>lean/ORCHESTRATOR.md</code> (v15.1): the step table, routing, who sees what, the outside review, the operator’s place</li>
+    <li><code>lean/COMMON.md</code>, <code>lean/STYLE.md</code>, and the nine files in <code>lean/roles/</code></li>
+    <li><code>STATE.md</code>, <code>REVIEWS.md</code>, <code>PAPERS/README.md</code>, <code>START.md</code></li>
+    <li><code>V21-REVIEW.md</code>, <code>V21-COMPARE.md</code>, <code>V21-HARNESS-MAP.md</code></li>
+    <li><code>POLISH-LINE.md</code>, <code>POLISH-STRUCTURE.md</code>, <code>system/tools/README.md</code></li>
+    <li><code>runs/*/logs/calls.csv</code> and <code>decisions.md</code> for all 13 runs: the replay and the cost figures</li>
+    <li><code>history/machine/v12.0</code> to <code>v15.0</code>: the instruction counts, by <code>wc -w</code>. EVOLUTION’s own size figures use another counter and run a little lower.</li>
+  </ul>
+  <p class="foot">Previous drawings: the v1 explainer, the autopsy map of paper 1, and the v2 map. This one replaces the spiral because the machine no longer turns in one: it runs down a track, with chutes back up it.</p>
+</section>
+</div>
+
+<aside id="panel" aria-label="Part details" aria-hidden="true"></aside>
+
+<script>
+/* ===== data: stations, versions, runs (from the paper-machine-v3 folder, read 2026-10-23) ===== */
+const VLIST=["v12.0","v12.1","v12.2","v12.3","v12.4","v12.5","v12.6","v13.0","v14.0","v14.1","v14.2","v14.3","v14.4","v14.5","v14.6","v14.7","v14.8","v15.0","v15.1"];
+/* words in lean/*.md and lean/roles/*.md, and in lean/ORCHESTRATOR.md alone, by wc -w, from history/machine/<v>/ and the live folder */
+const VWORDS={lean:[4409,4808,5754,7761,7975,9488,10352,10638,10811,13385,15606,15734,16185,17127,17309,18863,18880,18985,19374],
+orch:[1870,2032,2389,3185,3223,3794,4055,4334,4507,5398,6244,6287,6296,6686,6813,7739,7756,7777,7626]};
+const VDATE=["10-14","10-14","10-14","10-15","10-15","10-15","10-16","10-16","10-16","10-17","10-18","10-18","10-18","10-18","10-18","10-20","10-22","10-23","10-23"];
+const ERAS={
+ pre:{name:"Before the remake",span:"v3.0 to v11.0",c:"--e-pre",text:"The cathedral: voices, seminars, unit contests, 386 calls per paper. Only a few of its parts still turn."},
+ core:{name:"The lean core",span:"v12.0",c:"--e-core",text:"The operator’s remake of 14 October: nine steps, about a dozen calls, 4,409 words of instructions."},
+ tests:{name:"Sources and hinge tests",span:"v12.1 to v12.6",c:"--e-tests",text:"Checks on the central inference, source obligations, trials, and a response that judges in context."},
+ review:{name:"The blind comparison",span:"v13.0 to v14.0",c:"--e-review",text:"The outside review starts by ranking the paper blind against three reference manuscripts."},
+ prose:{name:"Prose, abstracts, new lineages",span:"v14.1 to v14.6",c:"--e-prose",text:"A fresh clarity editor, abstract conventions, and an opening for new topics."},
+ polish:{name:"Polish and repairs",span:"v14.7 to v15.1",c:"--e-polish",text:"Two ChatGPT polishes run by the operator, a shelf of named PDFs, a repaired word counter."},
+ human:{name:"Human review, screened",span:"records, Oct 24–25",c:"--e-human",text:"The operator reads the polishes; every note is screened against the competition rules before a fresh Claude writes the review revision. No machine file changed."}
+};
+function vIdx(v){return VLIST.indexOf(v)}
+function eraOf(v){const i=vIdx(v);if(i<0)return"pre";if(i===0)return"core";if(i<=6)return"tests";if(i<=8)return"review";if(i<=14)return"prose";return"polish"}
+
+/* Station positions are in the SVG's own units (viewBox 0 -24 1640 1420). */
+const ST=[
+{id:"A",name:"Intake",kind:"funnel",x:110,y:220,v:"v14.2",zone:"open",
+ calls:"O0 (no subagent)",who:"orchestrator with the operator",model:"the session, Opus at High",budget:"one conversation",
+ does:"The orchestrator and the operator, in one conversation, write the seed: the domain in the operator’s own words, purpose and venue, audience, deadline, word budget, source policy, and whether he can fetch paywalled texts. It also writes the form settings and the operator’s taste exemplars, which only the advisor will ever read.",
+ why:"From v12.0 the lean machine could continue a lineage but not open one. L1 reads a seed, a region and a corpus that only the old V00 to V03 made, and the orchestrator is forbidden to open the old step cards. When the operator asked for a paper on Petersen’s “Designing People to Serve”, v14.2 rebuilt the v3 opening with the voices, dispositions and norms taken out.",
+ reads:"The operator’s answers; the previous lineage’s answers, offered as defaults",writes:"00_seed/seed.md, seed-form.md, taste/exemplars.md",
+ mark:"The operator answers the intake questions. His domain is recorded verbatim, with no default.",
+ relic:"new_run.py still builds the v3 folder layout, so every run carries empty 03_voices/, 04_judge/, 05_papers/, 06_outline/, 07_prose/ and 08_review/ folders.",
+ watch:"Opened four lineages: paper-2, paper-3, paper-4 and paper-5."},
+{id:"B",name:"Region map",kind:"map",x:310,y:220,v:"v14.2",zone:"open",
+ calls:"O1-01",who:"cartographer · map",model:"Sonnet, high",budget:"40 tool uses",
+ does:"Maps the problem region the seed points to: the questions a reader already has, two to four standard answers to each, the live fault lines, neighbouring debates, and why the region matters. If the seed names a focal work, it maps the literature around that work, reading the held text first.",
+ why:"Kept from the v3 cartographer, and it carries a lesson from v1: an instruction to find “tractable” problems pushed the run toward small, local ones, and the paper became a reply to one recent paper. So the role is told to map the terrain as it is and rank nothing.",
+ reads:"the seed; texts the operator supplied; the web",writes:"01_region/region-map.md",
+ watch:"Paper-3’s map was written from fetch-tool extracts only. Paper-4’s opened its key texts only as abstracts."},
+{id:"C",name:"Region check",kind:"compass",x:510,y:220,v:"v14.2",zone:"open",
+ calls:"O2-01",who:"advisor · region-check",model:"Opus, high",budget:"14",
+ does:"Chooses a mid-sized region (two to four live questions sharing one literature), names four to six starting points and writes a first request of about fifteen sources. If no paper is worth fishing for, it says so before anything is spent. It may send the cartographer back once.",
+ why:"The v3 region check, inlined. One clause is new: a focal work fixes the literature, but the live disagreement must still run beyond it, so a paper about one book does not shrink into a reply to one chapter.",
+ reads:"seed, seed-form, taste, region map",writes:"01_region/region.md",routes:"verdict: region | remap",
+ fresh:"A fresh advisor context. It sees the operator’s taste, which no non-advisor role sees."},
+{id:"D",name:"Three chutes",kind:"chutes",x:710,y:220,v:"v14.2",zone:"open",
+ calls:"O3-01 to O3-03 at once, then O3-04 merge",who:"librarian · corpus, merge",model:"Sonnet, medium",budget:"35 each; merge 30",
+ does:"Three librarians work three batches of requests at the same time, writing separate batch files. A merge call then builds the bibliography and index and checks that every starting point has at least two core sources. A thin starting point gets one more corpus call and merge. Anything unreachable goes to the operator once, each text with its DOI.",
+ why:"The only place the machine runs calls in parallel, which is safe because the batches touch no shared file. The DOI rule is v14.3, in the operator’s words: “always include doi when you make lit requests.” Only 5 of the 13 texts in paper-2’s offer carried one, and one of those was wrong.",
+ reads:"seed, region, requests, corpus index; the web",writes:"02_corpus/sources, notes, batches; work/corpus.md",routes:"for_operator, thin_starting_points",
+ mark:"The operator gets one list of unreachable texts, with DOIs and the folder to save them in. He may skip any.",
+ watch:"Paywalls and 403s decide the corpus. Paper-2’s and paper-4’s O3-02 each got 0 of 5. The operator’s saved files then do the real work."},
+{id:"F",name:"Proposer",kind:"bulb",x:910,y:220,v:"v12.0",zone:"thesis",
+ calls:"L1-01 (L1-02 on a return)",who:"proposer · propose",model:"Opus, high",budget:"22",
+ does:"Writes three to five candidate theses. Each names the corpus passage it engages (opened, with status marks), states its indispensable inference and the plainest countercase, and is checked for priority with up to eight web searches. Prior briefs’ do-not-retry lists are binding.",
+ why:"v12.0 replaced the three-voice seminar, which “favoured defensible theses over interesting ones, and produced a private idiom that reached the final paper.” v12.4 cut the quota from six to eight candidates to three to five: in paper-1-r3 the proposers opened no sources and the half-off-brief rule pushed toward familiar moves, which the choice then found already in print.",
+ reads:"seed, region, corpus index, notes and sources at the passages it engages; prior briefs and carried advice",writes:"work/candidates.md",
+ watch:"v12.4 predicted collisions with print would surface here. In round 3 they did not: the decisive antecedent, held and named in the brief, was caught only by the cold reader. L1 calls also got heavier (221k and 199k tokens)."},
+{id:"G",name:"The scale",kind:"scale",x:1110,y:220,v:"v12.0",zone:"thesis",
+ calls:"L2-01",who:"advisor · pick",model:"Opus, high",budget:"18",
+ does:"Weighs the candidates and picks one, or none. It applies the concede-everything test (grant the argument: what changes?) and the perfect-prose test, opens the closest held antecedents (at most four) and the target’s latest statement, and states the fallback thesis and the source obligations the paper must meet.",
+ why:"v12.0’s central finding: in v11 the fatal fault, a thesis true by construction, “was seen ten times, from the V07 verdict to the V18 referees, and never acted on,” because no call with authority held the whole problem. So one fresh judge decides, and its “none” sends the run back. v12.5 added that the operator’s taste is “a constraint, never a justification”: no verdict may rest on resemblance to an exemplar.",
+ reads:"seed, taste, candidates, corpus index, prior; sources at the passages the top candidates turn on",writes:"work/choice.md",routes:"pick: <id> | none",
+ fresh:"Always a fresh context. The only role that sees 00_seed/taste/.",
+ watch:"Paper-3 went none, then none again, and stopped at L2. Paper-5 went none, then picked."},
+{id:"H",name:"Librarian",kind:"books",x:1310,y:220,v:"v12.0",zone:"thesis",
+ calls:"L3-01 gather, L3-02 add; also L7-02, L8-05",who:"librarian · gather, add",model:"Sonnet, medium",budget:"40",
+ does:"Gets the texts the choice names, including its source obligations (no extract meets one), and the target’s later statement even if unlisted. Whatever it cannot reach goes to the operator once. When the operator saves files, an add call writes their notes.",
+ why:"In v11 the librarian took 37% of about 900M tokens: 18 calls averaging 95 turns, with repeated searches. v12.0 made it one capped call. The operator’s rule from v5.0 still governs the stop: “I want to be asked if the literature is inaccessible but ‘merely’ helps.” 123 requests were still open at the end of paper-1b.",
+ reads:"choice, corpus index, bibliography, requests",writes:"work/sources.md; additions to 02_corpus/",routes:"for_operator, flagged, obligations_met",
+ mark:"The operator is offered the unreachable texts once per run at this step, and again only for a new reason (the reader’s required texts, a final check’s).",
+ watch:"Every add call in the logs means the operator had saved files."},
+{id:"I",name:"Magnifier",kind:"magnifier",x:1510,y:220,v:"v12.1",zone:"thesis",
+ calls:"L3-03",who:"advisor · source-check",model:"Opus, high",budget:"12",
+ does:"Runs only if the operator saved files, the librarian flagged a text, or a source obligation was newly acquired. For each text it asks: does it undermine an inference the choice needs, and does it take the novelty? A text the paper can cite or answer in a paragraph is drafting material, not a reason to choose again.",
+ why:"The operator, during the round-2 response: “When I supply sources at L3, assess whether they undermine the selected thesis or its novelty before proceeding to L4.” Round 2 had missed Hopster 2018, a text this check is placed to catch.",
+ reads:"seed, choice, sources, the newly added notes and texts",writes:"work/source-check.md",routes:"verdict: proceed | rechoose",
+ tag:"rechoose ⟶ G, free, once",
+ fresh:"A fresh advisor context.",
+ watch:"All eight source checks in the logs answered proceed. A rechoose here would not spend the run’s one return."},
+{id:"J",name:"Drafting table",kind:"drafting",x:1510,y:560,v:"v12.0",zone:"plan",
+ calls:"L4-01 (L4-02 to revise)",who:"author · plan",model:"Opus, high",budget:"25",
+ does:"The argument and outline, by the author who will also rewrite the paper. Structure follows the argument: each section does one step the argument needs, in the order a reader needs it.",
+ why:"v12.0: v11’s outlines “were built from randomly dealt rhetorical strategies, with budgets fixed before the argument existed, so the structure served the thesis’s defence rather than its argument” (the reviewer’s “inverted hierarchy”). One strong mind now holds the plan.",
+ reads:"seed, seed-form, STYLE, choice, sources, source check, corpus; prior brief and carried advice",writes:"work/plan.md"},
+{id:"K",name:"Calipers",kind:"caliper",x:1290,y:560,v:"v12.0",zone:"plan",
+ calls:"L5-01",who:"advisor · plan-check",model:"Opus, high",budget:"14",
+ does:"A fresh critic tests up to three indispensable inferences, each against its plainest countercase, and checks that the cited passages point the right way (necessary or sufficient). It marks whether its own advice introduces a new inference.",
+ why:"v12.2: round 2 was reconceived because both inferences the thesis rested on were unsupported. The record showed each was named weak at the choice, the plan check, the plan, the cold read and the rewrite, and each time declared repaired, with no fresh reader judging the repair.",
+ reads:"seed, taste, choice, plan, prior, the sources at contested steps",writes:"work/plan-check.md",routes:"verdict: go | revise | rechoose; new_inference: yes | no",
+ fresh:"A fresh advisor context; it did not write the plan."},
+{id:"L",name:"Wrench loop",kind:"wrench",x:1290,y:760,v:"v12.5",zone:"plan",small:true,
+ calls:"L4-02 repair, L5-02 assess-lead",who:"author · repair, then advisor · assess-lead",model:"Opus, high",budget:"18, then 16",
+ does:"When the plan check’s advice adds an inference of its own, the author tests that repair in a short memo, and a second fresh critic accepts, narrows or rejects it before anything is drafted on it.",
+ why:"v12.5: the round-3 review found “the advisor proposing repairs at L3 and L5 that the author then implemented as established.” A critic’s repair is unvalidated until someone else has judged it.",
+ reads:"choice, plan, plan check, the sources the repair relies on",writes:"work/repair.md, work/repair-assessment.md",routes:"verdict: accept | narrow | reject",
+ fresh:"The assessor is a fresh context that sees the repair as a lead to criticize.",
+ watch:"Used by paper-2 (narrow), paper-4 (narrow) and paper-3-r2 (reject, which stopped the run)."},
+{id:"M",name:"The mill",kind:"gear",x:1070,y:560,v:"v12.0",zone:"plan",
+ calls:"L6-01",who:"drafter · draft",model:"Sonnet, medium",budget:"15",
+ does:"The whole paper in one pass, title to references, following the plan’s order and quotations, with a short “Drafter’s flags” section for steps that did not work as planned.",
+ why:"v11’s unit expansion and three-pass unit contest took 230 calls. The operator, at v8.0: “Writing prose is easy and shouldn’t cost so much time or tokens. We can do the judgement and rewriting at higher rates.” The drafter is the one cheap mind in the middle of the machine.",
+ reads:"seed-form, STYLE, plan, plan check, the passages the plan cites",writes:"work/draft.md",
+ watch:"Its role file is 110 words, unchanged since v12.0: the only part of the machine that has not grown. v12.0 planned a test of a Haiku drafter; it has not run."},
+{id:"N",name:"Blind window",kind:"eye",x:850,y:560,v:"v12.0",zone:"plan",
+ calls:"L7-01",who:"reader · read",model:"Opus, high",budget:"8",
+ does:"A colleague’s report on the draft: what it claims and whether that is worth claiming, the weakest step, structure, where the prose stalls, missing literature (six web searches, tagged), and the three changes that would most improve it. It may mark up to three texts required.",
+ why:"v12.0’s one positive finding from v11: “Whole texts read by fresh readers (the cold readers, referees, claim audit and outside review) cost under 1% and were the most accurate judgments in the run.”",
+ reads:"work/draft.md only",writes:"work/reading.md",routes:"verdict: rewrite | reconceive; required_sources",
+ fresh:"Blind: sees only the draft. Nothing about the run, the seed, the plan or any earlier round.",
+ watch:"One of the cheapest Opus calls in the machine (83k to 97k tokens). In round 3 it caught the antecedent that the proposer, the scale and the plan check had all missed."},
+{id:"O",name:"Pen and scale",kind:"pen",x:630,y:560,v:"v12.0",zone:"plan",
+ calls:"L8-01 rewrite; L8-02 cut; L8-04; revise after a review",who:"author · rewrite, cut, revise",model:"Opus, high",budget:"25",
+ does:"The author rewrites the draft against the reader’s report, unilaterally, into 09_final/final.md. The rewrite note confesses: central_weak marks a central step still weak or newly written, and open lists objections and required texts left unanswered. Over 5,500 words, a cut call deletes (never merges).",
+ why:"The author who planned the argument decides what to take from the reader. The confession field exists because checks could not see what the author knew: v14.6 widened it after a central argument written at L8-04 reached the outside reviewer untested.",
+ reads:"plan, plan check, draft, reading, seed-form, STYLE, prior",writes:"09_final/final.md, work/rewrite-note.md",routes:"central_weak, open; word count",
+ relic:"The 5,500 rule applies everywhere except a polished text, which may run to 6,000 by a different count (polish.py).",
+ watch:"v15.0 repaired the word counter after it read the “<” in paper-5’s inequalities as the start of an HTML tag and reported about 3,560 words for a 5,480-word paper."},
+{id:"P",name:"The gate",kind:"gate",x:410,y:560,v:"v12.2",zone:"plan",
+ calls:"L8-03 (and once more after L8-04 if needed)",who:"advisor · final-check",model:"Opus, high",budget:"12",
+ does:"Runs when the rewrite note says central_weak: yes or lists open items. It first writes down the strongest conclusion the title, abstract and conclusion advertise, read literally, and tests that, then the abstract’s inferences. Novelty must be checked from opened passages, or the verdict is sources.",
+ why:"v12.2 added it to test the central inference after the rewrite. v12.5 added two clearance rules (“stated as a premise” excludes no countercase; “novelty not checked” cannot pass). v15.0 made it test the advertised conclusion rather than “the thesis the paper actually establishes”.",
+ reads:"09_final/final.md; the corpus at the paper’s central steps",writes:"work/final-check.md",routes:"verdict: go | revise | sources | rechoose",
+ tag:"sources ⟶ H, then once more",
+ fresh:"Blind: sees only the final paper and the corpus. Not the rewrite note, the plan, the reading or any earlier round.",
+ watch:"Twice it cleared the step that the outside review then rejected (paper-4 round 1, paper-5 round 1). v15.0 changed what it tests rather than adding a check."},
+{id:"Q",name:"Rinse",kind:"spray",x:250,y:960,v:"v14.1",zone:"finish",
+ calls:"E-01 editor, E-02 author, clarity_check.py, a retry, a cut",who:"editor · clarity, then author · clarity",model:"Opus, high",budget:"14, then 22",
+ does:"A fresh editor reads the final text twice, as a first reader and as an editor, and writes one note per problem, each with an anchor and a ready-to-paste replacement: clarity, titles, the abstract (v14.4) and presentation. The author marks every note adopted, adapted, rejected or harness, and a script checks the dispositions against the paper.",
+ why:"v14.1: since v12.0 no call read for prose, and the papers took several readings. “The author cannot see this alone: knowing the argument’s history makes unclear prose look clear. The reading must be fresh.” The PDF also printed doubled section numbers (“1 1. Introduction”) that no call had looked at.",
+ reads:"final paper, STYLE, the render README (editor); the notes and plan (author)",writes:"work/clarity-notes.md, clarity-response.md; edits to final.md",routes:"notes; harness",
+ fresh:"The editor is blind: the final paper, its own preview render and STYLE. Nothing about the run, the plan, the checks or any review.",
+ watch:"32 to 47 notes per pass. Three false alarms from the checking script each cost an extra author call (paper-2 N20, paper-4 N1 and N3, paper-5 N1) until the parser fixes of v14.6 and v15.0."},
+{id:"R",name:"Rubber stamp",kind:"stamp",x:470,y:960,v:"v12.0",zone:"finish",
+ calls:"L9-01",who:"verifier · verify",model:"Sonnet, medium",budget:"45",
+ does:"Runs quote_check.py and wordcount.py, checks by hand every quotation the script cannot match and every reference against the bibliography, fixes mechanical errors only, renders the anonymous PDF, then reads the PDF as a journal editor would on opening it.",
+ why:"Verified quotations were kept from v11 as non-negotiable. v12.5 merged rendering into this call. v14.1 added the look at the PDF after the doubled section numbers.",
+ reads:"final paper, corpus, tools and render READMEs",writes:"09_final/verification-note.md, paper.pdf, paper.tex",routes:"render_problems",
+ relic:"It still renders paper.pdf, because the protected review.py expects that name; polish.py shelf renames it afterward.",
+ watch:"Across the runs it checks 33 to 54 quotations a pass. The logged notes record no quotation it had to fix, only a few reference entries."},
+{id:"S",name:"Locked room",kind:"room",x:710,y:960,v:"v13.0",zone:"review",chat:true,
+ calls:"ChatGPT, run by the operator; review.py request and freeze",who:"outside: ChatGPT",model:"ChatGPT, memory and web off",budget:"one conversation",
+ does:"review.py puts exactly five files in ~/Desktop/review-packet: the comparison prompt, three reference manuscripts (Reference A; Reference B; Reference C) and the paper. A ChatGPT conversation that can see only that folder ranks the four. freeze checksums its comparison.md and empties the folder before stage two.",
+ why:"v13.0: The operator’s calibration found standalone reviews poorly calibrated, and enlarging the rubric did not help, while short comparative readings against known references told finished work from a proposal whose central work was undone. Uploads kept it “blind by construction, not by instruction.” v14.0 replaced uploads with the separate packet folder, because a conversation that can see the machine folder learns the candidate is machine-made.",
+ reads:"the five packet files only",writes:"comparison.md (frozen, sha256)",
+ fresh:"Blind by construction: its folder holds nothing else. On the operator’s mount chmod is ignored, so the checksum, not the file mode, is the freeze.",
+ mark:"The operator starts the conversation, with memory, chat-history reference and web search off, and pastes one line."},
+{id:"T",name:"Gavel",kind:"gavel",x:930,y:960,v:"v11.0",zone:"review",chat:true,
+ calls:"ChatGPT, run by the operator (V21-REVIEW.md)",who:"outside: ChatGPT",model:"ChatGPT, web on",budget:"one conversation",
+ does:"Stage 1, the publication judgment: the paper, the frozen comparison and the references, with the literature open and the machine closed. Concede-everything and perfect-prose tests; every literature claim tagged checked, contradicted, not accessed or unchecked; a revision depth from none to abandon. The review is frozen, then Stage 2 audits the harness and its cost, with a repair proposal and a radical-simplification proposal.",
+ why:"v11.0, the operator: “blindness to the drafting history and blindness to the relevant philosophical literature are different things … A confident declaration that something is novel, based exclusively on reading the paper, isn’t worth much.” He also asked whether the paper was worth writing, and for an audit of the machine itself.",
+ reads:"V21-REVIEW.md first; the paper, comparison, references; the web. The harness only after the review is frozen",writes:"REVIEW/review.md, REVIEW/architecture_review.md",
+ fresh:"Blind to the drafting history until its judgment is frozen; then it audits the machine.",
+ relic:"V21-HARNESS-MAP.md, which Stage 2 reads to find its way, still says “The machine now (v12.4, the lean version)” and lists seven roles. It is protected, so only the operator can update it.",
+ mark:"The operator starts a second conversation, this time on the machine folder with web search on."},
+{id:"U",name:"Intake tray",kind:"tray",x:1160,y:960,v:"v12.3",zone:"review",
+ calls:"IN-01 intake (IN-02 add)",who:"librarian · intake",model:"Sonnet, medium",budget:"45",
+ does:"Before any call answers outside feedback that recommends literature or rests a decisive claim on a text, the librarian inventories every work it names, matches it against the corpus by author, title and version, tries three lawful routes, and sends the operator one consolidated list.",
+ why:"The operator, v12.3: “Make this sequence a general rule whenever outside feedback recommends new literature; a previous L3 request must not suppress a new feedback intake.” The advice on paper-1-r3 rested its leads on five texts the machine did not hold.",
+ reads:"the feedback files, corpus index, bibliography, requests",writes:"work/intake-<packet>.md",routes:"for_operator",
+ mark:"One request to the operator per packet of feedback. A skipped essential text becomes a stated limit, never clearance.",
+ watch:"In paper-4 every text the review named was already held. In paper-5 the one missing text was open access and was fetched without the operator."},
+{id:"V",name:"Switchman",kind:"switch",x:1400,y:960,v:"v12.0",zone:"review",
+ calls:"R-01",who:"advisor · respond",model:"Opus, high",budget:"25",
+ does:"Reads the review, the comparison, the audit, the paper and its history, and is told the date, the deadline and the round count. It decides: send (with up to three cheap, local fixes), rewrite, replan, rechoose or repropose. An abandon depth binds it to repropose. It writes advice-carried.md, every concrete suggestion in the review marked adopt, adapt or decline, for the next run to read.",
+ why:"v12.6: R-01 had treated the reviewer’s depth as a floor and knew neither the date nor the deadline, “so a demanding reviewer set the route whatever the paper’s chance or the time left.” Now the reviewer advises and the advisor decides. v14.1 added that every machine note it passes to the operator carries an adopt, test or reject mark, with reject and test as the default.",
+ reads:"review, comparison, architecture report, seed, final paper, work/, prior/, last EVOLUTION entry, REVIEWS.md",writes:"diagnosis.md, advice-carried.md",routes:"decision: send | rewrite | replan | rechoose | repropose",
+ tag:"rewrite ⟶ O · replan ⟶ J · rechoose ⟶ G · repropose ⟶ F",
+ fresh:"A fresh advisor context, given the whole record.",
+ mark:"The operator is told what the machine notes propose and decides them himself. A time note or an abandon review goes to him as a choice.",
+ watch:"Routed paper-1 through rounds 2 to 5, paper-2 to a replan, and four papers to send."},
+{id:"W",name:"Abstract rinse",kind:"abstract",x:1480,y:1290,v:"v14.5",zone:"after",
+ calls:"E-n ×3: editor · abstract, author · abstract, advisor · abstract-check",who:"three fresh calls",model:"Opus, high",budget:"6, 8, 6",
+ does:"After a send, nothing in the paper may change but its abstract, and that only to bring it to the convention in STYLE.md. A fresh check compares before and after and refuses any claim the old abstract did not make, any dropped hedge, any term the body does not use. A second no puts the old abstract back.",
+ why:"v14.4 put an abstract edit inside the clarity edit, and section 5 skips the clarity edit after a send. “So the papers that go out are exactly those whose abstract is never edited by the new step.” the operator added this pass minutes later.",
+ reads:"the final paper and STYLE (editor); the before and after copies (check)",writes:"the abstract: field only",routes:"abstract: revised | kept; abstract_ok",
+ fresh:"Blind: the editor sees only the final paper and STYLE; the check sees only the two versions.",
+ watch:"In paper-5 the abstract was rewritten by three fresh editors (E-01, E-03, E-06). In paper-2-r2 the check said no twice and the old abstract went back, after five calls and about 476,000 tokens."},
+{id:"X",name:"Shelf",kind:"shelf",x:1250,y:1290,v:"v15.1",zone:"after",
+ calls:"polish.py shelf (no call)",who:"script",model:"none",budget:"none",
+ does:"Names every candidate’s PDF by title and stage, “<title> (pre-polish).pdf” and so on, renders any polish without a PDF, and rewrites PAPERS/README.md.",
+ why:"v15.1: every final paper was paper.pdf, so four candidates and their versions could not be told apart.",
+ writes:"PAPERS/, PAPERS/README.md",
+ watch:"Four papers on the shelf, each with a pre-polish, a line polish and a structure polish PDF, and three with a review revision."},
+{id:"Y",name:"Polishing wheel",kind:"buffer",x:1010,y:1290,v:"v14.7",zone:"after",chat:true,
+ calls:"POLISH-LINE.md, POLISH-STRUCTURE.md (ChatGPT, run by the operator)",who:"outside: ChatGPT",model:"ChatGPT, with the machine folder",budget:"The operator’s",
+ does:"Two prompts the operator runs himself on any candidate. The line polish works sentence by sentence with “cognitive empathy” for a philosopher outside the debate: introduce people by full name, unpack condensed passages, names only from the References. The structure polish works in five stages (understand, reflect, decide, write, check) on order and pacing, with every move kept at its strength. Limit 6,000 words, everything but the References counted.",
+ why:"v14.7, the operator: papers that passed review “still read as if their author expects the reader to know the literature”, and he wanted a different strong model as the very last step. v15.1: a “rushed, monotone quality that a line edit cannot reach … written as if for another AI.”",
+ reads:"the run named, and anything in the machine folder for understanding only",writes:"<run>/12_polish/<title> (<stage>).md and notes",
+ mark:"The operator runs both polishes. The machine never suggests one or reminds him.",
+ relic:"Designed in v14.7, re-budgeted in v14.8 and replaced in v15.1, all before a polish had been adopted on any paper.",
+ watch:"Run on all four papers. For three of them the operator chose one polish as the base of the human review (HH): the line polish of paper-5, the structure polish of paper-2-r2 and of paper-4. None has been adopted through the inspector yet."},
+{id:"Z",name:"Inspector",kind:"inspect",x:1250,y:1610,v:"v14.7",zone:"human",
+ calls:"P-01 (P-02 on a failed check)",who:"advisor · polish-review or structure-review",model:"Opus, high",budget:"22 or 30",
+ does:"Only when the operator names the polished version he wants. Accept by default, revert any change of content, verify every introduced name against the bibliography, restore anything dropped. The structure review builds its own inventory of moves before reading the polisher’s. Then polish.py check, a revert if it fails, and L9 again with no cut.",
+ why:"Asymmetric by design (v14.7): the polisher has free rein over wording, so the Claude check keeps only edits that change nothing the paper says. The pre-polish version is always kept.",
+ reads:"pre-polish and polished text, the comparison, the polisher’s notes, bibliography, STYLE; sources of new quotations",writes:"09_final/final.md, 12_polish/polish-review.md",routes:"adopt | reject",
+ fresh:"Blind: sees only the two versions and what it needs to check them.",
+ relic:"polish.py adopt files any stage whose name lacks “structure” as a line polish, so it would treat “review revision” as one, and the line-polish review would remove the glosses and examples the brief asked for.",
+ watch:"Not yet run. How to adopt and verify the three review revisions is the operator’s decision before submission. Whatever route he takes, the shortened quotations and the corrections accepted from AI reviewers need verifying again."},
+{id:"GG",name:"Mailbox",kind:"mailbox",x:1480,y:1610,v:"v12.0",zone:"human",
+ calls:"waiting_for: submission",who:"The operator",model:"none",budget:"OpenReview, 30 October 2026",
+ does:"The run waits for submission. Other lineages’ waiting runs are parked in STATE.md, each with its deadline.",
+ why:"Submission is the operator’s act. The machine logs it when he says he has submitted.",
+ mark:"The operator submits. He has asked not to be reminded.",
+ watch:"Four papers waiting: paper-1-r5, paper-2-r2, paper-4, paper-5. Three now have a review revision on the shelf beside their pre-polish and polished versions."}
+,
+{id:"HH",name:"Red pen",kind:"redpen",x:770,y:1290,v:"v15.1",rec:"Oct 24–25",zone:"human",subTxt:"Printout + talk",
+ calls:"a printout, margin notes, then a spoken pass",who:"The operator, as a human reader",model:"none",budget:"his time",
+ does:"For three papers the operator chose one polish as the base for a final revision, read a printout of it, wrote margin notes, then talked through it page by page. The notes say where a careful reader got lost and what kind of fix he wants: “What is this section doing?? Needed?”, “why?”, “example of this, please.” For paper-4 he wrote no notes at all.",
+ why:"Until now only models had read the polishes. The operator wanted papers a philosopher outside the debate could follow. The competition allows human critique of the kind “expand on this point”, “consider this author” or “cut this down”. It does not allow a human to supply arguments, premises, examples or wording. So no note reaches the AI that writes the paper until it has been through the sieve (II).",
+ writes:"nothing in the folder: every note goes to the sieve first",
+ mark:"About fifty notes on paper-5’s line polish; 75 on paper-2-r2’s structure polish, nine of them conventions for the whole paper; none on paper-4’s structure polish.",
+ watch:"His own decisions are logged as decisions, separately from his notes. Which polish to revise. For paper-5: keep §5 and trim it, keep the horizon paragraph, condense the D’Alessandro comparison, move Mogensen 2019 to a footnote. For paper-2-r2: title and abstract not fixed, two paragraph joins, two passages preferred from the line polish. For both: italics for terms of art."},
+{id:"II",name:"Rules sieve",kind:"sieve",x:540,y:1290,v:"v15.1",rec:"Oct 24–25",zone:"human",subTxt:"Claude · every note",
+ calls:"a claude.ai session (Claude Opus) linked to the machine folder",who:"Claude, screening against the competition rules",model:"Claude Opus",budget:"page by page",
+ does:"Claude checks every note, page by page, against the competition’s rules on human involvement, and deals with each in one of three ways. Passed as a generic request: where the reader got lost and what kind of fix is wanted, never what the fix is. Passed with the operator’s wording removed: where a note included a phrase or suggested wording of his, the wording is dropped and only the bare request goes on (“signpost that here”, “add a short summary paragraph”). Withheld: a note that offered a philosophical consideration is not passed in any form. Notes that are illegible or unclear are left out unless the operator settles them, and highlights or marks he withdrew need no action.",
+ why:"The rules bar “human-supplied arguments” and “rigorous human critique/dialogue that gives the AI significant ideas”. A reader’s confusion is information the rules allow, and a reader’s answer to it is not. The sieve passes the first and stops the second, and it records which happened to each note, so the methodology report can show it note by note.",
+ writes:"<run>/methodology/human-review-log.md (the redacted copy)",routes:"generic request | wording removed | withheld | left out",
+ mark:"The operator settles open items in his spoken pass, and makes the choices that are his to make: which polish, what to cut.",
+ watch:"Paper-5: about fifty notes. One withheld, three passed with his wording removed, seven left out as illegible or unclear, the rest passed as generic requests. Paper-2-r2: all 75 notes passed in generic form, three marks withdrawn. Paper-4: nothing to screen."},
+{id:"MM",name:"Locked drawer",kind:"drawer",x:310,y:1290,v:"v15.1",rec:"Oct 24",zone:"human",off:true,subTxt:"outside the folder",
+ calls:"The operator’s full review log, kept outside the folder",who:"The operator",model:"none",budget:"none",
+ does:"The folder’s copy of the review log has the operator’s wording taken out wherever a note was withheld, stripped of his wording, or unreadable, with a line saying where and why. The operator keeps the full log, with his own words, outside the machine folder.",
+ why:"Every AI that works in the folder can read every file in it. A note kept out of the brief but left in the log would still reach the reviser if it opened the log. So any human wording that could carry an idea is kept where no AI working on the paper can reach it. EVOLUTION records the rule this taught: a human review whose record holds more than generic feedback must be redacted in the folder and kept whole outside it.",
+ mark:"The operator holds the full log, for the judges if they ask.",
+ watch:"For paper-5, a search of the run, PAPERS/, REVIEW/ and ADVICE/ found none of the withheld wording. Paper-2-r2’s log records the operator’s notes only in generic form, so nothing needed withholding."},
+{id:"JJ",name:"Second readers",kind:"readers",x:540,y:1610,v:"v15.1",rec:"Oct 24–25",zone:"human",subTxt:"separate Claude chats",
+ calls:"separate Claude conversations, one or two per paper",who:"AI reviewers; the operator asks only questions",model:"Claude (Opus 5.5 for paper-4)",budget:"one conversation each",
+ does:"In a separate conversation, an AI reads the chosen polish and suggests changes. The operator asks only clarifying or generic questions, and each file’s header says that every substantive point originated with the AI. The suggestions are filed whole in the run’s methodology folder. The screening session then checks every quotation and figure the reviewers cite against the texts, and accepts, modifies or declines each item on its merits.",
+ why:"An AI’s critique is allowed and a human’s substantive critique is not. A second AI reader can supply the explanations a human reader asked for, so the human never has to. It catches things too: on paper-5 it found an error in §4 that had survived the line polish.",
+ writes:"<run>/methodology/outside-reviewer-suggestions-<date>.txt",
+ fresh:"Separate conversations from the screening session, so their suggestions arrive as a file to be judged, not as part of the screening.",
+ mark:"The operator asks only clarifying or generic questions. The transcripts are still to be saved beside each suggestions file.",
+ watch:"Paper-5: eight suggestions, with the algebra in four of them checked; it holds. Paper-2-r2: ten suggestions, all 46 quotations checked, eight accepted and two modified. Paper-4: no fresh readers. The operator asked the two finished screening conversations for paper-5 and paper-2-r2 what general lessons carried over; their fourteen items were merged and checked; most accepted, six modified, one declined, and a few slips in the reviewers’ own descriptions corrected."},
+{id:"KK",name:"Sealed brief",kind:"envelope",x:770,y:1610,v:"v15.1",rec:"Oct 24–25",zone:"human",subTxt:"brief + opening prompt",
+ calls:"review-revision-brief.md and review-revision-prompt.md",who:"Claude, in the screening session",model:"Claude Opus",budget:"none",
+ does:"Everything the reviser receives, in one brief: every permitted note in its generic wording, located by section and a quoted passage; the AI reviewers’ file, to be read whole and treated as suggestions; Claude’s own comments, marked as from an AI; which POLISH-LINE.md rules still hold and which are relaxed for this revision; the order in which to spend the remaining words; and a response table the reviser must fill in for every item. A short prompt opens the revision.",
+ why:"The brief is the only route from the review to the paper, so the rules are enforced here as well. It tells the reviser that the human notes are generic on purpose and that it must work out each fix itself, from the paper, its sources and its plan. If a note seems to point toward a particular claim, the reviser must not add the claim on the note’s authority. It is told it need not read the review log, and the prompt adds: don’t ask the human how to solve a problem the brief raises, and don’t search the web.",
+ writes:"<run>/12_polish/review-revision-brief.md, review-revision-prompt.md",
+ watch:"In paper-5’s brief the refused note appears only as a generic request (H-8.3: “§5 doesn’t say why anyone would consider limiting the premium’s reach. Motivate it, or say why it is worth considering.”), and none of the seven open items appears. Paper-4 has no brief: with no human notes to carry, the session that checked the two sets of carried-over lessons wrote the revision itself."},
+{id:"LL",name:"Review revision",kind:"revise",x:1010,y:1610,v:"v15.1",rec:"Oct 24–25",zone:"human",subTxt:"Opus 5.5 · extra-high",
+ calls:"one revision per paper",who:"a fresh Claude session (paper-4: the screening session)",model:"Claude Opus 5.5, extra-high effort",budget:"6,000 words",
+ does:"The reviser reads the brief, POLISH-LINE.md, the AI reviewers’ file and the paper. It then writes one combined line-and-structure revision with notes and a response table covering every item, counts it and renders it. The result is filed as “<title> (review revision)”, with a copy in PAPERS/.",
+ why:"The human readings asked for what a line polish may not add: plain-language statements of the mathematics, examples, a framed introduction, terms recalled when they return. One revision under adapted rules does all of it at once. Rule A stays in force: nothing the paper claims changes, except corrections accepted from an AI reviewer or found against the sources, each listed in the notes.",
+ writes:"<run>/12_polish/<title> (review revision).md, its notes, .tex, .pdf",
+ watch:"All three are written and rendered: paper-5 at 5,996 words, paper-2-r2 at 5,986 and paper-4 at 5,927, by polish.py count against the 6,000 limit. For paper-4 no separate reader checked the revision, because the session that judged the suggestions also wrote it."},
+{id:"FF",name:"Return chute",kind:"chute",x:1000,y:390,v:"v12.0",zone:"thesis",small:true,line:true,
+ calls:"return_used in STATE.md",who:"the orchestrator’s routing",model:"none",budget:"one token per run",
+ does:"Exactly one step back is allowed across a whole run: an L2 none, an L5 rechoose, an L7 reconceive or an L8 rechoose. Every return lands at the scale (G), except an L2 none, which goes back to the proposer. The source check’s rechoose and the re-pick after it are free, because they can happen at most once.",
+ why:"v12.0: “Verdicts route the run … with one return per run.” A bound on loops is what keeps a dozen calls from becoming three hundred.",
+ routes:"return_used: true | false",
+ watch:"Paper-5 spent its return at L2. Paper-3-r2 spent it at L5 and then had nowhere to go."},
+{id:"AA",name:"Brief bin",kind:"bin",x:190,y:390,v:"v12.2",zone:"thesis",small:true,
+ calls:"stop with a brief",who:"the orchestrator’s routing",model:"none",budget:"none",
+ does:"If any call asks to go back after the return is spent, the run stops without a paper. The asking call’s file becomes the research brief, and the operator decides: a new run from L1, with that brief in prior/, or stop the lineage.",
+ why:"v12.2 replaced the old rule that a rechoose with the return used “counts as revise”, which let a failing thesis go on to be written. “Never turn a request to go back into revise.”",
+ mark:"The operator decides what follows a stop.",
+ watch:"Six runs ended here: paper-1-r3, the trials paper-1-r4 and paper-1-r6, and all three paper-3 runs. The operator stopped the paper-3 lineage after its third."},
+{id:"BB",name:"Research flask",kind:"flask",x:1010,y:70,v:"v12.3",zone:"thesis",
+ calls:"T1 investigate, T2 assess-lead",who:"proposer · investigate, then advisor · assess-lead",model:"Opus, high",budget:"30, then 22",
+ does:"Replaces L1 and L2. When outside advice names leads (4c), or a lineage has ended in reconception three times, or the operator directs it (4d), one researcher reconstructs the lead from primary passages and attempts the argument, and one fresh critic accepts, narrows or rejects it. A 4d trial halts for the operator whatever the verdict.",
+ why:"v12.3, from the outside audit of the stopped paper-1-r3: L1 and L2 proposed and judged theses without access to primary texts, and a promising but unresolved inference had no bounded task of its own, so a second broad batch was used instead.",
+ reads:"seed, the advice or brief, the intake file, the primary sources named, one by one",writes:"work/lead-<X>-memo.md, lead-<X>-assessment.md",routes:"verdict: accept | narrow | reject; next_lead",
+ fresh:"The critic does not see the researcher’s hand-back or anything the controller thinks.",
+ mark:"After a research trial (4d) the run halts for the operator’s decision.",
+ watch:"Three trials ran (paper-1-r4, paper-1-r6, paper-3-r3), and all three rejected their lead. The two with full usage cost about 367,000 and 352,000 tokens."},
+{id:"CC",name:"The operator’s bell",kind:"bell",x:120,y:560,v:"v4.0",zone:"around",off:true,
+ calls:"one offer per reason per run",who:"The operator, the operator",model:"none",budget:"his time",
+ does:"The operator is the machine’s reach into paywalls. He is asked for unreachable texts after O3, L3, L7, L8-05 and each packet of outside feedback, once each, and may skip any. Every message asking him to act has five parts, so a colleague who never read the files could follow it: where things stand, numbered steps, exact words to paste, how to know it is done, and what to say back.",
+ why:"v4.0 and v5.0: requests the operator could have met by hand never reached him. v14.1: “at some point a colleague should be able to run the machine.” v14.3 added the DOI to every text asked for.",
+ mark:"The operator saves PDFs to the run’s 02_corpus/sources/ and says which he saved. Silence is not a skip."},
+{id:"DD",name:"The operator’s desk",kind:"ledger",x:110,y:1290,v:"v3.0",zone:"around",off:true,
+ calls:"EVOLUTION.md, evolution.py, history/machine/",who:"The operator, in conversation with a session",model:"none",budget:"none",
+ does:"“The machine is never changed by a call.” Every change gets a snapshot of the version before it, a new version number, and an EVOLUTION.md entry with its diagnosis, changes, generality, predicted effect, earliest affected step, calls per run, oscillation and size. The next review’s “Observed” entry checks the prediction.",
+ why:"v12.0 dropped the machinist, the gate and PROTECTED.md: machine changes are made by the operator in conversation. v14.1 put the burden on the change, because the record showed “ten versions in four days … most changes untested before the next.”",
+ relic:"Every gate run recorded since v12.5 FAILs on system/CONVENTIONS.md’s size ceiling (762 words against 717, over since v11.0), a file of the old machine the lean machine never reads. Each entry notes the alarm and moves on. The gate and PROTECTED.md were both dropped in v12.0; the gate is still run before every version, and PROTECTED.md still decides which versions count as major.",
+ mark:"Only the operator changes the machine."},
+{id:"EE",name:"Relic crate",kind:"crate",x:150,y:1610,v:"v3.0",zone:"around",off:true,
+ calls:"system/, spec/, plugin/",who:"nobody",model:"none",budget:"none",
+ does:"The earlier machine, kept whole as the record. The lean machine still uses system/tools/ and system/render/ from it, and nothing else.",
+ why:"Nothing is deleted. Old versions explain the present one, and several old tools still do the mechanical work.",
+ relic:"In the crate: system/ORCHESTRATOR.md and the step cards; a library of ten thinking-style dispositions for the old voices; the 108 KB v3 spec; setup_voices.py, draw.py, blind.py and packet.py; the paper-machine-v2 plugin, whose eleven agents still appear in Claude’s agent list but are never spawned; the superseded root README; a retired “polish” waiting state; and a spawn line that still opens “Paper Machine v12 call.”"}
+];
+
+/* Stage numbers in the parts list group stations by what they are for. */
+const ZONES=[
+ ["open","Opening a new lineage","Once per topic, before any run."],
+ ["thesis","Choosing a thesis","With the loops, the bypass and the bin."],
+ ["plan","Plan, draft, rewrite","One strong author, one cheap drafter, fresh critics."],
+ ["finish","Finishing","Before every verification."],
+ ["review","The outside review","Two ChatGPT conversations, then the switchman."],
+ ["after","After a send","The abstract, the shelf, the operator’s polishes."],
+ ["human","Human review, screened","The operator reads; the rules decide what the AI hears."],
+ ["around","Around the machine","Not on the track."]
+];
+
+/* The version ledger, condensed from EVOLUTION.md. trig: base | mark | review | remake */
+const VERS=[
+{v:"v3.0",d:"10-12",trig:"base",t:["cathedral"],h:"The baseline built by hand",b:"Three diagnoses of paper-1 and paper-1b.",c:"v3 over v2: first readers before critics, blind two-call selection, a writer’s brief, prose-order norms, a claim audit before the referees, cutting by deletion, librarian sweeps, and the outside review loop with a diagnostician and a machinist.",o:""},
+{v:"v4.0",d:"10-12",trig:"mark",t:["sources"],h:"Source checkpoints",b:"Requests the operator could have met by hand never reached him; 123 were still open at the end of paper-1b.",c:"A stop for the operator after the librarian’s queue work at three points.",o:""},
+{v:"v5.0",d:"10-12",trig:"mark",t:["sources"],h:"Ask even when a text merely helps",b:"Core texts marked “helps” were kept from the operator until after the voices had argued. “I want to be asked if the literature is inaccessible but ‘merely’ helps.”",c:"A source stop after any librarian call that leaves a request unreachable.",o:""},
+{v:"v6.0",d:"10-12",trig:"mark",t:["cost"],h:"Sonnet at extra-high effort",b:"The operator’s choice of compute after all three voices retreated into shared apparatus.",c:"Every Sonnet role at xhigh.",o:""},
+{v:"v7.0",d:"10-13",trig:"mark",t:["sources"],h:"Read the papers",b:"“No voice has opened a primary source; all page references come from corpus notes.” The reading lists listed only notes.",c:"Notes guide but do not replace texts; open the text when the work rests on it.",o:""},
+{v:"v8.0",d:"10-13",trig:"mark",t:["cost"],h:"Cheap prose",b:"Each unit took 15 to 20 minutes for 20 to 140 words. “Writing prose is easy and shouldn’t cost so much.”",c:"Unit passes at medium effort; a cloud working copy.",o:""},
+{v:"v9.0",d:"10-13",trig:"mark",t:["cost"],h:"Reading packets, and the per-call floor",b:"Each pass read about 34,000 words of fixed material, whatever the unit’s size. An empty call cost 67,095 tokens because agents inherited every tool.",c:"Per-unit packets; plugin agents with tool lines.",o:"The empty call fell to 8,588 tokens, about 87 per cent less."},
+{v:"v10.0",d:"10-13",trig:"mark",t:["cost"],h:"Selections down to high",b:"Rankings and selections became the slow part of each unit.",c:"The selector’s calls at high effort.",o:""},
+{v:"v11.0",d:"10-14",trig:"mark",t:["review"],h:"A reviewer who checks the literature and audits the machine",b:"“Blindness to the drafting history and blindness to the relevant philosophical literature are different things.”",c:"V21 in two stages: a publication judgment with tagged literature claims and a revision depth, then an architectural audit; a token ledger.",o:"Every literature claim carried a tag, and the six Claude checked held. The depth floor sent the response back past V11."},
+{v:"v12.0",d:"10-14",trig:"remake",t:["remake","cost"],h:"The remake: 386 calls to about a dozen",b:"No call held the whole paper; the central fault was seen ten times and never acted on. About 900M processed tokens. “One draft used about 65% of his weekly allowance.”",c:"Nine steps, seven role files, 4,409 words of instructions. Dropped: voices, seminar, strategy menus, unit contests, referees, machinist, gate. Kept: fresh readers, blind reviewer, verified quotations, honest logs.",o:"Round 2: 11 calls, about 1.27M reported tokens, but reconceive again."},
+{v:"v12.1",d:"10-14",trig:"mark",t:["sources"],h:"The source check",b:"Texts the operator supplied went straight to the plan, so a defeater could only be absorbed in the writing.",c:"L3-03 asks whether new texts undermine the thesis or take its novelty; a rechoose is free.",o:""},
+{v:"v12.2",d:"10-14",trig:"review",t:["tests"],h:"Test the hinge",b:"Both inferences of round 2 were named weak five times and declared repaired each time, with no fresh judge of the repair.",c:"Countercases at the pick and the plan check; a final check after the rewrite; stop with a brief.",o:""},
+{v:"v12.3",d:"10-15",trig:"review",t:["sources","trials"],h:"Intake and the targeted trial",b:"Advice on the stopped paper-1-r3 rested its leads on five texts not held.",c:"Source intake before answering any feedback; a receipt for advice on a stopped run; a researcher and a critic per lead.",o:""},
+{v:"v12.4",d:"10-15",trig:"review",t:["sources"],h:"Proposals from opened passages",b:"Proposers opened no sources; the batch quota pushed toward familiar moves already in print.",c:"Three to five candidates, each on an opened passage, with a priority check.",o:"Half held: the choice rested on read passages. Half failed: the decisive antecedent was still caught only at L7."},
+{v:"v12.5",d:"10-15",trig:"review",t:["sources","tests","trials"],h:"Focused reading and tested repairs",b:"Golub 2017 held and unopened; a critic’s repairs implemented as established; a final check that let “novelty not checked” pass.",c:"COMMON rule 7; source obligations; the repair loop; clearance rules; render merged into verify; the research trial.",o:""},
+{v:"v12.6",d:"10-16",trig:"mark",t:["review"],h:"The switchman decides in context",b:"R-01 treated the reviewer’s depth as a floor and knew neither the date nor the deadline.",c:"R-01 judges the paper’s chance and the time left; advice-carried.md for later runs.",o:""},
+{v:"v13.0",d:"10-16",trig:"mark",t:["review"],h:"Comparison first",b:"Standalone reviews were poorly calibrated against the operator’s judgments; comparisons with known references did better.",c:"A blind, upload-only comparison against three reference manuscripts, frozen before the publication judgment.",o:""},
+{v:"v14.0",d:"10-16",trig:"mark",t:["review"],h:"The packet folder",b:"Uploading five files every round was a nuisance.",c:"A separate, neutrally named folder on the Desktop holds only the packet.",o:"Round 4: the comparison was frozen and read the four papers on one footing."},
+{v:"v14.1",d:"10-17",trig:"mark",t:["prose","ops"],h:"The clarity edit",b:"Passages so dense they took several readings; doubled section numbers; since v12.0 no call read for prose.",c:"A fresh editor and author before every L9; a look at the PDF; withdrawal before the freeze; five-part operator messages; the burden on any machine change.",o:"Round 5: prose “generally intelligible and unusually disciplined about attribution”; small drifts in three editor replacements."},
+{v:"v14.2",d:"10-18",trig:"mark",t:["opening"],h:"Opening a new lineage",b:"The lean machine could continue a lineage but not open one.",c:"O0 to O3: intake, map, region check, three parallel librarians and a merge; parked runs.",o:""},
+{v:"v14.3",d:"10-18",trig:"mark",t:["sources","ops"],h:"DOIs",b:"“new rule: always include doi when you make lit requests.”",c:"Every text sent to the operator carries a DOI checked against its own record.",o:""},
+{v:"v14.4",d:"10-18",trig:"mark",t:["prose"],h:"The abstract convention",b:"Abstracts too dense, not following the conventions of an abstract.",c:"A STYLE paragraph, and an abstract note in the clarity edit.",o:""},
+{v:"v14.5",d:"10-18",trig:"mark",t:["prose"],h:"The abstract-only pass",b:"After a send the clarity edit is skipped, so the abstract edit of v14.4 never ran on the papers that go out.",c:"Editor, author and a no-wider check on the abstract after every send.",o:"Paper-2 round 1 came back revise; the pass did not run."},
+{v:"v14.6",d:"10-18",trig:"review",t:["tests"],h:"A fresh check after a weak rewrite",b:"A central argument written at L8-04 reached the reviewer untested; a parser read a labelled replacement as a deletion.",c:"central_weak: yes for any unchecked central argument; one fresh final check; the parser fix.",o:"Paper-2 round 2: no reject-level fault, though several things changed at once."},
+{v:"v14.7",d:"10-20",trig:"mark",t:["polish"],h:"The final polish",b:"Papers that passed review still read as if the reader knew the literature.",c:"A ChatGPT polish of a paper the operator chose to submit, through a packet folder, and a Claude review that keeps only harmless edits.",o:"Paper-4 round 1: no polish ran. The final check cleared the step that became the one reject-level finding."},
+{v:"v14.8",d:"10-22",trig:"mark",t:["polish"],h:"The budget is the limit",b:"The 5,800 safety line and 15 per cent cap were hard to trust.",c:"Polish budget at 6,000, title and abstract counted.",o:"Paper-5: no polish ran, and the counter undercounted a mathematical paper by about 2,000 words."},
+{v:"v15.0",d:"10-23",trig:"review",t:["tests","ops"],h:"The counter and the literal test",b:"The word counter read a bare “<” as an HTML tag; the final check tested the established thesis, not the advertised one.",c:"A repaired wordcount.py (protected); paragraph splits seen by the clarity check; the advertised conclusion tested literally.",o:""},
+{v:"v15.1",d:"10-23",trig:"mark",t:["polish"],h:"Two named polishes",b:"A “rushed, monotone quality that a line edit cannot reach”; four candidates all named paper.pdf.",c:"POLISH-LINE.md and POLISH-STRUCTURE.md, run by the operator in the machine folder; the PAPERS/ shelf.",o:""},
+{v:"record",d:"10-24",trig:"record",t:["human"],h:"Human review of paper-5’s line polish",b:"A careful human reader found the mathematics correct but too often without a plain statement of what it means, and an introduction that gave results before the argument.",c:"About fifty notes screened against the rules: one withheld, three passed with the operator’s wording removed, seven left out as illegible or unclear. A separate AI comprehension check found an error in §4. A redacted log in the folder and the full one outside it; a brief and a prompt for one combined revision. No machine file changed.",o:"Review revision written: 5,996 words."},
+{v:"record",d:"10-25",trig:"record",t:["human"],h:"Human review of paper-2-r2’s structure polish",b:"The structure polish fixed the order but not the references: terms, labels and pronouns were used before they had been explained.",c:"75 notes, all passed in generic form, nine of them conventions for the whole paper. Ten AI reviewer suggestions checked (eight accepted, two modified). A brief and a prompt.",o:"Review revision written: 5,986 words."},
+{v:"record",d:"10-25",trig:"record",t:["human"],h:"Human review of paper-4’s structure polish",b:"Each polish kept what the other lost, labels multiplied, and the mathematics again lacked plain words.",c:"No human notes. Two AI reviewers’ fourteen items, checked against the texts, plus six of Claude’s own, two of them found against the sources. The screening session wrote the revision itself.",o:"Review revision written: 5,927 words. No separate reader checked it."}
+];
+
+/* Runs with logs/calls.csv. Calls: [step, call, role, mode, model(o|s), tokens (0 = not reported), note] */
+const RUNMETA={
+"paper-5":{label:"paper-5 · Paralysis and the long term",ver:"v14.8",out:"send",end:["X","GG"],endNote:"Waiting for submission, with a pre-polish, a line polish and a structure polish on the shelf."},
+"paper-4":{label:"paper-4 · The evil-god challenge",ver:"v14.7",out:"send",end:["X","GG"],endNote:"Sent after one round with three fixes; waiting for submission."},
+"paper-2-r2":{label:"paper-2-r2 · Corrigible persons, replanned",ver:"v14.6",out:"send",end:["X","GG"],endNote:"Sent in round 2. The abstract check refused twice, so the old abstract went back."},
+"paper-2":{label:"paper-2 · Designing people to serve",ver:"v14.2 to v14.5",out:"replan",end:["J"],endNote:"R-01 chose replan: a new run, paper-2-r2, starts at the drafting table."},
+"paper-1-r5":{label:"paper-1-r5 · Quasi-realism, rounds 3 to 5",ver:"v12.4 to v14.1",out:"send",end:["X","GG"],endNote:"Three outside rounds on one run. Sent in round 5."},
+"paper-1-r2":{label:"paper-1-r2 · The lean machine as built",ver:"v12.0",out:"repropose",end:["F"],endNote:"Eleven calls as designed, then reconceive: repropose from L1."},
+"paper-3":{label:"paper-3 · Comparative confidence",ver:"v14.7",out:"stop",end:["AA"],endNote:"Pick none, twice. No paper; the brief goes to the operator."},
+"paper-3-r2":{label:"paper-3-r2 · Comparative confidence, again",ver:"v14.7",out:"stop",end:["AA"],endNote:"The return spent at L5, then a rejected repair. No paper."},
+"paper-3-r3":{label:"paper-3-r3 · A research trial",ver:"v14.7",out:"stop",end:["AA"],endNote:"The critic rejected the lead. The operator stopped the lineage."},
+"paper-1-r3":{label:"paper-1-r3 · Stopped at the scale",ver:"v12.2",out:"stop",end:[],endNote:"Stopped at L2 with a brief; then an intake for the outside advice on the stop."},
+"paper-1-r4":{label:"paper-1-r4 · Targeted trial",ver:"v12.3",out:"stop",end:["AA"],endNote:"Lead A rejected; lead B judged not distinct. Stop with a brief."},
+"paper-1-r6":{label:"paper-1-r6 · Research trial",ver:"v12.5",out:"stop",end:["AA"],endNote:"Two strong calls, then a halt for the operator: reject."}
+};
+const RUNS={"paper-1-r2":[["L1","L1-01","proposer","propose","o",0,"Seven candidates; only C1 develops the brief's lead; none cite pages."],["L2","L2-01","advisor","pick","o",136105,"Pick C1 (sharpened: functional thesis is Street's premise); runner-up C2"],["L3","L3-01","librarian","gather","s",104860,"All 12 texts held; Gibbard 2011 fetched; for_operator 0"],["L4","L4-01","author","plan","o",149571,"plan ~3,390 words (over 3,000 cap); identity claim anchored (Golub n.34)"],["L5","L5-01","advisor","plan-check","o",102687,"revise: thesis holds; fix 3/5 clash, Dreier, Golub-debunking split"],["L5","L4-02","author","plan","o",142396,"all seven plan-check points answered; cost/defeat clash resolved"],["L6","L6-01","drafter","draft","s",101137,"~5,100 words; Field 1989 from memory; Gibbard 1990 no page"],["L7","L7-01","reader","read","o",82848,"rewrite: safety trivial for necessary truths; 3/5 conflict; literature missing"],["L8","L8-01","author","rewrite","o",150282,"4,694 words; safety fixed, 3/5 reconciled, literature added"],["L9","L9-01","verifier","verify","s",95573,"51 quotes checked, 0 fixes, 0 unverified, 4694 words"],["L9","L9-02","verifier","render","s",0,"10 pages, anonymous"],["R","R-01","advisor","respond","o",163857,"repropose from L1; both bridges fail; Hopster, Klenk, Korman-Locke 2023 missed"]],
+"paper-1-r3":[["L1","L1-01","proposer","propose","o",131638,"brief's lead is C6; no sources opened, no quotations"],["L2","L2-01","advisor","pick","o",131392,"none: C2 is Street's own dilemma; C1 misreads Street; C6 already in Tersman/Klenk"],["L1","L1-02","proposer","propose","o",181247,"2,847 words, over 2,500 cap"],["L2","L2-02","advisor","pick","o",133732,"none: C2, C1, C3 each fail their plainest case; points to metasemantic dependence"],["IN","IN-01","librarian","intake","s",136915,"intake for the outside advice on the stop; for_operator 4, essential 1"],["IN","IN-02","librarian","add","s",116326,"Valencia Pacheco complete 30pp; for_operator 0"]],
+"paper-1-r4":[["T1","T1-A","proposer","investigate","o",193474,"classification step open; criterion fails on individuation; Copp anticipates"],["T2","T2-A","advisor","assess-lead","o",173536,"reject: no competence criterion; Copp and Golub 2017 take novelty; Lead B skip"]],
+"paper-1-r5":[["L1","L1-01","proposer","propose","o",220907,"C1 answers r3's live metasemantic direction; C3 weak"],["L2","L2-01","advisor","pick","o",136030,"none: C1 comparative safety fails at nearby cultural cases"],["L1","L1-02","proposer","propose","o",198621,"Wilberforce vs tempered realism; basing-grounding collapse"],["L2","L2-02","advisor","pick","o",140247,"pick; runner-up C2; new_sources yes; Boyd not held"],["L3","L3-01","librarian","gather","s",93829,"for_operator 1; warns Sinclair 2011 misattributed"],["L3","L3-02","librarian","add","s",107570,"R-125 met; for_operator 0"],["L3","L3-03","advisor","source-check","o",116947,"proceed: Boyd fixes reference causally, reply must shift to warrant"],["L4","L4-01","author","plan","o",148664,"quotes checked against opened texts"],["L5","L5-01","advisor","plan-check","o",134861,"horn-two modal cost fails; rebuild on K&L p.316"],["L4","L4-02","author","plan","o",143896,"horn two rests on K&L p. 316; R1 reduced to R2"],["L6","L6-01","drafter","draft","s",97453,"sections 3-6 compressed; quotes from plan, not reopened"],["L7","L7-01","reader","read","o",83408,"reframe payoff, meet theorist/participant objection, add Golub, Dreier, K&L 2023"],["L8","L8-01","author","rewrite","o",164475,"central_weak yes (parity premise, regulation collapse)"],["L8","L8-03","advisor","final-check","o",0,"revise; central inferences hold; fix Boyd p. 336 omission, scope abstract"],["L8","L8-04","author","rewrite","o",105359,"Boyd reply added; 5,419 words; central_weak no"],["L9","L9-01","verifier","verify","s",110985,"5,443 words"],["L9","L9-02","verifier","render","s",73471,"anonymous, xelatex, 11 pages, fonts embedded"],["IN","IN-01","librarian","intake","s",127353,"for_operator 3: Korman-Locke 2023 full text, Gibbard 2003 chs 5 and 10, Brink 1989"],["IN","IN-02","librarian","add","s",124241,"for_operator 0"],["R","R-01","advisor","respond","o",190393,"round 3: 2023 EReasons supersedes de re exemption; Golub anticipates"],["IN","IN-01","librarian","intake","s",121374,"nothing acquired; for_operator 0"],["R","R-01","advisor","respond","o",172868,"round 4: cite Golub s5, narrow dilemma, restrict to 2020 argument"],["L8","L8-05","author","revise","o",159473,"Golub credited, dilemma narrowed; central_weak no; open 4"],["L8","L8-06","advisor","final-check","o",127966,"inferences scoped and hold; payoff narrow"],["L9","L9-03","verifier","verify","s",112954,"5 reference entries fixed; 10-page PDF rendered"],["E","E-01","editor","clarity","o",139528,"rendered; title change proposed"],["E","E-02","author","clarity","o",121212,"5201 words"],["L9","L9-04","verifier","verify","s",97989,"11-page anonymous render, no problems"],["IN","IN-01","librarian","intake","s",110277,"nothing acquired; for_operator 0"],["R","R-01","advisor","respond","o",152994,"round 5: send; advice-carried 17; no machine adopts"],["L8","L8-07","author","revise","o",99416,"5,257 words"],["L9","L9-05","verifier","verify","s",102518,"11 pages, no render problems"]],
+"paper-1-r6":[["T1","T1-A","proposer","investigate","o",194629,"narrowed: identity works only at the bridge; parity needs Gibbard's principle (I)"],["T2","T2-A","advisor","assess-lead","o",157607,"reject: identity only a necessary condition; sufficiency restates Street's horn"]],
+"paper-3":[["O1","O1-01","cartographer","map","s",0,"written from fetch-tool extracts only; DNZ proofs and key rivals unopened"],["O2","O2-01","advisor","region-check","o",117340,"three questions; 6 starting points, 16 requests"],["O3","O3-01","librarian","corpus","s",120682,"R-001, R-005, R-011, R-013 blocked (403/closed), for the operator"],["O3","O3-02","librarian","corpus","s",0,"R-008, R-010, R-016 blocked (403/paywall)"],["O3","O3-03","librarian","corpus","s",0,"R-002, R-003, R-009 refused/paywalled, for the operator"],["O3","O3-04","librarian","merge","s",96189,"6 held (3 core), 10 for-operator; SP1, SP3, SP5, SP6 thin"],["O3","O3-05","librarian","corpus","s",0,"5 unreached (Hare 429; Chang, Scott, Meacham for the operator)"],["O3","O3-06","librarian","merge","s",0,"9 held, 6 core, 15 for-operator; SP1 and SP3 thin"],["O3","O3-07","librarian","add","s",0,"15 of 15 met"],["L1","L1-01","proposer","propose","o",0,"three candidates: interpersonal yardstick, likely-Monotonicity, set-structure"],["L2","L2-01","advisor","pick","o",0,"none: C1 moot, C2 meets C-R §5, C3 is van Fraassen's reading"],["L1","L1-02","proposer","propose","o",0,"C1 (Goodsell-Nebel Theorem 7 rests on Strong Delineation) leads"],["L2","L2-02","advisor","pick","o",147931,"none: C1 a discussion note, DNZ 2026 answers its move"]],
+"paper-3-r2":[["L1","L1-01","proposer","propose","o",0,"three candidates: lower-envelope reading, unanimity Strong Monotonicity dilemma, luminosity"],["L2","L2-01","advisor","pick","o",0,"pick C1 sharpened; nearest texts unread"],["L3","L3-01","librarian","gather","s",135036,"7 held, 2 acquired; 5 for the operator"],["L3","L3-02","librarian","add","s",0,"for_operator 0"],["L3","L3-03","advisor","source-check","o",0,"proceed: Sturgeon, Hill now named opponents"],["L4","L4-01","author","plan","o",0,"conditional thesis: 'confident' total but non-additive in Ellsberg cases"],["L5","L5-01","advisor","plan-check","o",0,"rechoose: complementation is a rational norm"],["L2","L2-02","advisor","pick","o",0,"pick C2 rebuilt on definite Strong Monotonicity"],["L3","L3-04","librarian","gather","s",138515,"2 acquired; Elliott unreached; novelty uncleared"],["L3","L3-05","advisor","source-check","o",0,"proceed; novelty not cleared against Elliott 2025, Lyon"],["L4","L4-02","author","plan","o",0,"weight objection answered; novelty limits stated"],["L5","L5-02","advisor","plan-check","o",0,"revise, new_inference yes: discriminating datum required"],["L4","L4-03","author","repair","o",0,"narrowed: envelope excluded only by new same-side pairs"],["L5","L5-03","advisor","assess-lead","o",129371,"reject: folk-sharpness error theory explains all data"]],
+"paper-3-r3":[["T1","T0-01","librarian","add","s",0,"5 added; Lyon, Lassiter ch.4"],["T1","T1-A","proposer","investigate","o",0,"narrowed: reverse route fails on DNZ's meaning premise"],["T2","T2-A","advisor","assess-lead","o",149422,"reject: DNZ 2021 pp. 82-83 already give the ignorance diagnosis"]],
+"paper-5":[["O1","O1-01","cartographer","map","s",149965,"7 replies; literature small, not unanswered; citation indexes blocked"],["O2","O2-01","advisor","region-check","o",122418,"region: constraints under risk, ex ante/ex post, deontic decision theory, cluelessness"],["O3","O3-01","librarian","corpus","s",127111,"got R-004, R-015; R-002, R-008, R-009, R-010 for the operator"],["O3","O3-03","librarian","corpus","s",140526,"3 of 4 held (Frick draft only); Unruh blocked by Brill 403"],["O3","O3-02","librarian","corpus","s",131581,"4 of 6 met; Harman, Nye for the operator"],["O3","O3-04","librarian","merge","s",103419,"9 held, 8 core; 7 for the operator with DOIs; no thin starting points"],["O3","O3-05","librarian","add","s",143193,"four texts added; R-002, R-005, R-009 still for-operator"],["O3","O3-06","librarian","add","s",144764,"3 notes from full texts; MacAskill never mentions paralysis"],["L1","L1-01","proposer","propose","o",152484,"3 candidates: ex ante reply condemns escape; imprecise credences; anti-fanaticism asymmetry"],["L2","L2-01","advisor","pick","o",143040,"none: C1 fails compensation case; C2, C3 hedged; brief written"],["L1","L1-02","proposer","propose","o",179576,"three candidates; C1: escape's identity effects cancel future-size advantage"],["L2","L2-02","advisor","pick","o",131217,"pick C1: escape's cost scales with P, benefit with delta"],["L3","L3-01","librarian","gather","s",125504,"6 held, 2 acquired; for the operator: Greaves-MacAskill 2025, Quinn 1989"],["L3","L3-02","librarian","add","s",108335,"for_operator 0; published p. 41 side-constraint claim unchanged"],["L3","L3-03","advisor","source-check","o",126031,"proceed; plan must answer G&M serious side-constraint reply"],["L4","L4-01","author","plan","o",156422,"escape idle on M&M premises; decay sole route, itself a revision"],["L5","L5-01","advisor","plan-check","o",138953,"revise, new_inference no: restate target, co-author claim, decay scope, q bound"],["L4","L4-02","author","plan","o",126076,"target restated, gap corrected, decay scoped as open limit"],["L6","L6-01","drafter","draft","s",112584,"about 5,400 words; flags: unverified quotes, Lenman from memory"],["L7","L7-01","reader","read","o",97116,"rewrite, required_sources 2: algebra holds; hinges on no-decay"],["L7","L7-02","librarian","gather","s",97145,"D'Alessandro held; Woollard 2015 for the operator"],["L7","L7-03","librarian","add","s",107858,"Woollard held; no remoteness attenuation"],["L8","L8-01","author","rewrite","o",153950,"reframed around remoteness; 4,922 words; central_weak yes"],["L8","L8-03","advisor","final-check","o",115148,"revise: inferences hold; fix eps bound direction, horizon scope, Woollard page"],["L8","L8-04","author","rewrite","o",91199,"three final-check repairs; 5,021 words; central_weak no"],["E","E-01","editor","clarity","o",131827,"40 notes; abstract revised; title change; missing math glyphs in PDF"],["E","E-02","author","clarity","o",127292,"33 adopted, 7 adapted; math typeset; 5,441 words"],["L9","L9-01","verifier","verify","s",117876,"38 quotations checked, 0 fixed; 11 pages; render_problems 0"],["IN","IN-01","librarian","intake","s",0,"Unruh 2025 acquired (OUP open access); for_operator 0"],["R","R-01","advisor","respond","o",160404,"rewrite from L8: scope necessity claim, add Unruh 2025"],["L8","L8-05","author","revise","o",159188,"necessity thesis withdrawn, claims scoped; central_weak yes, open 7"],["L8","L8-06","advisor","final-check","o",0,"go: inferences hold within scope; novelty over D'Alessandro checked"],["E","E-03","editor","clarity","o",152311,"32 notes, abstract revised; notes wordcount.py undercount"],["E","E-04","author","clarity","o",125021,"26 adopted, 5 adapted, 1 harness; true count 5,471"],["E","E-05","author","clarity","o",89065,"N1 split already in final.md; anchor stays by design"],["L9","L9-02","verifier","verify","s",136960,"5,471 words; 36 quotations verified, 0 fixed; 11 pages"],["R","R-02","advisor","respond","o",190860,"send, fixes 3; Mogensen corrected; model scope in abstract"],["L8","L8-07","author","revise","o",99084,"three fixes made exactly; 5,482 corrected all-in"],["E","E-06","editor","abstract","o",105038,"abstract revised (149 words)"],["E","E-07","author","abstract","o",101466,"N1 adapted; abstract replaced, 150 words; body untouched"],["E","E-08","advisor","abstract-check","o",102041,"abstract_ok yes, wider 0"],["L9","L9-03","verifier","verify","s",101839,"34 quotes verified, 0 fixes, 11-page PDF, no render problems"]],
+"paper-4":[["O1","O1-01","cartographer","map","s",0,"12 questions, 3 candidate regions; key texts opened only as abstracts"],["O2","O2-01","advisor","region-check","o",111445,"Symmetry-thesis grounds: intrinsic, theodicy, parity questions; corpus empty"],["O3","O3-02","librarian","corpus","s",91742,"0 of 5 obtained, all paywalled or 403; all five for-operator"],["O3","O3-03","librarian","corpus","s",114109,"Law 2010 and Collins 2024 met; three unreached"],["O3","O3-01","librarian","corpus","s",0,"Thesis obtained; Alvaro extract only; three paywalled, for the operator"],["O3","O3-04","librarian","merge","s",109280,"3 held, 11 for-operator with DOIs, three starting points thin"],["O3","O3-05","librarian","corpus","s",101998,"R-016 to R-019 met (Rosati, Calder, Hume, Tooley)"],["O3","O3-06","librarian","merge","s",103644,"7 held (6 core), 11 for the operator with DOIs"],["O3","O3-07","librarian","add","s",0,"8 added; 3 for-operator"],["O3","O3-08","librarian","add","s",0,"3 added (11 total); for_operator 0"],["L1","L1-01","proposer","propose","o",0,"4 candidates; C2 (calibration vs gap reduction) strongest"],["L2","L2-01","advisor","pick","o",136923,"pick C2: calibration bound on gap solutions; runner-up C1"],["L3","L3-01","librarian","gather","s",128762,"8 held, Miller 2016 acquired; five for the operator"],["L3","L3-02","librarian","add","s",0,"4 added, 1 unreceived (Draper 2016)"],["L3","L3-03","advisor","source-check","o",0,"proceed: undermines neither; Lancaster-Thomas narrows novelty"],["L4","L4-01","author","plan","o",0,"bound from likelihood symmetry; dilemma; Draper 2016 unseen"],["L3","L3-04","librarian","add","s",124635,"Draper added; Miller figures recovered from images"],["L3","L3-05","advisor","source-check","o",0,"proceed: Draper gives no impossibility-strength prior"],["L5","L5-01","advisor","plan-check","o",140637,"revise, new_inference yes: premise is evidential, no prior saves God"],["L4","L4-02","author","repair","o",0,"narrowed: identity exact; case (i) needs net decisiveness"],["L5","L5-02","advisor","assess-lead","o",0,"narrow: Symes pp. 26-27 has the dichotomy; keep the size result"],["L6","L6-01","drafter","draft","s",0,"full draft ~5,450 words; quotations taken from plan"],["L7","L7-01","reader","read","o",97120,"rewrite; one required source (Hendricks 2018)"],["L7","L7-02","librarian","gather","s",107604,"Hendricks 2018 held; nothing for the operator"],["L8","L8-01","author","rewrite","o",0,"5,288 words; new simplicity cap in Section 5 unchecked; central_weak yes"],["L8","L8-03","advisor","final-check","o",0,"go: inferences hold within stated scope"],["E","E-01","editor","clarity","o",0,"46 notes, new abstract, title change"],["E","E-02","author","clarity","o",0,"43 adopted, 3 adapted, 0 rejected; 5,450 words"],["E","E-03","author","clarity","o",94666,"N1, N3 splits already in paper; check PASS"],["L9","L9-01","verifier","verify","s",0,"40 quotes verified, one reference fixed, 11 pages"],["IN","IN-01","librarian","intake","s",117251,"9 works extracted, all held in full; for_operator 0"],["R","R-01","advisor","respond","o",184792,"send, fixes 3, from L8; cap scoped to its model"],["L8","L8-04","author","revise","o",99524,"all 25 replacements of Fixes 1-3 applied; 5,583 words"],["L8","L8-05","author","cut","o",118391,"cut 5,583 to 5,345 by deletion; review fixes untouched"],["E","E-04","editor","abstract","o",103510,"one note, abstract revised"],["E","E-05","author","abstract","o",95825,"N1 adapted; abstract 150 words, body untouched"],["E","E-06","advisor","abstract-check","o",103527,"abstract_ok yes, wider 0"],["L9","L9-02","verifier","verify","s",99253,"33 quotes verified, 0 fixes; no render problems"],["L9","L9-03","verifier","verify","s",106564,"40 quotes verified, 1 ref title fix"],["L9","L9-04","verifier","verify","s",101724,"only the Conclusion phrase changed beyond italics; render_problems 0"]],
+"paper-2":[["O1","O1-01","cartographer","map","s",0,"10 questions, 7 fault lines; Walker, Torrance, Levy, Petersen 2007 unopened"],["O2","O2-01","advisor","region-check","o",119773,"Region A plus refusal: origin/autonomy, contented servant, non-identity"],["O3","O3-02","librarian","corpus","s",101428,"0 of 5 obtained; all closed or Cloudflare-blocked"],["O3","O3-03","librarian","corpus","s",122168,"met R-006, R-007, R-015; Pettit and Chomanski paywalled, for the operator"],["O3","O3-01","librarian","corpus","s",131153,"R-001, R-002 met; R-010 substitute only"],["O3","O3-04","librarian","merge","s",120984,"8 held, 10 for-operator, SP3 and SP6 thin"],["O3","O3-05","librarian","corpus","s",105445,"only SEP Republicanism held; three for the operator"],["O3","O3-06","librarian","merge","s",95026,"9 held, 13 for the operator; SP3 and SP6 still thin"],["O3","O3-07","librarian","add","s",0,"12 files added; SP6 now four core, SP3 still one"],["O3","O3-08","librarian","add","s",106782,"R-003 met; Petersen 2017 held as May 2016 draft"],["L1","L1-01","proposer","propose","o",0,"4 candidates; Pettigrew 2026, Dai 2023 unchecked threats"],["L2","L2-01","advisor","pick","o",125450,"pick C1 (domination, scoped to corrigible servants)"],["L3","L3-01","librarian","gather","s",0,"2 acquired; 3 for the operator: Mogensen, Pettit 1997, Petersen 2017 printed"],["L3","L3-02","librarian","add","s",0,"all three added; for_operator 0"],["L3","L3-03","advisor","source-check","o",0,"proceed: Mogensen's creation-ethics reply needs answering"],["L4","L4-01","author","plan","o",0,"corrigible servants dominated; Petersen's permission limited"],["L5","L5-01","advisor","plan-check","o",0,"revise: Pettit 1997 pp.119-20 defeats (ii); new_inference yes"],["L4","L4-02","author","repair","o",0,"narrowed: custodied corrigible servant, an undominated permanent ward"],["L5","L5-02","advisor","assess-lead","o",0,"narrow: holds only as a three-horn dilemma on Petersen's premises"],["L5","L5-03","librarian","add","s",0,"Pettit: no wards/guardian passage; Lovett: children pp.145-147"],["L5","L5-04","advisor","source-check","o",0,"proceed: Pettit 2012 merges horn 2 into horn 1; novelty intact"],["L6","L6-01","drafter","draft","s",0,"about 5,540 words, may breach ceiling"],["L7","L7-01","reader","read","o",95860,"rewrite: corrigibility does no work in domination step"],["L7","L7-02","librarian","gather","s",112296,"all 3 held; reader's Long DOI wrong (is Moret)"],["L8","L8-01","author","rewrite","o",0,"5,200 words; rule-horn and Kavka steps flagged weak"],["L8","L8-03","advisor","final-check","o",0,"revise: custody and rule steps need scoping/support"],["L8","L8-04","author","rewrite","o",0,"5,439 words; confinement argument new, otherwise none open"],["E","E-01","editor","clarity","o",0,"43 notes, 3 structural, title kept"],["E","E-02","author","clarity","o",0,"38 adopted, 4 adapted, N7 rejected; 5,485 words"],["E","E-03","author","clarity","o",78232,"N20 entry corrected: a false alarm from the checking script"],["L9","L9-01","verifier","verify","s",0,"54 quotes checked, 0 fixes; 11pp, 5,485 words"],["IN","IN-01","librarian","intake","s",125687,"for_operator=1: Pettit 2015 reply (secondary); 15 held"],["IN","IN-02","librarian","add","s",105330,"published CRISPP pp. 687-696 held; for_operator now 0"],["R","R-01","advisor","respond","o",169662,"replan from L4: central disposition-to-power inference fails; time allows"]],
+"paper-2-r2":[["L4","L4-01","author","plan","o",155749,"conditional dilemma planned; horn (ii) tiering inference contested"],["L4","L4-02","author","plan","o",151574,"horn (ii) steps 8-9 new inference; 3,023 words"],["L5","L5-01","advisor","plan-check","o",133922,"revise, new_inference no: step 9 conflates disposition with verdict"],["L4","L4-03","author","plan","o",117260,"all five plan-check points answered"],["L6","L6-01","drafter","draft","s",95058,"full draft about 5,000 words; quotes copied from plan"],["L7","L7-01","reader","read","o",86135,"rewrite; 2 required sources"],["L7","L7-02","librarian","gather","s",121074,"both required texts acquired; none for the operator"],["L8","L8-01","author","rewrite","o",148305,"5,164 words; persuasion criterion new and unchecked; central_weak yes"],["L8","L8-03","advisor","final-check","o",129750,"revise: scope LSS target; cite Bradley-Saad, Wang"],["L8","L8-04","author","rewrite","o",130313,"target scoped, antecedents cited; 5,384 words"],["E","E-01","editor","clarity","o",132763,"47 notes (3 structural, 6 presentation); abstract revised"],["E","E-02","author","clarity","o",107128,"43 adopted, 4 adapted, 0 rejected; 5,479 words"],["L9","L9-01","verifier","verify","s",107648,"42/42 quotations verified, no fixes; 11 pages"],["R","R-01","advisor","respond","o",171678,"send, fixes 3, from L8"],["L8","L8-05","author","revise","o",96307,"Fixes 1-3 applied exactly; 5,473 words, abstract 150"],["E","E-03","editor","abstract","o",99508,"one note, abstract revised, 149 words"],["E","E-04","author","abstract","o",88846,"N1 adapted; abstract 150 words, body untouched"],["E","E-05","advisor","abstract-check","o",99012,"abstract_ok no: initiative condition dropped"],["E","E-06","author","abstract","o",89354,"abstract restores initiative condition and finding"],["E","E-07","advisor","abstract-check","o",99012,"abstract_ok no again: old abstract put back"],["L9","L9-02","verifier","verify","s",106813,"41/41 quotes verified, no fixes; 11 pages"]]};
+/* whole-run totals from logs/calls.csv; tokens are the sum of reported figures, so runs with missing figures are lower bounds */
+const RUNTOT=[
+ {r:"paper-1",v:"v3 to v11",n:386,tok:900e6,miss:null,out:"reconceive",note:"386 calls and about 900M processed tokens, per the v12.0 entry (381 rows in calls.csv)"},
+ {r:"paper-1-r2",v:"v12.0",n:12,tok:1229316,miss:2,out:"repropose"},
+ {r:"paper-1-r3",v:"v12.2",n:6,tok:831250,miss:0,out:"stop"},
+ {r:"paper-1-r4",v:"v12.3",n:2,tok:367010,miss:0,out:"stop"},
+ {r:"paper-1-r5",v:"v12.4 to v14.1",n:32,tok:4037279,miss:1,out:"send"},
+ {r:"paper-1-r6",v:"v12.5",n:2,tok:352236,miss:0,out:"stop"},
+ {r:"paper-2",v:"v14.2 to v14.5",n:34,tok:1715276,miss:19,out:"replan"},
+ {r:"paper-2-r2",v:"v14.6",n:21,tok:2467209,miss:0,out:"send"},
+ {r:"paper-3",v:"v14.7",n:13,tok:482142,miss:9,out:"stop"},
+ {r:"paper-3-r2",v:"v14.7",n:14,tok:402922,miss:11,out:"stop"},
+ {r:"paper-3-r3",v:"v14.7",n:3,tok:149422,miss:2,out:"stop"},
+ {r:"paper-4",v:"v14.7",n:40,tok:2592926,miss:17,out:"send"},
+ {r:"paper-5",v:"v14.8",n:42,tok:5125887,miss:2,out:"send"}
+];
+
+</script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+const byId={};ST.forEach(s=>byId[s.id]=s);
+const esc=t=>String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const fmtK=n=>n>=1e7?Math.round(n/1e6)+"M":n>=1e6?(n/1e6).toFixed(2).replace(/0+$/,"").replace(/\.$/,"")+"M":Math.round(n/1000)+"k";
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- which station a logged call belongs to ---------- */
+function stationFor(c){
+  const step=c[0],role=c[2],mode=c[3];
+  if(role==="librarian"){if(step==="IN")return"U";if(step[0]==="O")return"D";return"H"}
+  if(role==="cartographer")return"B";
+  if(role==="proposer")return mode==="investigate"?"BB":"F";
+  if(role==="drafter")return"M";
+  if(role==="reader")return"N";
+  if(role==="verifier")return"R";
+  if(role==="editor")return mode==="abstract"?"W":"Q";
+  if(role==="author"){if(mode==="plan")return"J";if(mode==="repair")return"L";if(mode==="clarity")return"Q";if(mode==="abstract")return"W";return"O"}
+  if(role==="advisor"){
+    if(mode==="region-check")return"C";if(mode==="pick")return"G";if(mode==="source-check")return"I";
+    if(mode==="plan-check")return"K";if(mode==="assess-lead")return step==="T2"?"BB":"L";
+    if(mode==="final-check")return"P";if(mode==="abstract-check")return"W";if(mode==="respond")return"V";
+    if(mode==="polish-review"||mode==="structure-review")return"Z";
+  }
+  return"A";
+}
+/* per-station figures across every logged lean run */
+const STAT={};ST.forEach(s=>STAT[s.id]={n:0,sum:0,cnt:0,runs:new Set()});
+Object.keys(RUNS).forEach(r=>RUNS[r].forEach(c=>{const st=STAT[stationFor(c)];st.n++;st.runs.add(r);if(c[5]>0){st.sum+=c[5];st.cnt++}}));
+
+const PRE_IDX=-1;
+function sIdx(s){return s.rec?19:vIdx(s.v)}
+function stEra(s){return s.rec?"human":eraOf(s.v)}            /* -1 = before v12.0, always present */
+function eraVar(s){return"var("+ERAS[stEra(s)].c+")"}
+function tapeTxt(s){return s.rec?"Oct 24–25":s.v}
+
+/* ---------- glyphs: line drawings centred on 0,0 ---------- */
+function gear(){let d="";const n=10,r1=15,r2=22;for(let i=0;i<n*2;i++){const a0=i*Math.PI/n,a1=(i+1)*Math.PI/n,r=i%2?r1:r2;
+  d+=(i?"L":"M")+(r*Math.cos(a0)).toFixed(1)+" "+(r*Math.sin(a0)).toFixed(1)+"L"+(r*Math.cos(a1)).toFixed(1)+" "+(r*Math.sin(a1)).toFixed(1)}
+  return `<g transform="translate(-6 0)"><path d="${d}Z"/><circle r="6" class="accf"/></g><g transform="translate(24 -12) scale(.55)"><path d="${d}Z"/></g><path class="thin" d="M-40 24H40"/>`}
+const GL={
+funnel:`<path d="M-34-20H34L8 6V22H-8V6Z"/><path class="thin" d="M-22-12H22"/><circle cx="-8" cy="-28" r="3" class="dot"/><circle cx="4" cy="-32" r="2.5" class="dot"/><circle cx="14" cy="-27" r="2" class="dot"/>`,
+map:`<path d="M-38-18L-13-24L13-18L38-24V18L13 24L-13 18L-38 24Z"/><path class="thin" d="M-13-24V18M13-18V24"/><path class="dash" d="M-30 12C-20-4-4 14 6 0S24-12 30-14"/><path class="acc" d="M26-18l7 7M33-18l-7 7"/>`,
+compass:`<circle r="23"/><circle r="16" class="thin"/><path class="thin" d="M0-27V-19M0 19V27M-27 0H-19M19 0H27"/><path class="accf" d="M0-14L5 0L0 14L-5 0Z"/>`,
+chutes:`<path d="M-38-24H-25L-9 22H-22ZM-7-24H7V22H-7ZM25-24H38L22 22H9Z"/><path class="acc" d="M-28 26H28"/>`,
+bulb:`<path d="M-13 4A17 17 0 1 1 13 4C9 8 7 11 7 15H-7C-7 11-9 8-13 4Z"/><path class="thin" d="M-7 20H7M-5 25H5"/><path class="acc" d="M-6-6L-2 3H2L6-6"/><path class="thin" d="M-28-16L-22-13M28-16L22-13"/>`,
+scale:`<path d="M0-20V20M-18 22H18"/><path d="M-34-12L34-4"/><path class="thin" d="M-34-12L-42 6M-34-12L-26 6M34-4L26 14M34-4L42 14"/><path class="acc" d="M-44 6H-24M24 14H44"/><circle cx="0" cy="-22" r="3.5" class="dot"/>`,
+books:`<rect x="-34" y="-20" width="12" height="42"/><rect x="-20" y="-26" width="14" height="48"/><rect x="-4" y="-16" width="11" height="38" class="acc"/><path d="M14 22L23-22L33-20L24 24Z"/><path class="thin" d="M-38 22H38"/>`,
+magnifier:`<circle cx="-6" cy="-6" r="17"/><path class="thick" d="M7 7L26 25"/><path class="thin" d="M-15-10Q-11-19-2-19"/><path class="acc" d="M-12-2H0"/>`,
+drafting:`<path d="M-36 20V-22L8 20Z"/><path class="thin" d="M-28 12V-4L-12 12Z"/><path d="M-40 25H38M30 25V-26"/><path class="acc" d="M12 2L26-14"/>`,
+caliper:`<path d="M-36-22H32V-12H-36Z"/><path d="M-30-12V20H-22V-12M10-22V14H18V-22"/><path class="thin" d="M-16-17H24"/><path class="acc" d="M-20 4H8"/>`,
+wrench:`<circle cx="12" cy="-12" r="11"/><path class="thick" d="M-26 20L5-5"/><path class="accf" d="M9-26L21-14L17-10L5-22Z" style="stroke:none"/>`,
+gear:"",
+eye:`<rect x="-40" y="-26" width="80" height="50" class="dash"/><path d="M-32 0Q0-24 32 0Q0 24-32 0Z"/><circle r="8" class="accf"/>`,
+pen:`<path d="M-28-24L-16 2L-28 22L-40 2Z"/><path class="thin" d="M-28-24V6"/><circle cx="-28" cy="6" r="2.5" class="dot"/><text class="gtx" x="-8" y="0">5,500</text><path class="acc" d="M-8 10H38"/>`,
+gate:`<path d="M-34 24V-14M-40 24H-28M32 24V-16"/><path d="M-34-10L36-22"/><path class="acc" d="M-22-12L-14-13.4M-4-15L4-16.4M14-18L22-19.4"/><circle cx="-34" cy="-11" r="4.5" class="dot"/>`,
+spray:`<rect x="-36" y="-8" width="26" height="24"/><path d="M-10-1H6V9H-10"/><path d="M-30-8V-20H-16V-8"/><circle cx="16" cy="-6" r="2.5" class="dot"/><circle cx="24" cy="3" r="2.5" class="dot"/><circle cx="19" cy="12" r="2" class="dot"/><circle cx="32" cy="-3" r="2" class="dot"/><circle cx="31" cy="11" r="2" class="dot"/><path class="acc" d="M10 4H6"/>`,
+stamp:`<path d="M-7-26H7V-12H18V-2H-18V-12H-7Z"/><rect x="-26" y="2" width="52" height="8" class="accf"/><text class="gtx" x="0" y="25" text-anchor="middle">VERIFIED</text>`,
+room:`<path d="M-36 24V-12L0-27L36-12V24Z"/><rect x="-10" y="-1" width="20" height="16" class="accf"/><path d="M-6-1V-7A6 6 0 0 1 6-7V-1"/>`,
+gavel:`<g transform="rotate(-28)"><rect x="-24" y="-26" width="30" height="14"/><path class="thick" d="M-9-12V18"/></g><rect x="6" y="16" width="34" height="8" class="accf"/>`,
+tray:`<path d="M-36 2L-28 22H28L36 2"/><path d="M-36 2H-14L-10 8H10L14 2H36"/><path class="acc" d="M0-28V-4M-8-12L0-4L8-12"/>`,
+switch:`<path d="M-38 0H-8"/><path class="thin" d="M-8 0L36-22M-8 0L36 8M-8 0L36 22"/><path class="acc" d="M-8 0L36-8"/><circle cx="-8" cy="0" r="4.5" class="dot"/><path d="M-26 0V22M-32 22H-20"/>`,
+abstract:`<rect x="-34" y="-24" width="68" height="48"/><path class="thin" d="M-26-15H26M-26-7H26M-26 1H12"/><text class="gtx" x="0" y="18" text-anchor="middle" style="font-size:11px">ABSTRACT</text><path class="acc" d="M22-2l6 6 10-12"/>`,
+shelf:`<path d="M-40 18H40M-34 18V24M34 18V24"/><rect x="-32" y="-14" width="14" height="32"/><rect x="-16" y="-20" width="14" height="38" class="acc"/><path d="M2 18L10-16L22-14L14 20Z"/><rect x="24" y="-8" width="12" height="26"/>`,
+buffer:`<circle cx="-8" cy="-2" r="22"/><path class="acc" d="M-8-2m-13 0a13 13 0 1 1 26 0a8 8 0 1 1-16 0a3.5 3.5 0 1 1 7 0"/><path class="thick" d="M14-2H40"/>`,
+inspect:`<circle cx="-6" cy="-6" r="17"/><path class="thick" d="M7 7L26 25"/><path class="acc" d="M-15-6L-8 1L4-12"/>`,
+mailbox:`<path d="M-32 6V-10A12 12 0 0 1-20-22H20A12 12 0 0 1 32-10V6Z"/><path d="M-20-22A12 12 0 0 1-8-10V6"/><path d="M0 6V26M-10 26H10"/><path class="acc" d="M20-14V-30H30V-24H20"/>`,
+chute:`<path d="M-36-7H36V7H-36Z"/><circle r="4.5" class="accf"/><path class="thin" d="M-26-7V7M26-7V7"/>`,
+bin:`<path d="M-20-8H20L16 24H-16Z"/><path class="acc" d="M-24-14L22-25"/><path class="thin" d="M-8-2V18M0-2V18M8-2V18"/>`,
+flask:`<path d="M-7-26H7M-5-26V-8L-24 22H24L5-8V-26"/><path class="acc" d="M-15 10H15"/><circle cx="-4" cy="15" r="2.5" class="dot"/><circle cx="6" cy="18" r="2" class="dot"/><circle cx="13" cy="-24" r="2.5" class="dot"/><circle cx="19" cy="-31" r="2" class="dot"/>`,
+bell:`<path d="M-18 14Q-18-20 0-22Q18-20 18 14Z"/><path d="M-24 14H24"/><circle cx="0" cy="20" r="4" class="accf"/><path class="thin" d="M24-16L32-22M26-6L36-6M-24-16L-32-22M-26-6L-36-6"/>`,
+ledger:`<path d="M0-18Q-18-26-36-20V22Q-18 16 0 24Q18 16 36 22V-20Q18-26 0-18Z"/><path d="M0-18V24"/><path class="thin" d="M-28-10H-8M-28-2H-8M-28 6H-12M8-10H28M8-2H28"/><path class="acc" d="M8 6H22"/>`,
+redpen:`<rect x="-26" y="-26" width="40" height="52"/><path class="thin" d="M-18-16H6M-18-8H6M-18 0H2M-18 8H6"/><path class="acc" d="M-20 16q5-6 10 0t10 0"/><path class="acc" d="M4-20l8 8M12-20l-8 8"/><path class="thick" d="M14 24L36-12"/>`,
+sieve:`<path d="M-36-18H36L22 12H-22Z"/><path class="thin" d="M-30-8H30M-26 2H26M-18-18V12M-6-18V12M6-18V12M18-18V12"/><circle cx="-6" cy="22" r="2.5" class="dot"/><circle cx="5" cy="26" r="2" class="dot"/><path class="acc" d="M30-20Q42-28 44-14"/><circle cx="44" cy="-10" r="3.5" class="accf"/>`,
+drawer:`<rect x="-30" y="-26" width="60" height="52"/><path d="M-30 0H30"/><path class="thin" d="M-9-14H9M-9 13H9"/><rect x="-6" y="4" width="12" height="10" class="accf"/><path class="thin" d="M-3 4V0A3 3 0 0 1 3 0V4"/>`,
+readers:`<circle cx="-15" cy="-2" r="12"/><circle cx="15" cy="-2" r="12"/><path d="M-3-2H3M-27-2H-36M27-2H36"/><circle cx="-15" cy="-2" r="4.5" class="accf"/><circle cx="15" cy="-2" r="4.5" class="accf"/><path class="thin" d="M-20 18H20"/>`,
+envelope:`<rect x="-34" y="-22" width="68" height="44"/><path d="M-34-22L0 6L34-22"/><path class="thin" d="M-34 22L-8 0M34 22L8 0"/><circle cx="0" cy="10" r="7.5" class="accf"/>`,
+revise:`<path d="M-26-26H10L20-16V26H-26Z"/><path d="M10-26V-16H20"/><path class="thin" d="M-18-12H8M-18-4H12M-18 4H12M-18 12H2"/><path class="acc" d="M-18 20H-2"/><path class="thick" d="M8 22L32-10"/>`,
+crate:`<rect x="-30" y="-20" width="60" height="42"/><path class="thin" d="M-30-20L30 22M30-20L-30 22"/><path class="dash" d="M14-20Q22-10 30-12M22-20Q25-15 30-16"/>`
+};
+GL.gear=gear();
+
+/* ---------- build the drawing ---------- */
+const rig=$("#rig");
+const TRACK="M110 220 H1510 C1612 220 1612 560 1510 560 H410 C410 760 250 800 250 960 H1400 C1592 960 1592 1290 1480 1290 H540 V1610 H1480";
+function tagSVG(x,y,txt){const w=Math.round(txt.length*8.2+26);return `<g class="tag" transform="translate(${x} ${y})"><rect x="${-w/2}" y="-12" width="${w}" height="24" rx="12"/><text text-anchor="middle" y="4">${esc(txt)}</text></g>`}
+function dims(s){return s.small?[124,96]:[150,118]}
+function subLine(s){
+  if(s.subTxt)return s.subTxt;
+  if(s.chat)return"ChatGPT · run by hand";
+  if(s.off)return"off the track";
+  if(s.model==="none")return s.id==="X"?"polish.py shelf":s.id==="GG"?"OpenReview · 30 Oct":"routing rule";
+  const first=s.calls.split(/[ ,]/)[0];return first+" · "+s.model.split(",")[0];
+}
+function stationSVG(s){
+  const [w,h]=dims(s),era=stEra(s);
+  const cls=["st","e-"+era];if(s.chat)cls.push("chat");if(s.off)cls.push("off");
+  if(s.fresh){cls.push("has-fresh");if(/^Blind/.test(s.fresh))cls.push("has-blind")}
+  if(s.mark)cls.push("has-mark");if(s.relic)cls.push("has-relic");if(STAT[s.id].n)cls.push("has-cost");
+  const dbl=s.id.length>1;const sc=s.small?0.78:0.92;
+  const st=STAT[s.id];const avg=st.cnt?st.sum/st.cnt:0;
+  const costTxt=st.n?("avg "+(avg?fmtK(avg):"?")+" · "+st.n+" calls"):"";
+  const cw=costTxt.length*6.8+14;
+  return `<g class="${cls.join(" ")}" data-id="${s.id}" data-v="${sIdx(s)}" tabindex="0" role="button" aria-label="${esc("Part "+s.id+": "+s.name)}" transform="translate(${s.x} ${s.y})" style="--era:${eraVar(s)}">
+  <rect class="hs" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="3"/>
+  <rect class="band" x="${-w/2+1.25}" y="${-h/2+1.25}" width="${w-2.5}" height="12"/>
+  <g class="gl" transform="translate(0 ${s.small?-10:-12}) scale(${sc})">${GL[s.kind]||""}</g>
+  <text class="nm" y="${h/2-(s.small?22:27)}">${esc(s.name)}</text>
+  <text class="sub" y="${h/2-(s.small?8:11)}">${esc(subLine(s))}</text>
+  <g class="badge" transform="translate(${-w/2+2} ${-h/2+2})"><circle r="15"/><text style="font-size:${dbl?12:16}px">${s.id}</text></g>
+  <g class="tape" transform="translate(${w/2-26} ${-h/2-3}) rotate(6)"><rect x="${s.rec?-34:-25}" y="-9" width="${s.rec?68:50}" height="18"/><text>${tapeTxt(s)}</text></g>
+  <g class="lb fresh" transform="translate(${w/2+2} ${-h/2+22})"><circle r="11" fill="var(--e-review)"/><text>${s.fresh&&/^Blind/.test(s.fresh)?"B":"F"}</text></g>
+  <g class="lb mark" transform="translate(${w/2+2} ${-h/2+22})"><circle r="11" fill="var(--mark)"/><text>M</text></g>
+  <g class="lb relic" transform="translate(${w/2+2} ${-h/2+22})"><circle r="11" fill="var(--trap)"/><text>!</text></g>
+  ${costTxt?`<g class="cost" transform="translate(0 ${h/2+14})"><rect x="${-cw/2}" y="-10" width="${cw}" height="20" rx="10"/><text>${costTxt}</text></g>`:""}
+  </g>`;
+}
+function build(){
+  let o=`<defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" class="arrowhead"/></marker>
+  <marker id="ahp" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" style="fill:var(--e-tests)"/></marker>
+  <radialGradient id="mg" cx=".35" cy=".35" r=".7"><stop offset="0" style="stop-color:var(--paper)"/><stop offset=".55" style="stop-color:var(--ink-3)"/><stop offset="1" style="stop-color:var(--ink)"/></radialGradient></defs>`;
+  /* annexes first, under everything */
+  o+=`<g data-v="${vIdx("v13.0")}" class="vpart"><rect class="annex" x="616" y="872" width="410" height="176"/><text class="annex-l" x="626" y="864">OUTSIDE THE MACHINE · CHATGPT</text><text class="annex-l" x="636" y="1038" style="font-weight:500;letter-spacing:.02em">~/Desktop/review-packet</text></g>`;
+  o+=`<g data-v="${vIdx("v14.7")}" class="vpart"><rect class="annex" x="916" y="1206" width="188" height="166"/><text class="annex-l" x="922" y="1198">CHATGPT · RUN BY HAND</text></g>`;
+  o+=`<g data-v="19" class="vpart"><rect class="annex" x="216" y="1204" width="188" height="170"/><text class="annex-l" x="222" y="1196">OUTSIDE THE FOLDER</text>
+   <path class="arc" d="M464 1300 H410" marker-end="url(#ah)"/><text class="monol" x="412" y="1324" style="font-size:10.5px">CAUGHT</text>
+   <text class="hand" x="222" y="1430" style="font-size:20px">The operator’s words stay here</text>
+   <text class="hand" x="556" y="1452" style="font-size:20px">only generic notes</text><text class="hand" x="556" y="1474" style="font-size:20px">go down this pipe</text>
+   <text class="hand" x="682" y="1708" style="font-size:20px">the only route to the paper</text></g>`;
+  /* main track */
+  o+=`<path class="rail" d="${TRACK}"/><path class="rail-c" d="${TRACK}"/>`;
+  /* bypass for the trials */
+  o+=`<g data-v="${vIdx("v12.3")}" class="vpart lensdim"><path class="bypass" d="M820 220 C820 110 868 70 935 70" marker-end="url(#ahp)"/><path class="bypass" d="M1085 70 C1162 70 1210 110 1210 214" marker-end="url(#ahp)"/>
+   <text class="hand" x="1104" y="30">bypass: replaces F and G</text></g>`;
+  /* return chute and the bin */
+  o+=`<g class="lensdim"><path class="chute" d="M410 501 V390 H1290 V501 M850 501 V390 M1130 390 V285"/><path class="chute-c" d="M410 501 V390 H1290 V501 M850 501 V390 M1130 390 V285"/>
+   <g data-v="${vIdx("v12.2")}" class="vpart"><path class="chute" d="M410 390 H252"/><path class="chute-c" d="M410 390 H252"/><text class="hand" x="262" y="432" style="font-size:20px">2nd request</text><text class="hand" x="262" y="454" style="font-size:20px">⟶ no paper</text></g>
+   <text class="monol" x="470" y="378">RETURN CHUTE · ONE TOKEN PER RUN</text>
+   <path class="arc" d="M1078 281 C1058 338 962 338 944 287" marker-end="url(#ah)"/><text class="hand" x="976" y="352" style="font-size:20px">none</text></g>`;
+  /* repair loop */
+  o+=`<g data-v="${vIdx("v12.5")}" class="vpart lensdim"><path class="loop" d="M1270 621 V700" marker-end="url(#ahp)"/><path class="loop" d="M1310 712 V627" marker-end="url(#ahp)"/><text class="hand" x="1350" y="680" style="font-size:20px">critic’s own repair?</text></g>`;
+  /* freeze padlock between S and T */
+  o+=`<g data-v="${vIdx("v13.0")}" class="vpart" transform="translate(820 960)"><rect x="-11" y="-6" width="22" height="18" style="fill:var(--e-review);stroke:var(--ink);stroke-width:2"/><path d="M-6-6V-12A6 6 0 0 1 6-12V-6" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><text class="annex-l" x="0" y="34" text-anchor="middle" style="font-size:10.5px">sha256</text></g>`;
+  /* handwritten marginalia */
+  o+=`<text class="hand" x="636" y="334" data-v="${vIdx("v14.2")}">the only calls run in parallel</text>`;
+  o+=`<text class="hand" x="990" y="672">110 words, never changed</text>`;
+  o+=`<text class="hand" x="30" y="1384" style="font-size:20px">gate alarm,</text><text class="hand" x="30" y="1406" style="font-size:20px">ringing since v12.5</text>`;
+  o+=`<text class="hand" x="1350" y="1404" data-v="${vIdx("v14.5")}">one abstract, rewritten up to 3×</text>`;
+  o+=`<text class="hand" x="908" y="866" data-v="${vIdx("v13.0")}" style="font-size:20px">blind by construction</text>`;
+  o+=`<text class="hand" x="176" y="1066" data-v="${vIdx("v14.1")}" style="font-size:20px">every pass, fresh eyes</text>`;
+  /* stations */
+  ST.forEach(s=>{o+=stationSVG(s)});
+  /* teleport tags */
+  o+=tagSVG(1510,316,"rechoose ⟶ G, free, once").replace('class="tag"',`class="tag" data-v="${vIdx("v12.1")}"`);
+  o+=tagSVG(542,656,"sources ⟶ H, then once more").replace('class="tag"',`class="tag" data-v="${vIdx("v12.5")}"`);
+  o+=tagSVG(1400,1054,"rewrite ⟶ O · replan ⟶ J");
+  o+=tagSVG(1400,1084,"rechoose ⟶ G · repropose ⟶ F");
+  o+=tagSVG(1480,1694,"waiting: 4 papers");
+  /* the marble */
+  o+=`<g id="marble" style="display:none"><circle r="13" fill="url(#mg)" style="stroke:var(--ink);stroke-width:2"/></g>`;
+  rig.innerHTML=o;
+}
+
+/* ---------- caption, in the cartoonist's cadence ---------- */
+const CAP=`The operator sits down with the session and talks a domain into a seed [A]. The seed rolls to a cartographer [B], who unrolls a map of the region for a judge [C] to squint at. The judge circles a region and yanks three chutes [D], down which three librarians slide at once, hit paywalls, and ring the operator’s bell [CC]; the operator drops PDFs into the hopper. A proposer [F] lights up three to five theses. The judge weighs them on a scale [G], and if none balances, the run tips back once through the return chute [FF]; a second tip drops everything into the brief bin [AA]. When outside advice names leads, a research flask [BB] replaces the proposer and the scale. A librarian [H] fetches the chosen texts, and if the operator’s new texts spoil the thesis, a magnifier [I] sends it back to the scale for free. An author lays out the argument on a drafting table [J]; a fresh critic measures it with calipers [K], and if the critic supplied its own repair, both are handed a wrench [L]. A Sonnet mill [M] grinds out the whole draft in one turn. A stranger reads it through a blind window [N]. The author rewrites it on a 5,500-word scale [O] and confesses any weak hinge, so a gatekeeper [P] tests the advertised conclusion, literally. A fresh editor rinses the prose [Q], a verifier stamps every quotation [R], and the paper slides out of the machine into a locked room on the operator’s Desktop [S], where ChatGPT ranks it, blind, against three reference papers before a second ChatGPT bangs a gavel [T]. Any literature the gavel names goes back through the intake tray [U] before the switchman [V] throws the lever: rewrite, replan, rechoose, repropose, or send. A sent paper gets one more rinse of its abstract [W], is shelved under its title [X], polished twice in ChatGPT by the operator himself [Y]. Then the operator takes a red pen to one polish of each paper [HH]. Every note drops through a rules sieve [II]: what the competition allows passes on in generic form, what it forbids is caught, and the caught wording goes into a locked drawer outside the folder [MM], where no AI can read it. Second AI readers [JJ] add suggestions of their own, everything permitted is sealed into one brief [KK], and a fresh Claude writes the review revision [LL]. The inspector [Z] waits for the operator’s word, and the paper drops into the mailbox [GG]. Every change to the contraption is entered at the operator’s desk [DD]. The parts nobody uses any more are in the crate [EE].`;
+function buildCaption(){
+  const html=esc(CAP).replace(/\[([A-Z]{1,2})\]/g,(m,l)=>`(<button class="lt" data-open="${l}" aria-label="Open part ${l}">${l}</button>)`);
+  $("#caption").innerHTML=`<h3>The self-operating paper machine</h3><p>${html}</p>`;
+}
+
+/* ---------- parts list ---------- */
+function buildParts(){
+  let o="";
+  ZONES.forEach(([z,name,sub])=>{
+    const items=ST.filter(s=>s.zone===z);if(!items.length)return;
+    o+=`<div class="zone"><h3>${esc(name)}</h3><div class="zs">${esc(sub)}</div>`;
+    items.forEach(s=>{const era=stEra(s);
+      o+=`<button class="pl" data-open="${s.id}" style="--era:var(${ERAS[era].c})"><span class="ltr${s.id.length>1?" dbl":""}">${s.id}</span><span class="pn">${esc(s.name)}</span><span class="vt e-${era}">${tapeTxt(s)}</span><span class="pd">${esc(firstSentence(s.does))}</span></button>`});
+    o+=`</div>`;
+  });
+  $("#parts").innerHTML=o;
+}
+function firstSentence(t){const m=t.match(/^.*?[.!?](\s|$)/);return m?m[0].trim():t}
+
+/* ---------- the side panel ---------- */
+const panel=$("#panel");let curPanel=null,lastFocus=null;
+const ORDER=["A","B","C","D","F","G","FF","AA","BB","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","HH","II","MM","JJ","KK","LL","Z","GG","CC","DD","EE"];
+function openPanel(id){
+  const s=byId[id];if(!s)return;curPanel=id;
+  if(!panel.classList.contains("open"))lastFocus=document.activeElement;
+  rig.querySelectorAll(".st.sel").forEach(e=>e.classList.remove("sel"));
+  const g=rig.querySelector(`.st[data-id="${id}"]`);if(g)g.classList.add("sel");
+  const era=stEra(s),E=ERAS[era],st=STAT[id];
+  const runs=[...st.runs];
+  let inLogs="";
+  if(st.n){inLogs=`<p>${st.n} logged call${st.n>1?"s":""} in ${runs.length} run${runs.length>1?"s":""}${st.cnt?`, averaging <b>${fmtK(st.sum/st.cnt)}</b> tokens where usage was reported (${st.cnt} of ${st.n})`:", none with usage reported"}.</p>`}
+  else if(!s.chat&&s.model==="none"){inLogs=`<p>No subagent calls: this part is a rule, a script or a person.</p>`}
+  else if(s.chat){inLogs=`<p>No Claude calls: this part runs in ChatGPT.</p>`}
+  const i=ORDER.indexOf(id),prev=ORDER[(i-1+ORDER.length)%ORDER.length],next=ORDER[(i+1)%ORDER.length];
+  panel.innerHTML=`<div class="ph"><div class="big${id.length>1?" dbl":""}">${id}</div><div><h2>${esc(s.name)}</h2><div class="who">${esc(s.calls)}<br>${esc(s.who)}</div></div><button class="close" id="pclose" aria-label="Close">×</button></div>
+  <div class="pchips"><span class="vt e-${era}" style="--era:var(${E.c})">${s.rec?"record, "+s.rec+" (no version)":"added "+s.v}</span><span>${esc(E.name)}</span><span>${esc(s.model)}</span>${s.budget&&s.budget!=="none"?`<span>budget ${esc(s.budget)}${/^\d+$/.test(s.budget)?" tool uses":""}</span>`:""}</div>
+  <h3>What it does</h3><p>${esc(s.does)}</p>
+  <h3>Why it is here</h3><p>${esc(s.why)}</p>
+  ${(s.reads||s.writes||s.routes)?`<dl>${s.reads?`<dt>Reads</dt><dd>${esc(s.reads)}</dd>`:""}${s.writes?`<dt>Writes</dt><dd><code>${esc(s.writes)}</code></dd>`:""}${s.routes?`<dt>Routes on</dt><dd><code>${esc(s.routes)}</code></dd>`:""}${s.tag?`<dt>Sends back</dt><dd>${esc(s.tag)}</dd>`:""}</dl>`:""}
+  ${s.fresh?`<div class="callout" style="--c:var(--e-review)"><b>Fresh eyes</b>${esc(s.fresh)}</div>`:""}
+  ${s.mark?`<div class="callout" style="--c:var(--mark)"><b>Operator’s hands</b>${esc(s.mark)}</div>`:""}
+  ${s.relic?`<div class="callout" style="--c:var(--trap)"><b>Relic</b>${esc(s.relic)}</div>`:""}
+  ${(inLogs||s.watch)?`<h3>In the runs</h3>${inLogs}${s.watch?`<p>${esc(s.watch)}</p>`:""}`:""}
+  <div class="pnav"><button class="btn" data-open="${prev}">◀ ${prev}</button><button class="btn" data-open="${next}">${next} ▶</button></div>`;
+  panel.classList.add("open");panel.setAttribute("aria-hidden","false");
+  $("#pclose").focus({preventScroll:true});
+}
+function closePanel(){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");rig.querySelectorAll(".st.sel").forEach(e=>e.classList.remove("sel"));curPanel=null;if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true})}
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");if(o){openPanel(o.dataset.open);return}
+  if(e.target.closest("#pclose")){closePanel();return}
+  const g=e.target.closest(".st");if(g&&rig.contains(g)){openPanel(g.dataset.id);return}
+});
+rig.addEventListener("keydown",e=>{const g=e.target.closest&&e.target.closest(".st");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openPanel(g.dataset.id)}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&panel.classList.contains("open"))closePanel()});
+
+/* ---------- lenses ---------- */
+const LENSES=[
+ ["era","Version added",()=>Object.keys(ERAS).map(k=>`<span><i class="sw" style="background:var(${ERAS[k].c})"></i>${ERAS[k].span}: ${ERAS[k].name}</span>`).join("")+`<span class="lt">Each part’s band and tape show the version that bolted it on. Dashed housings run in ChatGPT; dotted ones sit off the track.</span>`],
+ ["fresh","Fresh eyes",()=>`<span><i class="sw" style="background:var(--e-review)"></i>F · a fresh context that did not write what it judges</span><span><i class="sw" style="background:var(--ink)"></i>B · blind: its reading list is cut down on purpose</span><span class="lt">Blindness is the machine’s main defence against a mind grading its own work. Click a lit part to see exactly what it cannot see.</span>`],
+ ["mark","Operator’s hands",()=>`<span><i class="sw" style="background:var(--mark)"></i>M · the operator answers, fetches, runs ChatGPT or decides</span><span class="lt">The operator is never asked a philosophical question. He is the machine’s reach past paywalls, its outside world, and the only one who may change it.</span>`],
+ ["cost","Cost",()=>`<span><i class="sw" style="background:var(--e-core)"></i>average tokens per logged call, across all twelve lean runs</span><span class="lt">Read the pills, not the size of the box. A part that only checks an abstract still costs about 100k tokens a call, which is part of the argument in “Where it creaks”.</span>`],
+ ["relic","Relics",()=>`<span><i class="sw" style="background:var(--trap)"></i>! · something here no longer does what its name says</span><span class="lt">Vestiges of earlier versions: empty folders, a stale map, an alarm everyone ignores, agents nobody spawns.</span>`]
+];
+function buildLenses(){
+  $("#lenses").innerHTML=LENSES.map(([k,n],i)=>`<button class="chip" data-lens="${k}" aria-pressed="${i?"false":"true"}">${n}</button>`).join("");
+  $("#lenses").addEventListener("click",e=>{const b=e.target.closest("[data-lens]");if(!b)return;setLens(b.dataset.lens)});
+  setLens("era");
+}
+function setLens(k){
+  rig.dataset.lens=k;
+  $("#lenses").querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lens===k?"true":"false"));
+  const L=LENSES.find(l=>l[0]===k);$("#legend").innerHTML=L[2]();
+  try{localStorage.setItem("pm3-lens",k)}catch(_){}
+}
+
+/* ---------- version slider ---------- */
+const slider=$("#vslider");
+function applyVersion(i){
+  rig.querySelectorAll("[data-v]").forEach(el=>{const v=+el.getAttribute("data-v");el.classList.toggle("ghost",v>i)});
+  const shown=ST.filter(s=>sIdx(s)<=i).length;
+  if(i===19){
+    $("#vread").innerHTML=`<span><b>v15.1 + records</b> · Oct 24–25</span><span><b>${VWORDS.lean[18].toLocaleString("en-US")}</b> words</span><span><b>${shown}</b> of ${ST.length} parts</span>`;
+    $("#vhead").textContent="The machine today. Human review, screened against the rules, then one review revision per paper. Recorded in EVOLUTION as records, not versions: no machine file changed.";return}
+  const v=VLIST[i];const led=VERS.find(x=>x.v===v);
+  $("#vread").innerHTML=`<span><b>${v}</b> · Oct ${VDATE[i].slice(3)}</span><span><b>${VWORDS.lean[i].toLocaleString("en-US")}</b> words</span><span><b>${shown}</b> of ${ST.length} parts</span>`;
+  $("#vhead").textContent=led?led.h+". "+led.c:"";
+}
+slider.addEventListener("input",()=>applyVersion(+slider.value));
+
+/* ---------- replay ---------- */
+const runsel=$("#runsel");
+const RUNORDER=["paper-5","paper-4","paper-2-r2","paper-2","paper-1-r5","paper-1-r2","paper-3","paper-3-r2","paper-3-r3","paper-1-r3","paper-1-r4","paper-1-r6"];
+runsel.innerHTML=RUNORDER.map(r=>`<option value="${r}">${esc(RUNMETA[r].label)} (${RUNS[r].length} calls)</option>`).join("");
+let EV=[],pos=-1,timer=null,playing=false,anim=null,mpos=null;
+function buildEvents(r){
+  const ev=[],calls=RUNS[r];let prevSt=null,prevStep=null;
+  calls.forEach(c=>{
+    const st=stationFor(c);
+    if(r==="paper-1-r3"&&c[0]==="IN"&&prevStep==="L2")ev.push({k:"end",st:"AA",t:"Stop with a brief",n:"The scale said none twice, with the return already spent. No paper; the brief goes to the operator, who gets outside advice on the stop."});
+    if((c[0]==="IN"||c[0]==="R")&&(prevSt==="R"||prevStep==="R")){
+      ev.push({k:"out",st:"S",t:"Blind comparison",n:"The operator runs ChatGPT on the packet folder: the paper against three reference manuscripts, then the checksum freeze."});
+      ev.push({k:"out",st:"T",t:"Publication judgment",n:"A second ChatGPT conversation reads the paper and the literature, then audits the machine."});
+    }
+    if(c[2]==="librarian"&&c[3]==="add")ev.push({k:"mark",st:"CC",t:"The operator’s bell",n:"The operator had saved the texts the librarian could not reach."});
+    ev.push({k:"call",st,c});prevSt=st;prevStep=c[0];
+  });
+  const m=RUNMETA[r];m.end.forEach((e,i)=>ev.push({k:"end",st:e,t:i===m.end.length-1?"Where the run ends":byId[e].name,n:m.endNote}));
+  return ev;
+}
+function centre(id){const s=byId[id];return[s.x,s.y]}
+function pathBetween(a,b){
+  const [x0,y0]=centre(a),[x1,y1]=centre(b);
+  if(b==="G"&&["K","N","P","O","L"].includes(a)){const xr=a==="N"?850:a==="P"||a==="O"?410:1290;return[[x0,y0],[xr,501],[xr,390],[1130,390],[1130,285],[x1,y1]]}
+  if(a==="G"&&b==="F")return[[x0,y0],[1078,281],[1010,330],[944,287],[x1,y1]];
+  const mx=(x0+x1)/2,my=(y0+y1)/2-Math.min(90,Math.hypot(x1-x0,y1-y0)*.18);
+  const pts=[];for(let t=0;t<=1.0001;t+=.1){const u=1-t;pts.push([u*u*x0+2*u*t*mx+t*t*x1,u*u*y0+2*u*t*my+t*t*y1])}return pts;
+}
+function moveMarble(to,dur){
+  const m=$("#marble");m.style.display="";
+  if(anim)cancelAnimationFrame(anim);
+  const from=mpos||to;mpos=to;
+  if(from===to||reduce||dur<=0){const [x,y]=centre(to);m.setAttribute("transform",`translate(${x} ${y-4})`);return}
+  const pts=pathBetween(from,to);const seg=[];let L=0;for(let i=1;i<pts.length;i++){const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(d);L+=d}
+  const t0=performance.now();
+  const step=now=>{let f=Math.min(1,(now-t0)/dur);f=f<.5?2*f*f:1-Math.pow(-2*f+2,2)/2;let d=f*L,i=0;while(i<seg.length-1&&d>seg[i]){d-=seg[i];i++}
+    const a=pts[i],b=pts[i+1],k=seg[i]?d/seg[i]:1;m.setAttribute("transform",`translate(${a[0]+(b[0]-a[0])*k} ${a[1]+(b[1]-a[1])*k-4})`);
+    if(f<1)anim=requestAnimationFrame(step)};
+  anim=requestAnimationFrame(step);
+}
+function pulse(id){const g=rig.querySelector(`.st[data-id="${id}"]`);if(!g)return;g.classList.remove("hot");void g.getBBox();g.classList.add("hot");setTimeout(()=>g.classList.remove("hot"),reduce?600:900)}
+function speed(){return+$("#speed").value}
+function show(i,animate){
+  pos=Math.max(0,Math.min(EV.length-1,i));const e=EV[pos];
+  moveMarble(e.st,animate?700/speed():0);pulse(e.st);
+  const calls=EV.filter(x=>x.k==="call");const ci=EV.slice(0,pos+1).filter(x=>x.k==="call").length;
+  const cum=EV.slice(0,pos+1).reduce((a,x)=>a+(x.k==="call"?x.c[5]:0),0);
+  const miss=EV.slice(0,pos+1).filter(x=>x.k==="call"&&!x.c[5]).length;
+  let what,note;
+  if(e.k==="call"){const c=e.c;what=`<b>${c[1]}</b> · ${esc(c[2])} · ${esc(c[3])} · ${c[4]==="o"?"Opus":"Sonnet"} · ${c[5]?fmtK(c[5])+" tokens":"usage not logged"} · part ${e.st}, ${esc(byId[e.st].name)}`;note=c[6]}
+  else{what=`<b>${esc(e.t)}</b> · part ${e.st}, ${esc(byId[e.st].name)}`;note=e.n}
+  $("#ticker").innerHTML=`<span class="n">${e.k==="call"?`Call ${ci} of ${calls.length}`:e.k==="out"?"Outside":e.k==="mark"?"The operator":"End"}</span><span class="what">${what}</span><span class="cum">${fmtK(cum)} so far${miss?` · ${miss} unlogged`:""}</span><span class="note">${esc(note)}</span><div class="segs">${EV.map((x,j)=>`<button data-j="${j}" class="${x.k==="call"?(x.c[4]==="o"?"o":""):"x"}${j<pos?" done":""}${j===pos?" cur":""}" aria-label="Go to step ${j+1}" title="${esc(x.k==="call"?x.c[1]:x.t)}"></button>`).join("")}</div>`;
+}
+$("#ticker").addEventListener("click",e=>{const b=e.target.closest("[data-j]");if(b){stop();show(+b.dataset.j,true)}});
+function tick(){if(pos>=EV.length-1){stop();return}show(pos+1,true);timer=setTimeout(tick,1150/speed())}
+function play(){if(pos>=EV.length-1)pos=-1;playing=true;$("#play").textContent="Pause";if(pos<0){show(0,false);timer=setTimeout(tick,900/speed())}else tick()}
+function stop(){playing=false;clearTimeout(timer);$("#play").textContent="Play"}
+$("#play").addEventListener("click",()=>playing?stop():play());
+$("#fwd").addEventListener("click",()=>{stop();show(pos+1,true)});
+$("#back").addEventListener("click",()=>{stop();show(pos-1,true)});
+runsel.addEventListener("change",()=>{stop();loadRun(runsel.value)});
+function loadRun(r){EV=buildEvents(r);pos=-1;mpos=null;
+  const m=RUNMETA[r],calls=RUNS[r];const tot=calls.reduce((a,c)=>a+c[5],0),miss=calls.filter(c=>!c[5]).length;
+  $("#ticker").innerHTML=`<span class="n">${esc(r)}</span><span class="what">machine ${esc(m.ver)} · ${calls.length} calls · ${fmtK(tot)} tokens logged${miss?` (${miss} calls unlogged)`:""} · outcome: ${esc(m.out)}</span><span class="cum">press Play</span><span class="note">${esc(m.endNote)}</span>`;
+  $("#marble").style.display="none";
+}
+
+/* ---------- stats strip ---------- */
+function buildStats(){
+  const p5=RUNTOT.find(x=>x.r==="paper-5");
+  const S=[["28","versions in 12 days, v3.0 on 12 Oct to v15.1 on 23 Oct"],["19,374","words of lean instructions today; 4,409 at the v12.0 remake"],["42","calls to make paper-5; v12.0 aimed at about a dozen"],[fmtK(p5.tok),"tokens logged for paper-5, against about 900M for paper-1 under v11"],["4","papers on the shelf, from 5 lineages; paper-3 stopped three times"]];
+  $("#stats").innerHTML=S.map(([b,t])=>`<div class="stat"><b>${b}</b><span>${esc(t)}</span></div>`).join("");
+}
+
+/* ---------- laws ---------- */
+const LAWS=[
+ ["The controller never thinks","“You do no philosophical work: you never judge, choose, plan or write prose, and you never ask the operator a philosophical question.” (lean/ORCHESTRATOR.md)","Judgment belongs to calls that hold a whole text and can route the run. The operator, by his own wish, has no role in choosing the thesis (v12.0, “kept from v11”)."],
+ ["One mind holds the whole problem","“One strong mind at a time holds the whole problem; fresh strong readers judge whole texts, and their verdicts route the run; tokens go to judgment, not procedure.” (the design in one line)","v11 split paper-1 into 386 narrow calls with one-line hand-backs. “No call held the whole paper,” so sharp judgments stuck in files the deciding calls never read."],
+ ["Judges are fresh, some blind by construction","The reader sees only the draft; the final check only the paper and the corpus; the editor only the paper, its render and STYLE; the comparison only five files in a folder outside the machine. (ORCHESTRATOR §3, §5)","Fresh whole-text readers were “the most accurate judgments in the run” at under 1% of the cost (v12.0). An author “knowing the argument’s history” cannot see unclear prose (v14.1). Blindness by instruction leaks; blindness by construction does not (v13.0, v14.0)."],
+ ["Verdicts route, and loops are rationed","Front-matter fields (pick, verdict, central_weak, for_operator) decide the next step. One return per run. A second request to go back stops the run with a brief: “Never turn a request to go back into revise.”","v11 heard its fatal flaw ten times and could not act on it. v12.0 gave verdicts authority; v12.2 stopped failing theses from being written anyway."],
+ ["Claims rest on opened pages","Every quotation and page comes from a text opened in the corpus. “A decisive claim of novelty, priority or defeat rests on a passage you opened … never on a note, an abstract, a fetch-tool extract or the absence of a keyword.” (COMMON 3 and 7)","v7.0: no voice had opened a primary source. v12.5: Golub 2017 was held, named in the brief, and unopened until the cold reader."],
+ ["The operator is the reach, not the referee","The operator is asked for paywalled texts, to run ChatGPT, and for decisions at stops and submission, and never for philosophy. Every request to him must be followable by a colleague who never read the files. (ORCHESTRATOR §6)","The librarian cannot get past paywalls and the operator can (v4.0, v5.0). The outside review has to happen outside Claude. And the machine should one day run without its builder (v14.1)."],
+ ["The operator may say where he got lost, never how to fix it","“A human may point out that something is unclear, underdeveloped or out of order, ask for an example or a rewrite, set length and format constraints, and ask for material to be cut. A human may not supply arguments, premises, distinctions, objections, examples or wording.” (each review-revision brief, §2)","The competition requires that the arguments be “primarily AI generated” and bars “rigorous human critique/dialogue that gives the AI significant ideas”. So every note of the operator’s is screened, caught wording is locked outside the folder, and the reviser is told to work out every fix itself (the records of 24 and 25 October)."],
+ ["Only the operator changes it, and nothing is thrown away","“The machine is never changed by a call.” A snapshot before every change; every rewritten file kept as <name>-<call id>.md; EVOLUTION.md only ever appended.","v11.0 had already named the risk of “adopted machine changes that answer one paper”; v12.0 dropped the machinist and sent machine notes to the operator instead. The record is how each change gets judged later against what it predicted."]
+];
+function buildLaws(){$("#lawlist").innerHTML=LAWS.map((l,i)=>`<div class="law"><div class="no">RULE ${i+1}</div><h3>${esc(l[0])}</h3><p class="rule">${esc(l[1])}</p><p class="why"><b>Because</b> ${esc(l[2])}</p></div>`).join("")}
+
+/* ---------- chart: instruction words ---------- */
+function buildWordChart(){
+  const W=760,H=330,ml=56,mr=40,mt=24,mb=62,iw=W-ml-mr,ih=H-mt-mb,n=VLIST.length,ymax=20000;
+  const X=i=>ml+i*iw/(n-1),Y=v=>mt+ih-v/ymax*ih;
+  let o="";
+  /* era bands */
+  const spans=[["core",0,0],["tests",1,6],["review",7,8],["prose",9,14],["polish",15,18]];
+  spans.forEach(([e,a,b])=>{const x0=a?X(a)-iw/(n-1)/2:ml,x1=b===n-1?ml+iw:X(b)+iw/(n-1)/2;o+=`<rect x="${x0}" y="${mt}" width="${x1-x0}" height="${ih}" style="fill:var(${ERAS[e].c});opacity:.09"/>`});
+  for(let v=0;v<=ymax;v+=5000){o+=`<line class="axl" x1="${ml}" x2="${ml+iw}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${ml-8}" y="${Y(v)+4}" text-anchor="end">${v?(v/1000)+"k":"0"}</text>`}
+  VLIST.forEach((v,i)=>{o+=`<text class="ax" transform="translate(${X(i)+4} ${mt+ih+12}) rotate(55)">${v}</text>`});
+  const line=a=>a.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join("");
+  o+=`<path class="ln" d="${line(VWORDS.orch)}" style="stroke:var(--e-tests)"/><path class="ln" d="${line(VWORDS.lean)}" style="stroke:var(--e-core)"/>`;
+  VWORDS.lean.forEach((v,i)=>{o+=`<circle cx="${X(i)}" cy="${Y(v)}" r="4" style="fill:var(--e-core);stroke:var(--card);stroke-width:1.5"><title>${VLIST[i]}: ${v.toLocaleString("en-US")} words in lean/ (orchestrator ${VWORDS.orch[i].toLocaleString("en-US")})</title></circle>`});
+  o+=`<text class="ann" x="${X(0)+8}" y="${Y(4409)+18}">4,409</text><text class="ann" x="${X(18)-6}" y="${Y(19374)-10}" text-anchor="end">19,374</text><text class="ann" x="${X(18)-6}" y="${Y(7626)+18}" text-anchor="end" style="fill:var(--e-tests)">orchestrator 7,626</text>`;
+  o+=`<text class="annh" x="${X(9)-4}" y="${Y(13385)-14}" text-anchor="end">v14.1 clarity edit</text><text class="annh" x="${X(10)+6}" y="${Y(15606)+26}">v14.2 opening</text><text class="annh" x="${X(15)-4}" y="${Y(18863)-12}" text-anchor="end">v14.7 polish</text><text class="annh" x="${X(3)+6}" y="${Y(7761)-12}">v12.3 trials</text>`;
+  $("#wchart").innerHTML=o;
+}
+/* ---------- runs bars ---------- */
+function buildRunBars(){
+  const max=45;let o=`<div class="rr" style="color:var(--ink-3)"><span>run</span><span>calls</span><span class="tk">tokens</span></div>`;
+  RUNTOT.forEach(r=>{
+    if(r.r==="paper-1"){o+=`<div class="rr"><span class="nm" title="${esc(r.v)}">paper-1</span><span class="bar" style="background:none;border:1.5px dashed var(--ink-3)"><em style="color:var(--ink)">386 calls under v3 to v11 · off the scale</em></span><span class="tk">~900M<small>v11 ledger</small></span></div>`;return}
+    const cls=r.out==="send"?"send":r.out==="stop"?"stop":"";const w=Math.min(100,r.n/max*100);
+    o+=`<div class="rr"><span class="nm" title="${esc(r.v)}">${esc(r.r)}</span><span class="bar"><i class="${cls}" style="width:${w}%"></i><em${w<12?' style="left:calc('+w+'% + 6px);color:var(--ink)"':""}>${r.n}</em><span class="aim" style="left:${12/max*100}%"></span></span><span class="tk">${fmtK(r.tok)}${r.miss?"+":""}<small>${r.miss?r.miss+" unlogged":esc(r.v)}</small></span></div>`;
+  });
+  $("#runbars").innerHTML=o;
+}
+/* ---------- ledger ---------- */
+const LF=[["all","All 31"],["human","Human review"],["mark","The operator’s own amendments"],["review","From an outside review"],["sources","Sources"],["tests","Hinge tests"],["review-loop","The review loop"],["prose","Prose"],["polish","Polish"],["cost","Cost"]];
+const TRIG={base:"baseline",mark:"The operator",review:"from review",remake:"remake",record:"record"};
+function verEra(v){if(v==="record")return"human";const i=vIdx(v);return i<0?"pre":eraOf(v)}
+function buildLedger(){
+  $("#lfilters").innerHTML=LF.map(([k,n],i)=>`<button class="chip" data-lf="${k}" aria-pressed="${i?"false":"true"}">${n}</button>`).join("");
+  $("#lfilters").addEventListener("click",e=>{const b=e.target.closest("[data-lf]");if(!b)return;$("#lfilters").querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b?"true":"false"));renderLedger(b.dataset.lf)});
+  renderLedger("all");
+}
+function renderLedger(f){
+  const ok=x=>f==="all"||(f==="mark"&&x.trig==="mark")||(f==="review"&&x.trig==="review")||(f==="review-loop"&&x.t.includes("review"))||x.t.includes(f);
+  $("#ledger").innerHTML=VERS.filter(ok).map(x=>{const e=verEra(x.v);
+    return `<article class="vp e-${e}" style="--era:var(${ERAS[e].c})"><div class="top"><b>${x.v}</b><span>Oct ${x.d.slice(3)}</span><span class="trig">${TRIG[x.trig]}</span></div><h4>${esc(x.h)}</h4><p><b>Because</b> ${esc(x.b)}</p><p><b>Changed</b> ${esc(x.c)}</p>${x.o?`<p class="obs"><b>Observed</b> ${esc(x.o)}</p>`:`<div class="sp"></div>`}</article>`}).join("");
+}
+
+/* ---------- where it creaks ---------- */
+function buildReading(){
+  const p5=RUNS["paper-5"];const tot5=p5.reduce((a,c)=>a+c[5],0);
+  const eTok=p5.filter(c=>c[0]==="E").reduce((a,c)=>a+c[5],0);
+  const smallest=[["paper-2","E-03"],["paper-5","E-05"]].map(([r,id])=>RUNS[r].find(c=>c[1]===id)[5]);
+  const P=[
+   ["It grew back",`At v12.0 the lean machine had seven role files and 4,409 words of instructions, and the remake’s whole case was that one strong mind holding a whole text beats many narrow calls. Nine days later it has nine role files, thirty-one modes and 19,374 words. The orchestrator alone went from 1,870 words to 7,626. The advisor’s file carries ten modes in 4,753 words, and every advisor call is told to read the whole file before doing one of them.`,`The aim was “about a dozen calls”. Paper-5 used 42: eight to open the lineage, twenty to its first PDF, eight after round 1 and six after round 2. The main gain of the remake held, though: ${fmtK(tot5)} logged tokens for paper-5, against about 900M for paper-1 under v11.`],
+   ["The parts pile up at the exit",`Since v14.1 nearly every addition has landed after the rewrite: the clarity edit with its checking script and retry, the abstract note, the abstract-only pass with its own check and two-strike restore, the shelf, and two polishes with their reviews. Each was added because the part before it left a gap.`,`So one paper’s abstract can be rewritten by three fresh editors in a row (paper-5: E-01, E-03, E-06). In paper-2-r2 the after-send rewrite failed its check twice and the old abstract went back, after five calls and about 476,000 tokens. An editor asked to find problems finds one, and a fresh one finds a different one. In paper-5 the eight clarity and abstract calls came to ${fmtK(eTok)} tokens, ${Math.round(eTok/tot5*100)}% of the run.`],
+   ["The checks share one pair of eyes",`The final check twice cleared the step the outside review then rejected (paper-4 round 1, paper-5 round 1, both recorded in EVOLUTION’s Observed entries). Every judge inside the machine is the same advisor role, on the same model, reading the same corpus, and the catches come from ChatGPT. v12.5 named this risk itself: “the trial’s critic, being the same advisor role, may share the chooser’s blind spots.”`,`v15.0 changed what the final check tests, which is the right first move. If it clears the decisive step a third time, I would try that one check on a different model before adding another Claude check.`],
+   ["The per-call floor may be back",`At v9.0 a call that read nothing cost 67,095 tokens, because the agents inherited every tool in your session. The plugin’s tool lines cut that to 8,588. The lean orchestrator spawns general-purpose agents, so it no longer uses those plugin agents. The smallest lean calls in the logs, with four to six tool uses, still cost ${fmtK(Math.min(...smallest))} to about 103k tokens (paper-2 E-03, paper-5 E-05, the abstract checks).`,`If the old floor has returned, it accounts for about ${fmtK(42*67095)} of paper-5’s ${fmtK(tot5)}. One empty general-purpose call, measured as v9.0 did, would settle it. These are processed tokens with cache reads included, so the bill is smaller than the count.`],
+   ["The burden-of-change rule binds the reviewer, not you",`v14.1 made machine changes earn their place: a failure quoted from the run, recurring, at most two adopts a round, with reject and test as the default. There have been nine versions since. Two came from review notes (v14.6, v15.0). Seven were your own amendments (v14.2, v14.3, v14.4, v14.5, v14.7, v14.8, v15.1), which the rule does not cover. The polish was designed, re-budgeted and replaced before one had been adopted, and three Observed entries running say no polish had run.`,`v12.0 also listed three experiments to run “one variable at a time”: a Haiku drafter, Sonnet for the rewrite, and a second topic. Only the second topic has run. You are the designer, and new capabilities are not the same as fixes. Still, the argument you gave against ChatGPT’s proposals, that the machine is calibrated and so changes should be the exception, applies to your own changes too.`],
+   ["Some relics still have jobs",`Some old parts are inert, like the empty v3 folders in every run. Others still act. The gate that v12.0 dropped is still run for every version, and has failed since v12.5 on the same old-machine file, 762 words against a ceiling of 717. PROTECTED.md, also dropped, still decides which versions count as major. The harness map that the auditor in Stage 2 reads first still describes v12.4 with seven roles. The verifier still renders paper.pdf for a protected script, and the shelf renames it afterward.`,`None of this breaks a run. It does mean every outside audit of the machine starts from a stale map, and an alarm that always rings is an alarm nobody hears.`],
+   ["What the contraption gets right",`Four of five lineages reached send. REVIEWS.md shows paper-1 going from reconceive to send in five rounds, paper-2 and paper-5 in two, and paper-4 going out after one. When a topic does not yield, the machine stops instead of writing a weak paper: paper-3 stopped three times and left briefs, not a manuscript. Its logs report usage for only 8 of its 30 calls, so what that cost is unknown.`,`The blind comparison is blind by construction, the quotations are verified every pass, and the most effective parts are still the plainest. The 110-word drafter has not changed since v12.0, and the cold reader, with a 264-word role file, caught in round 3 what the rest of the machine had missed.`]
+  ];
+  $("#points").innerHTML=P.map((p,i)=>`<div class="pt"><h3><span>${i+1}</span>${esc(p[0])}</h3><p>${esc(p[1])}</p><p>${esc(p[2])}</p></div>`).join("");
+  $("#v16").innerHTML=`<h3>If I were drawing v16</h3><ol>
+   <li><b>Measure the floor first.</b> If it is back, give the lean roles their own plugin agents with tool lines, as v9.0 did. Nothing else changes, and every later measurement gets cleaner.</li>
+   <li><b>Split the advisor file by mode,</b> so a call reads COMMON, a short shared paragraph and its own mode, not all ten.</li>
+   <li><b>Skip the abstract-only pass when the fixes did not touch the abstract.</b> The clarity edit has already brought it to the convention before the review.</li>
+   <li><b>Give the review revisions their own adoption route</b> before submission: a review against the brief’s response table instead of the line-polish rules, then L9 for the quotations. Then freeze the machine until the papers are judged.</li>
+   <li><b>Run the two experiments v12.0 left on the bench:</b> a Haiku drafter and a Sonnet rewrite, one at a time.</li></ol>
+   <p class="hand2">Argue with any of these. Each one is a reading of the logs, and you know things the logs don’t.</p>`;
+}
+
+
+/* ---------- keeping the philosophy the AI's ---------- */
+function buildRules(){
+  const steps=[
+   ["HH","The operator reads","A printout, margin notes, a spoken pass. Notes say where a reader got lost and what kind of fix is wanted.","Nothing leaves his hands yet."],
+   ["II","Every note is screened","Claude checks each note against the competition rules and passes it as a generic request, passes it with the operator’s wording removed, or withholds it.","Arguments, premises, examples, wording, and anything unreadable."],
+   ["MM","Caught wording is locked away","The folder’s copy of the log has the operator’s wording removed wherever a note was withheld, stripped of his wording or unreadable. The full log stays outside the folder.","Any route by which an AI in the folder could read it."],
+   ["JJ","AI readers add their own critique","Separate Claude conversations, with the operator asking only questions. Their suggestions are checked against the texts and judged on their merits.","Nothing: AI critique is allowed. It is marked as AI-originated."],
+   ["KK","One sealed brief","The only route to the paper: generic notes only, the AI suggestions, the adapted rules, and a response table for every item.","Instructs the reviser to work out each fix itself and never to add a claim on a note’s authority."],
+   ["LL","A fresh Claude revises","Opus 5.5 at extra-high effort reads the brief, the rules, the AI file and the paper, and writes the review revision.","It is never told, and cannot read, what was caught."]
+  ];
+  $("#rulesflow").innerHTML=steps.map((s,i)=>`<button class="rstep" data-open="${s[0]}"><span class="rn">${i+1}</span><span class="rl">part ${s[0]}</span><b>${esc(s[1])}</b><span class="rd">${esc(s[2])}</span><span class="rs"><i>Stopped here:</i> ${esc(s[3])}</span></button>`).join("");
+  const rows=[
+   ["paper-5","Can a Deontologist Escape Paralysis by Living for the Long Term?","line polish","about 50","the rest","3","1","7","8, from one AI reader","yes","5,996"],
+   ["paper-2-r2","Who May Correct a Willing Servant?","structure polish","75 (9 conventions)","75","0","0","0 (3 marks withdrawn)","10, from one AI reader","yes","5,986"],
+   ["paper-4","How Much More Probable Must God Be?","structure polish","none","n/a","n/a","n/a","n/a","14, from two AI readers, + 6 of Claude’s","no: no human notes to carry","5,927"]
+  ];
+  $("#rulestable").innerHTML=`<table><thead><tr><th>Paper</th><th>Base text</th><th>The operator’s notes</th><th>Passed as generic requests</th><th>Passed with his wording removed</th><th>Withheld</th><th>Illegible or unclear, left out</th><th>AI reviewer items</th><th>Brief</th><th>Revision words</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${esc(r[0])}</b><br><span class="muted">${esc(r[1])}</span></td>${r.slice(2).map((c,j)=>`<td class="${j===3||j===4?"hot":""}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+/* ---------- start ---------- */
+build();buildCaption();buildParts();buildLenses();buildStats();buildLaws();buildWordChart();buildRunBars();buildLedger();buildReading();
+applyVersion(19);loadRun("paper-5");buildRules();
+try{const k=localStorage.getItem("pm3-lens");if(k&&LENSES.some(l=>l[0]===k))setLens(k)}catch(_){}
+})();
+
+</script>

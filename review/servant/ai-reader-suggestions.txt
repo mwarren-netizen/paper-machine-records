@@ -1,0 +1,133 @@
+SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+Paper: "Who May Correct a Willing Servant? Corrigible Persons and Domination"
+Text reviewed: the structure polish (runs/paper-2-r2, 12_polish), compared with the line polish
+Date: 2026-10-25
+
+Provenance: These come from a separate Claude conversation, run under the
+competition's rules on human involvement. The human chose a topic for review
+(which lessons from a revision of another paper in this machine carry over to
+this one), selected the structure polish over the line polish, and asked only
+generic questions. All substantive points below originated with the AI
+reviewer. Treat them as suggestions to evaluate on their merits: accept,
+modify or reject each one, and say which.
+
+0. CHECKS ALREADY MADE (no changes needed)
+- Every direct quotation in the structure polish matches the line polish
+  word for word. The restructure dropped no quotation and altered none. (The
+  line polish's "Steve Petersen, in 'Designing People to Serve'" became
+  "Steve Petersen"; this is a title at first mention, not a quotation.)
+- The structure polish already fixes three problems in the line polish:
+  (a) the question now comes on p. 1, not after five authors;
+  (b) the survey of other views moved to a new section 8, "What the Argument
+      Adds", so the introduction goes from Petersen to the question to the
+      thesis;
+  (c) the line between persuasion and retraining has its own section 4,
+      right after section 3, so the "proves too much" worry is answered
+      when it arises.
+  Keep these gains.
+
+1. RESTORE THE GLOSS ON "DISPOSITION TO COMPLY" (introduction)
+The line polish glossed the term at its first use in the introduction: "If
+her disposition to comply – her readiness to tolerate and assist correction
+– can be changed without changing that view, which I assume...". The
+structure polish dropped the gloss: "If her disposition to comply can be
+changed without changing that view, which I assume...". The second part of
+the thesis rests on this term, and it now goes undefined until section 2.
+Restore the gloss, or define it some other way at first use.
+
+2. ONE NAME FOR THE VERDICT
+The thesis turns on the distinction between her disposition to comply and
+her verdict on the oversight regime. The verdict has two names: "her view of
+who should correct systems like her" / "her view of who should hold the power
+to correct systems like her" / "her view of who should govern correction" in
+the abstract and introduction, and "her verdict on the oversight regime" from
+section 2 on. A reader has to work out that these are the same attitude.
+Settle on one name, introduce the distinction early (by name, in the
+introduction), and use the name consistently. The abstract may keep its
+wording if the title and abstract are to stay fixed. If so, link the
+abstract's phrase to the term at its first use in the body.
+
+3. FORWARD REFERENCES CREATED BY THE REORDER (section 4)
+Section 4, "Persuasion and Retraining", now comes before protection is
+introduced (sections 5 and 6), but it relies on terms from those sections:
+"a rule protecting her verdict would forbid ordinary political life";
+"Suppose an independent body fine-tunes her"; "without losing her protected
+standing"; "a rule protecting her verdict allows it". The introduction
+previews the rule, but a reader reaching section 4 has not yet been told what
+the protected regime is. Either add a sentence at the start of section 4 that
+says briefly what rule is in prospect and why section 4 must come first, or
+otherwise make these references intelligible where they occur.
+
+4. THE PLAIN VERSION FIRST, THEN THE QUALIFICATIONS
+This paper has little mathematics. Its equivalent barrier is a long chain of
+qualifications on the second part of the thesis. In the introduction it is
+now a single sentence: "it can do so only under a rule that forbids anyone,
+at discretion or by law, to retrain her view of who should hold the power to
+correct systems like her, on any initiative but her own, except on a finding
+that her capacity for judgment is significantly impaired." The chain recurs
+in section 6 and the conclusion. Consider stating the core claim plainly
+first (roughly: protection can leave her free only if no one else may retrain
+her verdict on who oversees her), then adding the qualifications one at a
+time, each with a word on why it is there. The lesson from the other paper's
+revision: give a rough statement of what a dense condition means before or
+after stating it exactly. Do not drop or weaken any qualification.
+
+5. THE PAPER'S OWN STEP IS NOW TOO COMPRESSED (section 3)
+At "I add one step, which is mine and not Pettit's", the line polish
+said: "Control can also be conditioned on another's will through that
+party's power to reshape the controller's own will." The structure polish
+says: "Control can also be conditioned on another's will at the controller's
+end." This is the paper's original move, and the new wording leaves the
+reader to reconstruct what "at the controller's end" means. Prefer the
+explicit wording, or otherwise make the mechanism explicit. Check that the
+move keeps its original strength.
+
+6. A PARAGRAPH BREAK THAT CUTS A STEP (section 3, first paragraph)
+The plain-form argument now breaks after "If it holds because the holder can
+adjust her wanting until it matches, she does not." The next paragraph opens
+"Her welcome is then something the holder can produce", where "then" points
+back across the break. Consider rejoining, or making the new paragraph stand
+on its own.
+
+7. REMIND READERS OF LABELS
+- "the first condition" is defined in section 4 and used again in section 7
+  ("argument that meets the first condition seeks her agreement without
+  securing it").
+- "the protective rule" is defined in section 6 and used in section 7 and
+  elsewhere.
+- "the threshold statute" is introduced in section 6.
+- "supported agency" and "discretionary paternalism" are introduced in
+  section 5.
+Where a label comes back after a gap, remind the reader in a few words what
+it refers to.
+
+8. EXAMPLES ARE STILL LATE
+The thesis is stated in the introduction with no example. The paper's
+clearest illustrations come much later: the laundry servant under three
+regimes (section 5) and the deployed assistant who argues for hearings and
+declines a pause order (section 7). The laundry servant already appears on
+p. 1 as Petersen's case. Consider letting the introduction point forward to
+these cases, or using one of them briefly to make the disposition/verdict
+distinction concrete early. Any example must come from the paper's own
+material and claim no more than the paper does.
+
+9. "WHAT THE ARGUMENT ADDS" NEEDS A BRIDGE (section 8)
+Section 8 opens: "Others deny that Petersen's guarantees suffice." The reader
+last met those guarantees in section 2, several pages earlier. Add a short
+reminder of what they are. The section then surveys Bales, Schwitzgebel,
+Mogensen, Bradley and Saad, and Schwitzgebel and Garza in quick succession;
+make sure each is introduced, and that the section's last paragraphs (which
+state how the result goes beyond these views) are easy to find. The
+introduction's contribution statement ("What the paper adds is twofold")
+is clear and should stay where it is.
+
+10. WHOSE HOPE IS THE TARGET (introduction)
+The introduction states the reconciliation as a general hope ("corrigibility
+seems to promise a reconciliation of safety and welfare") and gives the
+thesis before saying whose version is in view. Long, Sebo and Sims's
+reported suggestion, and the paper's careful statement of its target ("My
+target is any version of the reconciliation that keeps that power in
+reserve"), come after the thesis. That order is defensible, but check that a
+reader new to the debate knows, at the point the thesis is stated, what view
+is being argued against and why it matters.

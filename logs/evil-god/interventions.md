@@ -1,0 +1,16 @@
+# The operator's interventions
+
+Written only by `system/tools/log.py human`. Every action of the operator's, with its reason, so the methodology report can show that his role was constitutional (spec principle 4, section 15).
+
+| Time (UTC) | Step | Kind | What the operator did | Reason |
+|---|---|---|---|---|
+| 2026-10-22 16:17 | O0 | intake | The operator's O0 answers: domain the evil-god challenge, any bold position (pro-God wish withdrawn); starting texts named; all other fields default; taste file kept whole; memory off; paywalled texts within a day | opening of lineage paper-4 (section 4f) |
+| 2026-10-22 16:44 | O3 | sources | The operator saved files for R-004, R-005 (twice), R-007, R-008, R-009, R-011, R-013, R-014; R-002 (Collins 2019) and R-006 (Hendricks 2018) not in the folder despite his saying all but Swinburne; R-015 Swinburne not yet (maybe later today) | O3 checkpoint offer |
+| 2026-10-22 16:55 | O3 | sources | The operator saved R-002 Collins 2019, R-006 Hendricks 2018 and R-015 Swinburne (whole book) | completing the O3 offer |
+| 2026-10-22 19:55 | L3 | sources | The operator saved Symes 2024 (whole book), Mooney and Hendricks 2025 (Analysis), Swinburne 2010 (EJPR), Lancaster-Thomas 2018b; Draper 2016 not in the folder | L3 offer |
+| 2026-10-22 20:03 | L3 | sources | The operator saved Draper 2016 ('Simplicity and natural theology', 16 pp.) as 'Untitled 2.pdf' in runs/paper-3/02_corpus/sources/ by mistake; orchestrator copied it to runs/paper-4/02_corpus/sources/draper-2016-simplicity.pdf (original left in place) | completing the L3 offer |
+| 2026-10-22 21:31 | R | comparison | The operator: the comparison is in (comparison.md in review-packet) | outside review round 1, stage 1 |
+| 2026-10-22 22:36 | R | outside-review | The operator reports review round 1 publication judgment and architecture report written | section 5 After |
+| 2026-10-22 23:10 | L9 | direction | The operator directs: restore the pre-cut text (final-L8-04.md) with the new abstract (E-05), and verify again | contest counts everything but the bibliography, limit 6,000; the L8-05 cut was not needed and removed sourced literature the reviewer had judged |
+| 2026-10-22 23:15 | L9 | direction | The operator confirmed the controller's proposed rewording of the Conclusion, 'the bound keeps t' -> 'the bound holds for any threshold t' (wording suggested by the model, not by the operator), and asked that variables be italicized (corrected 2026-10-26 from the session transcript; earlier text said 'the operator directs') | verifier flag (L9-03); typographic convention |
+| 2026-10-26 01:27 | R | review | The operator chose the structure polish as the text for the final revision, gave no margin notes, and directed the review session (Claude Opus 5.5, extra effort) to apply its checked list of the AI reviewers' suggestions and its own comments and write the review revision directly, without a brief for a fresh run; output 12_polish/How Much More Probable Must God Be - The Evil-God Challenge and the Gap Problem (review revision).md, 5,927 Counted, rendered (12 pp.) | final revision before submission; human input limited to the choice of base text and the workflow (competition rules); record in methodology/human-review-log.md |

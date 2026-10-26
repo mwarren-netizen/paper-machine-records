@@ -1,0 +1,1160 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Paper Machine v2 Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..800;1,7..72,400..700&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+@property --s{syntax:"<number>";inherits:true;initial-value:.62}
+/* Layout concept: the v2 run as a counter-clockwise spiral of square stations, pinned left; a resizable panel on the right
+   changes with the lens and the step you select. Sage paper and green-black ink, so it never reads as the blue v1 autopsy map. */
+:root{
+  --paper:#EEF2EC; --paper-2:#DFE7DD; --ink:#12291F; --ink-2:#43594D; --ink-3:#86998C; --rule:#C9D5CA; --tint:rgba(18,41,31,.06);
+  --c-ground:#12788A; --c-vary:#4C861C; --c-reason:#C0335F; --c-select:#12291F; --c-freeze:#C27C0E; --c-human:#2949C9; --c-hi:#6B3FA0;
+  --on-freeze:#12291F; --on-node:#F4F7F2;
+  --keep:var(--c-ground); --rewrite:var(--c-vary); --fuse:var(--c-freeze); --new:var(--c-hi);
+  --serif:"Literata","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:"Instrument Sans","Helvetica Neue",Arial,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1714; --paper-2:#17251F; --ink:#E4EDE6; --ink-2:#A6B8AC; --ink-3:#65786C; --rule:#24382E; --tint:rgba(228,237,230,.07);
+    --c-ground:#4FC2D3; --c-vary:#8FCB4E; --c-reason:#FF7099; --c-select:#E4EDE6; --c-freeze:#F2B640; --c-human:#86A0FF; --c-hi:#B990F2;
+    --on-freeze:#0D1714; --on-node:#0D1714; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1714; --paper-2:#17251F; --ink:#E4EDE6; --ink-2:#A6B8AC; --ink-3:#65786C; --rule:#24382E; --tint:rgba(228,237,230,.07);
+  --c-ground:#4FC2D3; --c-vary:#8FCB4E; --c-reason:#FF7099; --c-select:#E4EDE6; --c-freeze:#F2B640; --c-human:#86A0FF; --c-hi:#B990F2;
+  --on-freeze:#0D1714; --on-node:#0D1714; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans);-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+.wrap{max-width:1480px;margin:0 auto;padding-inline:20px}
+.top{padding-block:18px 4px}
+.eyebrow{margin:0 0 10px;font:650 12.5px/1.3 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.vtag{display:inline-block;background:var(--c-vary);color:var(--on-node);border-radius:6px;padding:3px 8px;letter-spacing:.06em;font-weight:700}
+h1{margin:0;font:760 clamp(30px,3.6vw,44px)/1 var(--serif);letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-style:italic;font-weight:600;color:var(--c-vary)}
+.lede{margin:8px 0 0;max-width:54em;font:400 clamp(15.5px,1.35vw,17.5px)/1.45 var(--serif);color:var(--ink)}
+.lenses{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.lens{border:1.6px solid var(--ink);background:transparent;border-radius:8px;padding:9px 14px;font:650 14.5px/1 var(--sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.lens[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.lens:hover:not([aria-pressed="true"]){background:var(--tint)}
+.lens i{width:9px;height:9px;border-radius:2px;background:var(--c-human);display:none}
+.lens[data-l="stops"] i{display:inline-block}
+#lensq{margin:0;font:italic 400 17.5px/1.4 var(--serif);color:var(--ink-2);min-height:1.4em}
+.qrow{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center;margin-top:10px}
+.layout{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:600 12.5px/1 var(--sans);color:var(--ink-2)}
+.layout .lbl{letter-spacing:.07em;text-transform:uppercase;margin-right:2px}
+.seg{border:1.4px solid var(--ink-3);background:transparent;border-radius:7px;padding:6px 12px;font:650 13px/1 var(--sans);cursor:pointer;color:var(--ink)}
+.seg:hover{background:var(--tint)}
+.seg[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+:focus-visible{outline:3px solid var(--c-ground);outline-offset:3px}
+
+.work{--w:22px;display:grid;grid-template-columns:minmax(0,calc((100% - var(--w))*var(--s))) var(--w) minmax(0,calc((100% - var(--w))*(1 - var(--s))));gap:0;align-items:start;padding-block:10px 40px;transition:--s .3s ease;position:relative}
+.work.dragging{transition:none}
+.work.collapsed .panel{visibility:hidden;overflow:hidden;padding:0;border:0;min-height:0}
+.reopen{position:absolute;right:0;top:12px;z-index:5;border:1.6px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:8px;padding:7px 14px;font:650 13.5px/1 var(--sans);cursor:pointer;box-shadow:0 2px 8px rgba(10,30,20,.15)}
+.reopen:hover{background:var(--ink);color:var(--paper)}
+.reopen[hidden]{display:none}
+.split{align-self:stretch;position:relative;cursor:col-resize;touch-action:none;outline:none}
+.split::before{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:2px;margin-left:-1px;background:var(--rule);border-radius:2px;transition:background .15s}
+.split::after{content:"";position:absolute;left:50%;top:min(42vh,320px);width:8px;height:44px;margin:0 0 0 -4px;border-radius:3px;background:var(--ink-3);transition:background .15s}
+.split:hover::before,.split:focus-visible::before,.work.dragging .split::before{background:var(--ink)}
+.split:hover::after,.split:focus-visible::after,.work.dragging .split::after{background:var(--ink)}
+.split:focus-visible{outline:3px solid var(--c-ground);outline-offset:-3px;border-radius:6px}
+.map{position:sticky;top:8px;min-width:0}
+#spiral{display:block;width:100%;height:auto;max-height:calc(100vh - 96px);margin-inline:auto}
+#spiral text{font-family:var(--sans)}
+.t-op{font-size:15.5px;font-weight:700;fill:var(--ink)}
+.t-turn{font-size:11px;font-weight:600;fill:var(--ink-2);paint-order:stroke;stroke:var(--paper);stroke-width:3px;stroke-linejoin:round}
+.t-num{font-weight:700;pointer-events:none}
+.node{cursor:pointer;outline:none}
+.node .body{transition:opacity .2s,fill .2s}
+.node .halo{fill:none;stroke:transparent;stroke-width:3;transition:stroke .15s}
+.node:hover .halo,.node:focus-visible .halo{stroke:var(--ink-2)}
+.node.sel .halo{stroke:var(--ink);stroke-width:3.2}
+.node.hl .halo{stroke:var(--ink);stroke-width:3.2}
+.node .halo2{fill:none;stroke:transparent;stroke-width:3.2}
+.node.dim{opacity:.28}
+.node.dim:hover,.node.dim:focus-visible{opacity:.8}
+.t-cnt{font-size:10.5px;font-weight:650;fill:var(--ink-2);pointer-events:none;font-variant-numeric:tabular-nums}
+.spoke{stroke:var(--rule);stroke-width:1.2;stroke-dasharray:2 6}
+.lane{fill:transparent;stroke:none;pointer-events:none;transition:fill .15s}
+.lane.odd{fill:var(--tint)}
+.lane.on{fill:var(--tint)}
+@supports (color:color-mix(in oklab,red 10%,blue)){.lane.on{fill:color-mix(in oklab,var(--c-vary) 18%,transparent)}}
+.tpath{fill:none;stroke:var(--ink-3);stroke-width:1.7;stroke-dasharray:7 4;pointer-events:none;transition:opacity .15s,stroke-width .15s}
+#spiral.focus .tpath{opacity:.3}
+#spiral.focus .tpath.on{opacity:1;stroke:var(--ink);stroke-width:3;stroke-dasharray:none}
+.chev{fill:var(--ink-3);opacity:.85;pointer-events:none}
+.leg{fill:none;stroke-linecap:round;pointer-events:none}
+.leg.next{stroke:var(--c-vary);stroke-width:5}
+.leg.prev{stroke:var(--ink-2);stroke-width:3;stroke-dasharray:1 7}
+.legh{fill:var(--c-vary);pointer-events:none}
+.node.offturn{opacity:.5}
+.node.offturn.dim{opacity:.2}
+.stopb rect{stroke-width:1.6}
+.stopb{pointer-events:none}
+.stopb text{font-size:10px;font-weight:700;pointer-events:none}
+.stopb.solid rect{fill:var(--c-human);stroke:var(--c-human)}
+.stopb.solid text{fill:var(--on-node)}
+.stopb.outline rect{fill:var(--paper);stroke:var(--c-human)}
+.stopb.outline text{fill:var(--c-human)}
+.stopb.dashed rect{fill:var(--paper);stroke:var(--c-human);stroke-dasharray:3 2}
+.stopb.dashed text{fill:var(--c-human)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 4px 0;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend svg{width:18px;height:18px;flex:none;overflow:visible}
+
+.panel{min-width:0;border-top:2.5px solid var(--ink);padding:10px 0 0 6px;min-height:560px}
+.tabs{display:flex;gap:4px;margin:0 0 16px;border-bottom:1px solid var(--rule)}
+.tab{border:0;border-bottom:3px solid transparent;background:transparent;padding:8px 14px 9px;font:650 14.5px/1 var(--sans);color:var(--ink-2);cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--c-vary)}
+.tab:disabled{opacity:.45;cursor:default}
+.p-top{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font:600 14px/1.3 var(--sans);color:var(--ink-2)}
+.p-top .nav{margin-left:auto;display:flex;gap:6px}
+.nbtn{border:1.4px solid var(--ink-3);background:transparent;border-radius:7px;padding:4px 11px;font:650 12.5px/1.2 var(--sans);cursor:pointer;color:var(--ink);white-space:nowrap}
+.nbtn:hover{background:var(--tint)}
+.nbtn[disabled]{opacity:.4;cursor:default}
+.glance{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between;margin:0 0 2px;font:400 13.5px/1.3 var(--sans);color:var(--ink-2)}
+.glance .lk{border:0;background:transparent;padding:2px 0;font:650 13px/1.2 var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.glance .lk+.lk{margin-left:12px}
+.p-num{font-weight:700;color:var(--ink);font-size:15px}
+.panel h2{margin:4px 0 6px;font:720 clamp(24px,2.5vw,31px)/1.1 var(--serif);letter-spacing:-.012em;text-wrap:balance}
+.p-act{margin:0 0 10px;font:400 18px/1.4 var(--serif)}
+.prose{font:400 16.5px/1.55 var(--serif);margin:0}
+.prose+.prose{margin-top:.8em}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1.3px solid var(--rule);border-radius:7px;padding:2px 10px 2px 8px;font:500 13px/1.5 var(--sans);background:transparent;color:var(--ink)}
+.chip i{width:10px;height:10px;border-radius:3px;background:var(--c,var(--ink-3));flex:none}
+.chip.hollow i{background:transparent;box-shadow:inset 0 0 0 2px var(--c,var(--ink-3))}
+.chip.stop{border-color:var(--c-human);color:var(--c-human);font-weight:700}
+.chip.stop i{display:none}
+button.chip{cursor:pointer}
+button.chip:hover{background:var(--tint)}
+details.sec{border-top:1px solid var(--rule)}
+details.sec>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center;padding:8px 0;font:680 15px/1.3 var(--sans)}
+details.sec>summary:hover .sh{text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:3px}
+details.sec .st{display:grid;gap:2px;min-width:0}
+details.sec .hint{font:italic 400 14px/1.35 var(--serif);color:var(--ink-2)}
+details.sec[open] .hint{display:none}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--ink-2);border-bottom:2px solid var(--ink-2);transform:rotate(45deg);transition:transform .15s;margin-right:4px;flex:none}
+details.sec[open]>summary::after{transform:rotate(-135deg)}
+details.sec>.body{padding:0 0 16px}
+.qs{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.qs li{font:400 16.5px/1.45 var(--serif);padding-left:22px;position:relative}
+.qs li::before{content:"→";position:absolute;left:0;top:0;font:700 15px/1.5 var(--sans);color:var(--c-vary)}
+.facts{margin:0;display:grid}
+.facts div{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--rule);font:400 14.5px/1.45 var(--sans)}
+.facts div:first-child{border-top:0;padding-top:0}
+.facts dt{color:var(--ink-2)}
+.facts dd{margin:0}
+.facts dd.num{font-variant-numeric:tabular-nums}
+.btn{border:1.6px solid var(--ink);background:transparent;border-radius:8px;padding:8px 16px;font:650 14px/1.2 var(--sans);cursor:pointer}
+.btn:hover{background:var(--tint)}
+.note{font:400 14px/1.45 var(--sans);color:var(--ink-2);margin:10px 0 0}
+.callout{border-left:3px solid var(--c-vary);padding:2px 0 2px 14px;margin:14px 0}
+.callout p{margin:0;font:400 16.5px/1.45 var(--serif)}
+.callout .who{font:600 12.5px/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);display:block;margin-bottom:4px}
+.hyp{border:1.6px dashed var(--ink-2);border-radius:8px;padding:10px 14px;margin:0 0 14px;font:400 15px/1.45 var(--sans);color:var(--ink)}
+.hyp b{font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:0;margin:14px 0 6px;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.stat{padding:10px 12px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat b{display:block;font:720 26px/1.05 var(--serif);font-variant-numeric:tabular-nums}
+.stat span{font:500 12.5px/1.3 var(--sans);color:var(--ink-2)}
+.turns{display:grid;gap:0;margin:8px 0 0;border-top:1px solid var(--rule)}
+.turnrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-bottom:1px solid var(--rule);align-items:center}
+.turnrow b{font:700 16px/1.2 var(--serif)}
+.turnrow small{display:block;font:400 13px/1.3 var(--sans);color:var(--ink-2)}
+.chips.tight{margin:0;gap:4px}
+.chips.tight .chip{padding:0 8px;font-size:12.5px}
+.srow{border-top:1px solid var(--rule)}
+.srow>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 0}
+.srow>summary::-webkit-details-marker{display:none}
+.sbadge{display:inline-grid;place-items:center;min-width:42px;height:22px;padding:0 6px;border-radius:5px;font:700 12px/1 var(--sans);border:1.8px solid var(--c-human)}
+.sbadge.solid{background:var(--c-human);color:var(--on-node)}
+.sbadge.outline{background:var(--paper);color:var(--c-human)}
+.sbadge.dashed{background:var(--paper);color:var(--c-human);border-style:dashed}
+.srow .what{font:600 15px/1.3 var(--sans)}
+.srow .what small{display:block;font:400 13px/1.3 var(--sans);color:var(--ink-2)}
+.srow .nec{font:600 12.5px/1.2 var(--sans);color:var(--ink-2);text-align:right;max-width:130px}
+.srow .more{padding:0 0 14px 62px;font:400 14.5px/1.5 var(--sans)}
+.srow .more p{margin:0 0 8px}
+.srow .more b{font-weight:700}
+.ghead{margin:18px 0 4px;font:700 12.5px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.bars{display:grid;gap:3px;margin:10px 0 0}
+.bar{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 34px;gap:8px;align-items:center;font:500 12.5px/1.25 var(--sans);cursor:pointer;border:0;background:transparent;padding:2px 4px;border-radius:6px;text-align:left}
+.bar:hover,.bar.hl{background:var(--tint)}
+.bar .tr{height:10px;border-radius:3px;background:var(--paper-2);overflow:hidden}
+.bar .tr i{display:block;height:100%;width:var(--w);background:var(--c)}
+.bar em{font-style:normal;font-variant-numeric:tabular-nums;text-align:right}
+.item{border-top:1px solid var(--rule)}
+.item>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0}
+.item>summary::-webkit-details-marker{display:none}
+.item .n{display:inline-grid;place-items:center;min-width:28px;height:26px;padding:0 4px;border-radius:5px;background:var(--c-reason);color:var(--on-node);font:700 12.5px/1 var(--sans)}
+.item .n.f{background:var(--c-freeze);color:var(--on-freeze)}
+.item .n.g{background:var(--c-vary)}
+.item .t{font:700 15.5px/1.3 var(--sans)}
+.item .t small{display:block;font:400 13.5px/1.35 var(--sans);color:var(--ink-2);margin-top:2px}
+.item .more{padding:0 0 14px 48px;font:400 15px/1.5 var(--sans)}
+.item .more p{margin:0 0 8px}
+.stack{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:0;counter-reset:s}
+.stack li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--rule);font:400 14.5px/1.45 var(--sans);counter-increment:s}
+.stack li::before{content:counter(s);display:grid;place-items:center;width:22px;height:22px;border-radius:5px;background:var(--ink);color:var(--paper);font:700 12px/1 var(--sans)}
+.stack b{font-weight:700}
+.maprow{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 0;border-top:1px solid var(--rule);font:400 14px/1.35 var(--sans)}
+.maprow .code{font:700 13px/1 var(--sans);color:var(--ink-2);font-variant-numeric:tabular-nums}
+#peek{position:fixed;z-index:40;width:318px;max-width:calc(100vw - 16px);background:var(--paper);color:var(--ink);border:1.8px solid var(--ink);border-radius:8px;box-shadow:0 10px 30px rgba(10,30,20,.24);padding:10px 12px 11px;font:400 13.5px/1.4 var(--sans)}
+#peek[hidden]{display:none}
+#peek.pinned{border-color:var(--c-vary);box-shadow:0 10px 30px rgba(10,30,20,.24),0 0 0 3px color-mix(in oklab,var(--c-vary) 25%,transparent)}
+.pk-h{display:flex;gap:8px;align-items:baseline}
+.pk-n{font:700 14px/1.2 var(--sans)}
+.pk-t{font:700 17px/1.2 var(--serif);flex:1;min-width:0}
+.pk-m{color:var(--ink-2);font:600 12px/1.3 var(--sans);margin-top:3px}
+.pk-a{font:400 15px/1.35 var(--serif);margin:7px 0 2px}
+.pk-note{font:italic 400 13px/1.35 var(--serif);color:var(--ink-2);margin:4px 0 0}
+.pk-b{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+.pkb{border:1.4px solid var(--ink);background:transparent;border-radius:6px;padding:4px 10px;font:650 12.5px/1.2 var(--sans);cursor:pointer;color:var(--ink)}
+.pkb:hover,.pkb:focus-visible{background:var(--ink);color:var(--paper)}
+.pk-f{display:flex;gap:6px;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding-top:8px}
+.pkn{border:0;background:transparent;color:var(--ink);font:650 12.5px/1.2 var(--sans);cursor:pointer;padding:3px 2px;text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:3px;text-align:left}
+.pkn:hover{text-decoration-color:var(--ink)}
+.pkn[disabled]{opacity:.35;cursor:default;text-decoration:none}
+.pkn.go{border:1.4px solid var(--c-vary);color:var(--ink);border-radius:6px;padding:4px 10px;text-decoration:none}
+.pkn.go:hover{background:var(--c-vary);color:var(--on-node)}
+.fb{border:0;background:transparent;font:600 20px/1 var(--sans);cursor:pointer;color:var(--ink-2);padding:0 5px;border-radius:6px}
+.fb:hover{color:var(--ink);background:var(--tint)}
+#cards{position:fixed;inset:0;pointer-events:none;z-index:35}
+.fcard{position:absolute;pointer-events:auto;width:min(390px,calc(100vw - 16px));max-height:min(72vh,600px);display:flex;flex-direction:column;background:var(--paper);color:var(--ink);border:1.8px solid var(--ink);border-radius:8px;box-shadow:0 14px 36px rgba(10,30,20,.28)}
+.fh{display:flex;align-items:center;gap:6px;padding:8px 6px 8px 14px;border-bottom:1px solid var(--rule);cursor:grab;touch-action:none;user-select:none}
+.fh:active{cursor:grabbing}
+.fh .ft{flex:1;min-width:0;font:700 14.5px/1.2 var(--sans)}
+.fh .ft small{display:block;font:italic 400 13.5px/1.3 var(--serif);color:var(--ink-2)}
+.fbody{padding:10px 14px 14px;overflow:auto;overscroll-behavior:contain}
+.fbody .prose{font-size:15.5px}
+.fbody .qs li{font-size:15px}
+.fbody .facts div{grid-template-columns:92px minmax(0,1fr)}
+#tip{position:fixed;z-index:30;pointer-events:none;max-width:300px;background:var(--ink);color:var(--paper);font:500 13px/1.4 var(--sans);padding:8px 11px;border-radius:7px;opacity:0;transition:opacity .1s}
+
+@media (max-width:980px){
+  .work{grid-template-columns:1fr;transition:none}
+  .split,.layout{display:none}
+  .panel{padding-left:0;min-height:0}
+  .map{position:static}
+  #spiral{max-height:none}
+}
+@media (max-width:560px){
+  .wrap{padding-inline:16px}
+  .facts div{grid-template-columns:1fr;gap:2px}
+  .srow>summary{grid-template-columns:50px minmax(0,1fr)}
+  .srow .nec{grid-column:2;text-align:left;max-width:none}
+  .srow .more,.item .more{padding-left:0}
+  .bar{grid-template-columns:minmax(0,110px) minmax(0,1fr) 30px}
+  .turnrow{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .node .body,details.sec>summary::after,#tip,.work{transition:none}
+}
+</style>
+
+<header class="wrap top">
+  <p class="eyebrow"><span class="vtag">v2 design</span><span>After the autopsy · 21 steps · Paper 2</span></p>
+  <h1>Paper Machine <em>v2</em> Map</h1>
+  <p class="lede">The redesigned run as one spiral, from the middle outward. Select a step to see what it does, what it replaced in v1, what to watch for when it runs, and who owns the idea at that point.</p>
+  <nav class="lenses" id="lenses" aria-label="Map lens"></nav>
+  <div class="qrow"><p id="lensq"></p><div class="layout" id="layoutCtl" role="group" aria-label="Share of the screen for the map and for the details"></div></div>
+</header>
+
+<main class="wrap work">
+  <button class="reopen" id="reopen" hidden>Details ◂</button>
+  <section class="map" aria-label="Spiral map of the 21 steps">
+    <svg id="spiral" viewBox="-46 0 852 770" role="group" aria-label="Spiral of steps V00 to V20"></svg>
+    <div class="legend" id="legend"></div>
+  </section>
+  <div class="split" id="split" role="separator" aria-orientation="vertical" aria-label="Resize the map and the details" tabindex="0" aria-valuemin="0" aria-valuemax="100"></div>
+  <section class="panel" aria-label="Details">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabStage" aria-selected="false" disabled>Step</button>
+      <button class="tab" role="tab" id="tabLens" aria-selected="true">This lens</button>
+    </div>
+    <div id="pBody"></div>
+  </section>
+</main>
+<div id="tip" role="tooltip"></div>
+<div id="peek" role="dialog" aria-label="Step quick menu" hidden></div>
+<div id="cards"></div>
+<script>
+/* ---------- data: operations, turns, steps (from 80_methodology/v2-decisions.md and v2-dispositions.md, 2026-10-03) ---------- */
+const OPS=[
+ {id:"ground",name:"Ground",frac:0,c:"--c-ground"},
+ {id:"develop",name:"Develop",frac:0.2,c:"--c-vary"},
+ {id:"press",name:"Press",frac:0.4,c:"--c-reason"},
+ {id:"judge",name:"Judge",frac:0.6,c:"--c-select"},
+ {id:"commit",name:"Commit",frac:0.8,c:"--c-freeze"}
+];
+const OPB={};OPS.forEach(o=>OPB[o.id]=o);
+const TURNS=[
+ {n:1,name:"Region",scale:"A map of the problem region, and a mid-sized region chosen from it",from:0,to:2},
+ {n:2,name:"Voices",scale:"Three dispositions develop views, meet criticism and the literature, then meet each other",from:3,to:7},
+ {n:3,name:"Advice",scale:"Two candidates become paper-shapes; one is chosen",from:8,to:11},
+ {n:4,name:"Outline",scale:"The paper’s structure, with the editorial norms in hand",from:12,to:14},
+ {n:5,name:"Prose",scale:"Units, then a rolling draft by one author",from:15,to:17},
+ {n:6,name:"Review",scale:"Referees, revision, verification, submission",from:18,to:20}
+];
+const FORMS={
+ T:{name:"Judges with criteria and taste",text:"Sees the selection criteria and your taste exemplars. Only the judge-advisor and the region check."},
+ R:{name:"Builds with the form norms",text:"Sees the editorial norms and the LLM-pattern list while building the paper, but not the selection criteria or your taste (decision B1)."},
+ G:{name:"Blind to criteria and taste",text:"Develops, presses or reads cold. Sees neither the criteria nor your taste, so it cannot tune itself to the judge."},
+ N:{name:"Mechanical or constitutional",text:"Intake, acquisition or verification. No norms apply."}
+};
+const OWN={
+ mark:{name:"You (constitutional)",c:"--c-human",text:"Your standing choices: domain, budget, taste, sources, submission. Never a philosophical tie (SYSTEM invariant 10)."},
+ none:{name:"No one yet",c:"--ink-3",text:"No view exists yet. The region and the corpus belong to the machine."},
+ voices:{name:"Each voice owns its view",c:"--c-vary",text:"Three voices, each carrying its view in a notebook that keeps its seed disposition (decision B4). Owners answer criticism first (B5)."},
+ author:{name:"The author owns the paper",c:"--c-freeze",text:"Each picked voice becomes its paper’s author, so the view and the paper share one history (B7). Advice and reports go to the author, who decides."}
+};
+const VERD={
+ keep:{name:"Kept",c:"--keep",text:"Same job as in v1, usually cheaper."},
+ rewrite:{name:"Rebuilt",c:"--rewrite",text:"Same place in the run, different job or method."},
+ fuse:{name:"Merged",c:"--fuse",text:"Does the work of several v1 stages."},
+ new:{name:"New",c:"--new",text:"No v1 counterpart."}
+};
+/* rep = Claude’s estimate of calls per run, from the settled design; hi = runs on a high setting */
+const S=[
+{n:0,name:"Intake",short:"Intake",turn:1,t:0.00,op:"ground",opl:"Ground",set:"A conversation with you",hi:false,form:"N",own:"mark",rep:1,from:"S00",
+ act:"Set the domain, the budget and your taste, once, with standing defaults you confirm.",
+ need:"The run starts from a domain and standing choices, not a thesis. Intake also asks what a paper is for, who reads it and what its opening has to do, and every rubric question is asked here once. You may amend the disposition library and the editorial norms here, as acts of taste.",
+ run:"v1’s S00 took eight sections of answers. Its rubric questions were scattered through the run, and three were skipped at DR, including what the best papers in your field do structurally.",
+ qs:["Did any intake answer change what the paper became?","Which answers will hold for Papers 3 and 4 and can become stored defaults?"],
+ ctx:"One conversation with you.",reads:"Standing defaults, the disposition library, the editorial norms.",writes:"The seed: domain, budget, taste, and any amendments.",
+ v:"keep",vt:"S00, shortened to an intake with defaults. The questions v1 let you skip are asked here."},
+{n:1,name:"Map of the region",short:"Map",turn:1,t:0.20,op:"develop",opl:"Develop (cartography)",set:"Light",hi:false,form:"G",own:"none",rep:1,from:"S01",
+ act:"Map a problem region: the questions a reader already has, their standard answers, and the live fault lines.",
+ need:"A list of problems invites early culling of detachable units. A map gives the questions a reader in the area already brings, two to four standard answers to each, where the live disagreements are, the neighbouring debates, and why the region matters beyond any one paper. Later it supplies each voice a different starting point.",
+ run:"v1’s S01 wrote two blind problem lists, one from ChatGPT. The explorer was told to find tractable problems, which pushed toward small, local ones.",
+ qs:["Does the map name questions a reader brings, or puzzles inside one paper?","Are there three starting points far enough apart to keep three voices from converging?"],
+ ctx:"One cartographer with web search.",reads:"The seed; the web.",writes:"The region map.",
+ v:"rewrite",vt:"S01’s blind lists become one map."},
+{n:2,name:"Choose a region",short:"Region",turn:1,t:0.62,op:"judge",opl:"Judge",set:"Light",hi:false,form:"T",own:"none",rep:1,from:"S02",
+ act:"Choose a mid-sized region: two to four live questions that share one literature.",
+ need:"The agenda is a region, not one to three problems, so the paper-sized problem is found by the voices. The check is the advisor’s question in small: is there a paper worth fishing for here? It looks for reach and liveness, and for at least one disagreement that belongs to no single author. It does not stress-test problems.",
+ run:"v1’s S02 froze an agenda that included a problem built on Tarsney 2024, after a ChatGPT critique. Finding 1 started here.",
+ qs:["Did the region have a live disagreement owned by no single author?","Was it narrow enough that three voices could still be compared fairly?"],
+ ctx:"One context.",reads:"The map, the seed, the criteria and your taste.",writes:"The chosen region and the first source request.",
+ v:"rewrite",vt:"S02 chooses a region instead of problems, with no stress test."},
+{n:3,name:"Corpus and starting points",short:"Corpus",turn:2,t:1.00,op:"ground",opl:"Ground",set:"Light",hi:false,form:"N",own:"none",rep:4,from:"S03",
+ act:"Gather about 15 sources drawn from the map, and give each voice its disposition and starting point.",
+ need:"The first request covers the best statement of each standard position, a survey, and the neighbouring debates, capped at about 15. Core sources get notes; peripheral ones are read on demand. The system tries open access first. Three dispositions, one each from the builders, testers and framers, are paired with different starting points on the map. There is no shared backgrounder.",
+ run:"v1’s S03 waited about 14 hours at H2 for sources, and its shared backgrounder named Tarsney 15 times.",
+ qs:["How many of the 15 sources did a voice actually open?","Did the three starting points stay different through articulation?"],
+ ctx:"A librarian context, plus notes for the core sources.",reads:"The map; the web.",writes:"The corpus (notes, bibliography) and three voice notebooks, each opening with its seed disposition.",
+ v:"rewrite",vt:"S03 aimed at the whole debate, with no shared backgrounder."},
+{n:4,name:"Articulation",short:"Articulate",turn:2,t:1.20,op:"develop",opl:"Develop",set:"Light",hi:false,form:"G",own:"voices",rep:9,from:"S04",
+ act:"Three voices develop their own views: an opening statement each, then two seminar rounds.",
+ need:"This stage is constructive. Each voice writes a 600 to 800 word opening without seeing the others, then two rounds of 400 to 700 word prose turns in rotating order. A voice may ask what another view would say about a case, offer connections, and pose at most one problem case per turn. It may not raise objections. Each owner answers in its own next turn and keeps its notebook.",
+ run:"v1’s S04 ran twenty ruminations, each alone and blind to the rest; 17 named Tarsney. It was the one stage where a position developed unattacked, and it developed alone (finding 11).",
+ qs:["Is each view more determinate after round two than in its opening?","Did the voices stay distinct, or drift toward a thoughtful middle?","Do the turns read like a seminar, or like bullet points set as paragraphs?"],
+ ctx:"Three voice calls per round. Each reads its notebook and the transcript.",reads:"Notebook, transcript, map; the whole corpus and the web on demand. A voice cites only what it has opened.",writes:"Turns, updated notebooks, and a card each, marked “articulated”.",
+ v:"rewrite",vt:"S04 rebuilt: three voices in conversation instead of twenty alone."},
+{n:5,name:"Criticism with literature",short:"Criticism",turn:2,t:1.40,op:"press",opl:"Press",set:"Light",hi:false,form:"G",own:"voices",rep:15,from:"S05, S09, S10, S12",
+ act:"A literature scout places each view; a peer voice presses it; the owner answers first.",
+ need:"A neutral scout with web search reports where each view sits: nearest positions, precedents, objections already made. It reports and does not argue. A critic voice, by rotation, states the problem and its literature version, with no repairs. The owner answers with whatever fits: a misreading of its framework, a contested premise, a repair, an accepted cost, or a fork. The critic gets one rejoinder and may suggest repairs only after a concession.",
+ run:"v1’s S05 produced 63 reports from fresh critics and fresh repairers, blind to one another. The context that held a view never answered for it.",
+ qs:["Did any owner rightly reject an objection as a misreading?","Did a scout find a precedent that changed a view, or only decorate it?"],
+ ctx:"Three scouts, three critics, three answers, three rejoinders, notebook updates.",reads:"The views, notebooks, the corpus, the web.",writes:"Scout reports, the exchanges, notebooks.",
+ v:"fuse",vt:"S05 with the literature and pressing jobs of S09, S10 and S12, answered by owners."},
+{n:6,name:"Synthesis",short:"Synthesis",turn:2,t:1.52,op:"develop",opl:"Develop (contact)",set:"Light",hi:false,form:"G",own:"voices",rep:10,from:"S07",
+ act:"Put the three views in one room and see what becomes visible.",
+ need:"Synthesis is generative, not a convergence mechanism. Round one is structured: each voice addresses each of the other two views. Round two is free. The output is a short map of what the contact produced (a distinction that solves another view’s problem, nested rivals, a shared structure, a new formulation) and at most two new candidates. A voice adopts each one and gives it one articulation turn. Then every candidate writes its card.",
+ run:"v1’s S07 ran three rounds of fresh critics and repairers. Its one recombiner, reading D and K, was a fresh context too.",
+ qs:["Did the contact produce anything none of the views had alone?","Did the new candidates get a fair articulation turn before judging?"],
+ ctx:"One three-way session of two rounds, up to two adoption turns, then card writing.",reads:"Notebooks, the transcript.",writes:"A contact map, new candidates, and cards of 400 words or fewer.",
+ v:"rewrite",vt:"S07’s recombiner grown into a stage of its own."},
+{n:7,name:"The judge picks two",short:"Judge",turn:2,t:1.68,op:"judge",opl:"Judge and advise",set:"High",hi:true,form:"T",own:"voices",rep:1,from:"S06, S08, S11",
+ act:"Read the cards, pick two, and advise each the way a good graduate advisor would.",
+ need:"The judge asks whether there is a publishable paper here at this length: interesting, tractable, distinctive, with a spine that fits about 3,000 to 3,500 words of body. It may pick an underdeveloped idea with high upside, and “nothing here yet” is a legal verdict that allows one return to articulation. Its advice carries reading pointers: contemporary work to address, and older or distant debates with the same structure.",
+ run:"v1 spread this over S06 (a cut made by reading about 149,000 words in one context), S08 (holistic review) and S11 (compression to the smallest memorable contribution).",
+ qs:["Did the judge reward polish over upside despite the fixed cards?","Did any reading pointer change a candidate’s character?"],
+ ctx:"One judge on a high setting.",reads:"Three to five cards; notebooks and transcripts only as backup; the criteria and your taste.",writes:"Two picks, advice for each, and source requests.",
+ v:"fuse",vt:"S06, S08 and the choosing half of S11, made into one advisor."},
+{n:8,name:"Absorb the advice",short:"Absorb",turn:3,t:2.05,op:"ground",opl:"Ground (reading)",set:"Light",hi:false,form:"G",own:"author",rep:2,from:"S09",
+ act:"Each picked owner reads its pointers and decides what to take, from ignoring them to changing the thesis.",
+ need:"Advice makes a difference only if it is absorbed. The owner reads what it was pointed to, ruminates, and records in its notebook what it took and why. The whole range is open: a footnote, a new example, a new section, a changed thesis. From here on the owning voice is the paper’s author.",
+ run:"v1’s S09 made one author’s paper the opponent, and its anticipated objections fed the liability count. The decision-theory neighbour (ratifiability) surfaced only at S14, after the claim was frozen.",
+ qs:["Did either owner change course because of a pointer, and was the paper better for it?"],
+ ctx:"One owner call per pick, plus fetches.",reads:"The advice, the pointed sources, the notebook.",writes:"The revised view and the notebook.",
+ v:"rewrite",vt:"S09’s opponent reconstruction becomes one item within absorbing advice."},
+{n:9,name:"Challenge round",short:"Challenge",turn:3,t:2.40,op:"press",opl:"Press",set:"Light",hi:false,form:"G",own:"author",rep:6,from:"S10",
+ act:"The other voices press each revised view; the owner answers first.",
+ need:"Ideas still need pressure after the advice. The rule is the one from criticism: the critic states the problem, the owner answers with whatever fits, the critic gets one rejoinder.",
+ run:"v1’s S10 pressed replies against one opponent, with a conditional ChatGPT pass.",
+ qs:["Was the pressure aimed at the revised view, or at the view before the advice?"],
+ ctx:"The non-picked voices as critics; the owners answer.",reads:"The revised views, the notebooks.",writes:"The exchanges and notebooks.",
+ v:"rewrite",vt:"S10, owner-answered and aimed at the revised view."},
+{n:10,name:"Pitch and smell test",short:"Pitch",turn:3,t:2.50,op:"develop",opl:"Develop, then read cold",set:"Light",hi:false,form:"R",own:"author",rep:6,from:"S13, S14, S15",
+ act:"Each owner writes an extended elevator pitch and a shape card; two cold readers smell-test the pitch.",
+ need:"The owner decides how much of the challenge to take, and may keep its original idea over a complaint it judges idiosyncratic. The pitch is the reader-facing version. The shape card is the structured one: the reader’s question, the position, the central point, the spine, commitments, the family of views, reach, how developed, open forks, in 400 words or fewer. Cold readers get only the pitch, and report whether it makes sense, whether it is interesting, where they got lost, and what they would object to first.",
+ run:"v1 had no pitch and no cold reader. Its précis (S13 to S15) came after the claim was frozen, and its three précis were one paper in three arrangements.",
+ qs:["Did both cold readers get lost in the same place?","Does each shape card’s spine fit the length?"],
+ ctx:"Two owner calls; two cold readers per pitch.",reads:"Notebook, the exchanges, the editorial norms.",writes:"Pitches, shape cards, smell-test reports.",
+ v:"new",vt:"New. It does the précis job of S13 to S15, earlier and with a cold reader."},
+{n:11,name:"Final choice",short:"Choice",turn:3,t:2.66,op:"judge",opl:"Judge and commit",set:"High",hi:true,form:"T",own:"author",rep:1,from:"S11",
+ act:"The judge reads both pitches, both shape cards and the smell tests, and chooses one.",
+ need:"The commitment is made between two paper-shapes, not two ideas. The judge is told that a paper which took little of its advice may be the better paper, and that an owner’s reasons for declining advice are evidence, not defiance. If the two look equal, the judge breaks the tie, never you. Only now is the pick frozen. The other candidates are archived, and the author may borrow from them.",
+ run:"v1 committed at S11 to the “smallest memorable contribution”, with about sixteen liabilities copied in verbatim.",
+ qs:["Did the judge favour the candidate that took its advice?","Was the runner-up close enough that the choice mattered?"],
+ ctx:"The same judge, on a high setting.",reads:"Pitches, shape cards, smell-test reports, its own earlier advice.",writes:"The frozen pick and its shape card.",
+ v:"rewrite",vt:"S11’s commitment, made at the fist test instead of by compression."},
+{n:12,name:"Outlines",short:"Outlines",turn:4,t:3.20,op:"develop",opl:"Develop",set:"Light",hi:false,form:"R",own:"author",rep:5,from:"S16, S17",
+ act:"A short check, then three or four outlines, each drafted from a different menu of structural strategies.",
+ need:"Each outlining call gets a different set of about three strategies from a list of twelve (problem-first, case-first, objection-driven, landscape, puzzle, diagnosis and more), chooses and adapts one, records why, then outlines. Outlines are planned in sections, each with a job and a word budget under the 5,500 ceiling. The objections sorted at the pitch are placed here as plot, paragraph, footnote, or left in the notebook.",
+ run:"v1’s S16 audit and S17 architects produced three blind outlines of 30 equal units, about 197 words each, with no slot for an introduction.",
+ qs:["Did the outlines differ in a way a reader would feel?","Did every outline have a front door?"],
+ ctx:"One short check, then three or four author calls.",reads:"The notebook, the shape card, the editorial norms, the strategy list.",writes:"Three or four outlines.",
+ v:"fuse",vt:"S16 and S17, with the norms in hand and a strategy menu per outline."},
+{n:13,name:"Advisor as editor",short:"Editor",turn:4,t:3.62,op:"judge",opl:"Judge and advise",set:"High",hi:true,form:"T",own:"author",rep:1,from:"S18, S19",
+ act:"The advisor, now in editor mode, picks one outline and says how to improve it.",
+ need:"Given the committed idea, which outline makes the best publishable paper? The editor applies the editorial norms (frame the question, state the thesis, stakes at both ends, objections as plot, a payoff) and reads as a sympathetic and an unsympathetic referee would. It does not reopen the philosophy or the scope. A real philosophical problem gets one flagged line, and the author decides.",
+ run:"v1’s S18 critic passed a 30-unit outline with no introduction, and S19 froze it.",
+ qs:["Did the editor catch anything the author’s own norms had not?"],
+ ctx:"The judge-advisor, on a high setting.",reads:"The outlines, the editorial norms, your taste.",writes:"The chosen outline and its advice.",
+ v:"fuse",vt:"S18 and the choosing part of S19, done by the advisor."},
+{n:14,name:"Absorb and freeze",short:"Freeze",turn:4,t:3.80,op:"commit",opl:"Commit",set:"Light",hi:false,form:"R",own:"author",rep:1,from:"S19",
+ act:"The author takes or leaves the editor’s advice, then freezes the outline.",
+ need:"Same range as before, from ignoring the advice to restructuring, recorded in the notebook. The frozen outline carries a glossary of named theses and reserves about 900 words for notes and references.",
+ run:"v1’s S19 froze outline_v1 with 30 unit specifications and 100 words unallocated.",
+ qs:["Did the frozen outline come with a budget the draft could meet?"],
+ ctx:"One author call.",reads:"The chosen outline, the advice, the notebook.",writes:"The frozen outline and glossary.",
+ v:"rewrite",vt:"S19’s freeze, made by the author after advice."},
+{n:15,name:"Expansion to units",short:"Units",turn:5,t:4.18,op:"develop",opl:"Develop (planning)",set:"Light",hi:false,form:"R",own:"author",rep:6,from:"none",
+ act:"Turn each section into argumentative units, each with its job, moves, handoff and budget.",
+ need:"This is where bins become units. Each unit spec gives its job, its key moves, its handoff (why the next unit comes next), a word budget, and any writerly decision already made, sometimes in sketch prose. Undecided choices, such as example first or argument first, stay open for the passes to vary. The author may reshape units within a section but only flag moves between sections. A cheap check looks for leftover bins, double jobs, and budgets that do not add up.",
+ run:"v1 had no such step. Its units came from the architects and the writers could not change them.",
+ qs:["Were any bins left?","Did the open choices give the passes something real to vary?"],
+ ctx:"One author call per section, then one cheap check.",reads:"The frozen outline, the notebook, the editorial norms.",writes:"The expanded outline.",
+ v:"new",vt:"New."},
+{n:16,name:"Unit writing",short:"Writing",turn:5,t:4.32,op:"develop",opl:"Develop, then choose",set:"Very light",hi:false,form:"R",own:"author",rep:100,from:"S20",
+ act:"Each unit gets three passes on a rolling draft; the author picks one and washes it.",
+ need:"Every pass sees everything written so far, so it can decide how to segue. The passes differ on purpose along the unit’s open choice. The author picks, records why, may combine passes, and makes small revisions to wash off LLM writing patterns. Writers quote from the corpus with page numbers and use the glossary. A small new move that serves the unit is allowed; one that changes the claim is flagged. Requests for an earlier set-up are resolved at the end of each section.",
+ run:"v1’s S20 writers saw only the outline and the précis, could add no move or transition, and nobody read the whole draft until S21.",
+ qs:["Did the passes differ, or come out as three near-copies?","Which LLM patterns survived selection?","How many backward flags were raised, and were they resolved?"],
+ ctx:"About 75 passes and 25 selections, fully automated.",reads:"The rolling draft, the unit spec, the outline, the notebook, the norms, the pattern list, the relevant notes.",writes:"The draft, unit by unit.",
+ v:"rewrite",vt:"S20 rebuilt as a rolling draft by one author."},
+{n:17,name:"Finish the draft",short:"Finish",turn:5,t:4.46,op:"press",opl:"Read whole",set:"Light, then high",hi:true,form:"T",own:"author",rep:2,from:"S21",
+ act:"The author writes the title and abstract last; the advisor-editor reads the whole draft once.",
+ need:"The editor reads for how often LLM patterns recur across the paper, for proportion, and for whether the paper lands as a fist. Its notes go to the author with the referee reports.",
+ run:"v1’s S21 smoothed a draft whose claim, précis and outline were already frozen, so it could change only the surface.",
+ qs:["Does the paper read as one voice with one central point?"],
+ ctx:"One author call, one editor call on a high setting.",reads:"The whole draft, the norms, your taste.",writes:"Title, abstract, editor’s notes.",
+ v:"fuse",vt:"S21, as one read by the editor."},
+{n:18,name:"Referees",short:"Referees",turn:6,t:5.40,op:"press",opl:"Press (cold)",set:"Light",hi:false,form:"G",own:"author",rep:3,from:"S22",
+ act:"A sympathetic referee, an unsympathetic one, and a desk-reject reader of the first page.",
+ need:"By now the advisor is not independent, so the paper goes to cold readers. Reports follow the AAP referee questions: does it achieve its aim, is it built around a strong distinctive idea, argument, organisation, significance, can a non-specialist follow it, and a recommendation. Each notes what the paper does well.",
+ run:"v1’s S22 used six fixed headings with no place for significance or form, and its ChatGPT referee was replaced by a Claude Sonnet referee when the allowance ran out.",
+ qs:["Would the desk-reject reader send it out?","Did any referee raise significance unprompted?"],
+ ctx:"Three cheap Claude contexts, blind to the run.",reads:"The paper only (the desk reader: title, abstract, first page).",writes:"Three reports.",
+ v:"rewrite",vt:"S22 with Claude-only framings and the AAP questions."},
+{n:19,name:"Revise",short:"Revise",turn:6,t:5.55,op:"develop",opl:"Develop (word-neutral)",set:"Light",hi:false,form:"R",own:"author",rep:2,from:"S23",
+ act:"The author answers the referees, or ignores them, inside the word budget.",
+ need:"The author may ignore a report entirely or in part, and records why. A claimed fatal flaw is the exception: it goes to the advisor, which alone can dismiss it or reopen the run once, at the outline or the pitch. A limit appears only where the paper needs it. Every addition is paid for by a cut, under the 5,500 ceiling.",
+ run:"v1’s S23 required every open liability to appear in the paper as a limit. You withdrew that rule on 2026-10-02.",
+ qs:["What did the author ignore, and was it right to?","Did revision stay word-neutral?"],
+ ctx:"One author call; the advisor only for a claimed fatal flaw.",reads:"The draft, the reports, the editor’s notes, the notebook.",writes:"The revised draft and a short response record.",
+ v:"rewrite",vt:"S23 without the must-print rule, and word-neutral."},
+{n:20,name:"Verify and submit",short:"Verify",turn:6,t:5.82,op:"commit",opl:"Commit",set:"Light",hi:false,form:"N",own:"author",rep:2,from:"S24",
+ act:"Check citations, quotations, pages, length and format; then you submit.",
+ need:"Mechanical checks only. If the paper is somehow over length, it goes back to the author for a cut, not to a halt. You get a one-page note listing anything verification could not reach.",
+ run:"v1’s S24 had to restore the quotations and the reference list, counted 6,313 words, could not cut, and halted.",
+ qs:["Did verification find anything a writer should have caught?"],
+ ctx:"One or two mechanical contexts.",reads:"The draft, the corpus, the competition rules.",writes:"The submission file and the note for you.",
+ v:"keep",vt:"S24, mechanical only, with an automated cut instead of a halt."}
+];
+/* ---------- your stops ---------- */
+const STOPS=[
+{id:"IN",name:"Intake",at:[0],kind:"solid",tagText:"Yours alone",
+ des:"Answer the intake questions, confirm the standing defaults, and amend the disposition library or the editorial norms if you want to.",
+ run:"v1 had H0 plus rubric questions scattered to S02, S06, S11, S14 and S21, three of them skipped.",
+ can:"It stays. The domain, the budget and your taste are constitutional."},
+{id:"SRC",name:"Sources only you can get",at:[3,7],kind:"dashed",tagText:"Only if needed",
+ des:"Fetch paywalled sources the system could not reach: from the first request of about 15, and from the judge’s reading pointers. The system tries open access first.",
+ run:"v1 waited about 14 hours at H2, partly because neither shell could download even open-access papers.",
+ can:"Only what the system cannot reach. How requests reach you (in batches or as they arise) is still deferred."},
+{id:"SUB",name:"Submission",at:[20],kind:"solid",tagText:"Yours alone",
+ des:"Read the one-page verification note and submit.",
+ run:"v1 never reached H10; S24 halted on length.",
+ can:"It stays. Submission is yours."}
+];
+const KINDS={solid:"Required",dashed:"Only if needed"};
+/* ---------- the v1 findings, and where v2 answers each ---------- */
+const FINDINGS=[
+{t:"One author’s paper became the unit",at:[1,2,3,7],
+ ev:["The map names questions a reader brings, with their standard answers, not puzzles in one paper (V01).","The region check asks for a live disagreement that belongs to no single author (V02).","No shared backgrounder; each voice starts from a different point on the map (V03).","The judge applies Mehta’s economy principle: an argument should target a substantial class of views, not one prominent philosopher’s (V07)."]},
+{t:"No stage owns the reader-facing form",at:[10,12,13,16,17],
+ ev:["One author owns the paper from the final choice to submission (decision B7).","The pitch and shape card name the reader’s question and the central point before any outline (V10).","Outlines plan the orienting jobs in sections; the editor checks for a front door (V12, V13)."]},
+{t:"The stages that decide form could not see the norms",at:[10,12,15,16,19],
+ ev:["Everyone who builds the paper sees the editorial norms and the LLM-pattern list. Only the criteria and your taste stay hidden from them (decision B1)."]},
+{t:"The form questions were skippable, and skipped",at:[0],
+ ev:["Intake asks what a paper is for, who reads it and what its opening must do, and asks every rubric question once (V00)."]},
+{t:"The outline’s grain left no room for connective jobs",at:[12,15,16],
+ ev:["Outlines are planned in sections with jobs and budgets, not 30 equal units (V12).","Each unit spec names its handoff (V15).","Every pass sees the rolling draft and decides how to segue (V16)."]},
+{t:"Every open liability became a caveat",at:[5,9,19],
+ ev:["Owners answer criticism themselves and may reject a misreading (V05, V09).","A limit appears only where the paper needs it; other liabilities stay in the notebook. Revision is word-neutral (V19)."]},
+{t:"The spend piled up before anything was decided about form",at:[4,5,6,16],
+ ev:["The middle costs about 35 cheap calls. Most of the run’s calls now go to prose (about 100 at V16)."]},
+{t:"The first whole-paper reader came at S21",at:[10,13,16,17],
+ ev:["Cold readers read each pitch (V10); the editor reads all the outlines (V13); every unit pass reads the whole draft so far (V16); the editor reads the finished draft (V17)."]},
+{t:"Most stops carried work between tools",at:[0,3,20],
+ ev:["The v2 run is Claude only. Your stops fall from 13 designed checkpoints to three: intake, sources only you can get, and submission."]},
+{t:"Significance was asked early, then once, late",at:[2,7,11,18],
+ ev:["The region check asks about reach (V02). The judge asks whether there is a publishable paper here at this length (V07, V11). Referees answer the AAP significance question (V18)."]},
+{t:"No stage let an idea grow with a partner",at:[4,5,6,8],
+ ev:["Voices develop views in a seminar, keep notebooks, answer their own critics, and meet in synthesis (V04 to V06).","The owning voice becomes the paper’s author, so the idea and the paper share one history (V08 on)."]}
+];
+/* ---------- what became of each v1 stage ---------- */
+const V1MAP=[
+["S00","Seed and setup",[0]],["S01","Problem-space exploration",[1]],["S02","Agenda selection",[2]],["S03","Shared research base",[3]],
+["S04","Independent ruminations",[4]],["S05","Reciprocal encounter",[5]],["S06","First Pareto selection",[7]],["S07","Dialectical evolution",[6]],
+["S08","Holistic review",[7]],["S09","Strongest-target reconstruction",[5,8]],["S10","Narrow response variation",[5,9]],["S11","Contribution compression",[7,11]],
+["S12","Nearest-neighbor positioning",[5,7]],["S13","Competing précis",[10]],["S14","Précis under pressure",[10]],["S15","Précis selection",[10,11]],
+["S16","Literature and burden audit",[12]],["S17","Competing outlines",[12]],["S18","Outlines under pressure",[13]],["S19","Outline freeze",[13,14]],
+["S20","Unit realizations",[16]],["S21","Editorial smoothing",[17]],["S22","Referee reports",[18]],["S23","Revise and resubmit",[19]],["S24","Verification",[20]]
+];
+const UPGRADE=["The judge-advisor already runs high (V07, V11, V13, V17).","Next, the author: the pitch, the outlines, the unit selections and the revision.","Last, the voices: articulation, criticism and synthesis."];
+const RESTORE=[
+"The papers share a blind spot a different model would catch: restore a second family, first as one referee.",
+"The voices converge on one author or a thoughtful middle: add the historically minded disposition, or a fourth voice from a fourth starting point.",
+"The draft still lacks a front door: add a précis-like step between the final choice and the outlines.",
+"The judge keeps picking polish over upside: show it the cards without the “how developed” field, then the field."
+];
+const OPEN=["How source requests reach you, and where the standing request queue lives (deferred).","The competition’s methodology report: judging is blind to it, and it is the route to a separate prize."];
+/* generic questions for every step */
+const GQ=[
+"Did this step’s output change what the next step did?",
+"Who owned the idea here, and did it become more interesting than it was?",
+"Did this step add to what the paper must carry?",
+"What would tell you, cheaply, that this step failed?",
+"Did it need you?"
+];
+const STACK=[
+{b:"The seed disposition",t:"Two or three sentences on what this voice notices, the questions that occur to it and the connections it tends to make. It stays at the top of the notebook for the whole run."},
+{b:"The notebook",t:"The voice’s commitments, open forks, what the view is trying to become, and what it did with each criticism and pointer."},
+{b:"The recent transcript",t:"What the others actually said, so the turn can answer it."},
+{b:"The map and the literature",t:"The voice’s starting point, the corpus on demand and the web. It cites only what it has opened."},
+{b:"For an author, the paper so far",t:"The shape card, the outline, the rolling draft, the editorial norms and the LLM-pattern list."}
+];
+const BUDGET=[["Target, all in","about 5,000 words"],["Hard ceiling at the outline","5,500"],["Notes and references","about 900"],["Introduction","600 to 800"],["Conclusion","300 to 400"],["Body","about 3,000 to 3,500: one central argument and two or three pressure points"]];
+const LENSES=[
+{id:"start",name:"Start here",q:"What does the v2 run do, step by step?"},
+{id:"stops",name:"Your stops",q:"Where does the machine still wait for you?"},
+{id:"spend",name:"Where the calls go",q:"Which steps are cheap, and which get real compute?"},
+{id:"form",name:"Who sees what",q:"Who builds with the form norms, and who judges with your taste?"},
+{id:"own",name:"Who owns it",q:"Who carries the idea forward at each step?"},
+{id:"find",name:"v1 findings",q:"Which step answers each finding from the autopsy?"},
+{id:"from",name:"From v1",q:"What became of each v1 stage, and what if v2 falls short?"}
+];
+/* ---------- rendering ---------- */
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const $=(s,r)=>(r||document).querySelector(s);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const pad=n=>"V"+String(n).padStart(2,"0");
+const turnOf=n=>TURNS.find(t=>n>=t.from&&n<=t.to);
+const opColor=s=>"var("+OPB[s.op].c+")";
+const FORMVAR={T:"--c-select",R:"--c-freeze",G:"--c-ground",N:"--ink-3"};
+/* the v2 spiral turns counter-clockwise, the v1 map clockwise */
+const DIR=-1,CX=380,CY=385,R0=58,RK=41;
+const rad=t=>R0+RK*t;
+const ang=t=>(-90+DIR*360*t)*Math.PI/180;
+const pt=t=>({x:CX+rad(t)*Math.cos(ang(t)),y:CY+rad(t)*Math.sin(ang(t))});
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const st={lens:"start",stage:null,tab:"lens",hl:new Set(),rd:new Set(),wr:new Set(),folder:null,ring:false,hoverN:null,peek:null};
+const canHover=!!(window.matchMedia&&matchMedia("(hover: hover) and (pointer: fine)").matches);
+const stopsAt=S.map(s=>STOPS.map((p,i)=>p.at.includes(s.n)?i:-1).filter(i=>i>=0));
+const findsAt=S.map(s=>FINDINGS.map((f,i)=>f.at.includes(s.n)?i:-1).filter(i=>i>=0));
+
+const svg=$("#spiral"), pBody=$("#pBody"), tip=$("#tip"), work=$(".work"), split=$("#split"), ctl=$("#layoutCtl"), peekEl=$("#peek"), cardsEl=$("#cards"), reopen=$("#reopen");
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function box(e,p,R,k){e.setAttribute("x",(p.x-R).toFixed(1));e.setAttribute("y",(p.y-R).toFixed(1));e.setAttribute("width",(2*R).toFixed(1));e.setAttribute("height",(2*R).toFixed(1));e.setAttribute("rx",(R*k).toFixed(1));}
+
+/* ----- build the spiral ----- */
+const nodes=[];
+const lanes=[],tpaths=[];
+let legPrev=null,legNext=null,legHead=null,overN=null,showT=null,hideT=null;
+const TMAX=TURNS.length-0.05;
+function linePath(t0,t1){
+  let d="",n=Math.max(2,Math.ceil((t1-t0)/0.02));
+  for(let i=0;i<=n;i++){const t=t0+(t1-t0)*i/n,q=pt(t);d+=(i===0?"M":"L")+q.x.toFixed(1)+" "+q.y.toFixed(1);}
+  return d;
+}
+function lanePath(k){
+  const hw=RK/2,n=60;let inner="",outer=[];
+  for(let i=0;i<=n;i++){
+    const t=(k-1)+i/n,A=ang(t),ri=rad(t)-hw,ro=rad(t)+hw;
+    inner+=(i===0?"M":"L")+(CX+ri*Math.cos(A)).toFixed(1)+" "+(CY+ri*Math.sin(A)).toFixed(1);
+    outer.push((CX+ro*Math.cos(A)).toFixed(1)+" "+(CY+ro*Math.sin(A)).toFixed(1));
+  }
+  return inner+outer.reverse().map(s=>"L"+s).join("")+"Z";
+}
+function tangentDeg(t){
+  const A=ang(t),r=rad(t),w=DIR*2*Math.PI;
+  return Math.atan2(RK*Math.sin(A)+r*Math.cos(A)*w,RK*Math.cos(A)-r*Math.sin(A)*w)*180/Math.PI;
+}
+function buildSpiral(){
+  TURNS.forEach(tn=>{lanes[tn.n-1]=el("path",{class:"lane"+(tn.n%2?" odd":""),d:lanePath(tn.n)},svg);});
+  OPS.forEach(o=>{
+    const a=ang(o.frac), c=Math.cos(a), s=Math.sin(a);
+    el("line",{class:"spoke",x1:CX+34*c,y1:CY+34*s,x2:CX+322*c,y2:CY+322*s},svg);
+    const tx=el("text",{class:"t-op",x:CX+338*c,y:CY+338*s+5,"text-anchor":c>0.3?"start":(c<-0.3?"end":"middle")},svg);
+    tx.style.fill="var("+o.c+")";tx.textContent=o.name;
+  });
+  TURNS.forEach(tn=>{tpaths[tn.n-1]=el("path",{class:"tpath t"+tn.n,d:linePath(tn.n-1,Math.min(tn.n,TMAX))},svg);});
+  for(let i=0;i<S.length-1;i++){
+    const t0=S[i].t,t1=S[i+1].t;
+    if(t1-t0<0.1)continue;
+    const tm=(t0+t1)/2,q=pt(tm);
+    el("path",{class:"chev",d:"M-4.5 -3.8 L4.5 0 L-4.5 3.8 Z",transform:"translate("+q.x.toFixed(1)+" "+q.y.toFixed(1)+") rotate("+tangentDeg(tm).toFixed(1)+")"},svg);
+  }
+  legPrev=el("path",{class:"leg prev",style:"display:none"},svg);
+  legNext=el("path",{class:"leg next",style:"display:none"},svg);
+  legHead=el("path",{class:"legh",d:"M-8 -7 L9 0 L-8 7 Z",style:"display:none"},svg);
+  TURNS.forEach(tn=>{
+    const t=tn.n-1,p=pt(t);
+    const tx=el("text",{class:"t-turn",x:CX+20,y:p.y-8,"text-anchor":"start"},svg);
+    tx.textContent=tn.n+" · "+tn.name;
+  });
+  const c0=el("text",{class:"t-turn",x:CX,y:CY+4,"text-anchor":"middle"},svg);c0.textContent="start";
+  S.forEach(s=>{
+    const p=pt(s.t);
+    const g=el("g",{class:"node",tabindex:"0",role:"button","data-n":s.n,"aria-label":pad(s.n)+" "+s.name+". About "+s.rep+(s.rep===1?" call. ":" calls. ")+"Press Enter for details."},svg);
+    const h2=el("rect",{class:"halo2"},g);
+    const h1=el("rect",{class:"halo"},g);
+    const b=el("rect",{class:"body"},g);
+    const tx=el("text",{class:"t-num","text-anchor":"middle",x:p.x,y:p.y+4,"font-size":"12"},g);tx.textContent=s.n;
+    const cnt=el("text",{class:"t-cnt","text-anchor":"middle",x:p.x,y:p.y+26},g);cnt.textContent=s.rep;
+    const pills=el("g",{class:"pills"},g);
+    let pill=null;
+    if(stopsAt[s.n].length){
+      const sts=stopsAt[s.n].map(i=>STOPS[i]);
+      const label=sts.map(x=>x.id).join("·");
+      const kind=["solid","outline","dashed"].find(k=>sts.some(x=>x.kind===k));
+      const w=6.8*label.length+10;
+      const pg=el("g",{class:"stopb "+kind},pills);
+      el("rect",{width:w,height:15,rx:3.5},pg);
+      const pt2=el("text",{x:w/2,y:11,"text-anchor":"middle"},pg);
+      pt2.textContent=label;
+      pill={g:pg,w:w};
+    }
+    nodes[s.n]={g:g,h1:h1,h2:h2,b:b,tx:tx,cnt:cnt,pills:pills,pill:pill,p:p};
+    g.addEventListener("click",()=>{hideTip();selectStage(s.n);if(canHover)showPeek(s.n,true);});
+    g.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){e.preventDefault();selectStage(s.n);if(canHover){showPeek(s.n,true);const b=peekEl.querySelector(".pkb");if(b)b.focus();}}
+      else if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();focusNode(s.n+1);}
+      else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();focusNode(s.n-1);}
+      else if(e.key==="Escape"){hidePeek(true);}
+    });
+    g.addEventListener("mouseenter",e=>{
+      if(!canHover){showTip(e,tipHTML(s));return;}
+      enterNode(s.n);
+      if(st.peek&&st.peek.pinned&&st.peek.n!==s.n)showTip(e,tipHTML(s));
+    });
+    g.addEventListener("mousemove",e=>{
+      if(!canHover){moveTip(e);return;}
+      if(!st.peek&&overN===s.n&&!showT)enterNode(s.n);
+      if(st.peek&&st.peek.pinned&&st.peek.n!==s.n)moveTip(e);
+    });
+    g.addEventListener("mouseleave",()=>{hideTip();if(canHover)leaveNode(s.n);});
+    g.addEventListener("focus",()=>{if(!st.peek){st.hoverN=s.n;paint();}});
+    g.addEventListener("blur",()=>{if(!st.peek&&overN===null){st.hoverN=null;paint();}});
+  });
+}
+function focusNode(n){if(n>=0&&n<S.length)nodes[n].g.focus();}
+
+/* ----- tooltip ----- */
+function tipHTML(s){
+  let h="<b>"+pad(s.n)+" · "+esc(s.name)+"</b><br>About "+s.rep+(s.rep===1?" call":" calls")+" · "+esc(s.set);
+  if(st.lens==="form")h+="<br>"+esc(FORMS[s.form].name);
+  if(st.lens==="own")h+="<br>"+esc(OWN[s.own].name);
+  if(st.lens==="from")h+="<br>"+esc(VERD[s.v].name)+": "+esc(s.vt);
+  if(st.lens==="start"||st.lens==="stops"){const ps=stopsAt[s.n];if(ps.length)h+="<br>Your stops: "+ps.map(i=>esc(STOPS[i].id)).join(", ");}
+  return h;
+}
+function showTip(e,h){tip.innerHTML=h;tip.style.opacity=1;moveTip(e);}
+function moveTip(e){
+  const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;
+  if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;
+  tip.style.left=Math.max(4,x)+"px";tip.style.top=Math.max(4,y)+"px";
+}
+function hideTip(){tip.style.opacity=0;}
+
+/* ----- paint the nodes for the current lens and highlight state ----- */
+function radius(s){return st.lens==="spend"?8+Math.sqrt(s.rep)*1.45:12;}
+function fillOf(s){
+  if(st.lens==="form"){
+    if(s.form==="N")return{f:"var(--paper-2)",t:"var(--ink)",s:"var(--ink-3)"};
+    return{f:"var("+FORMVAR[s.form]+")",t:s.form==="R"?"var(--on-freeze)":(s.form==="T"?"var(--paper)":"var(--on-node)"),s:"none"};
+  }
+  if(st.lens==="own"){const o=OWN[s.own];return{f:"var("+o.c+")",t:s.own==="author"?"var(--on-freeze)":"var(--on-node)",s:"none"};}
+  if(st.lens==="from"){const v=VERD[s.v];return{f:"var("+v.c+")",t:s.v==="fuse"?"var(--on-freeze)":"var(--on-node)",s:"none"};}
+  if(st.lens==="spend")return s.hi?{f:"var(--c-hi)",t:"var(--on-node)",s:"none"}:{f:"var(--paper-2)",t:"var(--ink)",s:"var(--ink-3)"};
+  return{f:opColor(s),t:s.op==="commit"?"var(--on-freeze)":(s.op==="judge"?"var(--paper)":"var(--on-node)"),s:"none"};
+}
+function paint(){
+  const fN=st.hoverN!=null?st.hoverN:(st.peek?st.peek.n:null),fTurn=fN==null?null:S[fN].turn;
+  svg.classList.toggle("focus",fTurn!=null);
+  lanes.forEach((l,i)=>l.classList.toggle("on",fTurn===i+1));
+  tpaths.forEach((l,i)=>l.classList.toggle("on",fTurn===i+1));
+  setLegs(fN);
+  const active=st.hl.size;
+  const showPills=st.lens==="start"||st.lens==="stops";
+  S.forEach(s=>{
+    const nd=nodes[s.n],R=radius(s),f=fillOf(s);
+    box(nd.b,nd.p,R,0.3);box(nd.h1,nd.p,R+3.5,0.34);box(nd.h2,nd.p,R+7,0.38);
+    nd.b.style.fill=f.f;nd.b.style.stroke=f.s;nd.b.style.strokeWidth=f.s==="none"?0:1.5;
+    nd.tx.style.fill=f.t;
+    nd.cnt.setAttribute("y",nd.p.y+R+11);
+    nd.cnt.style.display=(st.lens==="spend"&&s.rep>=5)?"":"none";
+    nd.pills.style.display=showPills?"":"none";
+    if(nd.pill){
+      const a=ang(s.t),sg=s.op==="ground"?-1:(Math.floor(s.t+0.001)%2===0?1:-1),dx=-Math.sin(a)*sg,dy=Math.cos(a)*sg,w=nd.pill.w;
+      const dist=R+4+(w/2)*Math.abs(dx)+7.5*Math.abs(dy);
+      nd.pill.g.setAttribute("transform","translate("+(nd.p.x+dx*dist-w/2)+","+(nd.p.y+dy*dist-7.5)+")");
+    }
+    const g=nd.g.classList;
+    g.toggle("sel",st.stage===s.n);
+    g.toggle("offturn",fTurn!=null&&s.turn!==fTurn);
+    g.toggle("hl",st.hl.has(s.n));
+    g.toggle("dim",!!active&&!st.hl.has(s.n));
+  });
+}
+
+/* the legs: the line from the step you are on to the next one, and back to the previous one */
+function setLegs(n){
+  if(!legNext)return;
+  const hide=()=>{legPrev.style.display="none";legNext.style.display="none";legHead.style.display="none";};
+  if(n==null){hide();return;}
+  if(n>0){
+    const t0=S[n-1].t+18/(2*Math.PI*rad(S[n-1].t)),t1=S[n].t-16/(2*Math.PI*rad(S[n].t));
+    if(t1>t0){legPrev.setAttribute("d",linePath(t0,t1));legPrev.style.display="";}else legPrev.style.display="none";
+  }else legPrev.style.display="none";
+  if(n<S.length-1){
+    const a=S[n].t+16/(2*Math.PI*rad(S[n].t)),tb=S[n+1].t-24/(2*Math.PI*rad(S[n+1].t)),th=S[n+1].t-18/(2*Math.PI*rad(S[n+1].t));
+    if(tb>a){
+      legNext.setAttribute("d",linePath(a,tb));legNext.style.display="";
+      const q=pt(th);legHead.setAttribute("transform","translate("+q.x.toFixed(1)+" "+q.y.toFixed(1)+") rotate("+tangentDeg(th).toFixed(1)+")");legHead.style.display="";
+    }else{legNext.style.display="none";legHead.style.display="none";}
+  }else{legNext.style.display="none";legHead.style.display="none";}
+}
+
+/* ----- legend ----- */
+function sw(fill,stroke,dash){return '<svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="4" style="fill:'+fill+';stroke:'+(stroke||"none")+';stroke-width:1.5"'+(dash?' stroke-dasharray="3 2"':"")+'/></svg>';}
+function ringSw(color){return '<svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="13" rx="4" style="fill:var(--paper-2);stroke:'+color+';stroke-width:3"/></svg>';}
+function pillSw(kind){
+  const dash=kind==="dashed";
+  const fill=kind==="solid"?"var(--c-human)":"var(--paper)";
+  return '<svg viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="4" width="16" height="10" rx="2.5" style="fill:'+fill+';stroke:var(--c-human);stroke-width:1.6"'+(dash?' stroke-dasharray="3 2"':"")+'/></svg>';
+}
+function renderLegend(){
+  let items=[];
+  if(st.lens==="form"){
+    ["T","R","G","N"].forEach(k=>{items.push([k==="N"?sw("var(--paper-2)","var(--ink-3)"):sw("var("+FORMVAR[k]+")"),FORMS[k].name]);});
+  }else if(st.lens==="own"){
+    Object.keys(OWN).forEach(k=>items.push([sw("var("+OWN[k].c+")"),OWN[k].name]));
+  }else if(st.lens==="from"){
+    Object.keys(VERD).forEach(k=>items.push([sw("var("+VERD[k].c+")"),VERD[k].name]));
+  }else if(st.lens==="spend"){
+    items=[[sw("var(--c-hi)"),"Runs on a high setting"],[sw("var(--paper-2)","var(--ink-3)"),"Light setting"],[sw("var(--ink-3)"),"Square size grows with estimated calls"]];
+  }else{
+    OPS.forEach(o=>items.push([sw("var("+o.c+")"),o.name]));
+    if(st.lens==="start"||st.lens==="stops")Object.keys(KINDS).forEach(k=>items.push([pillSw(k),"Your stop: "+KINDS[k].toLowerCase()]));
+    if(st.lens==="find")items.push([ringSw("var(--ink)"),"Answers the open finding"]);
+  }
+  $("#legend").innerHTML=items.map(i=>"<span>"+i[0]+esc(i[1])+"</span>").join("")+(canHover?'<span>Hover a step: its turn lights up and a quick menu opens. Click to pin it. Esc closes.</span>':"");
+}
+
+/* ----- helpers for panel HTML ----- */
+const chipBtn=n=>'<button class="chip" data-act="stage" data-v="'+n+'"><i style="--c:'+opColor(S[n])+'"></i>'+pad(n)+" "+esc(S[n].short)+"</button>";
+const first=s=>{const m=String(s).match(/^.*?[.?!](?=\s|$)/);return m?m[0]:String(s);};
+const clip=(s,n)=>{s=String(s);if(s.length<=n)return s;const c=s.slice(0,n),i=c.lastIndexOf(" ");return (i>n*0.6?c.slice(0,i):c).replace(/[,;:\s—-]+$/,"")+"…";};
+const sec=(title,body,open,hint,key)=>'<details class="sec"'+(key?' data-k="'+key+'"':"")+(open?" open":"")+'><summary><span class="st"><span class="sh">'+title+'</span>'+(hint?'<span class="hint">'+esc(hint)+'</span>':"")+'</span></summary><div class="body">'+body+"</div></details>";
+const stat=(v,l)=>'<div class="stat"><b>'+v+"</b><span>"+l+"</span></div>";
+function listJoin(a){return a.length<=1?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];}
+const where=at=>"at "+listJoin(at.map(pad));
+
+/* ----- the Step panel ----- */
+function sectionsFor(n){
+  const s=S[n],v=VERD[s.v],ps=stopsAt[n],fs=findsAt[n],out=[];
+  out.push({k:"need",label:"What it does",title:"What it does, and why",body:'<p class="prose">'+esc(s.need)+"</p>",hint:clip(first(s.need),120)});
+  out.push({k:"run",label:"In v1",title:"What v1 did here",body:'<p class="prose">'+esc(s.run)+'</p><div class="chips" style="margin-top:10px"><span class="chip" style="--c:var('+v.c+')"><i></i>'+v.name+'</span><span class="chip">Replaces '+esc(s.from==="none"?"nothing in v1":s.from)+'</span><button class="chip" data-act="from" data-v="0">See the From v1 view</button></div><p class="prose">'+esc(s.vt)+"</p>",hint:v.name+": "+clip(first(s.run),100)});
+  out.push({k:"qs",label:"Watch for",title:"What to watch for when it runs",body:'<ul class="qs">'+s.qs.map(q=>"<li>"+esc(q)+"</li>").join("")+'</ul><p class="note">The v2 run is built to fail fast. These are the cheap signs that this step worked or did not.</p>',
+    hint:s.qs.length+(s.qs.length===1?" thing":" things")+" to watch, starting “"+clip(first(s.qs[0]),72)+"”"});
+  if(ps.length)out.push({k:"stops",label:"Your stop",title:"Your stop here",
+    body:ps.map(i=>{const p=STOPS[i];return '<p class="prose"><span class="sbadge '+p.kind+'">'+esc(p.id)+"</span> <b>"+esc(p.name)+"</b>. "+esc(p.des)+'</p><p class="note">'+esc(p.can)+"</p>";}).join(""),
+    hint:ps.map(i=>STOPS[i].id+" ("+STOPS[i].tagText.toLowerCase()+")").join(", ")});
+  if(fs.length)out.push({k:"finds",label:"Findings ("+fs.length+")",title:"v1 findings this step answers ("+fs.length+")",
+    body:'<div class="chips">'+fs.map(i=>'<button class="chip" data-act="find" data-v="'+i+'">'+(i+1)+" · "+esc(FINDINGS[i].t)+"</button>").join("")+"</div>",
+    hint:fs.length+(fs.length===1?" finding":" findings")+", including “"+clip(FINDINGS[fs[0]].t,56)+"”"});
+  const facts=[["Context",s.ctx],["Reads",s.reads],["Writes",s.writes],["Setting",s.set+" · Claude only"],["Estimated calls","About "+s.rep],["Who owns it",OWN[s.own].name],["Sees",FORMS[s.form].text]];
+  const ab='<dl class="facts">'+facts.map(f=>"<div><dt>"+f[0]+"</dt><dd>"+esc(f[1])+"</dd></div>").join("")+"</dl>";
+  out.push({k:"anat",label:"Anatomy",title:"Technical anatomy",body:ab,hint:"Contexts, what it reads and writes, setting, owner, what it may see."});
+  return out;
+}
+function stageHTML(n){
+  const s=S[n],tn=turnOf(n),ps=stopsAt[n];
+  let h='<div class="p-top"><span class="p-num">'+pad(n)+"</span><span>Turn "+tn.n+" · "+esc(tn.name)+"</span><span>"+esc(s.opl)+"</span>"+
+    '<span class="nav"><button class="nbtn" data-act="stage" data-v="'+(n-1)+'"'+(n===0?" disabled":"")+' aria-label="Previous step">← '+(n>0?pad(n-1):"")+'</button><button class="nbtn" data-act="stage" data-v="'+(n+1)+'"'+(n===S.length-1?" disabled":"")+' aria-label="Next step">'+(n<S.length-1?pad(n+1):"")+" →</button></span></div>";
+  h+="<h2>"+esc(s.name)+'</h2><p class="p-act">'+esc(s.act)+"</p>";
+  h+='<div class="chips"><span class="chip" style="--c:var('+OWN[s.own].c+')"><i></i>'+esc(OWN[s.own].name)+'</span><span class="chip hollow" style="--c:var('+FORMVAR[s.form]+')"><i></i>'+esc(FORMS[s.form].name)+'</span><span class="chip">'+esc(s.set)+'</span><span class="chip">About '+s.rep+(s.rep===1?" call":" calls")+"</span>";
+  ps.forEach(i=>{h+='<button class="chip stop" data-act="stop" data-v="'+i+'" title="'+esc(STOPS[i].name)+'">'+esc(STOPS[i].id)+"</button>";});
+  h+="</div>";
+  h+='<div class="glance"><span>Open what you want to read.</span><span><button class="lk" data-act="expandAll">Expand all</button><button class="lk" data-act="collapseAll">Collapse all</button></span></div>';
+  sectionsFor(n).forEach(sc=>{h+=sec(esc(sc.title),sc.body,false,sc.hint,sc.k);});
+  return h;
+}
+
+/* ----- the lens panels ----- */
+function startHTML(){
+  const total=S.reduce((a,s)=>a+s.rep,0),hi=S.filter(s=>s.hi).length;
+  let h='<p class="prose">Twenty-one steps in six turns. Each turn goes around five operations, the spokes: Ground, Develop, Press, Judge, Commit. This spiral runs counter-clockwise from the middle, V00 to V20. The v1 autopsy map runs the other way.</p>';
+  h+='<div class="stats">'+stat(S.length,"steps (v1 had 25)")+stat(TURNS.length,"turns")+stat("~"+total,"calls, Claude’s estimate")+stat(hi,"steps on a high setting")+stat(STOPS.length,"stops for you (v1 had 13)")+"</div>";
+  h+='<p class="prose">Select any square. The Step tab gives what it does, what v1 did there, what to watch for when it runs, and its anatomy. The buttons above recolor the map.</p>';
+  h+=sec("Questions to bring to every step",'<ul class="qs">'+GQ.map(q=>"<li>"+esc(q)+"</li>").join("")+"</ul>",false,GQ.length+" questions, starting “"+clip(first(GQ[0]),64)+"”");
+  h+=sec("The word budget",'<dl class="facts">'+BUDGET.map(b=>"<div><dt>"+esc(b[0])+'</dt><dd class="num">'+esc(b[1])+"</dd></div>").join("")+'</dl><p class="note">Everything counts: body, notes, references, title and abstract. The judge asks whether a candidate’s spine fits this budget (decision A4).</p>',false,"About 5,000 words all in, with a hard ceiling of 5,500 at the outline.");
+  h+='<div class="ghead">The six turns</div><div class="turns">'+TURNS.map(t=>{
+    const ns=S.filter(s=>s.turn===t.n).map(s=>s.n);
+    return '<div class="turnrow"><div><b>Turn '+t.n+" · "+esc(t.name)+"</b><small>"+esc(t.scale)+'</small></div><div class="chips tight">'+ns.map(chipBtn).join("")+"</div></div>";
+  }).join("")+"</div>";
+  h+='<div class="ghead">Still open</div><ul class="qs">'+OPEN.map(o=>"<li>"+esc(o)+"</li>").join("")+"</ul>";
+  h+='<p class="note">Built from 80_methodology/v2-decisions.md and v2-dispositions.md as they stood on 2026-10-03. Every design point here is settled there. Call counts are Claude’s estimates from the design, not measurements.</p>';
+  return h;
+}
+function stopsHTML(){
+  let h='<p class="prose">A blue badge marks a place where the machine waits for you. Open a row to ring its steps on the map.</p>';
+  h+='<div class="stats">'+stat(STOPS.length,"stops in v2")+stat(13,"designed checkpoints in v1")+stat(0,"visits to ChatGPT")+stat(0,"philosophical ties for you to break")+"</div>";
+  h+='<div class="hyp"><b>Your role is constitutional.</b> You choose the domain, the budget and your taste, fetch what only you can get, and submit. You may halt the run if something is broken. You never choose between candidates, approve or veto: the judge-advisor does that (decision B3).</div>';
+  h+=STOPS.map((p,i)=>'<details class="srow" data-i="'+i+'" data-hl="'+p.at.join(",")+'"><summary><span class="sbadge '+p.kind+'">'+esc(p.id)+'</span><span class="what">'+esc(p.name)+"<small>"+where(p.at)+'</small></span><span class="nec">'+esc(p.tagText)+'</span></summary><div class="more"><p><b>What you do.</b> '+esc(p.des)+"</p><p><b>In v1.</b> "+esc(p.run)+"</p><p><b>Why it stays.</b> "+esc(p.can)+'</p><div class="chips tight">'+p.at.map(chipBtn).join("")+"</div></div></details>").join("");
+  h+='<p class="note">Optional, and yours as a constitutional question: ask the competition’s organisers what counts toward the 6,000 words.</p>';
+  return h;
+}
+function spendHTML(){
+  const tot=S.reduce((a,s)=>a+s.rep,0),mid=S.filter(s=>s.n>=4&&s.n<=7).reduce((a,s)=>a+s.rep,0),max=Math.max.apply(null,S.map(s=>s.rep));
+  let h='<p class="prose">One call is one short context: a voice’s turn, a scout’s report, a unit pass. Square size follows the estimated count. Violet steps run on a high setting; everything else runs light.</p>';
+  h+='<div class="stats">'+stat("~"+tot,"calls in a run")+stat("~"+mid,"in the middle (V04 to V07)")+stat("~"+S[16].rep,"at V16, the unit passes")+stat(S.filter(s=>s.hi).length,"steps with real compute")+"</div>";
+  h+='<div class="bars">'+S.map(s=>'<button class="bar" data-act="stage" data-v="'+s.n+'" data-hover="'+s.n+'"><span>'+pad(s.n)+" "+esc(s.short)+'</span><span class="tr"><i style="--w:'+(s.rep/max*100).toFixed(1)+'%;--c:'+(s.hi?"var(--c-hi)":"var(--ink-3)")+'"></i></span><em>'+s.rep+"</em></button>").join("")+"</div>";
+  h+='<div class="callout"><span class="who">The hypothesis under test</span><p>Cheap generation plus strong judgment. The judge-advisor gets real compute because, as you put it, that is “often where some of the most important insights can come.”</p></div>';
+  h+=sec("If the run falls short, upgrade in this order",'<ol class="stack">'+UPGRADE.map(x=>"<li><span>"+esc(x)+"</span></li>").join("")+"</ol>",false,"Fixed in advance (decision B13), so the choice is not made after the fact.");
+  return h;
+}
+function formHTML(){
+  const groups=["T","R","G","N"].map(k=>({k:k,ns:S.filter(s=>s.form===k).map(s=>s.n)}));
+  let h='<p class="prose">What a step may see decides what it can notice. In v2 everyone who builds the paper sees the editorial norms. Only the judge-advisor sees the selection criteria and your taste.</p>';
+  h+=groups.map(g=>{const f=FORMS[g.k];
+    return '<div style="margin:0 0 16px"><div class="chips" style="margin-bottom:6px"><span class="chip hollow" style="--c:var('+FORMVAR[g.k]+')"><i></i><b>'+esc(f.name)+" · "+g.ns.length+"</b></span></div>"+'<p class="note" style="margin:0 0 8px">'+esc(f.text)+'</p><div class="chips tight">'+g.ns.map(chipBtn).join("")+"</div></div>";
+  }).join("");
+  h+='<button class="btn" data-act="ring" aria-pressed="'+st.ring+'">'+(st.ring?"Clear the ring":"Ring the steps that build with the form norms")+"</button>";
+  h+=sec("The editorial norms, in brief",'<ul class="qs"><li>Frame the question before the thesis; state the thesis by the end of the introduction.</li><li>Stakes at both ends, a narrow body; say which debate the paper enters.</li><li>One strong key idea, which everything serves. Objections are the plot, chosen, not exhaustive.</li><li>Transitions say why the next topic is next; central theses get names, not abbreviations.</li><li>The conclusion recasts the solution so the reader sees it fresh; limits only where the paper needs them.</li><li>Citations in footnotes by default.</li></ul><p class="note">Twenty norms in full, with sources, in v2-decisions.md, section C3.</p>',false,"Twenty norms from journal editors, Huemer, Schwitzgebel, Muñoz and Mehta, amended by you.");
+  h+='<div class="callout"><span class="who">Your words</span><p>Those norms shouldn’t just be a final layer of oversight. The norms should leak in a little bit in how we construct the paper.</p></div>';
+  return h;
+}
+function ownHTML(){
+  const groups=Object.keys(OWN).map(k=>({k:k,ns:S.filter(s=>s.own===k).map(s=>s.n)}));
+  let h='<p class="prose">v1 had no owner: every working context was fresh, so nobody carried a conception forward. In v2 a view belongs to the voice that developed it, and that voice becomes the paper’s author.</p>';
+  h+=groups.map(g=>{const o=OWN[g.k];
+    return '<div style="margin:0 0 16px"><div class="chips" style="margin-bottom:6px"><span class="chip" style="--c:var('+o.c+')"><i></i><b>'+esc(o.name)+" · "+g.ns.length+"</b></span></div>"+'<p class="note" style="margin:0 0 8px">'+esc(o.text)+'</p><div class="chips tight">'+g.ns.map(chipBtn).join("")+"</div></div>";
+  }).join("");
+  h+='<div class="ghead">What a voice or author call is handed</div><ol class="stack">'+STACK.map(x=>"<li><span><b>"+esc(x.b)+".</b> "+esc(x.t)+"</span></li>").join("")+"</ol>";
+  h+='<div class="callout"><span class="who">The rule that keeps ownership</span><p>The owner answers criticism first, with whatever fits: a misreading, a contested premise, a repair, an accepted cost, a fork. Advice and referee reports go to the owner, who may ignore them.</p></div>';
+  h+='<p class="note">The disposition library (the operator’s eight, plus approved revisions) is in v2-dispositions.md. Each run uses one builder, one tester and one framer.</p>';
+  return h;
+}
+function findHTML(){
+  let h='<p class="prose">The eleven findings from the v1 autopsy, and where v2 answers each. Open one to ring its steps on the map.</p>';
+  h+=FINDINGS.map((f,i)=>'<details class="item" data-i="'+i+'" data-hl="'+f.at.join(",")+'"><summary><span class="n">'+(i+1)+'</span><span class="t">'+esc(f.t)+"<small>answered "+where(f.at)+'</small></span></summary><div class="more">'+f.ev.map(e=>"<p>"+esc(e)+"</p>").join("")+'<div class="chips tight">'+f.at.map(chipBtn).join("")+"</div></div></details>").join("");
+  return h;
+}
+function fromHTML(){
+  const cnt={};S.forEach(s=>{cnt[s.v]=(cnt[s.v]||0)+1;});
+  let h='<div class="chips">'+Object.keys(VERD).map(k=>'<span class="chip" style="--c:var('+VERD[k].c+')"><i></i>'+VERD[k].name+" · "+(cnt[k]||0)+"</span>").join("")+"</div>";
+  h+='<p class="prose">Twenty-five v1 stages become twenty-one steps, and about 180 short calls. Open a group to ring its steps.</p>';
+  h+=Object.keys(VERD).map(k=>{const ns=S.filter(s=>s.v===k).map(s=>s.n);
+    return '<details class="item" data-hl="'+ns.join(",")+'"><summary><span class="n '+(k==="fuse"?"f":"g")+'" style="background:var('+VERD[k].c+')">'+ns.length+'</span><span class="t">'+esc(VERD[k].name)+"<small>"+esc(VERD[k].text)+'</small></span></summary><div class="more">'+ns.map(n=>"<p><b>"+pad(n)+" "+esc(S[n].name)+".</b> "+esc(S[n].vt)+"</p>").join("")+'<div class="chips tight">'+ns.map(chipBtn).join("")+"</div></div></details>";}).join("");
+  h+='<div class="ghead">Where each v1 stage went</div>'+V1MAP.map(r=>'<div class="maprow"><span class="code">'+r[0]+"</span><span>"+esc(r[1])+'</span><span class="chips tight">'+r[2].map(chipBtn).join("")+"</span></div>").join("");
+  h+='<p class="note">S06’s cull survives only as a conditional step if a run has more than five voices.</p>';
+  h+='<div class="ghead">If v2 falls short</div><div class="hyp"><b>Claude’s suggestions for v3, not decisions.</b> You want to learn fast and move on. These are the first things to restore, by symptom.</div><ol class="stack">'+RESTORE.map(x=>"<li><span>"+esc(x)+"</span></li>").join("")+"</ol>";
+  return h;
+}
+function lensHTML(){
+  switch(st.lens){case "stops":return stopsHTML();case "spend":return spendHTML();case "form":return formHTML();case "own":return ownHTML();case "find":return findHTML();case "from":return fromHTML();default:return startHTML();}
+}
+
+/* ----- layout: how much of the screen the map and the details get ----- */
+const PRESETS=[["only","Spiral only",1],["map","More spiral",0.68],["bal","Even",0.5],["read","More detail",0.36]];
+const lay={auto:true,manual:0.5};
+try{const j=JSON.parse(localStorage.getItem("pm2-layout")||"null");if(j){lay.auto=j.auto!==false;if(typeof j.manual==="number")lay.manual=j.manual;}}catch(e){}
+function saveLay(){try{localStorage.setItem("pm2-layout",JSON.stringify(lay));}catch(e){}}
+function bounds(){const W=Math.max(400,work.clientWidth-62);return{lo:Math.max(0.28,380/W),hi:Math.min(0.78,1-340/W)};}
+function clampS(s){
+  if(s>=0.995)return 1;
+  const b=bounds();
+  if(b.hi<b.lo)return 0.5;
+  return Math.min(b.hi,Math.max(b.lo,s));
+}
+const isCollapsed=()=>work.classList.contains("collapsed");
+function applyS(s){
+  const v=clampS(s);
+  work.style.setProperty("--s",v.toFixed(4));
+  work.classList.toggle("collapsed",v>=1);
+  reopen.hidden=!(v>=1);
+  const pct=Math.round(v*100);
+  split.setAttribute("aria-valuenow",pct);
+  split.setAttribute("aria-valuetext",v>=1?"Spiral only, details hidden":"Spiral "+pct+" percent, details "+(100-pct)+" percent");
+  kickPlace();
+}
+function autoTarget(){
+  if(pBody.querySelector("details[open]"))return 0.42;
+  if(st.tab==="stage"&&st.stage!==null)return 0.56;
+  return 0.62;
+}
+function renderLayoutCtl(){
+  ctl.innerHTML='<span class="lbl">Layout</span>'+PRESETS.map(p=>'<button class="seg" data-p="'+p[0]+'" aria-pressed="'+(!lay.auto&&Math.abs(lay.manual-p[2])<0.001)+'">'+p[1]+"</button>").join("")+
+    '<button class="seg" data-p="auto" aria-pressed="'+lay.auto+'" title="Widen the details when you open a section">Auto</button>';
+}
+function autoLayout(){applyS(lay.auto?autoTarget():lay.manual);renderLayoutCtl();}
+ctl.addEventListener("click",e=>{
+  const b=e.target.closest("[data-p]");if(!b)return;
+  if(b.dataset.p==="auto"){lay.auto=!lay.auto;}
+  else{lay.auto=false;lay.manual=PRESETS.find(p=>p[0]===b.dataset.p)[2];}
+  saveLay();autoLayout();
+});
+let dragging=false;
+function endDrag(){if(!dragging)return;dragging=false;work.classList.remove("dragging");saveLay();}
+split.addEventListener("pointerdown",e=>{e.preventDefault();dragging=true;work.classList.add("dragging");try{split.setPointerCapture(e.pointerId);}catch(x){}});
+split.addEventListener("pointermove",e=>{
+  if(!dragging)return;
+  const r=work.getBoundingClientRect(),padL=parseFloat(getComputedStyle(work).paddingLeft)||0,W=work.clientWidth-2*padL-22;
+  const raw=(e.clientX-r.left-padL-11)/W;
+  lay.auto=false;lay.manual=raw>0.86?1:clampS(raw);applyS(lay.manual);renderLayoutCtl();
+});
+split.addEventListener("pointerup",endDrag);
+split.addEventListener("pointercancel",endDrag);
+split.addEventListener("dblclick",()=>{lay.auto=true;saveLay();autoLayout();});
+split.addEventListener("keydown",e=>{
+  if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
+  e.preventDefault();
+  const cur=parseFloat(work.style.getPropertyValue("--s"))||0.62,b=bounds(),dir=e.key==="ArrowRight"?1:-1;
+  let nx;
+  if(cur>=1)nx=dir<0?b.hi:1;
+  else if(dir>0&&cur>=b.hi-0.001)nx=1;
+  else nx=clampS(cur+dir*0.03);
+  lay.auto=false;lay.manual=nx;saveLay();applyS(lay.manual);renderLayoutCtl();
+});
+window.addEventListener("resize",()=>{applyS(lay.auto?autoTarget():lay.manual);placePeek();});
+reopen.addEventListener("click",()=>{lay.auto=true;saveLay();autoLayout();});
+
+/* ----- panel and state ----- */
+function recomputeHL(){
+  st.hl=new Set();
+  pBody.querySelectorAll("details[data-hl][open]").forEach(d=>d.dataset.hl.split(",").forEach(x=>{if(x!=="")st.hl.add(+x);}));
+  if(st.lens==="form"&&st.ring)S.filter(s=>s.form==="R").forEach(s=>st.hl.add(s.n));
+  paint();
+}
+function renderPanel(){
+  const ts=$("#tabStage"),tl=$("#tabLens");
+  ts.disabled=st.stage===null;
+  ts.textContent=st.stage===null?"Step":"Step "+pad(st.stage);
+  tl.textContent=LENSES.find(l=>l.id===st.lens).name;
+  ts.setAttribute("aria-selected",String(st.tab==="stage"));
+  tl.setAttribute("aria-selected",String(st.tab==="lens"));
+  pBody.innerHTML=(st.tab==="stage"&&st.stage!==null)?stageHTML(st.stage):lensHTML();
+  recomputeHL();
+  autoLayout();
+}
+function renderLenses(){
+  $("#lenses").innerHTML=LENSES.map(l=>'<button class="lens" data-l="'+l.id+'" aria-pressed="'+(st.lens===l.id)+'"><i></i>'+esc(l.name)+"</button>").join("");
+  $("#lensq").textContent=LENSES.find(l=>l.id===st.lens).q;
+}
+function renderAll(){renderLenses();renderLegend();renderPanel();}
+function setLens(id){
+  st.lens=id;st.tab="lens";st.hl=new Set();st.rd=new Set();st.wr=new Set();st.folder=null;st.ring=false;
+  renderAll();
+}
+function bringPanel(){if(innerWidth<=980)$(".panel").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}
+function selectStage(n){
+  if(n<0||n>=S.length)return;
+  st.stage=n;st.tab="stage";renderPanel();bringPanel();
+}
+function openIn(sel){
+  const d=pBody.querySelector(sel);
+  if(d){d.open=true;recomputeHL();d.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});}
+}
+/* ----- events ----- */
+$("#lenses").addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b)setLens(b.dataset.l);});
+$("#tabStage").addEventListener("click",()=>{if(st.stage!==null){st.tab="stage";renderPanel();}});
+$("#tabLens").addEventListener("click",()=>{st.tab="lens";renderPanel();});
+function openSide(n,k){
+  if(isCollapsed()){lay.auto=true;saveLay();}
+  selectStage(n);
+  if(k){const d=pBody.querySelector('details.sec[data-k="'+k+'"]');if(d){d.open=true;d.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});}}
+  autoLayout();
+}
+function act(b){
+  const v=b.dataset.v;
+  switch(b.dataset.act){
+    case "card":openCard(+v,b.dataset.k);break;
+    case "peekgo":showPeek(+v,true);break;
+    case "side":openSide(+v,b.dataset.k||null);break;
+    case "stage":selectStage(+v);break;
+    case "stop":st.lens="stops";st.tab="lens";st.hl=new Set();renderAll();openIn('details.srow[data-i="'+v+'"]');break;
+    case "find":st.lens="find";st.tab="lens";st.hl=new Set();renderAll();openIn('details.item[data-i="'+v+'"]');break;
+    case "from":st.lens="from";st.tab="lens";st.hl=new Set();renderAll();break;
+    case "ring":st.ring=!st.ring;renderPanel();break;
+    case "expandAll":pBody.querySelectorAll("details.sec").forEach(d=>{d.open=true;});break;
+    case "collapseAll":pBody.querySelectorAll("details.sec").forEach(d=>{d.open=false;});break;
+  }
+}
+pBody.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(b&&!b.disabled)act(b);});
+
+/* ----- the quick menu that opens when you hover a stage, and the floating cards ----- */
+function peekHTML(n){
+  const s=S[n],tn=turnOf(n),secs=sectionsFor(n);
+  let note="";
+  if(st.lens==="form")note=FORMS[s.form].name;
+  else if(st.lens==="own")note=OWN[s.own].name;
+  else if(st.lens==="from")note=VERD[s.v].name+": "+s.vt;
+  else if(st.lens==="spend")note="About "+s.rep+(s.rep===1?" call":" calls")+" · "+s.set;
+  else{const ps=stopsAt[n];if(ps.length)note="Stops here: "+ps.map(i=>STOPS[i].id).join(", ");}
+  let h='<div class="pk-h"><span class="pk-n">'+pad(n)+'</span><span class="pk-t">'+esc(s.name)+'</span><button class="fb" data-peek="close" aria-label="Close the menu" title="Close (Esc)">×</button></div>';
+  h+='<div class="pk-m">Turn '+tn.n+" of "+TURNS.length+" · "+esc(tn.name)+" · "+esc(s.opl)+"</div>";
+  h+='<div class="pk-a">'+esc(s.act)+"</div>";
+  if(note)h+='<div class="pk-note">'+esc(note)+"</div>";
+  h+='<div class="pk-b">'+secs.map(sc=>'<button class="pkb" data-act="card" data-v="'+n+'" data-k="'+sc.k+'">'+esc(sc.label)+"</button>").join("")+"</div>";
+  h+='<div class="pk-f"><button class="pkn" data-act="peekgo" data-v="'+(n-1)+'"'+(n===0?" disabled":"")+">← "+(n>0?pad(n-1):"")+'</button><button class="pkn go" data-act="side" data-v="'+n+'">Open side panel</button><button class="pkn" data-act="peekgo" data-v="'+(n+1)+'"'+(n===S.length-1?" disabled":"")+">"+(n<S.length-1?pad(n+1):"")+" →</button></div>";
+  return h;
+}
+function placePeek(){
+  if(!st.peek||peekEl.hidden)return;
+  const nd=nodes[st.peek.n].g,r=nd.getBoundingClientRect(),m=svg.getScreenCTM();
+  const cx=r.left+r.width/2,cy=r.top+r.height/2,w=peekEl.offsetWidth,h=peekEl.offsetHeight;
+  let ux=1,uy=0;
+  if(m){const ox=m.a*CX+m.e,oy=m.d*CY+m.f,dx=cx-ox,dy=cy-oy,L=Math.hypot(dx,dy);if(L>1){ux=dx/L;uy=dy/L;}}
+  const gap=16+r.width/2;
+  let x=ux>0.3?cx+gap:(ux<-0.3?cx-gap-w:cx-w/2);
+  let y=uy>0.3?cy+gap:(uy<-0.3?cy-gap-h:cy-h/2);
+  if(Math.abs(ux)<=0.3&&Math.abs(uy)<=0.3){x=cx+gap;y=cy-h/2;}
+  x=Math.max(8,Math.min(innerWidth-w-8,x));y=Math.max(8,Math.min(innerHeight-h-8,y));
+  peekEl.style.left=Math.round(x)+"px";peekEl.style.top=Math.round(y)+"px";
+}
+let placeUntil=0,placeBusy=false;
+function kickPlace(){
+  placeUntil=performance.now()+520;
+  if(placeBusy)return;placeBusy=true;
+  const tick=()=>{placePeek();if(performance.now()<placeUntil)requestAnimationFrame(tick);else placeBusy=false;};
+  requestAnimationFrame(tick);
+}
+function showPeek(n,pinned){
+  clearTimeout(showT);clearTimeout(hideT);showT=null;
+  st.peek={n:n,pinned:!!pinned};st.hoverN=null;
+  peekEl.innerHTML=peekHTML(n);peekEl.hidden=false;peekEl.classList.toggle("pinned",!!pinned);
+  placePeek();paint();
+}
+function hidePeek(force){
+  clearTimeout(showT);clearTimeout(hideT);showT=null;
+  if(st.peek&&st.peek.pinned&&!force)return;
+  const had=st.peek;
+  st.peek=null;peekEl.hidden=true;
+  if(!overN)st.hoverN=null;
+  paint();
+  return had;
+}
+function enterNode(n){
+  overN=n;st.hoverN=n;paint();
+  if(st.peek){if(st.peek.n===n)clearTimeout(hideT);return;}
+  clearTimeout(showT);
+  showT=setTimeout(()=>{showT=null;if(overN===n&&!st.peek)showPeek(n,false);},150);
+}
+function leaveNode(n){
+  if(overN===n)overN=null;
+  st.hoverN=null;paint();
+  clearTimeout(showT);showT=null;
+  if(st.peek&&!st.peek.pinned&&st.peek.n===n){clearTimeout(hideT);hideT=setTimeout(closeTransient,420);}
+}
+function closeTransient(){
+  if(!st.peek||st.peek.pinned)return;
+  hidePeek(false);
+  if(overN!=null){const n=overN;showT=setTimeout(()=>{showT=null;if(overN===n&&!st.peek)showPeek(n,false);},150);st.hoverN=n;paint();}
+}
+peekEl.addEventListener("mouseenter",()=>{clearTimeout(hideT);st.hoverN=null;paint();});
+peekEl.addEventListener("mouseleave",()=>{if(st.peek&&!st.peek.pinned){clearTimeout(hideT);hideT=setTimeout(closeTransient,420);}});
+peekEl.addEventListener("click",e=>{
+  const x=e.target.closest("[data-peek]");
+  if(x){hidePeek(true);return;}
+  const b=e.target.closest("[data-act]");if(b&&!b.disabled)act(b);
+});
+peekEl.addEventListener("keydown",e=>{if(e.key==="Escape"){const n=st.peek?st.peek.n:null;hidePeek(true);if(n!=null)nodes[n].g.focus();}});
+window.addEventListener("scroll",placePeek,{passive:true});
+
+const cards=[];let zTop=1;
+function bringFront(c){if(c)c.el.style.zIndex=String(++zTop);}
+function closeCard(c){const i=cards.indexOf(c);if(i>=0)cards.splice(i,1);c.el.remove();}
+function openCard(n,k){
+  const id=n+":"+k,ex=cards.find(c=>c.id===id);
+  if(ex){bringFront(ex);return;}
+  const sc=sectionsFor(n).find(x=>x.k===k);if(!sc)return;
+  const el=document.createElement("div");
+  el.className="fcard";el.setAttribute("role","dialog");el.setAttribute("aria-label",pad(n)+" "+sc.title);
+  el.innerHTML='<div class="fh"><span class="ft">'+pad(n)+" · "+esc(S[n].name)+"<small>"+esc(sc.title)+'</small></span><button class="fb" data-card="side" title="Open in the side panel" aria-label="Open in the side panel">↗</button><button class="fb" data-card="close" title="Close" aria-label="Close this card">×</button></div><div class="fbody">'+sc.body+"</div>";
+  cardsEl.appendChild(el);
+  const c={id:id,n:n,k:k,el:el};cards.push(c);
+  const r=nodes[n].g.getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight,off=((cards.length-1)%5)*26;
+  let x=r.right+20+off;if(x+w>innerWidth-8)x=r.left-w-20-off;
+  let y=r.top-50+off;
+  x=Math.max(8,Math.min(innerWidth-w-8,x));y=Math.max(8,Math.min(innerHeight-h-8,y));
+  el.style.left=Math.round(x)+"px";el.style.top=Math.round(y)+"px";
+  while(cards.length>5)closeCard(cards[0]);
+  bringFront(c);
+}
+cardsEl.addEventListener("click",e=>{
+  const ce=e.target.closest(".fcard");if(!ce)return;
+  const c=cards.find(x=>x.el===ce);if(!c)return;
+  bringFront(c);
+  const cb=e.target.closest("[data-card]");
+  if(cb){if(cb.dataset.card==="close")closeCard(c);else{openSide(c.n,c.k);closeCard(c);}return;}
+  const b=e.target.closest("[data-act]");if(b&&!b.disabled)act(b);
+});
+cardsEl.addEventListener("pointerdown",e=>{
+  const h=e.target.closest(".fh");if(!h||e.target.closest("button"))return;
+  const ce=h.parentElement,c=cards.find(x=>x.el===ce);if(!c)return;
+  const r=ce.getBoundingClientRect(),dx=e.clientX-r.left,dy=e.clientY-r.top;
+  bringFront(c);
+  try{h.setPointerCapture(e.pointerId);}catch(x){}
+  const move=ev=>{
+    const x=Math.max(60-r.width,Math.min(innerWidth-60,ev.clientX-dx)),y=Math.max(0,Math.min(innerHeight-40,ev.clientY-dy));
+    ce.style.left=Math.round(x)+"px";ce.style.top=Math.round(y)+"px";
+  };
+  const up=()=>{h.removeEventListener("pointermove",move);h.removeEventListener("pointerup",up);h.removeEventListener("pointercancel",up);};
+  h.addEventListener("pointermove",move);h.addEventListener("pointerup",up);h.addEventListener("pointercancel",up);
+});
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Escape")return;
+  if(st.peek){hidePeek(true);return;}
+  if(cards.length)closeCard(cards[cards.length-1]);
+});
+document.addEventListener("click",e=>{
+  if(e.composedPath().some(x=>x.matches&&x.matches(".node,#peek,.fcard")))return;
+  if(st.peek&&st.peek.pinned)hidePeek(true);
+});
+pBody.addEventListener("toggle",e=>{const d=e.target;if(!d.matches||!d.matches("details"))return;if(d.matches("[data-hl]"))recomputeHL();autoLayout();},true);
+pBody.addEventListener("mouseover",e=>{const b=e.target.closest("[data-hover]");if(b)nodes[+b.dataset.hover].g.classList.add("hl");});
+pBody.addEventListener("mouseout",e=>{const b=e.target.closest("[data-hover]");if(b&&!b.contains(e.relatedTarget))nodes[+b.dataset.hover].g.classList.toggle("hl",st.hl.has(+b.dataset.hover));});
+
+buildSpiral();
+renderAll();
+paint();
+})();
+</script>
+
+</body></html>

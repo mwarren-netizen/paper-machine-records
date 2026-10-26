@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Reason-Responsive Philosophy Paper Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F5FA; --paper-2:#E5E9F3; --ink:#131A4E; --ink-2:#4A5386; --ink-3:#8E95BB; --rule:#D2D8E8;
+  --vary:#0B9A74; --select:#E03A1C; --ground:#2B5BE6; --shape:#D99700; --human:#9434C4;
+  --tint:rgba(19,26,78,.06);
+  --serif:"Newsreader","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:"Schibsted Grotesk","Helvetica Neue",Arial,system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0B1030; --paper-2:#151C48; --ink:#E7EAFA; --ink-2:#A8AFD8; --ink-3:#6A739F; --rule:#272F61;
+    --vary:#2FD3A1; --select:#FF5C3E; --ground:#7397FF; --shape:#FFC43F; --human:#CD83F3;
+    --tint:rgba(231,234,250,.07); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0B1030; --paper-2:#151C48; --ink:#E7EAFA; --ink-2:#A8AFD8; --ink-3:#6A739F; --rule:#272F61;
+  --vary:#2FD3A1; --select:#FF5C3E; --ground:#7397FF; --shape:#FFC43F; --human:#CD83F3;
+  --tint:rgba(231,234,250,.07); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:19px;line-height:1.58;overflow-x:hidden}
+img,svg{max-width:100%}
+.wrap{max-width:1180px;margin-left:auto;margin-right:auto;padding-left:28px;padding-right:28px}
+.ui{font-family:var(--sans)}
+section{padding-top:120px}
+.prose{max-width:36em}
+.prose p{margin:0 0 1em}
+h1{font-weight:800;font-size:clamp(46px,8.2vw,116px);line-height:.9;letter-spacing:-.028em;margin:0;max-width:10.5em}
+h2{font-weight:760;font-size:clamp(34px,4.6vw,58px);line-height:1;letter-spacing:-.018em;margin:0 0 24px;max-width:15em}
+h3{font-weight:750}
+.muted{color:var(--ink-2)}
+
+/* hero */
+.hero{padding-top:84px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px 64px;margin-top:44px;align-items:start}
+.lede{font-size:clamp(21px,2vw,25px);line-height:1.4;margin:0}
+.spec{font-size:15px;color:var(--ink-2);margin:18px 0 0}
+.wager{margin:0;padding:0 0 0 24px;border-left:3px solid var(--select)}
+.wager p{font-size:19px;margin:0 0 10px;font-style:italic}
+.wager .who{font-family:var(--sans);font-size:14px;color:var(--ink-2);font-style:normal}
+.bleed{width:min(1400px,calc(100vw - 24px));margin-left:50%;transform:translateX(-50%)}
+#thread{display:block;width:100%;height:auto;margin-top:56px}
+.thread-cap{font-size:clamp(22px,2.4vw,30px);line-height:1.25;font-weight:600;margin-top:8px;max-width:26em}
+.thread-note{font-size:15px;color:var(--ink-2);margin-top:6px}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:34px 0 16px}
+.btn{font:650 15px/1 var(--sans);color:var(--ink);background:transparent;border:1.6px solid var(--ink);border-radius:999px;padding:12px 20px;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--paper);min-width:150px}
+.btn.icon{width:44px;height:44px;padding:0;font-size:22px;display:grid;place-items:center}
+.btn:focus-visible,input:focus-visible,#run:focus-visible,.pin:focus-visible{outline:3px solid var(--ground);outline-offset:3px}
+#scrub{flex:1 1 200px;accent-color:var(--ink);min-width:150px}
+.tog{display:flex;gap:8px;align-items:center;font-size:15px;cursor:pointer;user-select:none}
+.tog input{width:18px;height:18px;margin:0}
+#tReopen{accent-color:var(--select)} #tHuman{accent-color:var(--human)}
+
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#run{display:block;width:100%;min-width:1060px;height:auto;cursor:pointer;touch-action:pan-x pan-y}
+#run text,.mini text,#loop text,#fstrip text{font-family:var(--sans)}
+.t-phase{font-size:13px;fill:var(--ink-2);font-weight:500}
+.t-num{font-size:14px;font-weight:760;fill:var(--ink-3)}
+.t-sname{font-size:12.5px;fill:var(--ink-2)}
+.slabel.on .t-num{fill:var(--ink)}
+.slabel.on .t-sname{fill:var(--ink);font-weight:700}
+.t-gut{font-size:12.5px;fill:var(--ink-2);font-weight:650}
+.t-mem{font-size:12px;fill:var(--ink-3);transition:fill .2s}
+.t-mem.on{fill:var(--ink)}
+.t-small{font-size:11.5px;fill:var(--ink-2)}
+.t-let{font-size:11px;fill:var(--ink-2);font-weight:650}
+.t-env{font-family:var(--serif)!important;font-style:italic;font-size:15px;fill:var(--ink-2)}
+.t-reopen{font-size:11.5px;fill:var(--select);font-weight:600}
+.t-human{font-size:11.5px;fill:var(--human);font-weight:600}
+.membar{transition:opacity .25s}
+.flowing path.arc{animation:flow 1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px;color:var(--ink-2);margin:16px 0 34px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend svg{width:28px;height:16px;overflow:visible;flex:none}
+
+/* stage panel */
+.panel{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px 60px;border-top:2.5px solid var(--ink);padding-top:26px;min-height:430px}
+.p-top{display:flex;gap:16px;align-items:baseline;font-size:15px;color:var(--ink-2)}
+.p-num{font-weight:760;color:var(--ink)}
+.panel h3{font-size:clamp(32px,3.6vw,46px);line-height:1.02;margin:8px 0 16px;letter-spacing:-.014em}
+.p-act{font-size:23px;line-height:1.35;margin:0 0 16px}
+.p-why{margin:0 0 16px}
+.p-human{display:flex;gap:10px;font-size:15.5px;line-height:1.45;color:var(--ink-2);margin:0}
+.p-human i{flex:none;width:10px;height:10px;border-radius:50%;background:var(--human);margin-top:6px}
+.p-facts{margin:0;display:grid;align-content:start}
+.p-facts div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;font-size:15px;line-height:1.42;padding:10px 0;border-bottom:1px solid var(--rule)}
+.p-facts div:first-child{padding-top:2px}
+.p-facts dt{color:var(--ink-2)}
+.p-facts dd{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1.3px solid var(--rule);border-radius:999px;padding:3px 11px 3px 8px;font-size:14px;line-height:1.4;white-space:nowrap}
+.chip i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.chip.lite{color:var(--ink-2)}
+.chip.lite i{background:none;box-shadow:inset 0 0 0 2px var(--c)}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:28px 60px;margin-top:40px;font-size:16.5px;line-height:1.5;color:var(--ink-2)}
+.notes p{margin:0}
+.notes strong{color:var(--ink);font-family:var(--sans);font-size:15px;display:block;margin-bottom:4px}
+
+/* scales */
+.scale{border:1.6px solid var(--ink);border-radius:16px;padding:18px 22px 22px;margin-top:16px}
+.scales{margin-top:36px}
+.scales>.scale{margin-top:0}
+.sc-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 30px;align-items:start}
+.sc-head h4{margin:0;font-size:24px;line-height:1.1;font-weight:720}
+.sc-head h4 span{font-family:var(--sans);font-size:15px;color:var(--ink-3);font-weight:700;margin-right:10px}
+.sc-head p{margin:4px 0 0;font-size:16.5px;color:var(--ink-2);max-width:32em}
+.sc-who{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-width:360px;font-family:var(--sans)}
+.sc-st{font-size:13px;color:var(--ink-2);width:100%;text-align:right}
+.scale .scale{border-width:1.3px}
+.s2{background:var(--tint)}
+.s1{background:var(--paper)}
+.contrast{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;margin-top:64px}
+.contrast figure{margin:0}
+.contrast h4{font-size:22px;margin:0 0 6px;font-weight:720}
+.contrast p{font-size:16.5px;color:var(--ink-2);margin:10px 0 0}
+.mini{display:block;width:100%;height:auto;border-top:1.6px solid var(--ink);padding-top:12px}
+
+/* matrix */
+.mx{margin-top:40px}
+.mx-row{display:grid;grid-template-columns:180px repeat(25,22px) minmax(0,1fr);align-items:center;border-top:1px solid var(--rule);min-height:58px}
+.mx-headrow{border-top:none;min-height:0;padding-bottom:6px}
+.mx-headrow .mx-c{font:700 10.5px var(--sans);color:var(--ink-3)}
+.mx-htext{font:13.5px var(--sans);color:var(--ink-2)}
+.mx-name{font:620 15.5px/1.25 var(--sans);padding-right:14px}
+.mx-c{display:flex;justify-content:center;align-items:center;align-self:stretch}
+.dot{border-radius:50%;display:block}
+.d0{width:3px;height:3px;background:var(--ink-3);opacity:.55}
+.d1{width:7px;height:7px}
+.d2{width:13px;height:13px}
+.mx-text{padding:10px 0 10px 26px;font-size:16px;line-height:1.4}
+.mx-text em{display:block;color:var(--ink-2)}
+.mx-fam{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;padding:34px 0 10px;font-family:var(--sans);font-size:15px;color:var(--ink-2)}
+.mx-fam strong{font-size:21px;color:var(--ink);font-weight:760}
+.mx-fam .bar{width:24px;height:9px;border-radius:5px;align-self:center}
+.foot{font-size:14.5px;color:var(--ink-2);margin-top:26px;font-family:var(--sans);max-width:48em}
+
+/* failure modes */
+#fstrip{display:block;width:100%;min-width:1060px;height:auto;margin-top:36px}
+.pin{cursor:pointer}
+.ftable-wrap{overflow-x:auto;margin-top:18px}
+.ftable{width:100%;min-width:760px;border-collapse:collapse;font-family:var(--sans);font-size:15px;line-height:1.42}
+.ftable th{text-align:left;font-weight:650;color:var(--ink-2);font-size:13.5px;padding:10px 16px 10px 0;border-bottom:2px solid var(--ink)}
+.ftable td{padding:13px 16px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;transition:background .2s}
+.ftable td:first-child{font-family:var(--serif);font-weight:700;font-size:18px;width:17%;padding-left:8px}
+.ftable td:last-child{white-space:nowrap;color:var(--ink-2)}
+.ftable tr.hi td{background:var(--tint)}
+.callouts{display:grid;grid-template-columns:1fr 1fr;gap:28px 60px;margin-top:44px}
+.callouts p{margin:0;font-size:17.5px}
+.callouts strong{display:block;font-family:var(--sans);font-size:15px;margin-bottom:4px}
+
+/* constitution */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:30px 64px;margin-top:40px}
+.two h4{font-family:var(--sans);font-size:16px;margin:0 0 6px;font-weight:700}
+.rules{list-style:none;margin:0;padding:0}
+.rules li{border-top:1px solid var(--rule);padding:11px 0;font-size:17.5px;line-height:1.42}
+
+/* loop */
+#loop{display:block;width:100%;height:auto;margin-top:36px;max-width:1100px}
+.t-ring{font-family:var(--serif)!important;font-size:26px;font-weight:760;fill:var(--ink)}
+.t-lbl{font-size:14px;fill:var(--ink)}
+.t-lbl2{font-size:13px;fill:var(--ink-2)}
+.flow{stroke-dasharray:7 6;animation:flow 1.3s linear infinite}
+.qs{columns:2;column-gap:64px;margin-top:30px;padding:0;list-style:none}
+.qs li{break-inside:avoid;border-top:1px solid var(--rule);padding:11px 0;font-size:17.5px;line-height:1.42}
+
+/* spiral + turn table */
+.spiral-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:30px 56px;align-items:center;margin-top:30px}
+#spiral{display:block;width:100%;height:auto;max-width:700px}
+#spiral text{font-family:var(--sans)}
+.t-gnum{font-size:10px;font-weight:800}
+.t-op{font-size:17px;font-weight:720;fill:var(--ink)}
+.t-turn{font-size:12px;fill:var(--ink-2);font-weight:600}
+.snode{transition:transform .2s;transform-box:fill-box;transform-origin:center}
+.snode.hi{transform:scale(1.45)}
+.side p{margin:0 0 1em;font-size:18px}
+.kinds{list-style:none;margin:22px 0 0;padding:0;font-family:var(--sans);font-size:14.5px;color:var(--ink-2)}
+.kinds li{display:flex;gap:10px;align-items:center;padding:5px 0}
+.kinds svg,.tt-cell svg{width:18px;height:18px;flex:none;overflow:visible}
+.tt-wrap{overflow-x:auto;margin-top:44px}
+.tt{min-width:960px;font-family:var(--sans)}
+.tt-row{display:grid;grid-template-columns:172px repeat(5,minmax(0,1fr));border-top:1px solid var(--rule)}
+.tt-head{border-top:none}
+.tt-head div{font-size:14px;font-weight:700;padding:0 12px 10px 0;display:flex;gap:8px;align-items:center}
+.tt-head i{width:18px;height:8px;border-radius:4px;display:inline-block}
+.tt-turn{padding:14px 12px 14px 0;font-size:15px;line-height:1.35}
+.tt-turn b{display:block;font-family:var(--serif);font-size:20px;font-weight:720}
+.tt-turn span{color:var(--ink-2);font-size:13.5px}
+.tt-cell{padding:14px 14px 14px 0;font-size:14px;line-height:1.38;display:flex;gap:9px;align-items:flex-start;transition:background .2s}
+.tt-cell svg{margin-top:1px}
+.tt-cell em{display:block;font-style:normal;color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.tt-cell.k-gap,.tt-cell.k-fused,.tt-cell.k-degen,.tt-cell.k-inh{color:var(--ink-2)}
+.tt-cell.k-gap span,.tt-cell.k-prop span{font-style:italic}
+.tt-cell.hi{background:var(--tint)}
+.design-note{margin-top:34px;max-width:40em;font-size:17.5px}
+.design-note strong{font-family:var(--sans);font-size:15px;display:block;margin-bottom:4px}
+footer{margin-top:120px;padding:28px 0 64px;border-top:2.5px solid var(--ink);font-family:var(--sans);font-size:14px;color:var(--ink-2)}
+footer p{margin:0 0 6px;max-width:60em}
+
+#tip{position:fixed;z-index:20;pointer-events:none;max-width:290px;background:var(--ink);color:var(--paper);font:500 13.5px/1.38 var(--sans);padding:8px 12px;border-radius:9px;opacity:0;transition:opacity .12s}
+
+@media (max-width:900px){
+  .spiral-grid,.hero-grid,.panel,.notes,.contrast,.callouts,.two{grid-template-columns:1fr}
+  .panel{min-height:0}
+  .qs{columns:1}
+  .sc-head{grid-template-columns:1fr}
+  .sc-who{justify-content:flex-start;max-width:none}
+  .sc-st{text-align:left}
+  .mx-row{grid-template-columns:96px repeat(25,minmax(8px,1fr))}
+  .mx-text{grid-column:1/-1;padding:0 0 12px}
+  .mx-htext{display:none}
+  .mx-name{font-size:13.5px}
+  .d2{width:8px;height:8px}.d1{width:5px;height:5px}
+  .scale{padding:14px 14px 16px}
+}
+@media (max-width:560px){
+  .wrap{padding-left:18px;padding-right:18px}
+  body{font-size:18px}
+  .p-facts div{grid-template-columns:1fr;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){
+  .flow,.flowing path.arc{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap hero">
+  <h1>The Reason-Responsive Philosophy Paper Machine</h1>
+  <div class="hero-grid">
+    <div>
+      <p class="lede">An architecture for turning a broad topic into a philosophy paper by letting arguments, not agents, evolve under the pressure of reasons.</p>
+      <p class="spec ui">Architecture specification v0.2 (in progress), designed for the 2026 AI Philosophy Competition: primarily AI-generated work, minimal human collaboration, up to three essays of at most 6,000 words each.</p>
+    </div>
+    <blockquote class="wager">
+      <p>Local sensitivity to reasons can be made into a systematic search advantage. If candidate arguments are allowed to vary, confront one another, and evolve under selection pressures that privilege genuine responsiveness to reasons, then an institutionalized multi-model process may accumulate those local successes into globally strong philosophical work.</p>
+      <span class="who">The core wager</span>
+    </blockquote>
+  </div>
+</header>
+
+<div class="bleed"><svg id="thread" aria-hidden="true"></svg></div>
+<div class="wrap">
+  <p class="thread-cap">Agents are temporary workers. Arguments are the persistent objects under selection.</p>
+  <p class="thread-note ui">Workers arrive, leave a mark, and go. The argument keeps every mark and grows.</p>
+</div>
+
+<!-- THE SPIRAL -->
+<section class="wrap" aria-labelledby="h-spiral">
+  <h2 id="h-spiral">One operation, seven turns</h2>
+  <div class="prose">
+    <p>Most of the machine is a single operation recurring at a smaller scale each time: ground, vary, subject to reasons, select, provisionally freeze, and repeat. Grounding covers both the initial discovery of a problem and later retargeting. Freezing means narrowing the radius of permissible change, not making earlier work immune to reasons.</p>
+  </div>
+  <div class="spiral-grid">
+    <svg id="spiral" viewBox="0 0 700 690" role="img" aria-label="A spiral of seven turns winding inward. Each turn passes through ground, vary, subject to reasons, select, and freeze, at a smaller radius than the last, ending at the submitted paper."></svg>
+    <div class="side">
+      <p>The numbers on the Ground spoke mark the seven turns. Each works on a smaller object: the problem space, independent positions, argument lineages, the contribution against its opponent, the paper’s organization, its outline, and finally its prose. The radius of the spiral is the permitted scale of change.</p>
+      <p>Each freeze becomes the next turn’s ground, which is why the arc leaving Freeze runs straight into Ground. Five turns also bring in something new: the problem space, the acquired literature, the strongest opponent, the nearest neighbors, and a final literature audit. The two turns that inherit their ground, maturation and prose, work entirely on what the previous turn froze.</p>
+      <p>By default the radius only narrows. A serious defeater can re-expand it locally, back to the turn where the defect lives.</p>
+      <ul class="kinds" id="kinds"></ul>
+    </div>
+  </div>
+  <div class="tt-wrap"><div class="tt" id="turnTable"></div></div>
+  <p class="design-note"><strong>What changed from v0.1</strong>Problem exploration and corpus building are now separate groundings, with an explicit human literature checkpoint between them. Ruminations meet one another before first selection. The contribution turn varies replies to the strongest opponent before compressing. The architecture turn grounds itself in nearest-neighbor literature and puts each précis under explicit philosophical and genre reasons. A new outline turn sits between the précis and the prose, and the prose turn varies argumentative units and ends in a journal-style report and response. The one step still folded into another is reason-giving in turn 1.</p>
+</section>
+
+<!-- THE RUN -->
+<section class="wrap" id="run-sec" aria-labelledby="h-run">
+  <h2 id="h-run">How a paper gets made</h2>
+  <div class="prose">
+    <p>Unrolled in time, the seven turns become twenty-five stages that take a broad domain to a submission-ready paper. Play the run to watch candidate arguments multiply, take objections, branch, borrow from one another, and narrow to one paper. Select any stage to see who works there, what it produces, and why it is there.</p>
+    <p>Two quantities shrink at different rates. The number of live candidates falls, then briefly rises again for rival précis and independent referees. The shaded envelope, the permitted scale of variation, narrows by default: early exploration may change the problem itself, late drafting only sentences. A serious defeater can re-expand it locally, back to the level where the defect lives.</p>
+  </div>
+  <div class="controls ui">
+    <button id="play" class="btn primary" type="button">Play the run</button>
+    <button id="prev" class="btn icon" type="button" aria-label="Previous stage">‹</button>
+    <button id="next" class="btn icon" type="button" aria-label="Next stage">›</button>
+    <input id="scrub" type="range" min="0" max="13" step="0.01" value="13" aria-label="Position in the run">
+    <label class="tog"><input type="checkbox" id="tReopen">Reopening paths</label>
+    <label class="tog"><input type="checkbox" id="tHuman">Human checkpoints</label>
+  </div>
+</section>
+
+<div class="bleed"><div class="scroller">
+  <svg id="run" viewBox="0 0 1400 680" tabindex="0" role="img" aria-label="Process diagram of the twenty-five stages, showing argument lineages branching, being culled, recombining, and narrowing to a single paper, with persistent state artifacts beneath."></svg>
+</div></div>
+
+<div class="wrap">
+  <div class="legend ui" aria-hidden="true">
+    <span><svg viewBox="0 0 28 16"><path d="M1,11 C9,11 14,5 27,5" style="stroke:var(--ink);stroke-width:2;fill:none"/></svg>Argument lineage</span>
+    <span><svg viewBox="0 0 28 16"><path d="M1,8 L20,8" style="stroke:var(--ink);stroke-width:2"/><circle cx="23" cy="8" r="3.6" style="fill:var(--paper);stroke:var(--ink);stroke-width:1.6"/></svg>Archived</span>
+    <span><svg viewBox="0 0 28 16"><line x1="5" y1="1" x2="19" y2="13" style="stroke:var(--select);stroke-width:1.8"/><path d="M22,15.5 L14.5,13 L19.5,8.5 z" style="fill:var(--select)"/></svg>Objection or referee pass</span>
+    <span><svg viewBox="0 0 28 16"><path d="M1,8 L27,8" style="stroke:var(--ink);stroke-width:2"/><circle cx="14" cy="8" r="4" style="fill:var(--vary);stroke:var(--paper);stroke-width:1.5"/></svg>Repair</span>
+    <span><svg viewBox="0 0 28 16"><path d="M1,3 C12,3 14,13 25,13" style="stroke:var(--vary);stroke-width:1.8;stroke-dasharray:4 3;fill:none"/></svg>Import from another lineage</span>
+    <span><svg viewBox="0 0 28 16"><line x1="14" y1="0" x2="14" y2="16" style="stroke:var(--shape);stroke-width:1.8;stroke-dasharray:3 3"/></svg>Selection and freeze</span>
+    <span><svg viewBox="0 0 28 16"><circle cx="14" cy="8" r="7" style="fill:none;stroke:var(--ground);stroke-width:1.8"/><circle cx="14" cy="8" r="2.6" style="fill:var(--ground)"/></svg>Target</span>
+  </div>
+
+  <div id="panel" class="panel" aria-live="polite"></div>
+
+  <div class="notes">
+    <p><strong>The compute strip</strong>Bars under the stage names show where intelligence is spent. Fast, cheap passes handle broad generation, first-pass objections, redundancy checks, and local repairs; the strongest available models are saved for the holistic checkpoints. Where correlated blind spots matter, one model family generates and another evaluates.</p>
+    <p><strong>The persistent state</strong>The bars along the bottom are what the machine carries forward instead of giant transcripts. Each role is fed only the slice it needs. Select a stage to see which artifacts exist at that point, colored by the kind of role that writes them.</p>
+  </div>
+</div>
+
+<!-- A BET ON REASONS -->
+<section class="wrap" aria-labelledby="h-bet">
+  <h2 id="h-bet">A bet on reasons</h2>
+  <div class="prose">
+    <p>The machine rests on a substantive premise: a model’s apparent responsiveness to reasons is not merely epiphenomenal rhetoric. At least some of the time, models identify considerations that genuinely count for or against a claim, notice tensions, distinguish cases, concede where a concession is due, and revise in ways that improve the position.</p>
+    <p>The experiment asks whether that local capacity scales. Each scale has its own custodians in the machine.</p>
+  </div>
+
+  <div class="scales ui-scales">
+    <div class="scale s4">
+      <div class="sc-head">
+        <div><h4><span>4</span>A contribution</h4><p>A coherent philosophical contribution that another philosopher can assess.</p></div>
+        <div class="sc-who" data-roles="target,genre,referee" data-st="Stages 9–24"></div>
+      </div>
+      <div class="scale s3">
+        <div class="sc-head">
+          <div><h4><span>3</span>A research trajectory</h4><p>Reason-responsive management of which lines live, branch, or die.</p></div>
+          <div class="sc-who" data-roles="holistic,local" data-st="Stages 6–8"></div>
+        </div>
+        <div class="scale s2">
+          <div class="sc-head">
+            <div><h4><span>2</span>An argument</h4><p>Reason-responsive development of a lineage across many moves.</p></div>
+            <div class="sc-who" data-roles="repairer,recombiner" data-st="Stages 5–10"></div>
+          </div>
+          <div class="scale s1">
+            <div class="sc-head">
+              <div><h4><span>1</span>A move</h4><p>Reason-tracking in a single objection, concession, distinction, or repair.</p></div>
+              <div class="sc-who" data-roles="critic,local" data-st="Stages 5–7"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:36px">
+    <p>No single model instance needs to contain the whole inquiry in one act of insight. What carries the inquiry is the institution: commitments, objections, concessions, unresolved costs, and successful replies stay visible in the ledger and keep having effects on what happens next.</p>
+    <p>The two kinds of scale run in opposite directions. The spiral narrows what may change, from problems down to sentences, while the capacity under test has to scale up, from single moves to a whole contribution.</p>
+  </div>
+
+  <div class="contrast">
+    <figure>
+      <h4>Blind search</h4>
+      <svg class="mini" viewBox="0 0 460 200" role="img" aria-label="A parent argument produces random variants; each receives a score and the highest is kept.">
+        <path d="M20,100 L150,100" style="stroke:var(--ink);stroke-width:2.2;fill:none"/>
+        <g style="stroke:var(--ink-3);stroke-width:1.6;fill:none">
+          <path d="M150,100 Q210,100 288,38"/>
+          <path d="M150,100 Q220,118 288,132"/>
+          <path d="M150,100 Q220,132 288,170"/>
+        </g>
+        <path d="M150,100 Q220,84 290,80 L440,80" style="stroke:var(--ink);stroke-width:2.2;fill:none"/>
+        <g style="fill:var(--paper);stroke:var(--ink-3);stroke-width:1.6">
+          <circle cx="291" cy="36" r="4"/><circle cx="292" cy="133" r="4"/><circle cx="291" cy="172" r="4"/>
+        </g>
+        <rect x="142" y="92" width="16" height="16" rx="3.5" transform="rotate(14 150 100)" style="fill:var(--paper);stroke:var(--ink);stroke-width:1.6"/>
+        <circle cx="147" cy="97" r="1.5" style="fill:var(--ink)"/><circle cx="153" cy="103" r="1.5" style="fill:var(--ink)"/>
+        <g class="t-lbl2"><text x="302" y="40">0.62</text><text x="300" y="70">0.71</text><text x="303" y="137">0.48</text><text x="302" y="176">0.55</text></g>
+        <text x="150" y="130" text-anchor="middle" class="t-lbl2">random variation</text>
+      </svg>
+      <p>Mutation is random and selection reads a single number. Nothing about why a variant exists survives into the next generation.</p>
+    </figure>
+    <figure>
+      <h4>This machine</h4>
+      <svg class="mini" viewBox="0 0 460 200" role="img" aria-label="An objection hits a specific commitment; the repair changes the argument because of that objection, and the ledger records it.">
+        <defs><marker id="mSelMini" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L8,4 L0,8 z" style="fill:var(--select)"/></marker></defs>
+        <path d="M20,112 L200,112" style="stroke:var(--ink);stroke-width:2.2;fill:none"/>
+        <path d="M200,112 L436,112" style="stroke:var(--ink-3);stroke-width:1.6;stroke-dasharray:4 5;fill:none"/>
+        <circle cx="440" cy="112" r="4" style="fill:var(--paper);stroke:var(--ink-3);stroke-width:1.6"/>
+        <path d="M200,112 C236,112 246,76 292,76 L440,76" style="stroke:var(--ink);stroke-width:2.2;fill:none"/>
+        <path d="M204,112 C236,112 246,76 292,76" style="stroke:var(--vary);stroke-width:4.5;fill:none;stroke-linecap:round;opacity:.9"/>
+        <line x1="150" y1="44" x2="192" y2="102" style="stroke:var(--select);stroke-width:2" marker-end="url(#mSelMini)"/>
+        <circle cx="200" cy="112" r="5.5" style="fill:var(--ink)"/>
+        <text x="146" y="36" text-anchor="middle" class="t-lbl">objection</text>
+        <text x="200" y="138" text-anchor="middle" class="t-lbl">commitment</text>
+        <text x="300" y="64" class="t-lbl">repair answers it</text>
+        <text x="432" y="133" text-anchor="end" class="t-lbl2">the version that ignored it</text>
+        <path d="M252,96 L270,152" style="stroke:var(--ground);stroke-width:1.4;stroke-dasharray:2 3;fill:none"/>
+        <rect x="236" y="154" width="218" height="34" rx="7" style="fill:var(--paper);stroke:var(--ground);stroke-width:1.5"/>
+        <text x="249" y="176" class="t-lbl2">Ledger: objection, reply, residue</text>
+      </svg>
+      <p>A critic aims an objection at a specific commitment. The repairer changes the argument because of that objection, and the local evaluator asks whether the change actually answers it. The reason is kept. Reason-tracking becomes a source of search efficiency rather than ornamental language over an unrelated optimization.</p>
+    </figure>
+  </div>
+</section>
+
+<!-- THE CAST -->
+<section class="wrap" aria-labelledby="h-cast">
+  <h2 id="h-cast">Who performs each operation</h2>
+  <div class="prose">
+    <p>Grouped by the operation they perform, the thirteen roles show why each exists and where its work falls. Two things stand out. Freeze has no worker: it is a controller decision, which keeps it constitutional rather than philosophical. And genre control mostly dissolves into selection; it is the criteria tightening turn by turn.</p>
+  </div>
+  <div id="matrix" class="mx"></div>
+  <p class="foot">Large dots mark a role’s primary stages; small dots mark supporting work. Where the process map names a worker the role list does not (judges, reader simulator, writer), it is placed under the nearest listed role.</p>
+</section>
+
+<!-- GENRE CONTROL -->
+<section class="wrap" aria-labelledby="h-genre">
+  <h2 id="h-genre">Keeping it paper-shaped</h2>
+  <div class="prose">
+    <p>Reason-responsive evolution can still produce something unpublishable: redundant, shapeless, overlong, or badly positioned. So genre constraints tighten over the run. Early on they only preserve the possibility of a paper; later they govern the actual artifact. Each failure has a mechanism, and each mechanism acts at a particular stage.</p>
+  </div>
+</section>
+<div class="bleed"><div class="scroller"><svg id="fstrip" viewBox="0 0 1400 142" aria-label="Genre pressure rising across the stages, with the number of failure modes guarded at each stage."></svg></div></div>
+<div class="wrap">
+  <div class="ftable-wrap">
+    <table class="ftable" id="ftable">
+      <thead><tr><th>Failure</th><th>What it looks like</th><th>Mechanism</th><th>Where it acts</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="callouts">
+    <p><strong>Freezes are defeasible</strong>When a referee finds a defect that is not a prose problem, the machine jumps back to the turn where the error lives and runs that turn’s operation again, with the objection as new ground: vary repair strategies, put them under pressure from the strongest opponent, select, and refreeze. The fix then propagates forward only where later work depends on it. The radius of variation widens briefly to the level of the error, not all the way out. Turn on reopening paths in the run above to see where escalations go.</p>
+    <p><strong>The reader-facing controller</strong>Late in the run, false completeness and proportion are handled together. The controller translates the evolved argument into an honest, appropriately weighted representation for another philosopher: what remains open, what the paper is actually on the hook for, and whether attention mirrors argumentative importance.</p>
+  </div>
+</div>
+
+<!-- CONSTITUTION -->
+<section class="wrap" aria-labelledby="h-const">
+  <h2 id="h-const">The human writes the constitution</h2>
+  <div class="prose">
+    <p>The human contribution is primarily constitutional: choose the broad domain, supply literature the system cannot reach, set resource limits, and design the procedures by which arguments are generated, evaluated, preserved, branched, frozen, and reopened. The aim is to minimize direct human authorship of philosophical moves while keeping the institutional design transparent.</p>
+  </div>
+  <div class="two">
+    <div>
+      <h4>When the human is needed</h4>
+      <ul class="rules">
+        <li>Acquiring the literature the provisional agenda requests: the explicit checkpoint between the first two groundings.</li>
+        <li>Supplying paywalled or otherwise inaccessible sources later turns flag.</li>
+        <li>Changing resource caps, or deciding how much compute a promising branch gets.</li>
+        <li>Correcting infrastructure failures and source-access problems.</li>
+        <li>Making the minimal constitutional decisions the competition rules require.</li>
+        <li>Reviewing the methodology log for accurate reporting, without silently inserting philosophical authorship.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>What the controller never does</h4>
+      <ul class="rules">
+        <li>Confuse agent identity with argument identity.</li>
+        <li>Reward consensus merely for being consensus.</li>
+        <li>Merge rival lineages unless the synthesis can say what distinctive explanatory work survives.</li>
+        <li>Let local repairs silently change the global research identity.</li>
+        <li>Let late editing smuggle in thesis-level changes.</li>
+        <li>Let rhetoric erase unresolved liabilities.</li>
+        <li>Let citations substitute for an explicit argumentative relation to the literature.</li>
+        <li>Let a freeze block a genuinely serious reason to reopen an earlier stage.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIMENT -->
+<section class="wrap" aria-labelledby="h-exp">
+  <h2 id="h-exp">The pipeline is itself an experiment</h2>
+  <div class="prose">
+    <p>The competition allows up to three essays, so the runs are sequential rather than parallel. Paper 1 is a proof of concept and a diagnostic; its failures become evidence about the architecture, which is revised before Paper 2. If later papers improve after explicit changes to the machinery, the submission becomes a small experiment in whether a reason-responsive institution generalizes across philosophical topics, and which failure modes block it.</p>
+  </div>
+  <svg id="loop" viewBox="0 0 1100 262" role="img" aria-label="Pipeline v0 produces Paper 1; a postmortem revises it into v1, which produces Paper 2; a second postmortem yields v2 and Paper 3 if time permits.">
+    <defs>
+      <marker id="mSelL" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L8,4 L0,8 z" style="fill:var(--select)"/></marker>
+      <marker id="mInkL" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L8,4 L0,8 z" style="fill:var(--ink-2)"/></marker>
+    </defs>
+    <text x="0" y="84" class="t-lbl2">Pipeline</text>
+    <text x="0" y="204" class="t-lbl2">Paper</text>
+    <text x="1096" y="18" text-anchor="end" class="t-lbl2">Submissions due October 31, 2026</text>
+    <path class="flow" d="M230,200 C390,200 430,78 514,78" style="stroke:var(--select);stroke-width:2;fill:none" marker-end="url(#mSelL)"/>
+    <path class="flow" d="M590,200 C750,200 790,78 874,78" style="stroke:var(--select);stroke-width:2;fill:none" marker-end="url(#mSelL)"/>
+    <text x="262" y="224" class="t-lbl2" style="fill:var(--select)">postmortem</text>
+    <text x="622" y="224" class="t-lbl2" style="fill:var(--select)">postmortem</text>
+    <g>
+      <circle cx="200" cy="78" r="36" style="fill:var(--paper);stroke:var(--ink);stroke-width:2.2"/><text x="200" y="87" text-anchor="middle" class="t-ring">v0</text>
+      <line x1="200" y1="118" x2="200" y2="158" style="stroke:var(--ink-2);stroke-width:1.6" marker-end="url(#mInkL)"/>
+      <path d="M178,166 h32 l12,12 v46 h-44 z" style="fill:var(--shape);stroke:var(--ink);stroke-width:1.6"/>
+      <text x="200" y="252" text-anchor="middle" class="t-lbl">Paper 1</text>
+    </g>
+    <g>
+      <circle cx="560" cy="78" r="36" style="fill:var(--paper);stroke:var(--ink);stroke-width:2.2"/><text x="560" y="87" text-anchor="middle" class="t-ring">v1</text>
+      <line x1="560" y1="118" x2="560" y2="158" style="stroke:var(--ink-2);stroke-width:1.6" marker-end="url(#mInkL)"/>
+      <path d="M538,166 h32 l12,12 v46 h-44 z" style="fill:var(--shape);stroke:var(--ink);stroke-width:1.6"/>
+      <text x="560" y="252" text-anchor="middle" class="t-lbl">Paper 2</text>
+    </g>
+    <g>
+      <circle cx="920" cy="78" r="36" style="fill:var(--paper);stroke:var(--ink);stroke-width:2.2"/><text x="920" y="87" text-anchor="middle" class="t-ring">v2</text>
+      <line x1="920" y1="118" x2="920" y2="158" style="stroke:var(--ink-2);stroke-width:1.6;stroke-dasharray:4 4" marker-end="url(#mInkL)"/>
+      <path d="M898,166 h32 l12,12 v46 h-44 z" style="fill:none;stroke:var(--ink-2);stroke-width:1.6;stroke-dasharray:4 3"/>
+      <text x="920" y="252" text-anchor="middle" class="t-lbl">Paper 3, if time permits</text>
+    </g>
+  </svg>
+  <ul class="qs">
+    <li>Where did lineages collapse too quickly, or linger too long?</li>
+    <li>Which evaluators produced real selection pressure, and which merely echoed consensus?</li>
+    <li>Where did local reason-responsiveness fail to aggregate into global coherence?</li>
+    <li>Which genre pathologies appeared despite good reasoning?</li>
+    <li>Which state artifacts were too verbose, too thin, or hard for later agents to use?</li>
+    <li>Where was expensive compute actually valuable?</li>
+    <li>Did cross-model disagreement reveal blind spots?</li>
+    <li>How much direct human intervention was required, and why?</li>
+  </ul>
+
+  <footer>
+    <p>Visual explainer for the Reason-Responsive Philosophy Paper Machine, architecture specification v0.2, in progress.</p>
+    <p>The lineages drawn in the run are an illustrative trajectory, not a record of an actual run. Their fates show the kinds of events the architecture allows.</p>
+  </footer>
+</section>
+
+<div id="tip" role="tooltip"></div>
+
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function txt(parent,x,y,str,attrs){const t=el("text",Object.assign({x:x,y:y},attrs||{}),parent);t.textContent=str;return t;}
+
+/* ---------------- data ---------------- */
+const FAM={
+  ground:{name:"Ground",job:"Fix what variation must answer to: the problem, the literature, the opponent."},
+  vary:{name:"Vary",job:"Produce candidates at the current scale."},
+  reason:{name:"Subject to reasons",job:"Bring objections, counterexamples, and liabilities to bear."},
+  select:{name:"Select",job:"Decide what survives, on several dimensions, with criteria that tighten each turn."},
+  freeze:{name:"Freeze",job:"Done by no worker. A controller decision that narrows the radius of change, recorded in state and always defeasible."},
+  human:{name:"Constitute",job:"Design the institution, and stay out of the philosophy."}
+};
+const FC={ground:"--ground",vary:"--vary",reason:"--select",select:"--ink",freeze:"--shape",human:"--human"};
+const ROLES=[
+  {id:"explorer",fam:"ground",name:"Explorer",does:"Explores the problem space and proposes tractable research problems rather than prematurely settling on a thesis.",need:"Avoids path-dependence on the first framing.",at:{1:2}},
+  {id:"librarian",fam:"ground",name:"Librarian",does:"Turns the agenda into literature requests, builds the shared corpus, positions the contribution among its nearest neighbors, and runs the final literature audit.",need:"Keeps all lineages grounded in the same evidential world.",at:{1:1,2:1,3:2,9:1,12:2,16:2}},
+  {id:"target",fam:"ground",name:"Target reconstructor",does:"Builds the strongest faithful version of the opponent from the literature, then presses the lineages’ replies on the opponent’s behalf.",need:"Prevents asymmetric charity and straw targets.",at:{9:2,10:1}},
+  {id:"generator",fam:"vary",name:"Generator",does:"Develops independent positions, distinctions, analogies, and argumentative routes, including as a conceptual migrant from other fields.",need:"Provides diversity.",at:{4:2}},
+  {id:"repairer",fam:"vary",name:"Repairer",does:"Revises a lineage after criticism into a defensible descendant; at the contribution turn, drafts the ways each lineage could answer the opponent.",need:"Lets arguments evolve rather than merely win or lose debates.",at:{5:2,7:2,10:2}},
+  {id:"recombiner",fam:"vary",name:"Recombiner",does:"Imports useful machinery from one lineage into another when there is a principled fit.",need:"Captures cross-lineage synthesis without mandatory compromise.",at:{7:2}},
+  {id:"architect",fam:"vary",name:"Paper architect",does:"Generates competing précis from the frozen contribution, then competing hierarchical outlines from the frozen précis.",need:"Keeps useful variation alive after the thesis has stabilized.",at:{13:2,17:2}},
+  {id:"editor",fam:"vary",name:"Writer and editor",does:"Writes two or three prose realizations of each argumentative unit, smooths sections and the whole draft, and makes the revisions the report calls for.",need:"Improves exposition without introducing new philosophical moves.",at:{20:2,21:1,23:2,24:1}},
+  {id:"critic",fam:"reason",name:"Critic",does:"Produces objections and counterexamples aimed at live commitments: between rival ruminations, in dialectic, and against précis and outlines.",need:"Creates selection pressure and exposes hidden costs.",at:{5:2,7:2,14:2,18:2}},
+  {id:"referee",fam:"reason",name:"Referee",does:"A fresh, journal-style report on the polished draft: representation of the target, sufficiency of support, literature awareness, proportion, likely editorial objections.",need:"Detects correlated blind spots and false completeness.",at:{22:2}},
+  {id:"local",fam:"select",name:"Local evaluator",does:"Judges whether a proposed move is genuinely responsive to the current dialectic, and runs the first cut.",need:"Controls micro-level rationality.",at:{6:2,7:2,21:1,23:1}},
+  {id:"holistic",fam:"select",name:"Holistic evaluator",does:"Reviews lineages as research projects (cohesion, novelty, scope, fertility) and chooses the agenda, the précis, and the outline.",need:"Prevents local improvements from accumulating into global mush.",at:{2:2,8:2,11:1,15:2,19:2}},
+  {id:"genre",fam:"select",name:"Genre controller",does:"Compresses and retargets; supplies genre and proportion reasons against précis and outlines; runs the editorial selection of prose.",need:"Turns a strong argument ecology into a paper-shaped artifact.",at:{6:1,8:1,11:2,14:1,15:1,18:1,19:1,21:2}},
+  {id:"human",fam:"human",name:"Human designer",does:"Chooses the domain, acquires the literature the agenda requests, sets resource limits, and writes the procedures.",need:"Keeps human authorship constitutional rather than philosophical.",at:{0:2,2:1,3:2,9:1,12:1,16:1,24:1}}
+];
+const RB={};ROLES.forEach(r=>RB[r.id]=r);
+
+const OPS=[{id:"ground",name:"Ground"},{id:"vary",name:"Vary"},{id:"reason",name:"Subject to reasons"},{id:"select",name:"Select"},{id:"freeze",name:"Freeze"}];
+const KINDS={x:"An explicit stage",inh:"Inherited from the previous freeze",fused:"Folded into a neighboring step"};
+const TURNS=[
+ {n:1,name:"Agenda",scale:"The problem space",from:0,to:2,vary:"Problem framing and candidate problems",frozen:"Nothing yet",q:"Which problems deserve literature and lineages?",cells:{
+   ground:{k:"x",t:"The seed brief: domain, constraints, budget",st:"0"},
+   vary:{k:"x",t:"Exploration of candidate problems",st:"1"},
+   reason:{k:"fused",t:"Folded into agenda selection",st:"2"},
+   select:{k:"x",t:"Choose a provisional research agenda",st:"2"},
+   freeze:{k:"x",t:"The agenda, plus literature requests for the human",st:"2"}}},
+ {n:2,name:"Positions",scale:"Independent positions",from:3,to:6,vary:"Theses, distinctions, targets, conceptual imports",frozen:"The provisional agenda",q:"Which ideas deserve more life, having met their rivals?",cells:{
+   ground:{k:"x",t:"The acquired literature, incorporated into the shared corpus",st:"3"},
+   vary:{k:"x",t:"Independent ruminations",st:"4"},
+   reason:{k:"x",t:"Reciprocal encounter: each rumination takes its rivals seriously, and A may become A′",st:"5"},
+   select:{k:"x",t:"First selection: a small Pareto frontier",st:"6"},
+   freeze:{k:"x",t:"A live frontier",st:"6"}}},
+ {n:3,name:"Maturation",scale:"Argument lineages",from:7,to:8,vary:"Several live lineages: branching, repair, recombination",frozen:"The frontier’s problem space",q:"Which trajectories improve under criticism?",cells:{
+   ground:{k:"inh",t:"Inherited: the corpus, the frontier, the ledger"},
+   vary:{k:"x",t:"Repair, branching, recombination",st:"7"},
+   reason:{k:"x",t:"Critics attack live commitments",st:"7"},
+   select:{k:"x",t:"Holistic control: go, branch, or kill",st:"8"},
+   freeze:{k:"x",t:"Research identity",st:"8"}}},
+ {n:4,name:"Contribution",scale:"The contribution against its opponent",from:9,to:11,vary:"Replies each surviving lineage could give the strongest opponent",frozen:"Research identity",q:"Which argument makes a coherent, distinctive contribution against this opponent?",cells:{
+   ground:{k:"x",t:"Retargeting: the strongest opponent, rebuilt from sources",st:"9"},
+   vary:{k:"x",t:"Narrow variation: ways each surviving lineage could answer this opponent",st:"10"},
+   reason:{k:"x",t:"The replies go back under pressure from the opponent’s side",st:"10"},
+   select:{k:"x",t:"Compression to one contribution and its burden",st:"11"},
+   freeze:{k:"x",t:"The core thesis",st:"11"}}},
+ {n:5,name:"Architecture",scale:"The paper’s organization",from:12,to:15,vary:"Order, target emphasis, expository route, burden allocation",frozen:"The core thesis and its burden",q:"Which précis best preserves the contribution, given where it sits?",cells:{
+   ground:{k:"x",t:"Position among nearest-neighbor literature: is it novel in the way it seems?",st:"12"},
+   vary:{k:"x",t:"Two or three competing précis",st:"13"},
+   reason:{k:"x",t:"Philosophical and genre reasons against each précis",st:"14"},
+   select:{k:"x",t:"Choose one précis",st:"15"},
+   freeze:{k:"x",t:"The précis",st:"15"}}},
+ {n:6,name:"Outline",scale:"Hierarchical structure",from:16,to:19,vary:"Hierarchy, order, where each argumentative job is done, proportion",frozen:"The chosen précis",q:"Which outline best carries the précis, in proportion?",cells:{
+   ground:{k:"x",t:"Literature and burden audit",st:"16"},
+   vary:{k:"x",t:"Competing hierarchical outlines",st:"17"},
+   reason:{k:"x",t:"Reasoning, genre, dependency, and proportion tests",st:"18"},
+   select:{k:"x",t:"Choose the detailed outline",st:"19"},
+   freeze:{k:"x",t:"The outline, divided into argumentative units",st:"19"}}},
+ {n:7,name:"Prose",scale:"Argumentative units, then the whole draft",from:20,to:24,vary:"Exposition, organization, emphasis, examples, cadence; after the report, local revisions",frozen:"The outline and its argumentative units",q:"Which realization is clearest, most economical, most continuous? Later: is anything in the report genuinely fatal?",cells:{
+   ground:{k:"inh",t:"Inherited: the frozen outline and its units"},
+   vary:{k:"x",t:"Two or three prose realizations per unit; after the report, local revisions",st:"20, 23"},
+   reason:{k:"x",t:"Journal-style referee report",st:"22"},
+   select:{k:"x",t:"Editorial selection per unit and smoothing, then the R&R response",st:"21, 23"},
+   freeze:{k:"x",t:"Citation verification and artifact audit; then the operator submits",st:"24"}}}
+];
+const STAGE_OPS=[["ground"],["vary"],["select","freeze"],["ground"],["vary"],["reason","vary"],["select","freeze"],["vary","reason"],["select","freeze"],["ground"],["vary","reason"],["select","freeze"],["ground"],["vary"],["reason"],["select","freeze"],["ground"],["vary"],["reason"],["select","freeze"],["vary"],["select"],["reason"],["vary","select"],["freeze"]];
+function glyph(kind,c){const col=`var(${c})`;
+  if(kind==="x")return `<svg viewBox="-9 -9 18 18"><circle r="7.5" style="fill:${col}"/></svg>`;
+  if(kind==="inh")return `<svg viewBox="-9 -9 18 18"><circle r="6.8" style="fill:var(--paper);stroke:${col};stroke-width:2.4"/></svg>`;
+  return `<svg viewBox="-9 -9 18 18"><circle r="6.8" style="fill:var(--paper);stroke:${col};stroke-width:2"/><path d="M0,-6.8 A6.8,6.8 0 0 1 0,6.8 Z" style="fill:${col}"/></svg>`;}
+const ORD=["human","explorer","librarian","generator","critic","repairer","recombiner","local","holistic","target","genre","architect","editor","referee"];
+const STAGES=[
+  {name:"Seed",short:"Seed",act:"Choose a broad domain or direction.",out:"Seed brief",compute:"human",pop:"No arguments yet",guards:[],human:"Chooses the domain and records the competition constraints, compute budget, and explicit human contribution.",why:"The machine starts from a broad topic rather than a preselected thesis, so that it has something to discover. What the human contributes here is constitutional: the domain, the rules, the budget."},
+  {name:"Problem exploration",short:"Problems",act:"Explore the domain for live, tractable problems.",out:"Candidate problems",compute:"cheap",pop:"Several candidate problems",guards:[],why:"Settling on a thesis this early would make the whole run path-dependent on its first framing. The machine surveys the problem space before committing to anything."},
+  {name:"Research agenda",short:"Agenda",act:"Freeze a provisional research agenda, and say what literature it needs.",out:"Provisional agenda and literature requests",compute:"strong",pop:"A provisional agenda",guards:[],human:"Acquires the literature the agenda requests. This is the explicit human checkpoint.",why:"Freezing the agenda provisionally makes literature acquisition targeted: the human knows exactly what to fetch, and the first real lineages know what they are about, without any thesis having been chosen."},
+  {name:"Shared corpus",short:"Corpus",act:"Incorporate the acquired literature into the common evidential base.",out:"Shared backgrounder and corpus",compute:"cheap",pop:"A provisional agenda",guards:[],human:"Supplies the requested sources, including paywalled ones.",why:"Every lineage answers to the same evidential world, and that world now contains the literature the agenda needs. Ruminations begin only after this second grounding, so none is built on a reading list the others lack."},
+  {name:"Independent ruminations",short:"Rumination",act:"Generate multiple positions without forcing consensus.",out:"Candidate lineages A, B, C, and so on",compute:"cheap",pop:"6–10 lineages",guards:[],why:"Diversity comes first, and it comes cheap. Positions are developed independently, including by conceptual migrants importing ideas from elsewhere, so that real disagreement exists before anything is tempted to synthesize."},
+  {name:"Reciprocal encounter",short:"Encounter",act:"Let each rumination take its rivals seriously, and revise.",out:"Revised lineages A′, B′, C′, and so on",compute:"cheap",pop:"6–10 revised lineages",guards:["integration"],why:"First selection should judge arguments that have already shown some capacity to respond to reasons, not untouched brainstorms. A meets B and may become A′; B meets A and may become B′. Disagreement has to survive the encounter."},
+  {name:"First selection",short:"First cut",act:"Cull redundancy and weak lines; preserve non-dominated rivals.",out:"A small live frontier",compute:"cheap",pop:"3–4 survivors",guards:[],why:"There is no single master score. Candidates are compared on several dimensions (robustness, novelty, explanatory reach, distinctiveness, developmental fertility), and a small Pareto frontier keeps rivals alive when none is better on every one."},
+  {name:"Dialectical evolution",short:"Dialectic",act:"Confront, revise, branch, recombine, and retest arguments.",out:"Argument lineage records",compute:"cheap",pop:"3–4 lineages, branching under a hard cap",guards:[],why:"Here arguments evolve rather than merely winning or losing debates. Objections, concessions, distinctions, repairs, and counterexamples are treated as reasons that change what should happen next. Branching is allowed under a hard population cap: for something to branch, something else must die or be archived."},
+  {name:"Holistic control",short:"Holistic",act:"Check research identity, novelty, cohesion, scope, and fertility.",out:"Research identity; go, branch, or kill decisions",compute:"strong",pop:"2–3 mature lineages",guards:["universality"],why:"Local improvements can accumulate into global mush. Periodically the strongest available model steps back and reviews each lineage as a research project. Rounds of dialectic return here until the frontier stabilizes."},
+  {name:"Target search",short:"Target",act:"Identify the strongest live interlocutor and rebuild it from primary sources.",out:"Target dossier",compute:"strong",pop:"2–3 mature lineages",guards:["drift","charity"],human:"May supply literature the target search needs and cannot reach.",why:"By now the home view has been developed at length; the opponent has not. This third grounding changes what the lineages must answer to: a faithful reconstruction, pinned to the exact propositions at issue."},
+  {name:"Replies to the target",short:"Replies",act:"Generate the ways each surviving lineage could answer this opponent, and press them.",out:"Candidate replies, tested",compute:"mixed",pop:"2–3 lineages, each with candidate replies",guards:[],why:"Without this step the machine would test yesterday’s lineages against a new opponent. The variation is narrow: not new theses, only replies to the strongest opponent, which then go back under reason pressure before anything is compressed."},
+  {name:"Contribution compression",short:"Compress",act:"Extract the smallest memorable contribution and its burden.",out:"Contribution statement",compute:"strong",pop:"1 core contribution",guards:["shapeless","burden"],why:"A strong argument ecology is not yet a paper. Compression finds the smallest set of claims that contains the distinctive contribution, states exactly what must be shown for it to succeed, and archives the rest."},
+  {name:"Literature positioning",short:"Position",act:"Place the contribution precisely among its nearest neighbors in the literature.",out:"Positioning map",compute:"strong",pop:"1 core contribution",guards:["novelty"],human:"May supply nearest-neighbor sources the system cannot reach.",why:"Now that the machine knows what it thinks, it asks where exactly that sits, and whether it is really novel in the way it seems. This fourth grounding continues compression and fixes the neighbors every précis must be written against."},
+  {name:"Paper variation",short:"Précis",act:"Create two or three competing paper précis.",out:"Paper précis, 1,500–2,500 words each",compute:"mixed",pop:"2–3 précis",guards:[],why:"Variation is still useful after the thesis stabilizes, but at a smaller scale: order, target emphasis, expository route, burden allocation. Three précis expose the architectural differences for a fraction of the cost of three drafts."},
+  {name:"Précis under pressure",short:"Précis review",act:"Subject each précis to philosophical and genre reasons.",out:"Objections to each précis",compute:"strong",pop:"2–3 précis",guards:["addiction"],why:"The précis are not merely scored. Each meets explicit objections, philosophical (does it carry the contribution and its burden?) and generic (is it paper-shaped, proportioned, placed?), before anything is chosen."},
+  {name:"Précis selection",short:"Précis choice",act:"Choose the précis that best preserves the contribution.",out:"Frozen précis",compute:"strong",pop:"1 précis",guards:[],why:"The freeze is what lets outlining be cumulative work instead of a second round of philosophy."},
+  {name:"Literature and burden audit",short:"Lit audit",act:"Audit the literature, and what the contribution must show, once more against the frozen précis.",out:"Audited source base",compute:"mixed",pop:"1 précis",guards:["laundering"],human:"Supplies any last sources the audit flags.",why:"The fifth grounding. Before the paper’s structure is fixed, the machine checks that every claimed relation to the literature is real and that nothing important has been missed."},
+  {name:"Outline variation",short:"Outlines",act:"Generate competing hierarchical outlines.",out:"Candidate outlines",compute:"mixed",pop:"2–3 outlines",guards:[],why:"The winning précis still underdetermines the paper. Outlines differ in hierarchy, order, and where each argumentative job gets done."},
+  {name:"Outlines under pressure",short:"Outline review",act:"Subject the outlines to reasoning, genre, dependency, and proportion tests.",out:"Objections to each outline",compute:"strong",pop:"2–3 outlines",guards:["proportion"],why:"An outline can be valid and still misallocate attention. Proportion is checked here, where it is cheap to fix, rather than in finished prose."},
+  {name:"Outline selection",short:"Outline choice",act:"Choose and freeze the detailed outline and its argumentative units.",out:"Frozen outline, divided into argumentative units",compute:"strong",pop:"1 outline",guards:[],why:"An argumentative unit is the smallest self-contained stretch of prose that performs one clear argumentative job: not an arbitrary paragraph, and not a whole section. Freezing the outline at that grain is what makes prose variation safe."},
+  {name:"Unit realizations",short:"Prose units",act:"Write two or three prose realizations of each argumentative unit.",out:"Candidate prose for each unit",compute:"cheap",pop:"2–3 realizations per unit",guards:[],why:"Variation at the smallest scale: exposition, organization, emphasis, examples, cadence. Strict instructions forbid introducing new philosophical moves."},
+  {name:"Editorial selection",short:"Editorial",act:"Select or lightly synthesize the best variant per unit, then smooth sections and the whole draft.",out:"Polished draft",compute:"mixed",pop:"1 draft",guards:[],why:"Selection here is explicitly editorial: clarity, economy, continuity, genre fit. Smoothing then runs at the section level and across the whole paper."},
+  {name:"Journal-style referee report",short:"Referee",act:"Send the polished draft out for a tough, journal-style report.",out:"Referee report",compute:"strong",pop:"Independent reports",guards:["completeness"],why:"Treated like a revise-and-resubmit: representation of the target, sufficiency of support, literature awareness, proportionality of coverage, likely editorial objections. An argument that survived many objections tends to sound more conclusive than it is."},
+  {name:"Revise and resubmit",short:"R&R",act:"Respond where warranted and make local revisions.",out:"Revised draft and response",compute:"mixed",pop:"1 revised draft",guards:[],why:"Most objections get local answers. Only a genuinely fatal flaw reopens an earlier freeze, and then only at the level where the defect lives."},
+  {name:"Citation verification and artifact audit",short:"Verify",act:"Verify every citation and quotation the system can reach, flag the rest, and audit the final artifact.",out:"Verified paper and a list of flagged items",compute:"mixed",pop:"1 paper",guards:[],human:"After this stage, the final checkpoint: The operator verifies only the flagged items, reviews the provenance record, and submits.",why:"Verification is the system’s job, not the operator’s: every source exists, quotations match, page references and bibliography entries correspond. Submission itself is a constitutional act that happens after this stage."}
+];
+STAGES.forEach((st,i)=>{st.s=i;
+  st.roles=ROLES.filter(r=>r.at[i]).sort((a,b)=>(b.at[i]-a.at[i])||(ORD.indexOf(a.id)-ORD.indexOf(b.id))).map(r=>({id:r.id,lvl:r.at[i]}));});
+
+const FAILS=[
+  {id:"integration",name:"Over-integration",looks:"Synthesis turns real disagreement into an ecumenical framework in which everyone is partly right.",mech:"Disagreement preservation and anti-collapse rules; the thesis must exclude something substantive.",s:5},
+  {id:"universality",name:"Premature universality",looks:"A narrow insight is promoted into a grand theory too quickly.",mech:"Scope control at holistic review; generalization must earn its way in.",s:8},
+  {id:"drift",name:"Target drift",looks:"The lineage gradually solves a neighboring problem instead of defeating or revising its intended interlocutor.",mech:"Target check: what would the target’s defender have to concede if the paper succeeds?",s:9},
+  {id:"charity",name:"Asymmetric charity",looks:"The home view is steelmanned while the opponent is simplified.",mech:"Fresh target reconstruction from primary sources before declaring victory.",s:9},
+  {id:"shapeless",name:"Shapeless complexity",looks:"A sophisticated lineage sprawls across too many distinctions and subsidiary theses.",mech:"Compression: the smallest set of claims containing the distinctive contribution; archive the rest.",s:11},
+  {id:"burden",name:"Wrong burden",looks:"The paper tries to establish what it need not, or fails to establish what its contribution requires.",mech:"Burden audit: state precisely what must be shown for the intervention to succeed.",s:11},
+  {id:"novelty",name:"Loss of novelty",looks:"A mature argument turns out largely to reproduce existing work.",mech:"Positioning among nearest neighbors; reframe around the genuinely distinctive contribution, or reopen.",s:12},
+  {id:"addiction",name:"Objection addiction",looks:"Disproportionate effort goes to increasingly remote objections.",mech:"Relevance threshold: only objections that materially threaten the central contribution earn paper space.",s:14},
+  {id:"laundering",name:"Literature laundering",looks:"The right names are cited, but the argumentative relation to them is thin.",mech:"Claim-level mapping: exactly which proposition is rejected, revised, extended, or presupposed.",s:16},
+  {id:"proportion",name:"Bad proportion",looks:"The right contents appear, but background, objections, or side issues get the wrong amount of attention.",mech:"Proportion constraints on the outline, before any prose exists.",s:18},
+  {id:"completeness",name:"False completeness",looks:"Because the lineage survived many objections, the paper sounds more conclusive than the evidence warrants.",mech:"Journal-style report and a response that keeps unresolved reasons visible.",s:22}
+];
+const FB={};FAILS.forEach(f=>FB[f.id]=f);
+const COMPUTE={human:"Human decision",cheap:"Fast, cheap passes",mixed:"Mixed: cheap generation, strong judgment",strong:"Strongest available models"};
+
+function chip(id,lvl){const r=RB[id];return `<span class="chip${lvl===1?" lite":""}" style="--c:var(${FC[r.fam]})"><i></i>${r.name}</span>`;}
+
+/* ---------------- tooltip ---------------- */
+const tip=document.getElementById("tip");
+function showTip(e,text){tip.textContent=text;tip.style.opacity=1;const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+16;if(x+w>window.innerWidth-8)x=e.clientX-w-14;if(y+h>window.innerHeight-8)y=e.clientY-h-12;tip.style.left=x+"px";tip.style.top=y+"px";}
+function hideTip(){tip.style.opacity=0;}
+
+/* ---------------- hero thread ---------------- */
+(function(){
+  const svg=document.getElementById("thread");const W=1400,H=150,Y=76;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const yAt=x=>Y+12*Math.sin(x/150+.4)+5*Math.sin(x/57+1.3);
+  const wAt=x=>1.2+7*Math.pow(x/W,1.2);
+  const top=[],bot=[];
+  for(let x=0;x<=W;x+=7){top.push(x+","+(yAt(x)-wAt(x)/2).toFixed(2));bot.push(x+","+(yAt(x)+wAt(x)/2).toFixed(2));}
+  el("path",{d:"M"+top.join(" L")+" L"+bot.reverse().join(" L")+" Z",style:"fill:var(--ink)"},svg);
+  const nodesG=el("g",{},svg),agG=el("g",{},svg);
+  const fams=["vary","select","ground","ink"];const nodes=[];
+  function addNode(x,f){const c=el("circle",{cx:x.toFixed(1),cy:yAt(x).toFixed(1),r:3.1,style:`fill:var(--${f});stroke:var(--paper);stroke-width:1.3`},nodesG);nodes.push(c);if(nodes.length>80)nodes.shift().remove();}
+  for(let i=0;i<26;i++)addNode(40+Math.random()*(W-80),fams[i%4]);
+  if(reduced){
+    [[180,-1,"vary"],[470,1,"select"],[760,-1,"ground"],[1050,1,"shape"],[1260,-1,"select"]].forEach(([x,s,f])=>el("circle",{cx:x,cy:yAt(x)+s*(wAt(x)/2+22),r:6,style:`fill:var(--${f})`},agG));
+    return;
+  }
+  const ease=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  const agents=[];let running=false,lastSpawn=0;
+  function spawn(t){const x=50+Math.random()*(W-100);const side=Math.random()<.5?-1:1;const f=fams[(Math.random()*4)|0];
+    const c=el("circle",{r:6,cx:-20,cy:-20,style:`fill:var(--${f});opacity:0`},agG);agents.push({x,side,f,c,t0:t,dx:Math.random()*70-35,placed:false});}
+  function frame(t){if(!running)return;
+    if(t-lastSpawn>430){spawn(t);lastSpawn=t;}
+    for(let i=agents.length-1;i>=0;i--){const a=agents[i];const u=(t-a.t0)/1900;
+      if(u>=1){a.c.remove();agents.splice(i,1);continue;}
+      const ty=yAt(a.x)+a.side*(wAt(a.x)/2+7);let x,y,o;
+      if(u<.42){const k=ease(u/.42);x=a.x+a.dx*(1-k);y=ty+a.side*52*(1-k);o=Math.min(1,u/.12);}
+      else if(u<.58){x=a.x;y=ty;o=1;if(!a.placed&&u>.5){addNode(a.x,a.f);a.placed=true;}}
+      else{const k=ease((u-.58)/.42);x=a.x-a.dx*.6*k;y=ty+a.side*60*k;o=1-k;}
+      a.c.setAttribute("cx",x.toFixed(1));a.c.setAttribute("cy",y.toFixed(1));a.c.style.opacity=o;}
+    requestAnimationFrame(frame);}
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!running){running=true;requestAnimationFrame(frame);}else if(!e.isIntersecting)running=false;});});
+  io.observe(svg);
+})();
+
+/* ---------------- master diagram ---------------- */
+const LAST=STAGES.length-1;
+const X=s=>165+s*50, C=290, CW=50;
+function pathD(pts){const p=pts.map(([s,y])=>[X(s),y]);let d=`M${p[0][0].toFixed(1)},${p[0][1].toFixed(1)}`;
+  for(let i=0;i<p.length-1;i++){const p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p2;
+    const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6,c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+=` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;}
+  return d;}
+
+const svg=document.getElementById("run");
+const defs=el("defs",{},svg);
+function marker(id,v,both){const m=el("marker",{id:id,viewBox:"0 0 8 8",refX:6,refY:4,markerWidth:9,markerHeight:9,markerUnits:"userSpaceOnUse",orient:both?"auto-start-reverse":"auto"},defs);el("path",{d:"M0,0 L8,4 L0,8 z",style:`fill:var(${v})`},m);}
+marker("mSel","--select");marker("mSel2","--select",true);marker("mVary","--vary");marker("mInk","--ink-2");
+const clip=el("clipPath",{id:"reveal"},defs);const clipRect=el("rect",{x:0,y:0,width:1400,height:700},clip);
+
+const hovRect=el("rect",{x:0,y:30,width:CW,height:642,rx:6,style:"fill:var(--tint);opacity:0"},svg);
+const selRect=el("rect",{x:X(0)-CW/2,y:30,width:CW,height:642,rx:6,style:"fill:var(--tint)"},svg);
+const selRect2=el("rect",{x:X(0)-CW/2,y:30,width:CW,height:642,rx:6,style:"fill:none;stroke:var(--rule);stroke-width:1.2"},svg);
+
+TURNS.forEach(tn=>{const x0=X(tn.from)-CW/2+2,x1=X(tn.to)+CW/2-2;
+  el("rect",{x:x0,y:2,width:x1-x0,height:24,rx:12,style:"fill:none;stroke:var(--rule);stroke-width:1.3"},svg);
+  const t=txt(svg,(x0+x1)/2,18.5,"",{"text-anchor":"middle",class:"t-phase"});
+  const a=el("tspan",{style:"font-weight:760;fill:var(--ink)"},t);a.textContent=tn.n+"  ";
+  const b=el("tspan",{},t);b.textContent=tn.name;});
+
+const stageLabels=STAGES.map(st=>{const g=el("g",{class:"slabel"},svg);
+  txt(g,X(st.s),46,String(st.s),{"text-anchor":"middle",class:"t-num"});
+  txt(g,X(st.s),st.s%2?76:62,st.short,{"text-anchor":"middle",class:"t-sname"});return g;});
+STAGE_OPS.forEach((ops,i)=>{const w=(ops.length-1)*9;ops.forEach((o,j)=>el("circle",{cx:X(i)-w/2+j*9,cy:88,r:3.3,style:`fill:var(${FC[o]})`,"data-tip":`Stage ${i}: ${ops.map(q=>OPS.find(z=>z.id===q).name.toLowerCase()).join(" and ")}`},svg));});
+
+// compute strip
+txt(svg,131,112,"Compute",{"text-anchor":"end",class:"t-gut"});
+el("line",{x1:X(0)-CW/2,x2:X(LAST)+CW/2,y1:113,y2:113,style:"stroke:var(--rule);stroke-width:1"},svg);
+const CH={human:6,cheap:4,mixed:8,strong:13},CC={human:"--human",cheap:"--ink-3",mixed:"--ink-2",strong:"--ink"};
+STAGES.forEach(st=>{const h=CH[st.compute];el("rect",{x:X(st.s)-12,y:113-h,width:24,height:h,rx:2,style:`fill:var(${CC[st.compute]})`,"data-tip":`Stage ${st.s}: ${COMPUTE[st.compute]}`},svg);});
+
+// envelope
+const HV=[[0.5,0],[0.9,120],[1.3,150],[4,150],[5,146],[6,140],[7,125],[8,105],[9,88],[10,76],[11,58],[12,50],[13,44],[14,40],[15,34],[16,30],[17,26],[18,22],[19,18],[20,15],[21,11],[22,10],[23,9],[24,7],[24.35,0]];
+const envTop=HV.map(([s,h])=>[s,C-h]),envBot=HV.map(([s,h])=>[s,C+h]).reverse();
+el("path",{d:pathD(envTop)+" "+pathD(envBot).replace(/^M/,"L")+" Z",style:"fill:var(--paper-2);fill-opacity:.75;stroke:var(--rule);stroke-width:1","data-tip":"The permitted scale of variation. By default it narrows on a schedule; a serious defeater can re-expand it locally, back to the level where the defect lives."},svg);
+txt(svg,X(1.35),C-157,"Permitted scale of variation",{class:"t-env"});
+txt(svg,131,158,"Arguments",{"text-anchor":"end",class:"t-gut"});
+
+const fieldG=el("g",{"clip-path":"url(#reveal)"},svg);
+const gateG=el("g",{},fieldG),connG=el("g",{},fieldG),lineG=el("g",{},fieldG),evG=el("g",{},fieldG),hitG=el("g",{},fieldG);
+
+// gates: selection and freeze
+[[2,150,"Agenda freeze: a provisional research agenda, plus literature requests"],[6,146,"First selection: a small Pareto frontier survives"],[8,112,"Holistic control: go, branch, or kill"],[11,64,"Compression to one core contribution"],[15,40,"Précis freeze"],[19,26,"Outline freeze: the argumentative units are fixed"]].forEach(([s,h,tip])=>{
+  const g=el("g",{"data-tip":tip},gateG),x=X(s);
+  el("line",{x1:x,x2:x,y1:C-h,y2:C+h,style:"stroke:var(--shape);stroke-width:1.7;stroke-dasharray:3 4"},g);
+  el("line",{x1:x-5,x2:x+5,y1:C-h,y2:C-h,style:"stroke:var(--shape);stroke-width:1.7"},g);
+  el("line",{x1:x-5,x2:x+5,y1:C+h,y2:C+h,style:"stroke:var(--shape);stroke-width:1.7"},g);
+  el("line",{x1:x,x2:x,y1:C-h,y2:C+h,style:"stroke:transparent;stroke-width:12"},g);});
+
+// lineages
+const L={
+  A:{pts:[[4,162],[4.5,164],[5,166],[5.3,160],[5.7,158],[6,160],[6.5,168],[6.8,172],[7,184],[7.3,188],[7.55,191],[7.75,195]],dies:true,tip:"Lineage A. Revised after meeting its rivals, then repaired once in dialectic. A second objection arrived as C branched, pushing the population over its cap. Archived."},
+  B:{pts:[[4,198],[4.5,196],[5,194],[5.4,186],[5.9,176]],dies:true,tip:"Lineage B. Meeting A pulled it toward A; culled as redundant at first selection."},
+  C:{pts:[[4,234],[4.5,236],[5,238],[5.4,236],[6,242],[6.5,247],[7,250]],dies:false,tip:"Lineage C. Branched during dialectic into two descendants, C′ and C″."},
+  C1:{pts:[[7,250],[7.3,236],[7.6,225],[8,216],[8.5,222],[9,235],[9.5,245],[10,250],[10.5,252],[10.9,254]],dies:true,tip:"Lineage C′. Survived holistic review and answered the opponent, but less well than F. Archived at compression."},
+  C2:{pts:[[7,250],[7.3,262],[7.6,270],[7.96,276]],dies:true,tip:"Lineage C″. Killed at holistic review."},
+  D:{pts:[[4,270],[4.5,272],[5,275],[5.4,280],[6,284],[6.5,295],[6.9,308],[7.2,312],[7.6,306],[8,293],[8.5,290],[9,290],[9.5,291],[10,292],[10.5,293],[10.9,294]],dies:true,tip:"Lineage D. Lent a distinction to F during dialectic, survived holistic review, archived at compression. Its best idea lives on in F."},
+  E:{pts:[[4,306],[4.5,308],[5,311],[5.4,314],[5.94,318]],dies:true,tip:"Lineage E. Weak on several dimensions even after the encounter; culled at first selection."},
+  F:{pts:[[4,342],[4.5,344],[5,346],[5.4,348],[6,352],[6.5,364],[7,377],[7.3,380],[7.45,375],[7.7,366],[8,356],[8.5,348],[9,339],[9.5,330],[10,322],[10.5,305],[10.85,292],[11.1,290],[12.6,290]],dies:false,tip:"Lineage F. Took an objection, imported a distinction from D, found a reply to the strongest opponent that survived pressure, and became the core contribution."},
+  G:{pts:[[4,378],[4.5,380],[5,382],[5.4,386],[5.94,390]],dies:true,tip:"Lineage G. Dominated on every dimension by a rival; culled at first selection."},
+  H:{pts:[[4,414],[4.5,412],[5,409],[5.4,404],[5.94,398]],dies:true,tip:"Lineage H. Dominated on every dimension by a rival; culled at first selection."},
+  P1:{pts:[[12.6,290],[13,272],[13.5,266],[14,266],[14.5,268],[15,278],[15.4,290]],dies:false,w:1.7,tip:"Précis 1. Survived its objections and was frozen."},
+  P2:{pts:[[12.6,290],[13,290],[14,290],[14.95,290]],dies:true,w:1.7,tip:"Précis 2. A rival organization of the same contribution; not selected."},
+  P3:{pts:[[12.6,290],[13,308],[13.5,313],[14,313],[14.95,310]],dies:true,w:1.7,tip:"Précis 3. A rival organization of the same contribution; not selected."},
+  O1:{pts:[[16.6,290],[17,280],[17.5,277],[18,277],[18.5,279],[19,284],[19.4,290]],dies:false,w:1.5,tip:"Outline 1. Selected and frozen, divided into argumentative units."},
+  O2:{pts:[[16.6,290],[17,290],[18,290],[18.95,290]],dies:true,w:1.5,tip:"Outline 2. Not selected."},
+  O3:{pts:[[16.6,290],[17,300],[17.5,303],[18,303],[18.95,300]],dies:true,w:1.5,tip:"Outline 3. Not selected."}
+};
+const P={};
+for(const k in L){const l=L[k];const d=pathD(l.pts);
+  P[k]=el("path",{d:d,style:`fill:none;stroke:var(--ink);stroke-width:${l.w||2};stroke-linecap:round`},lineG);
+  el("path",{d:d,style:"fill:none;stroke:transparent;stroke-width:13","data-tip":l.tip},hitG);
+  if(l.dies){const e=l.pts[l.pts.length-1];el("circle",{cx:X(e[0]),cy:e[1],r:3.6,style:"fill:var(--paper);stroke:var(--ink);stroke-width:1.6"},evG);}}
+function seg(a,b,w,tip){const d=pathD([[a,C],[b,C]]);el("path",{d:d,style:`stroke:var(--ink);stroke-width:${w};stroke-linecap:round`},lineG);if(tip)el("path",{d:d,style:"stroke:transparent;stroke-width:16","data-tip":tip},hitG);}
+seg(11.1,12.6,4,"The core contribution, compressed and frozen");
+seg(15.4,16.6,3,"The frozen précis");
+seg(19.4,19.75,2.4);
+[[[19.75,290],[20.1,283],[20.5,283],[20.9,290]],[[19.75,290],[20.9,290]],[[19.75,290],[20.1,297],[20.5,297],[20.9,290]]].forEach(pts=>el("path",{d:pathD(pts),style:"fill:none;stroke:var(--ink);stroke-width:1.3"},lineG));
+el("path",{d:pathD([[19.75,283],[20.9,297]]),style:"stroke:transparent;stroke-width:20","data-tip":"Two or three prose realizations of each argumentative unit"},hitG);
+seg(20.9,23.9,8,"The polished draft, then the revised draft");
+[["A",162],["B",198],["C",234],["D",270],["E",306],["F",342],["G",378],["H",414]].forEach(([n,y])=>txt(evG,X(4)-7,y+4,n,{"text-anchor":"end",class:"t-let"}));
+txt(evG,X(7.25),230,"C′",{class:"t-let"});txt(evG,X(7.25),278,"C″",{class:"t-let"});
+
+function yAt(path,s){const x=X(s),Lt=path.getTotalLength();let lo=0,hi=Lt;for(let i=0;i<28;i++){const m=(lo+hi)/2;if(path.getPointAtLength(m).x<x)lo=m;else hi=m;}return path.getPointAtLength(hi).y;}
+
+// seed, problems, agenda, corpus
+const seedG=el("g",{"data-tip":"Seed brief: broad domain, competition constraints, compute budget, explicit human contribution."},evG);
+el("circle",{cx:X(0),cy:C,r:11,style:"fill:var(--paper);stroke:var(--human);stroke-width:2.2"},seedG);
+el("circle",{cx:X(0),cy:C,r:4.2,style:"fill:var(--human)"},seedG);
+const probs=[180,235,290,345,400],keep=[1,3],agY=[250,330];
+probs.forEach(py=>el("path",{d:pathD([[0,C],[0.5,(C+py)/2],[1,py]]),style:"fill:none;stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:2 4"},connG));
+keep.forEach((pi,j)=>el("path",{d:pathD([[1,probs[pi]],[1.5,(probs[pi]+agY[j])/2],[2,agY[j]]]),style:"fill:none;stroke:var(--ink-2);stroke-width:1.4"},connG));
+probs.forEach((py,i)=>el("circle",{cx:X(1),cy:py,r:5,style:`fill:var(--paper);stroke:var(--ink);stroke-width:1.6;opacity:${keep.includes(i)?1:.4}`,"data-tip":keep.includes(i)?"A candidate problem kept on the agenda":"A candidate problem left off the agenda"},evG));
+agY.forEach(y=>el("rect",{x:X(2)-5,y:y-5,width:10,height:10,rx:1.5,style:"fill:var(--shape);stroke:var(--ink);stroke-width:1.3","data-tip":"The provisional research agenda, which generates literature requests"},evG));
+const kidsOf={A:0,B:0,C:0,D:0,E:1,F:1,G:1,H:1};
+Object.keys(kidsOf).forEach(k=>{const ay=agY[kidsOf[k]],ly=L[k].pts[0][1];el("path",{d:pathD([[2,ay],[3,ay*.6+ly*.4],[4,ly]]),style:"fill:none;stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:2 4"},connG);});
+function stack(s,y,tip){const g=el("g",{"data-tip":tip},evG);[[0,0],[3,-7],[-2,-14]].forEach(([dx,dy])=>el("rect",{x:X(s)-12+dx,y:y+dy,width:24,height:6,rx:1.5,style:"fill:var(--ground)"},g));return g;}
+stack(3,152,"Shared corpus: the requested literature, incorporated for every lineage");
+
+// reciprocal encounter
+function link(k1,k2,s){const x=X(s),y1=yAt(P[k1],s)+4,y2=yAt(P[k2],s)-4;el("line",{x1:x,y1:y1+5,x2:x,y2:y2-5,style:"stroke:var(--select);stroke-width:1.6","marker-start":"url(#mSel2)","marker-end":"url(#mSel2)","data-tip":"Reciprocal encounter: each rumination takes its rival seriously"},evG);}
+[["A","B",4.72],["C","D",4.72],["E","F",4.72],["G","H",4.72],["B","C",4.92],["D","E",4.92],["F","G",4.92]].forEach(a=>link(...a));
+function repair(k,s,tip){el("circle",{cx:X(s),cy:yAt(P[k],s),r:3.8,style:"fill:var(--vary);stroke:var(--paper);stroke-width:1.4","data-tip":tip||"Repairer: a defensible descendant that answers the objection"},evG);}
+["A","B","C","D","E","F","G","H"].forEach(k=>repair(k,5.25,`Lineage ${k} becomes ${k}′ after meeting its rivals`));
+
+// dialectic
+function dart(k,s,tipText){const x=X(s),y=yAt(P[k],s);el("line",{x1:x-14,y1:y-22,x2:x-3,y2:y-6,style:"stroke:var(--select);stroke-width:1.8","marker-end":"url(#mSel)","data-tip":tipText||"Critic: an objection aimed at a live commitment"},evG);}
+dart("A",6.8);dart("C",6.85);dart("D",6.92);dart("F",7.3);dart("C2",7.5);dart("A",7.55);
+repair("A",7.0);repair("D",7.12);repair("F",7.62);
+el("circle",{cx:X(7),cy:250,r:5.4,style:"fill:var(--paper);stroke:var(--vary);stroke-width:2.1","data-tip":"Branch: one lineage becomes two, so another must die"},evG);
+(function(){const x1=X(7.2),y1=yAt(P.D,7.2),x2=X(7.42),y2=yAt(P.F,7.42);
+  el("path",{d:`M${x1},${y1} C${x1+20},${y1+8} ${x2+9},${y2-28} ${x2+1},${y2-5}`,style:"fill:none;stroke:var(--vary);stroke-width:1.8;stroke-dasharray:4 3","marker-end":"url(#mVary)","data-tip":"Recombiner: F imports a distinction from D where there is a principled fit"},evG);})();
+el("path",{d:`M${X(8)},446 C${X(8)},470 ${X(7)},470 ${X(7)},450`,style:"fill:none;stroke:var(--ink-2);stroke-width:1.5","marker-end":"url(#mInk)","data-tip":"Holistic control is periodic: rounds of dialectic return to it"},evG);
+txt(evG,X(7.5),482,"rounds",{"text-anchor":"middle",class:"t-small"});
+
+// target and replies
+const tg=el("g",{"data-tip":"Target dossier: the strongest faithful reconstruction of the opponent"},evG);
+[["C1",8.8],["D",9.1],["F",9.4]].forEach(([k,s])=>el("line",{x1:X(9),y1:166,x2:X(s),y2:yAt(P[k],s),style:"stroke:var(--ground);stroke-width:1.2;stroke-dasharray:2 3"},tg));
+el("circle",{cx:X(9),cy:160,r:9.5,style:"fill:var(--paper);stroke:var(--ground);stroke-width:2"},tg);
+el("circle",{cx:X(9),cy:160,r:3.6,style:"fill:var(--ground)"},tg);
+[["C1",-1],["D",1],["F",1]].forEach(([k,dir])=>{const y0=yAt(P[k],9.6);const pts=[[9.6,y0],[10.05,y0+dir*11],[10.4,y0+dir*14]];
+  el("path",{d:pathD(pts),style:"fill:none;stroke:var(--ink);stroke-width:1.4"},lineG);
+  el("path",{d:pathD(pts),style:"fill:none;stroke:transparent;stroke-width:10","data-tip":"A candidate reply to the opponent that failed under pressure"},hitG);
+  el("circle",{cx:X(10.4),cy:y0+dir*14,r:3.2,style:"fill:var(--paper);stroke:var(--ink);stroke-width:1.4"},evG);
+  const xs=X(10.22),ys=y0+dir*12.5;el("line",{x1:xs+(dir<0?-12:-12),y1:ys+(dir<0?-18:18),x2:xs-2,y2:ys+(dir<0?-4:4),style:"stroke:var(--select);stroke-width:1.6","marker-end":"url(#mSel)","data-tip":"The opponent’s side presses a reply"},evG);
+  repair(k,10.35,"A reply to the opponent that survived pressure");});
+// compression
+const cg=el("g",{"data-tip":"Compression: the smallest set of claims containing the contribution"},evG);
+el("path",{d:`M${X(11)-6},${C-36} L${X(11)+6},${C-36} L${X(11)},${C-25} Z`,style:"fill:var(--shape)"},cg);
+el("path",{d:`M${X(11)-6},${C+36} L${X(11)+6},${C+36} L${X(11)},${C+25} Z`,style:"fill:var(--shape)"},cg);
+// nearest neighbours
+const ng=el("g",{"data-tip":"Nearest-neighbor literature: where exactly the contribution sits, and whether it is novel as claimed"},evG);
+[[11.75,236],[12.2,344],[12.45,244]].forEach(([s,y])=>{el("line",{x1:X(s),y1:y,x2:X(s),y2:C+(y<C?-4:4),style:"stroke:var(--ground);stroke-width:1.2;stroke-dasharray:2 3"},ng);el("circle",{cx:X(s),cy:y,r:4.4,style:"fill:var(--ground)"},ng);});
+// précis pressure
+["P1","P2","P3"].forEach(k=>dart(k,14,"Philosophical and genre reasons against a précis"));
+// final literature audit
+const au=stack(16,236,"Final literature audit");el("line",{x1:X(16),y1:238,x2:X(16),y2:C-4,style:"stroke:var(--ground);stroke-width:1.2;stroke-dasharray:2 3"},au);
+// outline pressure
+["O1","O2","O3"].forEach(k=>dart(k,18,"Reasoning, genre, and proportion constraints on an outline"));
+// referee, R&R, submission
+el("line",{x1:X(21.8),y1:172,x2:X(21.96),y2:C-9,style:"stroke:var(--select);stroke-width:1.9","marker-end":"url(#mSel)","data-tip":"Journal-style referee report"},evG);
+el("line",{x1:X(22.25),y1:172,x2:X(22.05),y2:C-9,style:"stroke:var(--select);stroke-width:1.9;stroke-dasharray:5 3","marker-end":"url(#mSel)","data-tip":"An independent second report"},evG);
+[22.3,22.45,22.6].forEach(s=>el("circle",{cx:X(s),cy:C,r:2.3,style:"fill:var(--select)","data-tip":"An objection from the report"},evG));
+[23.05,23.25].forEach(s=>el("circle",{cx:X(s),cy:C,r:2.6,style:"fill:var(--vary)","data-tip":"A local revision answering the report"},evG));
+const sg=el("g",{"data-tip":"Submission, after the final artifact audit"},evG);
+el("path",{d:`M${X(24)-9},${C-13} h12 l7,7 v19 h-19 z`,style:"fill:var(--shape);stroke:var(--ink);stroke-width:1.6"},sg);
+
+// lenses
+const reopenG=el("g",{style:"display:none"},svg);
+[[22,11,"reopens contribution",113,15.3,"A thesis-level defect found by the referee: the machine reruns the contribution turn with the objection as new ground, refreezes, and propagates forward only where needed"],[23,19,"",126,0,"A structural problem in the draft: back to outline selection"],[9,7,"straw target",116,8,"The faithful reconstruction shows the lineages were answering a straw version: back to dialectic"]].forEach(([a,b,label,cy,lx,tip])=>{
+  const xa=X(a),xb=X(b),g=el("g",{"data-tip":tip},reopenG);
+  el("path",{class:"arc",d:`M${xa},144 C${xa},${cy} ${xb},${cy} ${xb},142`,style:"fill:none;stroke:var(--select);stroke-width:1.7;stroke-dasharray:5 4","marker-end":"url(#mSel)"},g);
+  el("path",{d:`M${xa},144 C${xa},${cy} ${xb},${cy} ${xb},142`,style:"fill:none;stroke:transparent;stroke-width:10"},g);
+  if(label)txt(g,X(lx),138,label,{"text-anchor":"middle",class:"t-reopen"});});
+const humanG=el("g",{style:"display:none"},svg);
+[[0,"H0","Constitutional start: domain, parameters, routing"],[1.5,"H1","ChatGPT agenda block: independent problem list and agenda critique"],[2.5,"H2","The operator acquires the requested literature"],[4,"H3","ChatGPT ruminations, each in a fresh context"],[8,"H4","ChatGPT holistic review"],[9.5,"H5","ChatGPT target dossier and anticipated objections"],[12,"H6?","Only if inaccessible literature must be supplied"],[14,"H7","ChatGPT précis critique"],[16,"H6?","Only if inaccessible literature must be supplied"],[22,"H8","Blind ChatGPT referee report"],[23,"H9?","Only if the R&R requires a reopening"],[24.3,"H10","The operator verifies flagged items and submits"]].forEach(([s,label,tip])=>{
+  const g=el("g",{"data-tip":tip},humanG);
+  el("circle",{cx:X(s),cy:458,r:5,style:`fill:${label.endsWith("?")?"var(--paper)":"var(--human)"};stroke:var(--human);stroke-width:1.8`},g);
+  txt(g,X(s),Math.round(s)%2?486:474,label,{"text-anchor":"middle",class:"t-human"});});
+
+// persistent state
+txt(svg,8,504,"Persistent state",{class:"t-gut"});
+const MEM=[
+  {name:"Seed brief",from:0,to:24,c:"--human"},
+  {name:"Research agenda",from:2,to:24,c:"--shape"},
+  {name:"Shared backgrounder",from:3,to:24,c:"--ground"},
+  {name:"Argument ledger",from:4,to:24,c:"--ink-2"},
+  {name:"Lineage record",from:4,to:11,c:"--vary"},
+  {name:"Research identity",from:8,to:24,c:"--shape"},
+  {name:"Target dossier",from:9,to:24,c:"--ground"},
+  {name:"Positioning map",from:12,to:24,c:"--ground"},
+  {name:"Paper précis",from:13,to:24,c:"--vary"},
+  {name:"Outline and units",from:17,to:24,c:"--vary"},
+  {name:"Report and response",from:22,to:24,c:"--select"}
+];
+const memG=el("g",{"clip-path":"url(#reveal)"},svg);
+MEM.forEach((m,i)=>{const y=520+i*14.5;
+  m.label=txt(svg,131,y+4,m.name,{"text-anchor":"end",class:"t-mem"});
+  const x0=X(m.from)-10,x1=X(m.to)+18;
+  m.bar=el("g",{class:"membar","data-tip":`${m.name}: written at stage ${m.from}, carried through stage ${m.to}`},memG);
+  el("rect",{x:x0,y:y-3,width:x1-x0,height:6,rx:3,style:`fill:var(${m.c});opacity:.8`},m.bar);
+  el("circle",{cx:x0+3,cy:y,r:4.3,style:`fill:var(${m.c})`},m.bar);});
+
+const playhead=el("line",{x1:X(LAST),x2:X(LAST),y1:30,y2:672,style:"stroke:var(--ink);stroke-width:1.5;opacity:0"},svg);
+
+/* ---------------- panel ---------------- */
+const panel=document.getElementById("panel");
+function renderPanel(s){const st=STAGES[s],tn=TURNS.find(t=>s>=t.from&&s<=t.to);
+  const chips=st.roles.map(r=>chip(r.id,r.lvl)).join("");
+  const rows=[["Operation",`<span class="chips">${STAGE_OPS[s].map(q=>`<span class="chip" style="--c:var(${FC[q]})"><i></i>${OPS.find(z=>z.id===q).name}</span>`).join("")}</span>`],["Who works here",`<span class="chips">${chips}</span>`],["Produces",st.out],["Live candidates",st.pop],["May still vary",tn.vary],["Held fixed",tn.frozen],["Selection question",tn.q],["Compute",COMPUTE[st.compute]]];
+  if(st.guards.length)rows.push(["Guards against",st.guards.map(g=>FB[g].name).join(", ")]);
+  panel.innerHTML=`<div class="p-main"><div class="p-top ui"><span class="p-num">Stage ${s} of ${LAST}</span><span>Turn ${tn.n}: ${tn.name}</span></div>
+    <h3>${st.name}</h3><p class="p-act">${st.act}</p><p class="p-why">${st.why}</p>
+    ${st.human?`<p class="p-human ui"><i></i><span><b>Human role.</b> ${st.human}</span></p>`:""}</div>
+    <dl class="p-facts ui">${rows.map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`;}
+
+/* ---------------- state & playback ---------------- */
+let p=LAST,sel=-1,playing=false,lastT=0,stepTimer=null;
+const scrub=document.getElementById("scrub"),playBtn=document.getElementById("play");
+scrub.max=LAST;scrub.value=LAST;
+const tReopen=document.getElementById("tReopen"),tHuman=document.getElementById("tHuman");
+function select(s){if(s===sel)return;sel=s;
+  stageLabels.forEach((g,i)=>g.classList.toggle("on",i===s));
+  selRect.setAttribute("x",X(s)-CW/2);selRect2.setAttribute("x",X(s)-CW/2);
+  MEM.forEach(m=>{const on=s>=m.from&&s<=m.to;m.bar.style.opacity=on?1:.22;m.label.classList.toggle("on",on);});
+  renderPanel(s);}
+function setP(v){p=Math.max(0,Math.min(LAST,v));
+  clipRect.setAttribute("width",p>=LAST?1400:X(p));
+  playhead.setAttribute("x1",X(p));playhead.setAttribute("x2",X(p));
+  playhead.style.opacity=(p>=LAST&&!playing)?0:.5;
+  scrub.value=p;select(Math.round(p));}
+function stop(){playing=false;playBtn.textContent=p>=LAST?"Replay the run":"Play the run";if(stepTimer){clearInterval(stepTimer);stepTimer=null;}if(p>=LAST)playhead.style.opacity=0;}
+function finish(){stop();pulseReopen();}
+function tick(t){if(!playing)return;const dt=Math.min(.05,(t-lastT)/1000);lastT=t;setP(p+dt/1.15);if(p>=LAST){finish();return;}requestAnimationFrame(tick);}
+playBtn.addEventListener("click",()=>{
+  if(playing){stop();return;}
+  if(p>=LAST-.01)setP(0);
+  playing=true;playBtn.textContent="Pause";playhead.style.opacity=.5;
+  if(reduced){stepTimer=setInterval(()=>{setP(Math.min(LAST,Math.floor(p+0.5)+1.45));if(p>=LAST)finish();},1800);}
+  else{lastT=performance.now();requestAnimationFrame(tick);}});
+function go(s){stop();s=Math.max(0,Math.min(LAST,s));if(p<s+.45)setP(Math.min(LAST,s+.45));select(s);}
+document.getElementById("prev").addEventListener("click",()=>go(sel-1));
+document.getElementById("next").addEventListener("click",()=>go(sel+1));
+scrub.addEventListener("input",()=>{stop();setP(+scrub.value);});
+svg.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){go(sel+1);e.preventDefault();}if(e.key==="ArrowLeft"){go(sel-1);e.preventDefault();}});
+function stageFromEvent(e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(svg.getScreenCTM().inverse());const s=Math.round((q.x-165)/CW);return(s>=0&&s<=LAST&&q.y>28)?s:null;}
+svg.addEventListener("click",e=>{const s=stageFromEvent(e);if(s!==null)go(s);});
+svg.addEventListener("mousemove",e=>{const s=stageFromEvent(e);
+  if(s!==null){hovRect.setAttribute("x",X(s)-CW/2);hovRect.style.opacity=1;}else hovRect.style.opacity=0;
+  const t=e.target.closest&&e.target.closest("[data-tip]");if(t)showTip(e,t.getAttribute("data-tip"));else hideTip();});
+svg.addEventListener("mouseleave",()=>{hovRect.style.opacity=0;hideTip();});
+tReopen.addEventListener("change",()=>{reopenG.style.display=tReopen.checked?"":"none";});
+tHuman.addEventListener("change",()=>{humanG.style.display=tHuman.checked?"":"none";});
+let pulseT=null;
+function pulseReopen(){reopenG.style.display="";reopenG.classList.add("flowing");clearTimeout(pulseT);
+  pulseT=setTimeout(()=>{reopenG.classList.remove("flowing");if(!tReopen.checked)reopenG.style.display="none";},4500);}
+setP(LAST);select(0);playBtn.textContent="Play the run";
+
+/* ---------------- scales custodians ---------------- */
+document.querySelectorAll(".sc-who").forEach(n=>{n.innerHTML=n.dataset.roles.split(",").map(id=>chip(id,2)).join("")+`<span class="sc-st">${n.dataset.st}</span>`;});
+
+/* ---------------- role matrix ---------------- */
+(function(){const host=document.getElementById("matrix");
+  let h='<div class="mx-row mx-headrow" aria-hidden="true"><div class="mx-name"></div>'+STAGES.map(st=>`<div class="mx-c" title="${st.name}">${st.s}</div>`).join("")+'<div class="mx-text mx-htext">What it does, and why it exists</div></div>';
+  ["ground","vary","reason","select","freeze","human"].forEach(fk=>{
+    h+=`<div class="mx-fam"><span class="bar" style="background:var(${FC[fk]})"></span><strong>${FAM[fk].name}</strong><span>${FAM[fk].job}</span></div>`;
+    ROLES.filter(r=>r.fam===fk).forEach(r=>{
+      h+=`<div class="mx-row"><div class="mx-name">${r.name}</div>`+STAGES.map(st=>{const v=r.at[st.s]||0;return `<div class="mx-c">${v?`<span class="dot d${v}" style="background:var(${FC[fk]})" title="${r.name}, stage ${st.s}: ${st.name}"></span>`:'<span class="dot d0"></span>'}</div>`;}).join("")+`<div class="mx-text">${r.does}<em>${r.need}</em></div></div>`;});});
+  host.innerHTML=h;})();
+
+/* ---------------- spiral ---------------- */
+(function(){const sv=document.getElementById("spiral");const cx=350,cy=352,R0=262,dR=31.7,NT=TURNS.length;
+  const ANG={ground:-90,vary:-18,reason:54,select:126,freeze:198};
+  const at=t=>{const a=(-90+360*t)*Math.PI/180,r=R0-dR*t;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  const dfs=el("defs",{},sv);const mk=el("marker",{id:"mSelS",viewBox:"0 0 8 8",refX:6,refY:4,markerWidth:10,markerHeight:10,markerUnits:"userSpaceOnUse",orient:"auto"},dfs);el("path",{d:"M0,0 L8,4 L0,8 z",style:"fill:var(--select)"},mk);
+  OPS.forEach(op=>{const a=ANG[op.id]*Math.PI/180,co=Math.cos(a),si=Math.sin(a);
+    el("line",{x1:cx+30*co,y1:cy+30*si,x2:cx+(R0+14)*co,y2:cy+(R0+14)*si,style:"stroke:var(--rule);stroke-width:1.2"},sv);
+    el("circle",{cx:cx+(R0+24)*co,cy:cy+(R0+24)*si,r:5,style:`fill:var(${FC[op.id]})`},sv);
+    const anchor=co>.3?"start":co<-.3?"end":"middle";const lr=R0+38;
+    txt(sv,cx+lr*co,cy+lr*si+(si>.5?14:si<-.5?-4:5),op.name,{"text-anchor":anchor,class:"t-op"});});
+  const pts=[],cum=[0];for(let i=0;i<=1000;i++){const q=at(NT*i/1000);pts.push(q);if(i)cum.push(cum[i-1]+Math.hypot(q[0]-pts[i-1][0],q[1]-pts[i-1][1]));}
+  const Ltot=cum[1000]+42;
+  const path=el("path",{d:"M"+pts.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join(" L")+` L${cx},${cy}`,style:"fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round"},sv);
+  const pg=el("g",{"data-tip":"Submission-ready paper"},sv);
+  el("path",{d:`M${cx-10},${cy-14} h13 l8,8 v20 h-21 z`,style:"fill:var(--shape);stroke:var(--ink);stroke-width:1.6"},pg);
+  // reopen jump
+  const a1=at(NT-1+2/5),a2=at(3+3/5);const cp=[cx+250*Math.cos(Math.PI/2),cy+250*Math.sin(Math.PI/2)];
+  const rj=el("g",{"data-tip":"Reopening: a serious defect found by the referees jumps outward to an earlier, wider turn"},sv);
+  el("path",{d:`M${a1[0]},${a1[1]} Q${cp[0]},${cp[1]} ${a2[0]+6},${a2[1]+10}`,style:"fill:none;stroke:var(--select);stroke-width:1.8;stroke-dasharray:5 4","marker-end":"url(#mSelS)"},rj);
+  el("path",{d:`M${a1[0]},${a1[1]} Q${cp[0]},${cp[1]} ${a2[0]},${a2[1]}`,style:"fill:none;stroke:transparent;stroke-width:12"},rj);
+  txt(rj,cx+18,cy+172,"reopen",{"text-anchor":"start",class:"t-reopen"});
+  const nodes=[];
+  TURNS.forEach((tn,i)=>OPS.forEach((op,k)=>{const t=i+k/5,[x,y]=at(t),cell=tn.cells[op.id],c=FC[op.id];
+    const g=el("g",{class:"snode","data-key":`${i}-${op.id}`,"data-tip":`Turn ${tn.n}, ${op.name.toLowerCase()}: ${cell.t}${cell.st?" (stage "+cell.st+")":""}`},sv);
+    g.innerHTML=glyph(cell.k,c).replace(/<svg[^>]*>/,"").replace("</svg>","");
+    g.setAttribute("transform",`translate(${x.toFixed(1)},${y.toFixed(1)}) scale(1.08)`);
+    if(op.id==="ground")txt(g,0,3.6,String(tn.n),{"text-anchor":"middle",class:"t-gnum",style:`fill:${cell.k==="x"?"var(--paper)":"var("+c+")"}`});
+    nodes.push({g,frac:cum[Math.round(t*1000/NT)]/Ltot});}));
+  // interactions
+  sv.addEventListener("mousemove",e=>{const t=e.target.closest&&e.target.closest("[data-tip]");if(t)showTip(e,t.getAttribute("data-tip"));else hideTip();
+    const n=e.target.closest&&e.target.closest(".snode");hilite(n?n.dataset.key:null);});
+  sv.addEventListener("mouseleave",()=>{hideTip();hilite(null);});
+  // draw-in
+  if(!reduced){path.style.strokeDasharray=Ltot;path.style.strokeDashoffset=Ltot;nodes.forEach(n=>n.g.style.opacity=0);
+    const io=new IntersectionObserver(es=>{if(!es.some(e=>e.isIntersecting))return;io.disconnect();const dur=3.4;
+      path.style.transition=`stroke-dashoffset ${dur}s linear`;path.getBoundingClientRect();path.style.strokeDashoffset=0;
+      nodes.forEach(n=>{n.g.style.transition=`opacity .35s ${(n.frac*dur).toFixed(2)}s`;n.g.style.opacity=1;});},{threshold:.35});
+    io.observe(sv);}
+})();
+function hilite(key){document.querySelectorAll("#spiral .snode").forEach(g=>{const on=g.dataset.key===key;const tr=g.getAttribute("transform").replace(/scale\([^)]*\)/,`scale(${on?1.5:1.08})`);g.setAttribute("transform",tr);});
+  document.querySelectorAll(".tt-cell").forEach(c=>c.classList.toggle("hi",c.dataset.key===key));}
+(function(){const host=document.getElementById("turnTable");
+  let h='<div class="tt-row tt-head"><div></div>'+OPS.map(o=>`<div><i style="background:var(${FC[o.id]})"></i>${o.name}</div>`).join("")+"</div>";
+  TURNS.forEach((tn,i)=>{h+=`<div class="tt-row"><div class="tt-turn"><b>Turn ${tn.n}</b>${tn.name}<br><span>${tn.scale}</span></div>`+
+    OPS.map(o=>{const c=tn.cells[o.id];return `<div class="tt-cell k-${c.k}" data-key="${i}-${o.id}">${glyph(c.k,FC[o.id])}<div><span>${c.t}</span>${c.st?`<em>Stage ${c.st}</em>`:""}</div></div>`;}).join("")+"</div>";});
+  host.innerHTML=h;
+  host.addEventListener("mouseover",e=>{const c=e.target.closest(".tt-cell");hilite(c?c.dataset.key:null);});
+  host.addEventListener("mouseleave",()=>hilite(null));
+  document.getElementById("kinds").innerHTML=Object.keys(KINDS).map(k=>`<li>${glyph(k,"--ink-2")}${KINDS[k]}</li>`).join("");
+})();
+
+/* ---------------- failure strip & table ---------------- */
+(function(){const s2=document.getElementById("fstrip");const d2=el("defs",{},s2);
+  const gr=el("linearGradient",{id:"gp",x1:0,x2:1,y1:0,y2:0},d2);
+  el("stop",{offset:"0",style:"stop-color:var(--shape);stop-opacity:.07"},gr);
+  el("stop",{offset:"0.45",style:"stop-color:var(--shape);stop-opacity:.45"},gr);
+  el("stop",{offset:"1",style:"stop-color:var(--shape);stop-opacity:1"},gr);
+  txt(s2,131,30,"Genre pressure",{"text-anchor":"end",class:"t-gut"});
+  el("rect",{x:140,y:18,width:1250,height:14,rx:7,style:"fill:url(#gp)"},s2);
+  txt(s2,140,54,"Preserve the possibility of a paper",{class:"t-lbl2"});
+  txt(s2,1390,54,"Govern the actual artifact",{"text-anchor":"end",class:"t-lbl2"});
+  const tbody=document.querySelector("#ftable tbody");
+  FAILS.slice().sort((a,b)=>a.s-b.s).forEach(f=>{const tr=document.createElement("tr");tr.dataset.s=f.s;
+    tr.innerHTML=`<td>${f.name}</td><td>${f.looks}</td><td>${f.mech}</td><td>Stage ${f.s}, ${STAGES[f.s].short}</td>`;tbody.appendChild(tr);});
+  const rows=[...tbody.querySelectorAll("tr")];
+  STAGES.forEach(st=>{const n=FAILS.filter(f=>f.s===st.s).length;
+    el("line",{x1:X(st.s),x2:X(st.s),y1:62,y2:68,style:"stroke:var(--ink-3);stroke-width:1.2"},s2);
+    if(!n)return;
+    const g=el("g",{class:"pin",tabindex:0,role:"button","aria-label":`Stage ${st.s}, ${st.name}: ${n} failure mode${n>1?"s":""}`},s2);
+    el("circle",{cx:X(st.s),cy:88,r:13,style:"fill:var(--paper);stroke:var(--shape);stroke-width:2.4"},g);
+    txt(g,X(st.s),93.5,String(n),{"text-anchor":"middle",class:"t-lbl",style:"font-weight:750"});
+    txt(g,X(st.s),st.s%2?134:118,st.short,{"text-anchor":"middle",class:"t-lbl"});
+    const on=()=>rows.forEach(r=>r.classList.toggle("hi",+r.dataset.s===st.s)),off=()=>rows.forEach(r=>r.classList.remove("hi"));
+    g.addEventListener("mouseenter",on);g.addEventListener("mouseleave",off);g.addEventListener("focus",on);g.addEventListener("blur",off);
+    g.addEventListener("click",()=>{on();const r=rows.find(r=>+r.dataset.s===st.s);if(r)r.scrollIntoView({behavior:reduced?"auto":"smooth",block:"center"});});});
+})();
+})();
+</script>
+</body>
+</html>

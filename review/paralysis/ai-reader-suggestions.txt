@@ -1,0 +1,33 @@
+SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+These come from a separate Claude conversation used for comprehension checking. The human only asked clarifying questions. All substantive points below originated with the AI reviewer. Treat them as suggestions to evaluate on their merits: accept, modify, or reject each one.
+
+1. FORMAL CHECKS (no changes needed)
+
+2. §4 IS HARD TO FOLLOW WITHOUT A VERBAL GLOSS
+(a) Say in words what the quantities are. r is a property of the future, the same for every option. r_L and r_O are thresholds: the minimum future benefit-to-harm ratio at which each life beats stillness. A lower threshold means the life is easier to justify. A careful reader misread "r_L < r_O" as saying the longtermist life does less good than ordinary life.
+(b) Explain WHY r_L < r_O, not just "Because k > k′." Both lives pay the same premium on the future's harms and gain the same premium on its benefits for the future that would exist anyway. L differs only in adding a small extra slice of future (Δ). That slice is worth adding on much easier terms: whenever r > k/k′, since stillness would not have produced it. Formally, r_L is a weighted average (mediant) of r_O and k/k′, with weight εk′/(k′−1+εk′) on k/k′. Since ε is tiny, r_L sits just below r_O.
+(c) The sentence "The longtermist life now has a second source of value: the extra weight on the benefit it does" invites misreading. Ordinary life also gets the extra weight on every benefit it does, so this is not what distinguishes L.
+(d) Explain in words why the band is narrow. Its relative width is roughly ε/(k′−1) when k′ is near 1, so one agent's tiny margin can move the threshold only slightly.
+(e) Give a plain-language statement of what the band is: futures almost good enough for ordinary life to be permitted, where one person's tiny addition to the future is just enough to cross the line. Slightly worse futures leave the longtermist paralyzed too. Slightly better ones make ordinary life permissible anyway, so there is nothing to escape.
+(f) Make explicit: when doing good carries any premium, a very large r does not rescue the escape; it dissolves paralysis by exceeding r_O. The large-r route works as an escape only at k′ = 1 exactly, where r_O is infinite and no future, however good, permits ordinary life.
+
+3. §2: NAME THE TWO ASYMMETRIES EXPLICITLY
+The introduction states both: doing vs. allowing harm, and harming vs. failing to benefit (D'Alessandro's "HBA"). After that the paper mostly says "the asymmetries." Consider naming both in §2, tying each to its parameter (k > 1; k′ ≈ 1), and saying why paralysis needs both. The first makes authoring the future's harms costly. The second ensures that authoring its benefits earns no matching credit. With k′ = k, one would act whenever the future is net good.
+
+4. A PLAIN-LANGUAGE PICTURE (optional; consider placing before the algebra)
+A reviewer-generated analogy that a non-technical reader found far clearer than the current text:
+Because almost any act reshuffles who is conceived, acting is like signing your name to the whole future. Signing brings extra blame for its harms (done, not allowed) and only a little extra credit for its goods. For a future like ours, the scale tips slightly against signing, so ordinary life is forbidden. The longtermist signs too: same scale, same tilt. Her work only adds a feather (a little more good future). A feather tips the scale only if it was almost perfectly balanced already. So the escape works only by coincidence.
+Extensions: in §3 (k′ = 1), signing earns no extra credit at all, so no ordinary future balances the scale. In §5, the blame surcharge fades for distant chapters of the future, so good work done far out can outweigh it.
+
+5. THESIS SIGNPOSTING (optional)
+The narrow-band result is one of three cases, not the thesis. The thesis is that long-term focus alone does not answer the Paralysis Argument, because the longtermist life also authors the future and pays the full premium, while its gain scales only with the agent's margin. The introduction could preview the three cases (k′ = 1; k′ > 1; limited reach) so readers can see the structure.
+
+6. WHY THE ESCAPE IS DEMANDING (optional clarification)
+The demandingness comes by elimination, from the constraint against doing harm, not from a strong duty of beneficence: every act not justified by long-term effects stays forbidden. §4's contrast already touches this ("that demand is beneficence's own"). A sentence in §2 could make the source of the demandingness explicit.
+
+7. WHY THIS TARGETS DEONTOLOGY (optional)
+Setting k = k′ = 1 recovers the consequentialist comparison: V(O) − V(A) = b and V(L) − V(A) = Δ(B − H). That shows paralysis is specific to the asymmetries. Consequentialists face only the related epistemic problem of cluelessness (Lenman, Greaves), which never makes inaction privileged. This may merit a sentence.
+
+8. §5: KEEP IT, BUT TRIM
+Keep it in the main text. It answers the obvious objection about remote harms (Quinn), earns the conclusion's second disjunct ("or explain why the premium is restricted"), supports one of the three stated novelty claims, and contains the reversal result: a larger future strengthens paralysis with an unlimited premium but eases the escape with a limited one. The Woollard paragraph and the "other replies" paragraph (collective agency, Unruh 2023) could each shrink to a sentence or a footnote.

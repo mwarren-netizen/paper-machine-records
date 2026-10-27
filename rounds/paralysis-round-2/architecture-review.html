@@ -1,0 +1,797 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>rounds/paralysis-round-2/architecture-review.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / rounds/paralysis-round-2/architecture-review.md</div><p class="note">Rendered copy of <code>rounds/paralysis-round-2/architecture-review.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/rounds/paralysis-round-2/architecture-review.md">Original file</a>.</p></header><h1 id="v21-architectural-audit--paper-5-review-round-2">V21
+architectural audit — paper-5, review round 2</h1>
+<h2 id="1-executive-diagnosis">1. Executive diagnosis</h2>
+<p><strong>Keep the current harness for this submission. Repair several
+specific mechanisms; test simplification on research notes before
+replacing the pipeline.</strong> Stage 1 recommends sending the paper
+after bounded local corrections. Inspection of the production history
+does not change that judgment, and the saved philosophical review
+remains frozen.</p>
+<p>The harness generated a worthwhile argument, rejected inadequate
+alternatives, acquired consequential sources, and corrected its
+principal overclaim after outside review. It is not merely polishing an
+insignificant thesis. Its main weakness is the movement from a supported
+conditional result to stronger claims about what follows necessarily,
+what a source establishes, or what every alternative must assume.</p>
+<p>Three mechanisms deserve the most immediate attention:</p>
+<ol type="1">
+<li>Change the existing argument check so that it tests the literal
+strength of the advertised conclusion, rather than validating several
+premises while leaving their conjunction's supposed upshot
+untested.</li>
+<li>Check the context and inferential use of a few decisive paraphrases,
+not only the accuracy of quotations and page locators.</li>
+<li>Repair deterministic checks that misread mathematical text or
+formatting changes, and stop spending strong-model calls on their false
+alarms.</li>
+</ol>
+<p>The evidence for those failures is high-confidence. The claim that a
+substantially shorter pipeline would produce equally good research is a
+hypothesis requiring an experiment. No additional standing reviewer is
+justified by this run.</p>
+<h2 id="2-identification-boundary-and-evidence">2. Identification,
+boundary, and evidence</h2>
+<p>Stage 1 was saved before I opened V21-HARNESS-MAP.md, STATE.md, or
+any production artifact. Its SHA256 is:</p>
+<p><code>b23deb62061b4f338e57fcd2fa9ef7ed45d2262917beeda52364be6d0cd01c35</code></p>
+<p>The frozen comparison checksum was verified before Stage 1 and was
+not changed.</p>
+<p>The relevant run is <strong>runs/paper-5</strong>, machine
+<strong>v14.8</strong>, awaiting its second publication review.
+REVIEW/paper.md is byte-identical to runs/paper-5/09_final/final.md.
+STATE.md's canonical fields establish the current run; the static audit
+map's account of “round 3” and paper-1-r5 is historical and materially
+stale for this packet. I initially inventoried that older path, then
+resolved the discrepancy before reading its production records or
+attributing costs. The first audit independently encountered the same
+stale pointer. This is now a repeated navigation problem, not evidence
+about the older paper's quality. [Evidence: STATE.md;
+V21-HARNESS-MAP.md, final section;
+runs/paper-5/10_review/round-1/architecture-review.md, §2.]</p>
+<p>All subsequent run-relative paths below refer to
+<strong>runs/paper-5/</strong> unless explicitly prefixed with lean/,
+system/, or another root file. I inspected role instructions, the
+selected and rejected proposals, plans and checks, drafting and rewrite
+records, clarity records, source notes and relevant source passages, the
+first review's response, and the call/deviation/event logs. I did not
+operate the harness, edit its instructions, or revise its
+manuscript.</p>
+<p>The source corpus became available to this audit only after Stage 1.
+Its Woollard and MacAskill texts supply passages that the independent
+review could not fully obtain externally. In particular, Woollard leaves
+immediacy conditions open, and the MacAskill appendix contains the
+million-year probability sentence. This resolves access limitations for
+the system's next response; it neither changes the review's historical
+access tags nor overturns its local concerns about the inference from
+agency classifications to impersonal reasons. [Evidence:
+02_corpus/sources/woollard-2015-doing.txt, pp. 17 and 207;
+macaskill-2022-wwotf.txt, PDF page marker 302.]</p>
+<h2 id="3-production-process-and-where-the-thesis-was-selected">3.
+Production process and where the thesis was selected</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>What actually happened</th>
+<th>Advancement criterion and value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Opening, O1–O3</td>
+<td>Map, regional judgment, three acquisition batches, merge, and two
+additions of operator-supplied sources</td>
+<td>Establish a live region and coverage of starting points. Eight
+calls; useful breadth, substantial acquisition cost.</td>
+</tr>
+<tr class="even">
+<td>First candidates, L1-01/L2-01</td>
+<td>Three proposals; advisor chose none</td>
+<td>A compensation countercase defeated the leading claim; alternatives
+were hedged or insufficiently established. The return was used.</td>
+</tr>
+<tr class="odd">
+<td>Second candidates, L1-02/L2-02</td>
+<td>Baseline/margin thesis, benefit-premium objection, and
+attributional-baseline objection</td>
+<td>C1 selected; advisor added the benefit-premium extension and
+demanded a stronger corollary.</td>
+</tr>
+<tr class="even">
+<td>Targeted sources, L3</td>
+<td>Bostrom and Mogensen acquired; published Greaves–MacAskill and Quinn
+supplied; fresh source check</td>
+<td>Target's latest statement and nearest antecedents assessed before
+planning.</td>
+</tr>
+<tr class="odd">
+<td>Plan and plan check, L4–L5</td>
+<td>Plan criticized and revised</td>
+<td>Several mathematical, interpretive, and scope errors caught; a
+corrected plan advanced without another plan check.</td>
+</tr>
+<tr class="even">
+<td>Draft and cold read, L6–L7</td>
+<td>Sonnet draft; fresh Opus report; Woollard acquisition</td>
+<td>Reader found real magnitude and framing issues but also recommended
+an unjustified necessity thesis.</td>
+</tr>
+<tr class="odd">
+<td>Rewrite and final check, L8</td>
+<td>Author adopted necessity framing; checker requested local
+repairs</td>
+<td>New central weakness correctly triggered a fresh check, but that
+check missed the stronger conclusion's counterexample.</td>
+</tr>
+<tr class="even">
+<td>Clarity and verification</td>
+<td>Forty first-pass notes; implementation; quote checks and render</td>
+<td>Much clearer presentation and a usable anonymous PDF; original
+overclaim survived.</td>
+</tr>
+<tr class="odd">
+<td>First outside review and response</td>
+<td>Local revision recommended; source intake acquired Unruh 2025;
+advisor chose rewrite</td>
+<td>Review's counterexamples accepted; necessity claim withdrawn,
+assumptions and illustrations separated.</td>
+</tr>
+<tr class="even">
+<td>Second-pass check, clarity, verification</td>
+<td>Fresh check approved scoped result; 32 clarity notes; extra
+formatting retry; final verification</td>
+<td>Principal defect repaired. Current manuscript supports submission
+with smaller local issues.</td>
+</tr>
+</tbody>
+</table>
+<p>The thesis was selected at <strong>L2-02</strong>, in
+work/choice-2.md. Alternatives were genuinely considered.
+work/choice.md's rejection of the first batch is philosophically
+productive, and should not be counted as avoidable waste merely because
+no manuscript came from it.</p>
+<p>The selected insight is C1's difference between a cost proportional
+to P and a benefit proportional to Δ. That is new intellectual work
+within this run. The benefit-premium extension is another useful
+contribution. The first choice nevertheless says: <strong>“This is a
+general-journal result only if the corollary and that consequence are
+made the centre. The bare inequality alone would be a note.”</strong>
+This is the earliest clear pressure to make the result stronger than the
+baseline calculation warrants. [work/candidates-2.md, C1;
+work/choice-2.md, §2.]</p>
+<p>Later stages did sometimes reconsider rather than merely preserve: L5
+corrected the interpretation of the target's disjunction; the
+outside-review response abandoned the horizon-necessity thesis. But
+several intermediate repairs preserved the desired negative verdict by
+narrowing numerical descriptions or adding defenses without retesting
+the conclusion at its advertised strength.</p>
+<h2 id="4-causes-of-the-current-manuscripts-remaining-weaknesses">4.
+Causes of the current manuscript's remaining weaknesses</h2>
+<p>These are local defects in a submission-worthy paper. Their
+architectural significance should not be inflated to justify wholesale
+redesign.</p>
+<h3
+id="a-the-intended-benefit-detour-an-untested-auxiliary-inference">A.
+The intended-benefit detour: an untested auxiliary inference</h3>
+<p><strong>First located occurrence:</strong> work/plan-L4-01.md, step
+10: a premium confined to intended benefits “applies at most to the Δ
+margin.” The revised plan retains this; the draft and final paper turn
+it into a categorical claim.</p>
+<p><strong>Mechanism:</strong> L5 primarily tests three central hinges.
+The auxiliary intention inference is neither separately defended nor
+tested. It then benefits from proximity to correct algebra: the reader
+can mistake an additional assumption about intention for another
+consequence of the model. No later record inspected supplies the missing
+bridge.</p>
+<p><strong>Smallest intervention:</strong> conditionalize or delete this
+optional detour. For future runs, the existing final checker should
+examine a small sample of categorical replies to alternatives,
+especially when they add a new account of intention, agency, or value
+outside the core model. This need not become an exhaustive sentence
+audit.</p>
+<p><strong>Confidence:</strong> high on the textual lineage; moderate on
+whether limited checker attention, inherited framing, or independent
+agreement explains the omission.</p>
+<h3 id="b-agency-classification-becomes-exclusion-of-reasons">B. Agency
+classification becomes exclusion of reasons</h3>
+<p><strong>First located explicit occurrence:</strong>
+09_final/round-1/final-L8-01.md, section 5. The draft's earlier horizon
+section does not contain the same explicit inference. The rewrite
+introduces the move from an agent's neither doing nor allowing remote
+outcomes to the disappearance of the benefit that recommends longtermist
+action. Its rewrite note identifies the new Woollard-based discussion as
+an unchecked central step.</p>
+<p><strong>Mechanism:</strong> a source's qualification about when
+“doing” and “allowing” apply is used as though it settled all reasons to
+promote remote good. The source check and final checks attend to whether
+a horizon is supplied, and to the quoted agency language, rather than
+this further normative inference. The current final check's I3 repeats
+that Woollard removes doing and allowing together but does not establish
+that impersonal reasons disappear.</p>
+<p><strong>Smallest intervention:</strong> retain the proposed
+sufficient mechanism and remove the claim that every other agency-based
+approach must fail. No positive theory of remote responsibility is
+needed.</p>
+<p><strong>Confidence:</strong> high about the missing inference and its
+survival; moderate about attributing it to a particular role
+boundary.</p>
+<h3
+id="c-a-reasonably-accurate-source-note-becomes-a-misleading-antecedent-description">C.
+A reasonably accurate source note becomes a misleading antecedent
+description</h3>
+<p>The Mogensen source note distinguishes justifying from requiring
+reasons and identifies the Non-Requiring View. work/source-check.md also
+records the role of justifying benefits. But its “Bearing” paragraph
+compresses this into asymmetric future bads threatening continuation.
+The first plan further compresses the point; the draft and final
+manuscript say the earlier argument turns on weighting bad lives above
+good ones. Clarity editing smooths that sentence rather than restoring
+its qualifications. [02_corpus/notes/mogensen-2019-staking.md, lines
+10–14; work/source-check.md, Mogensen section; work/plan-L4-01.md, §5;
+work/clarity-notes-E-01.md; work/clarity-notes.md, note anchored to the
+Mogensen sentence.]</p>
+<p>This was <strong>not simply a missing-source failure</strong>. The
+source was held and the main distinction was present in the notes. Final
+verification expressly says p. 27 supports the asymmetry claim. The
+weakness is testing whether a passage contains relevant words instead of
+whether it supports the manuscript's characterization of the earlier
+paper's argument. [09_final/verification-note.md, “Page claims
+checked.”]</p>
+<p><strong>Smallest intervention:</strong> check that paragraph against
+the original distinction and give the earlier paper a faithful
+one-sentence description. More corpus acquisition would not solve this
+case.</p>
+<p><strong>Confidence:</strong> high about the compression; moderate
+about whether the same mechanism recurs outside this run.</p>
+<h3 id="d-model-assumptions-and-prominent-scope">D. Model assumptions
+and prominent scope</h3>
+<p>The first review identified the difference between expected
+choice-worthiness and constant additive weights. The response added an
+explicit diagnostic-model paragraph, a successful repair. The current
+final check recognized that the abstract still needed the model
+qualification and proposed it as an optional cheap fix. The delivered
+abstract does not include that phrase. [10_review/round-1/diagnosis.md,
+F4; work/rewrite-note.md; work/final-check-2.md, optional fix 1.]</p>
+<p>The residual issue is small, but revealing: a check can recognize a
+scope improvement without ensuring that it survives final presentation.
+The records do <strong>not</strong> establish that a clarity editor
+removed an already-applied model clause; the saved pre-clarity abstract
+lacks it too. The narrower demonstrated problem is failure to carry the
+proposed qualification into the final abstract.</p>
+<p><strong>Smallest intervention:</strong> make the final claim
+comparison part of an existing edit/check, and distinguish an optional
+stylistic suggestion from a scope correction necessary to accurate
+advertising.</p>
+<p><strong>Confidence:</strong> high on the delivered text and recorded
+suggestion.</p>
+<h2 id="5-the-larger-failure-already-repaired">5. The larger failure
+already repaired</h2>
+<p>The earlier round's defect was more serious than the current local
+issues. L7 called the result “really a biconditional”; L8-01 explicitly
+adopted a claim that escape was possible only if the harm premium lapsed
+remotely. Yet the paper already admitted a nonempty full-weight escape
+band. The original final check validated the baseline cost, small
+margin, and possibility of a horizon, then endorsed necessity without
+testing exclusion of every non-horizon escape.</p>
+<p>The first outside review supplied counterexamples; the response
+checked them, withdrew necessity, retained the central contribution, and
+produced the current paper. This was a successful correction rather than
+evidence that the research should have been abandoned. [work/reading.md,
+§2; work/rewrite-note-L8-01.md; work/final-check-L8-03.md;
+10_review/round-1/diagnosis.md, F1; work/rewrite-note.md.]</p>
+<p>A related failure is recorded for paper-4 in EVOLUTION.md's
+observation under v14.7: a model-specific cap was cleared as general.
+That establishes recurrence at the level of recorded diagnoses, not a
+new independent audit of paper-4.</p>
+<p>The previous diagnosis marks a claim-strength intervention “adopt.”
+The present lean/roles/advisor.md still asks for at most three
+inferences supporting the abstract, without an explicit test of the full
+conclusion's quantifiers. A recorded adoption is not the same as
+deployment. Machine changes require the operator's decision, and
+STATE.md records outstanding machine notes; this is not evidence that a
+call disobeyed permission to change the machine.</p>
+<h2 id="6-research-methodology-what-to-retain-and-what-to-question">6.
+Research methodology: what to retain and what to question</h2>
+<p><strong>Retain:</strong></p>
+<ul>
+<li>Source-grounded proposals and independent selection. The first
+rejection and second proposal generated the useful result.</li>
+<li>Focused primary-text checks at contested steps. L5 caught real
+interpretive and mathematical mistakes.</li>
+<li>Permission to stop or narrow, rather than automatically produce a
+manuscript.</li>
+<li>Cold reading without production history. It improved readability and
+identified missing literature, despite supplying one bad reframing.</li>
+<li>Independent external comparison, calibration, and a frozen review.
+The current paper's improvement demonstrates their value.</li>
+<li>Honest evidence limits. The source obligations and logs usually
+distinguish unread material from clearance.</li>
+</ul>
+<p><strong>Question the objective, not only the number of
+checks.</strong> The proposer, author, style file, and advisor
+repeatedly ask which named author must give something up. This is useful
+discipline against triviality, and the seed explicitly asks for a bold
+thesis. But it is too restrictive as the sole form of payoff:
+explanatory distinctions and conditional constraints can add publishable
+understanding without establishing that an opponent's complete position
+is false. In this run, the current narrower paper meets the calibration,
+whereas selection had treated a weaker fallback as merely a note.</p>
+<p>This supports a controlled test of a broader significance question;
+it does not establish that boldness should be abandoned or that every
+sensitivity calculation is publishable. Keep the seed's ambition while
+requiring that the selected claim be supported before its more ambitious
+extension is promoted.</p>
+<p><strong>The early literature search was broad but not complete at the
+relevant frontier.</strong> Unruh 2025 arrived only after the outside
+review. The current acquisition rule reliably follows later statements
+by a target, but a contemporaneous reply by another author in the same
+volume is not necessarily caught. A small targeted neighbor check could
+help. A new exhaustive survey would repeat the broad acquisition that
+already consumed substantial effort. [work/intake-round-1.md;
+10_review/round-1/diagnosis.md, F8; lean/roles/librarian.md,
+gather.]</p>
+<h2 id="7-computational-audit">7. Computational audit</h2>
+<h3 id="measurement">Measurement</h3>
+<p>I reconciled logs/calls.csv with corrections in logs/deviations.md
+and logs/run-log.md:</p>
+<ul>
+<li>IN-01: 121,597 tokens, 30 tools, 3.9 minutes.</li>
+<li>L8-06: 122,939 tokens, 13 tools, 3.3 minutes.</li>
+</ul>
+<p><strong>Total: 36 calls, 4,670,095 processed tokens, 685 tool uses,
+and 154.4 summed call-minutes.</strong> The pre-review production
+consumed 28 calls and 3,602,610 tokens. The response to the first review
+and preparation of the current version added eight calls and 1,067,485
+tokens, about 22.9% of the recorded total.</p>
+<p>These are completion-notice processed-token figures, including cached
+input. They are not fresh-input tokens, billable tokens, dollars, total
+orchestrator usage, or calendar elapsed time. Parallel acquisition and
+operator waits make summed call-minutes different from elapsed time.
+External reviewing costs are absent. No comparable price calculation is
+possible from this ledger.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Work block</th>
+<th style="text-align: right;">Calls</th>
+<th style="text-align: right;">Processed tokens</th>
+<th style="text-align: right;">Share</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Opening and initial corpus, O1–O3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1,062,977</td>
+<td style="text-align: right;">22.8%</td>
+</tr>
+<tr class="even">
+<td>Candidate generation and selection</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">606,317</td>
+<td style="text-align: right;">13.0%</td>
+</tr>
+<tr class="odd">
+<td>Targeted sources, source checks, and intake</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">686,470</td>
+<td style="text-align: right;">14.7%</td>
+</tr>
+<tr class="even">
+<td>Plan, revised plan, plan check, draft, cold read</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">631,151</td>
+<td style="text-align: right;">13.5%</td>
+</tr>
+<tr class="odd">
+<td>Rewrites, final checks, and review response</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">802,828</td>
+<td style="text-align: right;">17.2%</td>
+</tr>
+<tr class="even">
+<td>Clarity editing</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">625,516</td>
+<td style="text-align: right;">13.4%</td>
+</tr>
+<tr class="odd">
+<td>Verification</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">254,836</td>
+<td style="text-align: right;">5.5%</td>
+</tr>
+</tbody>
+</table>
+<p>Opus accounts for 21 calls and 2,801,677 processed tokens; Sonnet for
+15 calls and 1,868,418. The run remains below the orchestrator's
+under-10M aspiration, although “about a dozen calls” understates a new
+lineage with acquisition, returns, editing, and review response.</p>
+<h3 id="value-and-diminishing-returns">Value and diminishing
+returns</h3>
+<p><strong>High-value expensive reasoning:</strong> rejecting the first
+candidates; producing and selecting the baseline/margin argument;
+testing the plan; reassessing the actual surviving result after outside
+review. Do not cheapen these first.</p>
+<p><strong>High-cost block worth testing:</strong> initial plus targeted
+source work totals 1,749,447 tokens, 37.5%. Some creates a reusable
+corpus, and acquired material also enabled rejection of bad proposals.
+It is not all waste. But broad coverage before a promising lead,
+repeated source offers, merge work, and later targeted acquisition
+create an opportunity for staged retrieval.</p>
+<p><strong>Demonstrated avoidable call:</strong> E-05 consumed 89,065
+tokens to explain a paragraph split already present. The paper was not
+changed. That is about 1.9% of total recorded processing, caused by a
+deterministic false alarm. [logs/calls.csv; logs/deviations.md;
+work/clarity-response-E-04.md; final-E-04.md/final-E-05.md.]</p>
+<p><strong>Repeated polish:</strong> five clarity calls cost 625,516
+tokens. The main edits delivered real readability gains, so eliminating
+clarity is unsupported. The next experiment should distinguish a fresh
+global edit from a limited check of changed passages after local
+revision.</p>
+<p><strong>Do not call all later revision waste.</strong> The extra
+1.067M repaired a real failure and added a relevant source. Some might
+have been avoided by better early claim testing, but the ledger cannot
+identify that counterfactual saving or justify claiming the entire
+amount was avoidable.</p>
+<h2 id="8-deterministic-failures-and-redundant-work">8. Deterministic
+failures and redundant work</h2>
+<p><strong>Word counter:</strong> system/tools/wordcount.py, line 30,
+treats <code>&lt;[^&gt;]+&gt;</code> as an HTML tag. In the current
+manuscript it matches two spans containing 60 and 1,805 whitespace
+words. The second span crosses much of the paper. The verifier reports
+the tool's total as 3,560 and its workaround count as 5,471. The script
+also drops an entire title or abstract containing “&lt;” at lines
+104–105. This is a clear parser defect, not a philosophical
+uncertainty.</p>
+<p>The rewrite, clarity response, verifier, event log, and review
+request all dealt with this one defect; the review metadata retained the
+undercount. The manuscript itself stayed within the corrected limit.
+Repair the shared counter rather than require agents to repeat scratch
+substitutions. [work/rewrite-note.md; work/clarity-response-E-04.md;
+09_final/verification-note.md; logs/deviations.md.]</p>
+<p><strong>Clarity checker:</strong> the notes request a paragraph break
+while retaining the words. system/tools/clarity_check.py, lines 122–132,
+expects literal replacement text or disappearance of the anchor. It
+treats the editor's instruction as text to find, and normalization
+cannot verify the requested paragraph boundary. The orchestrator's
+section 4e automatically escalates that failure to another author
+call.</p>
+<p><strong>Documentation:</strong> the stale audit map and run README
+still describe older runs or architecture. Fix the misleading pointer by
+deriving the current run from STATE.md, not by adding another maintained
+manifest. This is a repeated low-cost maintenance problem.</p>
+<p><strong>Logging:</strong> the two usage corrections are honestly
+recorded, but totals require joining free-text deviations to missing CSV
+values. Record completion usage after it arrives, or update the existing
+row with an auditable correction. Do not spend a model call reconciling
+figures that a small script can join.</p>
+<h2 id="9-prioritized-testable-recommendations">9. Prioritized, testable
+recommendations</h2>
+<h3
+id="r1--test-the-whole-advertised-claim-in-the-existing-final-check">R1
+— Test the whole advertised claim in the existing final check</h3>
+<ul>
+<li><strong>Observed problem:</strong> correct component calculations
+accompanied an unproved necessity conclusion; smaller categorical
+auxiliary claims survive in the current paper.</li>
+<li><strong>Hypothesized cause:</strong> decomposition checks support
+for ingredients but loses quantifier, parameter, and scope commitments
+in their advertised combination.</li>
+<li><strong>Evidence:</strong> work/final-check-L8-03.md versus the
+original abstract; work/reading.md's “biconditional”; round-1 diagnosis
+F1; EVOLUTION.md's paper-4 observation.</li>
+<li><strong>Proposed change:</strong> replace generic extra checking
+with a short obligation in the existing final check: state the strongest
+literal conclusion, its quantifiers and assumptions; attempt one
+counterexample in the paper's own permitted parameter space; then test
+whether the proposed repair changes that conclusion. For non-formal
+arguments, use the nearest relevant alternative reading instead of
+numerical search.</li>
+<li><strong>Expected benefit:</strong> prevent the demonstrated class of
+overclaims without another standing reviewer.</li>
+<li><strong>Potential cost:</strong> a little checker attention;
+mechanical counterexample hunting can misfire when assumptions are
+misunderstood.</li>
+<li><strong>Confidence:</strong> high that the old failure needs this
+test; moderate about performance across philosophical genres.</li>
+<li><strong>Evaluation:</strong> replay the pre-review abstract and the
+narrowed current abstract blind. The new instruction should reject the
+former's necessity claim and accept the latter's scoped result, without
+manufacturing a structural defect. This is the earlier R1 in revised
+operational form; implement the pending decision rather than commission
+another generic audit.</li>
+</ul>
+<h3
+id="r2--select-the-best-supported-payoff-separately-from-its-ambitious-extension">R2
+— Select the best supported payoff separately from its ambitious
+extension</h3>
+<ul>
+<li><strong>Observed problem:</strong> choice-2 made general-journal
+significance depend on a stronger corollary, although the eventual
+narrower result meets the supplied calibration.</li>
+<li><strong>Hypothesized cause:</strong> an exclusive
+named-opponent-defeat test favors stronger negative framing over
+explanatory progress.</li>
+<li><strong>Evidence:</strong> work/choice-2.md, §2;
+lean/roles/proposer.md; lean/roles/author.md, plan item 2;
+lean/STYLE.md's standard.</li>
+<li><strong>Proposed change:</strong> in the existing choice file,
+distinguish the best supported result from a possible stronger
+extension, and judge each against the nearest antecedent. Allow an
+illuminating constraint or explanatory alternative as payoff when its
+substantive consequences are specified.</li>
+<li><strong>Expected benefit:</strong> less pressure to preserve an
+overstrong thesis through defensive additions.</li>
+<li><strong>Potential cost:</strong> weaker projects could pass if
+“insight” becomes an excuse for small stakes.</li>
+<li><strong>Confidence:</strong> high about the instruction and this
+lineage; moderate about general causation.</li>
+<li><strong>Evaluation:</strong> paired selection judgments on a few
+existing candidate packets, with later blind judgments of significance.
+Test first; keep a demanding significance threshold.</li>
+</ul>
+<h3
+id="r3--check-the-context-of-decisive-paraphrases-within-existing-verification">R3
+— Check the context of decisive paraphrases within existing
+verification</h3>
+<ul>
+<li><strong>Observed problem:</strong> the Mogensen note records the
+relevant distinction, but the manuscript mischaracterizes the earlier
+argument.</li>
+<li><strong>Hypothesized cause:</strong> quotation and locator
+verification does not reliably test contextual entailment of the
+surrounding paraphrase.</li>
+<li><strong>Evidence:</strong> the source note, source-check bearing
+paragraph, plan §5, the clarity note on the Mogensen sentence, and
+verification-note's p. 27 clearance.</li>
+<li><strong>Proposed change:</strong> have the existing source/argument
+checker select at most five decisive paraphrases or exclusion claims and
+compare each with its source paragraph plus the source's conclusion.
+Replace some duplicate quote attention; add no new role or separate
+report.</li>
+<li><strong>Expected benefit:</strong> preserve qualifications through
+note-to-plan-to-prose compression.</li>
+<li><strong>Potential cost:</strong> several focused source reads;
+weaker automation than literal matching.</li>
+<li><strong>Confidence:</strong> high for the observed failure; moderate
+for the best allocation between advisor and verifier.</li>
+<li><strong>Evaluation:</strong> test on the actual Mogensen sentence,
+an accurate revised sentence, and three control paraphrases. Require
+correct contextual discrimination, not more quotations.</li>
+</ul>
+<h3
+id="r4--repair-the-counter-and-classify-formatting-checks-before-escalation">R4
+— Repair the counter and classify formatting checks before
+escalation</h3>
+<ul>
+<li><strong>Observed problem:</strong> massive mathematical undercount
+and the no-change E-05 retry.</li>
+<li><strong>Hypothesized cause:</strong> regex-based treatment of
+semantic text as HTML, and literal-text verification of nonliteral edit
+operations.</li>
+<li><strong>Evidence:</strong> wordcount.py lines 30 and 104–105;
+clarity_check.py lines 122–132; deviations and E-05 usage.</li>
+<li><strong>Proposed change:</strong> protect mathematical content
+before removing genuine markup; stop dropping titles/abstracts merely
+for containing “&lt;”. Verify paragraph operations as paragraph
+boundaries. Route schema/checker faults to a deterministic diagnosis
+instead of automatically asking an author to rewrite.</li>
+<li><strong>Expected benefit:</strong> reliable length gates and
+immediate removal of a demonstrated unnecessary strong call.</li>
+<li><strong>Potential cost:</strong> small tool maintenance; no
+philosophical capability removed.</li>
+<li><strong>Confidence:</strong> high.</li>
+<li><strong>Evaluation:</strong> regression cases for inequalities,
+genuine HTML, mathematical abstracts, unchanged wording with a paragraph
+split, real replacement omissions, and deletions. Current paper's count
+should reconcile with the documented workaround without changing the
+paper. Immediate repair is warranted.</li>
+</ul>
+<h3
+id="r5--test-staged-acquisition-and-a-narrow-neighboring-literature-search">R5
+— Test staged acquisition and a narrow neighboring-literature
+search</h3>
+<ul>
+<li><strong>Observed problem:</strong> acquisition is the largest
+combined cost block, yet Unruh 2025 was missing until review.</li>
+<li><strong>Hypothesized cause:</strong> coverage of broad starting
+points is front-loaded, while same-debate work by non-target authors is
+less systematically revisited.</li>
+<li><strong>Evidence:</strong> O3 and L3 ledger; corpus-index;
+intake-round-1; librarian gather's successor rule.</li>
+<li><strong>Proposed change:</strong> retain the operator-requested
+reply survey, acquire a small diverse initial set, and defer the
+remainder until two promising mechanisms need it. At selection, perform
+a bounded search of the focal publication's neighboring
+chapters/replies.</li>
+<li><strong>Expected benefit:</strong> earlier consequential literature
+at lower acquisition and operator cost.</li>
+<li><strong>Potential cost:</strong> missed cross-connections, premature
+narrowing, and losing sources that would have exposed a bad
+candidate.</li>
+<li><strong>Confidence:</strong> moderate on opportunity;
+low-to-moderate on net savings.</li>
+<li><strong>Evaluation:</strong> a matched-corpus acquisition trial on
+proposal notes, including rejected candidates; measure useful
+countercases found, pivotal sources missed, retrieval attempts, and
+processed tokens. Do not implement by simply cutting the corpus
+quota.</li>
+</ul>
+<h3
+id="r6--make-post-revision-clarity-conditional-and-preserve-content-constraints">R6
+— Make post-revision clarity conditional, and preserve content
+constraints</h3>
+<ul>
+<li><strong>Observed problem:</strong> global clarity passes recur after
+substantive/local rewriting, and optional scope suggestions can remain
+unimplemented.</li>
+<li><strong>Hypothesized cause:</strong> every revision triggers roughly
+the same edit workflow, without separating changed passages from
+unchanged prose.</li>
+<li><strong>Evidence:</strong> E-01/E-02 and E-03/E-04; final-check-2
+optional scope fix; orchestrator §4e.</li>
+<li><strong>Proposed change:</strong> preserve one full fresh clarity
+read. After a bounded local revision, test a focused changed-passage
+read and implementation in an existing call. Reuse the available polish
+comparison machinery, or a simple aligned diff, to flag changes in
+qualification; do not add another permanent semantic reviewer.</li>
+<li><strong>Expected benefit:</strong> less repeated editing and clearer
+accountability for scope.</li>
+<li><strong>Potential cost:</strong> global coherence problems may
+escape a local pass; cheaper implementation may alter content.</li>
+<li><strong>Confidence:</strong> moderate; test before replacement.</li>
+<li><strong>Evaluation:</strong> blind readability and content-fidelity
+comparison of the actual post-review version under full and focused
+passes. A lower token count alone is not success.</li>
+</ul>
+<h3 id="r7--remove-stale-pointers-and-normalize-usage-corrections">R7 —
+Remove stale pointers and normalize usage corrections</h3>
+<ul>
+<li><strong>Observed problem:</strong> two audit rounds encountered the
+historical run pointer; ledger totals require free-text
+reconciliation.</li>
+<li><strong>Hypothesized cause:</strong> manually maintained navigation
+examples and early logging before completion.</li>
+<li><strong>Evidence:</strong> audit map versus STATE.md; first
+architecture report §2; IN-01/L8-06 deviations.</li>
+<li><strong>Proposed change:</strong> remove the static “which run”
+example or render it from current state; update corrected usage in the
+existing ledger with provenance. Keep the event history.</li>
+<li><strong>Expected benefit:</strong> reproducible audits and accurate
+cheap totals.</li>
+<li><strong>Potential cost:</strong> small tooling/document maintenance;
+no extra model calls.</li>
+<li><strong>Confidence:</strong> high.</li>
+<li><strong>Evaluation:</strong> resolve this packet's run and compute
+4,670,095 tokens from canonical records without reading a narrative
+deviation manually.</li>
+</ul>
+<h2 id="10-proposal-a-repair-the-present-architecture">10. Proposal A:
+repair the present architecture</h2>
+<p>Keep selection, source checks, a plan, independent criticism, whole
+drafting, one substantive rewrite, one fresh clarity pass, verification,
+and independent outside review.</p>
+<p>Implement R1 and R4 first; incorporate R3 by reallocating existing
+verification effort. Remove automatic author retries for checker-schema
+faults. Fix the stale map and usage rows as ordinary maintenance. Test
+R2, R5, and R6 separately, not as a bundled new version.</p>
+<p>A narrowing change should reduce the claim and delete unnecessary
+defenses. It should not automatically reopen the whole project.
+Conversely, a new central inference still warrants fresh scrutiny. The
+current one-return rule is acceptable as a compute stop, provided a
+failed run produces a useful brief rather than a forced paper.</p>
+<p>Expected benefit: fewer invalid headline claims and fewer mechanical
+loops, with little added instruction or call overhead. The immediate
+saving demonstrated here is the E-05 class of retry; broader savings
+remain unmeasured. Main risk: marginally longer checks, unless replaced
+checks are actually removed.</p>
+<p>This is my preferred production proposal now.</p>
+<h2 id="11-proposal-b-a-research-note-first-simplification">11. Proposal
+B: a research-note-first simplification</h2>
+<p>Test a substantially different baseline on the same held sources:</p>
+<ol type="1">
+<li>A researcher writes a short argument note with two or three
+mechanisms, the best supported claim, nearest source passages, and an
+explicit countercase. No full outline.</li>
+<li>A fresh critic selects or rejects the strongest actual result,
+testing significance, priority, and its decisive inference.</li>
+<li>A librarian resolves only the source obligations that can change
+that decision.</li>
+<li>A strong author writes a whole draft directly from the approved
+argument note.</li>
+<li>A fresh reader judges the whole paper; one bounded author revision
+follows.</li>
+<li>One clarity read/edit and one mechanical verification/render finish
+it; then the existing independent review.</li>
+</ol>
+<p>Drop separate region approval when the operator has supplied a
+specific live debate; drop broad corpus coverage before a lead; merge
+choice and plan approval into the argument-note judgment; drop the
+separate cheap first draft followed by a wholesale strong rewrite.
+Preserve a blind reader and source access.</p>
+<p>This is not a license to skip the requested initial reply survey or
+relevant counter-literature. New-topic mapping and acquisition still
+have to be counted. Nor does a shorter argument note guarantee enough
+exploration.</p>
+<p>Expected benefit: fewer handoffs, less repeated context processing,
+and insight established before most prose expenditure. Risks: weaker
+exploration, less division of labor, one author's blind spots, and later
+discovery that sources defeat a nearly written paper. An initial target
+of roughly 8–12 calls excluding genuinely new bulk acquisition is an
+experimental design goal, not a measured prediction or guaranteed token
+saving.</p>
+<h2 id="12-modest-cost-experiments-and-stopping-rules">12. Modest-cost
+experiments and stopping rules</h2>
+<ol type="1">
+<li><strong>First, replay claim-strength checks.</strong> Use the
+original paper-5 abstract, the current scoped version, the recorded
+paper-4 cap case, and at least one valid controversial argument. Compare
+old and R1 instructions blind. Score detected scope errors and false
+holds on valid conditional contributions. Small notes suffice.</li>
+<li><strong>Test contextual paraphrase verification.</strong> Use the
+real Mogensen passage and controls from other run sources. Compare
+current quote/page verification with R3's small contextual sample.
+Measure accuracy and extra processing, not verbosity.</li>
+<li><strong>Repair and test deterministic tools without drafting a
+paper.</strong> R4's fixtures and a packet-resolution/ledger-total check
+for R7 cost virtually no research computation. Do these before another
+production call.</li>
+<li><strong>Ablate broad initial acquisition.</strong> On two or three
+different problems, give matched researchers a staged corpus or the full
+corpus. Judge proposal quality, missed countercases, source requests and
+tokens before permitting a full manuscript.</li>
+<li><strong>Compare A and B on argument notes first.</strong> Hold seed,
+source availability and budget constant; use independent blind judgments
+of payoff, correctness and novelty positioning. Advance only promising
+notes to drafts.</li>
+<li><strong>Test focused clarity on an existing local revision.</strong>
+Compare readability and preservation of conditions against the full
+pass. Keep the full pass if savings degrade either.</li>
+<li><strong>Use a stopping criterion tied to evidence.</strong> After a
+main result survives source and countercase checks and the remaining
+defects are local, patch them and submit. Do not demand a stronger
+theorem to justify stopping. If only a familiar requirement survives, or
+repair repeatedly invents new unsupported premises, return a brief
+instead of another polish cycle.</li>
+</ol>
+<p>Record processed tokens with their cache caveat; when available,
+record fresh input, cached input, output, and operator actions
+separately. Do not estimate dollar savings from the present aggregate
+ledger. Change one research mechanism at a time, with held-out problems,
+so improvements can be attributed.</p>
+<h2 id="13-final-advice-to-claude">13. Final advice to Claude</h2>
+<p>For this manuscript, make the independent review's bounded
+corrections. Do not restart thesis selection, add a general theory of
+remoteness, or launch another global rewrite solely to absorb these
+comments.</p>
+<p>For the harness, the three highest-leverage immediate interventions
+are <strong>R1's literal-claim countercase test, R3's contextual
+paraphrase check, and R4's deterministic-tool repairs</strong>. R7 is
+inexpensive maintenance. Test R2, R5, and R6 before changing production
+policy.</p>
+<p>Remove the automatic strong-author response to checker faults; remove
+the word counter's broad inequality-swallowing rule; remove the
+requirement that every worthwhile payoff take the form of an opponent's
+defeat as the exclusive selection criterion, subject to R2's trial; and
+remove repeated global clarity work after minor revisions if R6
+demonstrates equal quality.</p>
+<p>The current run supplies evidence for a useful research architecture
+with several identifiable failure mechanisms. It does not supply
+evidence that adding more critics is the best remedy, or that radical
+simplification will retain its strengths. Repair what demonstrably
+failed and test the larger subtraction on cheaper intermediate
+artifacts.</p>
+</main></body></html>

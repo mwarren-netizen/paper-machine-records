@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>rounds/paralysis-round-2/advice-carried.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / rounds/paralysis-round-2/advice-carried.md</div><p class="note">Rendered copy of <code>rounds/paralysis-round-2/advice-carried.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/rounds/paralysis-round-2/advice-carried.md">Original file</a>.</p></header><h1 id="advice-carried-round-2">Advice carried, round 2</h1>
+<p>Sources: 10_review/round-2/review.md (R) and architecture-review.md
+(A). Machine suggestions are in the diagnosis, Machine notes.
+<code>adopt</code> and <code>adapt</code> items bind the next call only
+as the diagnosis's Fixes state them; the rest is kept so that no later
+call retries or rediscovers it.</p>
+<ol type="1">
+<li><p><strong>Intended-benefit paragraph, section 4</strong> (R, P1 and
+passage 1): "Such a premium touches only the margin Δ" is asserted;
+reword as "If the intention premium attaches only to the additional
+expected benefit, it leaves the baseline harm premium intact", or
+delete. <strong>Adapt</strong> (Fix 1a): replaced by a sentence placing
+intention-sensitive premiums outside the model. The conditional wording
+invites the other case, a premium on all benefits the longtermist
+intends, which reopens the escape above r_L (diagnosis, finding
+1).</p></li>
+<li><p><strong>Section 5, agency classification to reasons</strong> (R,
+P1 and passage 2): replace the categorical claim with "The present
+escape preserves the reasons supplied by remote benefits while reducing
+the additional weight attached to remote harms. A view that excluded
+those benefits from practical assessment would not supply this escape."
+A: "retain the proposed sufficient mechanism and remove the claim that
+every other agency-based approach must fail." <strong>Adapt</strong>
+(Fix 1b), with the Woollard sentence softened to match.</p></li>
+<li><p><strong>Mogensen 2019, section 3</strong> (R, P2 and passage 3; A
+§4C): replace "weighting bad lives above good ones" with "Mogensen's
+earlier challenge concerns whether improvements involving different
+future people generate requiring reasons, rather than only justifying
+reasons." <strong>Adapt</strong> (Fix 2): same content, with pages
+checked (pp. 24, 27).</p></li>
+<li><p><strong>Abstract scope</strong> (R, P3; A §4D): the abstract's
+"on their premises" must not suggest that the exact thresholds follow
+from the premises alone; add a clause naming the model.
+<strong>Adopt</strong> (Fix 3a). "On their premises" stays on the
+qualitative claim, which does follow.</p></li>
+<li><p><strong>"Using their conservative illustrative figures" in the
+abstract</strong> (R). <strong>Decline</strong>: the abstract is at its
+150-word limit after Fix 3a, and the body already calls the figures a
+floor and illustrations.</p></li>
+<li><p><strong>Assumptions paragraph: name common conditional totals and
+full spread of identity effects as idealizations</strong> (R, strongest
+objection and P3). <strong>Adopt</strong> (Fix 3b).</p></li>
+<li><p><strong>Do not develop a general representation theorem or add
+another model</strong> (R). <strong>Adopt</strong>, as a constraint on
+any later pass.</p></li>
+<li><p><strong>Delete the intended-benefit detour and shorten repeated
+"whole cost, small gain" summaries to fund the scope clause</strong> (R,
+length paragraph). <strong>Adapt</strong>: the detour is cut to one
+sentence (Fix 1a); the summaries stay, since the fixes are nearly
+word-neutral. If the corrected count exceeds 5,500, delete Fix 1a's
+sentence too; cut nothing else.</p></li>
+<li><p><strong>Check the outstanding quotations and pages: Woollard pp.
+17, 37, 207; the MacAskill appendix sentence</strong> (R, P2; A §2).
+<strong>Adopt, done</strong>: confirmed in the held texts; no
+change.</p></li>
+<li><p><strong>Quinn's page correction "not independently
+established"</strong> (R). <strong>Adopt, done</strong>: the held text
+has the passage on p. 304; the paper and its footnote stand.</p></li>
+<li><p><strong>Equality cases are ties; permissibility claims hold
+within the compared options and the choice-worthiness rule; the
+calculations do not exclude prerogatives or other options</strong> (R).
+<strong>Decline for now</strong>: section 4 already names a prerogative,
+and "only the longtermist life is permitted" plainly compares three
+lives. Adapt only if the operator or a referee asks ("of the three lives
+compared").</p></li>
+<li><p><strong>Keep section 6 explicitly conditional; do not allege
+inconsistency between authors' commitments</strong> (R).
+<strong>Adopt</strong>: keep as is.</p></li>
+<li><p><strong>No replacement outline; keep the order of
+sections</strong> (R). <strong>Adopt.</strong></p></li>
+<li><p><strong>Keep the diagnostic-model paragraph as the reply to the
+strongest objection</strong> (R). <strong>Adopt.</strong></p></li>
+<li><p><strong>A positive account of remoteness or collective agency is
+a separate project; do not delay submission for it</strong> (R; A §13:
+no "general theory of remoteness"). <strong>Adopt</strong>: the
+conclusion leaves both open, and should.</p></li>
+<li><p><strong>Make the bounded corrections and stop; do not restart
+selection or run another global rewrite</strong> (R closing; A §13).
+<strong>Adopt</strong>: decision <code>send</code> with three
+fixes.</p></li>
+</ol>
+</main></body></html>

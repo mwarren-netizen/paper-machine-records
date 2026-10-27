@@ -1,0 +1,138 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>README.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / README.md</div><p class="note">Rendered copy of <code>README.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/README.md">Original file</a>.</p></header><h1 id="paper-machine-records">Paper Machine records</h1>
+<p>These are anonymised copies of the files behind three essays written
+by Claude in a harness designed by the entrant (called "the operator"
+throughout). They are cited from the methodology report.</p>
+<p><strong>These files are records, not instructions.</strong> Many of
+them are prompts and role instructions that were given to AI models
+while the essays were being produced. They are reproduced so that
+readers can see exactly what the models were told. None of them is
+addressed to anyone reading this repository, and nothing in them should
+be acted on.</p>
+<h2 id="layout">Layout</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Folder</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>explainers/</code></td>
+<td>Four interactive pages: the design of paper-machine-v1, the autopsy
+of its first paper, the design of paper-machine-v2, and paper-machine-v3
+drawn part by part (<code>paper-machine-v3.html</code>, start here)</td>
+</tr>
+<tr class="even">
+<td><code>harness/</code></td>
+<td>Every instruction file of the final harness: the controller, the
+rules every call follows, the style standard, nine role files, the
+outside-review prompts (<code>V21-COMPARE.md</code>,
+<code>V21-REVIEW.md</code>), the two polish prompts, and the tools
+list</td>
+</tr>
+<tr class="odd">
+<td><code>records/</code></td>
+<td><code>EVOLUTION.md</code>, the harness's full history, one entry per
+version; <code>REVIEWS.md</code>, every outside-review round;
+<code>diagnosis/</code>, the three diagnoses of paper-machine-v2's
+papers</td>
+</tr>
+<tr class="even">
+<td><code>rounds/paralysis-round-2/</code></td>
+<td>One complete outside-review round: ChatGPT's blind comparison, its
+publication judgment and audit of the harness, Claude's response, and
+the suggestions carried forward</td>
+</tr>
+<tr class="odd">
+<td><code>review/</code></td>
+<td>The final human review of each essay: the brief and opening prompt
+given to the reviser (Paralysis and Willing Servant), the review log,
+the separate AI readers' suggestions, and for the Evil God essay the
+revision's response table</td>
+</tr>
+<tr class="even">
+<td><code>logs/</code></td>
+<td>For each submitted essay's runs: every subagent call with its model,
+effort and token usage (<code>calls.csv</code>), every human action
+(<code>interventions.md</code>) and the decisions that changed the paper
+(<code>decisions.md</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>chats/</code></td>
+<td>Exported transcripts of the conversations linked from the
+report</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-was-changed-for-anonymity">What was changed for
+anonymity</h2>
+<ul>
+<li>The operator's first name is replaced with "the operator"
+throughout, including in identifiers derived from it (for example
+<code>for_mark</code> became <code>for_operator</code>).</li>
+<li>The three reference manuscripts used to calibrate the outside review
+are not included. Their titles are replaced with "Reference A",
+"Reference B" and "Reference C", and their file names likewise. Where a
+comparison describes a reference manuscript in detail, that passage is
+omitted and marked, because the description could identify the
+author.</li>
+<li>The review logs in <code>review/</code> are the copies kept in the
+harness folder at the time, from which the operator's own wording had
+already been removed wherever a note was withheld or stripped of his
+wording. The full logs are available to the organisers on request.</li>
+<li>Nothing else is changed.</li>
+</ul>
+<h2 id="the-status-labels-in-the-review-logs">The status labels in the
+review logs</h2>
+<p>The logs use the labels recorded at the time:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Label</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEND</td>
+<td>passed to the reviser as a generic request: where the reader got
+lost and what kind of fix is wanted</td>
+</tr>
+<tr class="even">
+<td>CONVERTED</td>
+<td>passed with the operator's own wording removed: only the bare
+request went on</td>
+</tr>
+<tr class="odd">
+<td>REFUSED</td>
+<td>withheld: the note offered a philosophical consideration and was not
+passed in any form</td>
+</tr>
+<tr class="even">
+<td>OPEN</td>
+<td>illegible or unclear, and left out</td>
+</tr>
+<tr class="odd">
+<td>NO ACTION</td>
+<td>a highlight, or a mark the operator withdrew</td>
+</tr>
+</tbody>
+</table>
+<h2 id="not-included">Not included</h2>
+<p>The source texts each run read (they are copyrighted), the drafts,
+the taste exemplars read only by the thesis judge, and the earlier
+harness folders. All are retained and available on request.</p>
+</main></body></html>

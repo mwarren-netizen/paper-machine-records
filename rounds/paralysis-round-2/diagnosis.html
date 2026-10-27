@@ -1,0 +1,309 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>rounds/paralysis-round-2/diagnosis.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / rounds/paralysis-round-2/diagnosis.md</div><p class="note">Rendered copy of <code>rounds/paralysis-round-2/diagnosis.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/rounds/paralysis-round-2/diagnosis.md">Original file</a>.</p></header><h1 id="diagnosis-round-2">Diagnosis, round 2</h1>
+<h2 id="the-review-in-brief">The review in brief</h2>
+<p><code>send</code>, depth <code>local</code>, moderate confidence. The
+reviewer accepts the frozen comparison's placement (clearly above
+<em>Reference B</em>, somewhat above <em>Reference A</em>, close to the
+Reference C paper), re-derived the algebra and found it correct, and
+judges the diagnostic-model paragraph an adequate reply to the strongest
+objection (additivity goes beyond the asymmetries). It asks for three
+bounded corrections: P1, bound the intended-benefit paragraph (section
+4) and the section 5 inference from "neither did nor allowed" to the
+lapse of the long-run gain; P2, correct the description of Mogensen
+2019; P3, carry the model's idealizations into the assumptions paragraph
+and abstract. Then: "Correct those locally and stop revising." The
+architecture report agrees.</p>
+<h2 id="findings">Findings</h2>
+<p><strong>1. Intended-benefit premium (section 4): "Such a premium
+touches only the margin Δ" is asserted, not argued.</strong> Holds, more
+strongly than the reviewer says; <em>improve</em>. If the premium
+attaches to every benefit the longtermist's life does (she intends a
+good future) and not to the ordinary agent's unintended future benefits,
+then V(L) − V(A) = P[(k′−1)B − (k−1)H] + Δ(k′B − kH), positive iff r
+&gt; r_L, while V(O) − V(A) = b − (k−1)PH is unchanged: the band loses
+its upper edge, and at k = 2, k′ = 1.01 the escape opens for r above
+about 100, the paper's estimate for lives like ours. The natural
+alternative reopens the escape. The result does not need the paragraph,
+and the model's constant weights already exclude intention-sensitive
+premiums; the repair is to say so. Entered: work/plan-L4-01.md, step 10:
+"A premium confined to intended benefits applies at most to the Δ
+margin, leaving (k − 1)PH whole"; carried into plan.md ("touches only
+the Δ margin") and draft.md; not tested by work/final-check-2.md.</p>
+<p><strong>2. Agency classification read as exclusion of reasons
+(section 5).</strong> Holds in part; <em>improve</em>. Valid within the
+model, which weighs outcomes only as done or allowed; but stated
+categorically, and a deontologist with reasons to promote good not
+structured by doing and allowing can resist it. The Woollard sentence
+"Such a condition removes allowing as well as doing, which the escape
+cannot use" leans on it. Entered: 09_final/round-1/final-L8-01.md,
+section 5: "If remoteness removed the agent from remote outcomes
+altogether ... the long-run gain that recommends the longtermist life
+would lapse with them." work/final-check-2.md I3 restated it
+("Woollard's immediacy condition removes doing and allowing together (p.
+17)") without testing the step.</p>
+<p><strong>3. Mogensen 2019 misdescribed.</strong> Holds;
+<em>improve</em>. I opened mogensen-2019-staking, pp. 24-27. On the
+Non-Requiring View an added good life gives a reason with "zero
+requiring strength" (p. 24). The threat to continuation (pp. 26-27)
+arises for a McMahan-style view with "no reason to bring into existence
+lives that are well worth living" and no cancelling weight; on the View+
+"we can justify allowing the human race to go on existing" (p. 26). His
+conclusion offers "reasons to doubt that there is any sound argument
+from axiological longtermism to deontic longtermism" (p. 27). So "his
+argument turns on weighting bad lives above good ones, which, he shows,
+threatens the case for humanity's continuation itself (p. 27)" misstates
+both his argument and the direction of the p. 27 passage. Entered: the
+note was accurate (notes/mogensen-2019-staking.md: "On the Non-Requiring
+View, the goodness of an added life is a purely justifying reason"); the
+compression began in work/source-check.md, "Bearing": "It shows that
+weighting future bads asymmetrically against future goods threatens the
+continuation of the future"; clarity-notes-E-01.md then proposed "his
+turns on weighting bad lives above good ones"; verification cleared p.
+27 on the words, not the use.</p>
+<p><strong>4. Abstract does not flag the model.</strong> Holds;
+<em>improve</em>. "On longtermists' own estimates ... the escape fails
+unless that extra weight is tiny" reads as following from the premises
+alone. Entered: work/final-check-2.md, optional fix 1 ("On a simple
+additive model, the escape therefore needs a further, exact condition"),
+which was not carried into the delivered abstract.</p>
+<p><strong>5. Two idealizations unstated in the assumptions
+paragraph.</strong> Holds in part; <em>improve</em>. Section 3 lists
+additivity, constant weights, finite expectations, aggregation and
+normalisation, but not that the options share the conditional totals B
+and H (outside the trajectory case) or that an active life changes
+identities throughout the future. Both are used in the display. Entered:
+plan.md (model taken as given; round-1 F4); the round-1 repair added the
+list without these two.</p>
+<p><strong>6. Numerical status in the abstract</strong> ("Using their
+conservative illustrative figures"). Holds lightly; <em>improve</em>;
+finding 4's repair carries it. <strong>7. Repeated "whole cost, small
+gain" summaries.</strong> Holds lightly; <em>improve</em>; orientation
+more than padding. <strong>8. "Only the longtermist life is
+permitted"</strong> means among the three lives; holds lightly;
+<em>improve</em>. None of 6-8 is worth a content pass.</p>
+<p><strong>Not defects.</strong> Section 6 is already conditional. The
+source items the reviewer could not check are confirmed below.</p>
+<h2 id="literature-claims-checked">Literature claims checked</h2>
+<ul>
+<li>Mogensen 2019 <code>[contradicted]</code>: confirmed from pp. 24,
+26-27 (finding 3).</li>
+<li>Woollard 2015 and the MacAskill appendix
+<code>[not accessed]</code>: held texts opened. Woollard p. 17 "depended
+on a series of unlikely intervening coincidences", p. 37 "a complete
+chain of substantial facts", p. 207 "precise delineation of these
+conditions"; macaskill-2022-wwotf, appendix, "lasts longer than a
+million years is greater than 10 percent". The paper's uses stand.</li>
+<li>Quinn 1989 page: the held text puts "the building of skyscrapers,
+highways, and dams" on p. 304; the paper's page and footnote stand.</li>
+<li>Novelty <code>[unchecked]</code>: D'Alessandro's coda, the nearest
+text, was read whole by work/final-check-2.md ("never relates cost to
+margin, and never treats reach"). Three web searches (the argument by
+name; identity effects and long-term beneficence; constraints, baseline
+harms and existential-risk reduction) found only texts already held or
+cited (the target and GPI summaries, Chappell, D'Alessandro, Mogensen
+2019). A bounded check, not clearance.</li>
+</ul>
+<h2 id="decision">Decision</h2>
+<p><strong>Send, with three fixes, from L8.</strong></p>
+<p>Will it stand? Yes. The central result (a cost of order (k−1)PH
+against a gain of order Δ, the exact thresholds, the narrow band, the
+reach reversal) has survived two outside reviews, a fresh final check
+and my re-derivation of the band. No finding touches the central
+inference or its novelty; each can be repaired by narrowing or deleting
+text, with no new inference or source. Its chance: the frozen comparison
+puts it above two competitors and close to the strongest, so it is a
+credible competition entry and a credible general-journal submission.
+Its main exposure, that additivity does more than the asymmetries, is
+met by the diagnostic-model paragraph. A rewrite costs an author pass, a
+final check, clarity and verification, and in round 1 a rewrite
+introduced the necessity claim that became the reject-level finding;
+nothing here needs that risk. Seven days remain; fixes and verification
+take a day.</p>
+<p>Where I differ from the reviewer. (i) Its conditional rewording of
+the intended-benefit paragraph would invite the other case, which
+reopens the escape; I place the view outside the model instead. (ii)
+Section 5's inference is valid within the model, so the repair is
+wording. (iii) I do not shorten the summaries to fund the scope clause;
+the fixes are nearly word-neutral.</p>
+<p>Length. The verifier's corrected count
+(09_final/verification-note.md) is about 5,471 all-in against the 5,500
+ceiling. The fixes below are designed to be roughly word-neutral (about
+−57, +4, +15, +40, +2). If the corrected count after the fixes exceeds
+5,500, replace Fix 1(a)'s sentence by deleting the paragraph entirely;
+cut nothing else.</p>
+<h2 id="fixes">Fixes</h2>
+<p>Make exactly these changes and nothing else. Old text is quoted
+exactly from 09_final/final.md.</p>
+<p><strong>Fix 1 (P1, two places): bound the ancillary
+claims.</strong></p>
+<p>(a) Section 4, replace the whole paragraph beginning "A different
+premium might be proposed." (through "in their Medicine case (p. 5).")
+with:</p>
+<blockquote>
+<p>A premium confined to intended benefits would lie outside the model,
+whose weights do not vary with the agent's aims, and I leave it
+aside.</p>
+</blockquote>
+<p>(b) Section 5, replace</p>
+<blockquote>
+<p>The limit must take a particular form. If remoteness removed the
+agent from remote outcomes altogether, so that she neither did nor
+allowed them, it would remove her from remote benefits too, and the
+long-run gain that recommends the longtermist life would lapse with
+them. The view the escape can use is that remote harms are counted, but
+at the weight of harms allowed.</p>
+</blockquote>
+<p>with</p>
+<blockquote>
+<p>The limit the escape uses takes a particular form: remote harms are
+counted, but at the weight of harms allowed, while remote benefits keep
+the weight that recommends the longtermist life. A view on which
+remoteness removed remote outcomes, benefits as well as harms, from the
+agent's practical assessment would not supply this escape.</p>
+</blockquote>
+<p>and, in the Woollard paragraph, replace "Such a condition removes
+allowing as well as doing, which the escape cannot use." with</p>
+<blockquote>
+<p>Such a condition decides whether there is doing or allowing at all,
+not how much a harm done weighs, so it does not by itself supply the
+escape's limit.</p>
+</blockquote>
+<p><strong>Fix 2 (P2): describe Mogensen 2019 accurately.</strong>
+Section 3, replace</p>
+<blockquote>
+<p>Mogensen (2019) is the other antecedent; his argument turns on
+weighting bad lives above good ones, which, he shows, threatens the case
+for humanity's continuation itself (p. 27).</p>
+</blockquote>
+<p>with</p>
+<blockquote>
+<p>Mogensen (2019) is the other antecedent. He doubts that the value of
+the future makes improving it obligatory when the improvements change
+who will exist, and he explores a view on which the goodness of an added
+life gives a purely justifying reason, with no requiring strength (pp.
+24, 27).</p>
+</blockquote>
+<p>The verifier checks against mogensen-2019-staking pp. 24 ("zero
+requiring strength") and 27 ("reasons to doubt that there is any sound
+argument from axiological longtermism to deontic longtermism").</p>
+<p><strong>Fix 3 (P3, two places): carry the model's scope.</strong></p>
+<p>(a) Abstract (must stay at most 150 words; it is 148 now and 150
+after these three replacements). Replace "a long-term focus alone does
+not secure it." with "long-term focus alone does not secure it." Replace
+"so it does harms that inaction would merely allow." with "so it does
+harms that inaction merely allows." Replace "On longtermists' own
+estimates for an individual, in a future like ours, the escape fails
+unless that extra weight is tiny." with</p>
+<blockquote>
+<p>In an additive model using longtermists' own estimates for an
+individual in a future like ours, the escape fails unless that extra
+weight is tiny.</p>
+</blockquote>
+<p>(b) Section 3, the model paragraph: after "and a common weight of 1
+for allowing harms and allowing benefits." insert</p>
+<blockquote>
+<p>Except in the trajectory case below, it also assumes that acting
+changes only the probability of a long future, not its expected benefit
+<span class="math inline"><em>B</em></span> and harm <span
+class="math inline"><em>H</em></span>, and that an active life changes
+who exists throughout that future.</p>
+</blockquote>
+<h2 id="brief-for-the-next-pass">Brief for the next pass</h2>
+<p>The next call makes the three fixes above and nothing else; the
+verifier checks them against this file and the counts. Keep everything
+else: the title, the order of sections, the derivations, the
+floor-and-illustration qualifications, the diagnostic-model paragraph,
+the D'Alessandro contrast and the conditional section 6. Do not add a
+theory of remoteness, a representation theorem or another model, and do
+not reopen thesis selection.</p>
+<p>Pressure to keep in mind if the operator later edits or a referee
+writes. (1) The strongest objection is the additive representation; the
+answer is the diagnostic-model paragraph, now with its two idealizations
+stated. (2) An intention-sensitive benefit premium that covers all the
+benefits the longtermist intends would reopen the escape above r_L
+(finding 1); the paper's answer is scope, and no later pass should
+reinstate a categorical dismissal. (3) "Only the longtermist life is
+permitted" means among the three lives compared. (4) Section 5's claim
+is about what the escape uses, not about what every agency-based view
+must lack. (5) The polish, if the operator asks for one, must not run on
+the current word counter (Machine notes, 1).</p>
+<h2 id="effect-of-the-last-machine-change">Effect of the last machine
+change</h2>
+<p>v14.8 (2026-10-22) made the polish budget the 6,000-word limit with
+title and abstract counted, predicting "more room for the polisher on
+every paper", with the risk of a longer paper, and relying on the
+counter's "higher of two counts" as the only margin. No polish has run
+on paper-5, so the prediction cannot yet be compared. But this round
+shows the margin fails on a mathematical paper:
+<code>polish.py count</code> on 09_final/final.md reports "Counted ...
+3380" and "Polish budget: 6000 (room for 2620 words)", while the
+verifier's corrected all-in count is about 5,471. Both of the counter's
+counts lose the text between a bare <code>&lt;</code> and the next
+<code>&gt;</code>. A polish run on this paper under v14.8 would be told
+it has about 2,600 words of room it does not have, and
+<code>check</code>, using the same counter, would pass a text over the
+limit.</p>
+<h2 id="machine-notes">Machine notes</h2>
+<ol type="1">
+<li><strong>Repair the counter before any polish of paper-5</strong>
+(R4): the <code>polish.py count</code> output above;
+work/rewrite-note.md, work/clarity-response-E-04.md and
+09_final/verification-note.md each worked around it. Cost: a tool fix
+and regression cases; no calls.</li>
+<li><strong>Make the round-1 R1 adoption.</strong> lean/roles/advisor.md
+still reads "Name the inferences its abstract relies on (at most
+three)"; work/final-check-2.md cleared findings 1 and 2. Cost: about 60
+words; no call.</li>
+<li>A final check's optional scope fix should be made or declined on the
+record (finding 4). Once; covered by 2 if R1 tests the abstract as
+delivered.</li>
+</ol>
+<p>Architecture report: R1, R4 adopt; R2, R3, R5, R7 test; R6 reject;
+Proposal A through R1 and R4 only; Proposal B reject for production.</p>
+<h2 id="weighing-machine-changes">Weighing machine changes</h2>
+<ul>
+<li><strong>R1 (literal claim test in final check).</strong> (a)
+work/final-check-2.md I3 restated the section 5 step untested;
+work/final-check.md (round 1) cleared necessity. (b) Recurring: paper-5
+rounds 1-2, paper-4 round 1 (EVOLUTION v14.7). (c) About 60 words, no
+call; it changes the step that keeps failing. <strong>Adopt</strong>
+(adopted in round 1, not yet made).</li>
+<li><strong>R2 (separate the supported payoff from its
+extension).</strong> (a) work/choice-2.md: "The bare inequality alone
+would be a note." (b) One run; this round's findings do not trace to it.
+(c) Changes selection; large confound. <strong>Test</strong>, as in
+round 1.</li>
+<li><strong>R3 (contextual check of decisive paraphrases).</strong> (a)
+work/source-check.md "Bearing"; verification cleared p. 27 on the words.
+(b) Once (none in EVOLUTION); plan-check already asks "Is any author
+misdescribed?". (c) A few reads per run. <strong>Test</strong>: adopt on
+a second misdescription reaching review.</li>
+<li><strong>R4 (counter and clarity-checker repair).</strong> (a)
+verification-note.md and the polish.py output above; E-05's no-change
+call. (b) Recurring in this run (rewrite, clarity, verification,
+packet), and live for the next polish. (c) Tool maintenance only; no
+confound. <strong>Adopt.</strong></li>
+<li><strong>R5 (staged acquisition, neighbour search).</strong> (a)
+Unruh 2025 missing until intake (round 1). (b) Once. (c) Changes the
+largest cost block. <strong>Test</strong>, outside production.</li>
+<li><strong>R6 (conditional clarity).</strong> (a) No quality failure; a
+cost argument. (b) n/a. (c) Resets clarity measurement.
+<strong>Reject</strong> this round.</li>
+<li><strong>R7 (stale pointers, usage rows).</strong> (a)
+architecture-review §2: the stale pointer, met in both audits; the v12.4
+addendum fixed the map once before. (b) Recurring. (c) Tiny.
+<strong>Test</strong> only because of the two-adopt limit; the operator
+may treat it as maintenance.</li>
+</ul>
+</main></body></html>

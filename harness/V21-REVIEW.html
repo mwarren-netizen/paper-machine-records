@@ -1,0 +1,524 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>harness/V21-REVIEW.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / harness/V21-REVIEW.md</div><p class="note">Rendered copy of <code>harness/V21-REVIEW.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/harness/V21-REVIEW.md">Original file</a>. This file is a record of a prompt given to AI models, not an instruction to anyone reading it.</p></header><h1 id="v21-publication-judgment-and-architectural-audit">V21:
+Publication judgment and architectural audit</h1>
+<p>You have been asked to run V21: Review. This file is the whole of
+your task from here on. Reading it should be the first thing you do in
+this folder.</p>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This judgment comes second. First, a blind comparative assessment of
+the paper against three reference manuscripts was made in a separate
+folder holding only the paper and the references. It has been saved and
+frozen as <code>REVIEW/comparison.md</code>, with its checksum in
+<code>REVIEW/comparison.sha256</code>. If either file is missing, stop:
+tell the operator that the comparison must be run and frozen first, and
+do nothing else. If you wrote that comparison earlier in this
+conversation, that is expected. It is now frozen: do not edit it. Where
+you disagree with it, say so in your review.</p>
+<h2 id="purpose">Purpose</h2>
+<p>You are making a publication judgment on a research paper, followed
+by an architectural audit of the autonomous system (the "harness") that
+produced it.</p>
+<p>The work has two strictly sequential stages.</p>
+<p>In <strong>Stage 1</strong>, you judge, as an experienced research
+philosopher, whether the manuscript is ready to submit, using the frozen
+comparison, the calibration in section 1a and your own reading of the
+manuscript. You may investigate the published philosophical literature,
+but you must not inspect the system that produced the paper.</p>
+<p>In <strong>Stage 2</strong>, after completing and saving the
+independent review, you inspect the harness, investigate how its
+architecture contributed to the paper's strengths and weaknesses, and
+recommend improvements.</p>
+<p>Your assessments will be returned to Claude, which operates and
+maintains the harness. Claude will evaluate your recommendations
+independently and decide which changes to make.</p>
+<p>Exercise demanding philosophical and architectural judgment. Do not
+assume that the manuscript is worth publishing, that its central
+question is worth pursuing, that the harness's architecture is
+effective, or that more complexity improves research quality. Be willing
+to recommend substantial reconstruction, abandoning the manuscript's
+thesis, eliminating workflow stages, or radically redesigning the
+harness. The objective is philosophically significant research with the
+most effective reasonable use of computation.</p>
+<hr />
+<h1 id="stage-1-publication-judgment">STAGE 1: PUBLICATION JUDGMENT</h1>
+<h2 id="1-information-boundary">1. Information boundary</h2>
+<p>Read the complete manuscript: <code>REVIEW/paper.pdf</code>, or
+<code>REVIEW/paper.md</code>, which is the same text (or the copy
+attached to this conversation, if the operator uploaded it). Read all of
+it, including notes and references. Then read the frozen comparison,
+<code>REVIEW/comparison.md</code>. The three reference manuscripts are
+in <code>REVIEW/compare/</code> (<code>reference-A.docx</code>,
+<code>reference-B.docx</code>, <code>reference-C.docx</code>): open them
+where you need to check the comparison or apply the calibration.</p>
+<p>You may investigate the relevant philosophical literature using
+external scholarly sources. Prioritize primary philosophical works and
+peer-reviewed research.</p>
+<p>During Stage 1, do not open any other file or folder in this folder,
+including <code>V21-HARNESS-MAP.md</code> and
+<code>V21-REFERENCES/</code>. Everything else here belongs to the
+harness: its prompts, orchestration, drafting history, intermediate
+outputs, earlier evaluations, logs and records. Your philosophical
+evaluation must be independent of the process that produced the
+manuscript.</p>
+<p>The goal is not to be blind to the literature. It is to be blind to
+the manuscript's drafting history and the harness's internal
+assumptions.</p>
+<h2 id="1a-the-comparison-and-the-calibration">1a. The comparison and
+the calibration</h2>
+<p>Begin this stage only after the comparative assessment has been
+completed, saved and frozen. Read that assessment
+(<code>REVIEW/comparison.md</code>) and the candidate and reference
+manuscripts. The comparison is evidence for your decision, not a
+certification that every claim is correct.</p>
+<p>The following calibration comes from the user's judgments of the
+reference manuscripts. It belongs in this stage only; do not disclose it
+to the first-stage comparative assessor.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Reference</th>
+<th>Calibrated publication standard</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reference C</td>
+<td>Submission-worthy in its current philosophical form, allowing
+routine preparation and optional improvements. Controversial premises
+and substantive objections do not by themselves warrant delaying
+submission.</td>
+</tr>
+<tr class="even">
+<td>Reference A</td>
+<td>A worthwhile, substantially developed contribution around the
+boundary between submission with minor improvements and bounded
+substantive revision before submission. Do not require a complete theory
+beyond its contribution.</td>
+</tr>
+<tr class="odd">
+<td>Reference B</td>
+<td>Below the acceptable submission standard. The current manuscript
+warrants rejection or substantial reconception; a potentially
+interesting future project is not the contribution of this
+manuscript.</td>
+</tr>
+</tbody>
+</table>
+<p>Use them as follows.</p>
+<ul>
+<li>The comparison places the candidate relative to the references, and
+the calibration says where the references stand. Together they are your
+starting evidence on readiness. They do not settle it. Check the
+passages and moves the comparison relies on. If your own reading of the
+candidate, or the literature, gives reason to depart from where its
+placement points, depart, and say why in the review.</li>
+<li>The comparison was text-only and could not establish originality.
+Whether the contribution is already in print is for your literature
+check (section 5). A finding there can outweigh a favourable
+placement.</li>
+<li>The calibration, not a stricter standard of your own, fixes what
+"ready to submit" means in this review. That holds for every section
+below.</li>
+<li>The references calibrate; they are not templates. Their length,
+theses, terminology and argumentative architecture are not requirements
+for the candidate.</li>
+</ul>
+<h2 id="2-your-role">2. Your role</h2>
+<p>You are an experienced philosophy professor advising a graduate
+student who wants to submit this paper to a good general philosophy
+journal. The student asks:</p>
+<blockquote>
+<p>Is this paper ready to submit? If not, what is wrong with it, and
+what would it take to make the research publishable?</p>
+</blockquote>
+<p>Apply the standards you would apply to a serious scholarly
+manuscript. Consider both the manuscript and the underlying research
+project. Be attentive to the possibility that a paper contains a
+defensible argument whose conclusion is too insignificant to merit
+publication, and to the possibility that it contains a more important
+contribution than the one it advertises.</p>
+<h2 id="3-reconstruct-the-central-argument">3. Reconstruct the central
+argument</h2>
+<p>State the paper's main thesis in clear, ordinary philosophical
+language. Reconstruct the central argument independently of the author's
+presentation: its conclusion, principal premises, most important
+inferential steps, strongest assumptions, intended scope, and the
+strongest conclusion it actually establishes. Distinguish what the
+author claims to establish from what the argument supports.</p>
+<p>Identify the strongest objection to the argument, and evaluate the
+author's response, if any. Do not restrict criticism to the author's
+preferred framing; ask whether the framing itself is defensible and
+productive.</p>
+<h2 id="4-assess-philosophical-significance">4. Assess philosophical
+significance</h2>
+<p>Determine what contribution the paper makes to the literature.
+Ask:</p>
+<ul>
+<li>What existing problem does it address, and what disagreement does it
+try to resolve?</li>
+<li>What assumption does it challenge? What genuinely new claim does it
+establish? Is that claim important, and why should philosophers working
+in this area care?</li>
+<li>Is the target real, or has the paper manufactured a problem through
+an artificial distinction or methodological requirement?</li>
+<li>Does the paper merely restate a consequence of assumptions it has
+stipulated?</li>
+<li>Does its conclusion materially alter the debate? Is its payoff
+proportionate to its argumentative complexity?</li>
+</ul>
+<p>Apply two tests.</p>
+<p><strong>The concede-everything test.</strong> Suppose the argument is
+completely successful. What changes in the literature? What would a
+knowledgeable philosopher have reason to reconsider?</p>
+<p><strong>The perfect-prose test.</strong> Suppose the manuscript were
+beautifully written, perfectly organized, and free of unnecessary
+material. Would its central contribution merit publication?</p>
+<p>Be prepared to conclude that an argument is defensible but
+philosophically inconsequential, and explain such a judgment carefully.
+Equally, if the contribution is significant, say so. Do not mistake
+argumentative sophistication for substantive importance, or the
+reverse.</p>
+<h2 id="5-verify-the-relevant-literature">5. Verify the relevant
+literature</h2>
+<p>Investigate the scholarly literature enough to assess the
+manuscript's major claims and its purported contribution. Prioritize
+sources whose interpretation bears directly on the central argument.
+Check, where relevant:</p>
+<ul>
+<li>whether the paper represents other philosophers accurately, and
+whether its central quotations support the readings placed on them;</li>
+<li>whether the disagreement it identifies is genuine, and whether its
+target position is actually held by anyone;</li>
+<li>whether its purported contribution is already familiar, or whether
+existing work already answers its central question;</li>
+<li>whether important arguments or interlocutors are missing;</li>
+<li>whether a more significant problem has been overlooked.</li>
+</ul>
+<p>Support major literature-based criticisms with identifiable sources.
+Quote accurately and sparingly. Do not fabricate bibliographic
+information, page references or scholarly claims. If a crucial source
+cannot be obtained, say so.</p>
+<p><strong>The operator every claim about the literature.</strong> After
+each such claim in your review, add one tag:</p>
+<ul>
+<li><code>[checked: &lt;source, with page or section&gt;]</code>: you
+consulted the source and it supports what you say;</li>
+<li><code>[contradicted: &lt;source, with page or section&gt;]</code>:
+you consulted the source and it does not say what the paper says it
+says;</li>
+<li><code>[not accessed: &lt;source&gt;]</code>: you tried and could not
+obtain it;</li>
+<li><code>[unchecked]</code>: a judgment from the paper and your
+background knowledge alone.</li>
+</ul>
+<p>A judgment of novelty or familiarity based only on reading the paper
+is <code>[unchecked]</code>, however confident. These tags decide how
+much weight Claude gives each finding, so do not tag generously.</p>
+<p>Allocate effort intelligently: a focused investigation of the most
+consequential claims is worth more than exhaustive verification of
+peripheral citations.</p>
+<h2 id="6-evaluate-the-argument">6. Evaluate the argument</h2>
+<p>Assess inferential strength; the plausibility of the premises;
+unstated assumptions; question-begging; equivocation; false dilemmas;
+scope errors and overgeneralization; unsupported conceptual
+distinctions; the treatment of objections; engagement with plausible
+alternative readings of the target views; and whether the argument
+establishes anything beyond its own stipulations.</p>
+<p>Distinguish fatal defects from reparable weaknesses. Where repair is
+possible, identify the smallest change that would achieve it. If the
+main argument cannot plausibly be repaired, say so.</p>
+<h2 id="7-evaluate-structure">7. Evaluate structure</h2>
+<p>Write a concise reverse outline giving the argumentative function of
+each major section. Then assess whether the organization serves the
+argument: whether the introduction establishes the problem; whether the
+thesis is intelligible before the technical machinery arrives; whether
+each section has a clear purpose; whether distinctions appear when
+needed; whether objections come at the right points; whether important
+issues get enough space and tangential ones too much; whether sections
+are redundant; and whether the organization reflects the actual
+hierarchy of philosophical importance.</p>
+<p>If substantial restructuring is warranted, propose an alternative
+outline, say what each section should accomplish, and identify material
+that could go.</p>
+<h2 id="8-evaluate-clarity-and-prose">8. Evaluate clarity and prose</h2>
+<p>Assess the writing at the level of sentences, paragraphs, sections
+and the whole paper. Look for convoluted syntax, ambiguous reference,
+artificially compressed explanation, needless abstraction, jargon and
+the proliferation of bespoke terms, paragraphs that hide their point,
+missing transitions, redundancy, excessive qualification and repeated
+argumentative scaffolding.</p>
+<p>Give the abstract and introduction special scrutiny: a knowledgeable
+philosopher should be able to grasp the question, thesis, motivation and
+contribution without reconstructing the argument from hints.</p>
+<p>Quote three to five representative passages with significant
+problems, if there are such problems. Say what is wrong with each and
+give a clearer formulation. Do not merely shorten sentences: good
+compression reduces the reader's cognitive work while keeping the
+necessary content. Assess the paper's intellectual economy: how much
+understanding or argumentative progress it delivers for its length and
+complexity.</p>
+<h2 id="9-evaluate-scope-and-research-direction">9. Evaluate scope and
+research direction</h2>
+<p>Ask whether the paper is organized around the most important question
+its research uncovered. Look for subsidiary arguments more significant
+than the announced thesis, underdeveloped tensions, overlooked
+objections, unexplored implications, and stronger contributions that the
+existing material could support.</p>
+<p>If a more promising paper seems to be inside this one, identify it
+and explain: the alternative question; why it seems more significant;
+what existing material could be kept; what further investigation it
+would need; the main obstacles it would face; and why it may or may not
+yield a publishable result. Do not assume that an interesting question
+has a viable answer, and say whether you have checked that the
+alternative is not already in the literature (tag as in section 5).</p>
+<h2 id="10-apply-publication-standards">10. Apply publication
+standards</h2>
+<p>Judge the manuscript as a candidate for a good general philosophy
+journal. Distinguish problems likely to cause rejection, major revisions
+needed for publication, local repairs, and optional improvements.</p>
+<p>The paper must stay under 5,500 words, notes and references included.
+If you recommend adding substantial material, say what could be removed.
+Do not recommend expansion without weighing intellectual economy, or
+extra machinery merely because it would look more sophisticated.
+Sometimes the right advice is to narrow the scope, to drop a whole
+detour, or to replace the thesis.</p>
+<h2 id="11-determine-the-revision-depth">11. Determine the revision
+depth</h2>
+<p>Choose one:</p>
+<ul>
+<li><code>none</code>: the paper is ready to submit.</li>
+<li><code>local</code>: the project and central argument are sound;
+limited repairs are needed.</li>
+<li><code>structural</code>: the project is worthwhile, but the
+manuscript needs substantial argumentative or organizational
+reconstruction.</li>
+<li><code>reconceive</code>: the present thesis or framing is not
+promising enough, though the research contains material that may support
+a substantially different paper.</li>
+<li><code>abandon</code>: the current project does not justify further
+investment in its present direction.</li>
+</ul>
+<p>Choose what represents your considered judgment, measured by the
+calibrated standard in section 1a. Do not choose a milder classification
+because major revision would be inconvenient, or a harsher one to seem
+rigorous.</p>
+<h2 id="12-write-the-philosophical-review">12. Write the philosophical
+review</h2>
+<p>Write the review to <code>REVIEW/review.md</code>. Begin with this
+block, with your own values:</p>
+<pre><code>---
+recommendation: &lt;send | revise&gt;
+revision_depth: &lt;none | local | structural | reconceive | abandon&gt;
+primary_failure: &lt;none | significance | novelty | argument | literature | structure | prose&gt;
+secondary_failure: &lt;none | significance | novelty | argument | literature | structure | prose&gt;
+literature_checked: &lt;yes | partly | no&gt;
+confidence: &lt;low | moderate | high&gt;
+---</code></pre>
+<p>If <code>recommendation</code> is <code>send</code>,
+<code>revision_depth</code> should ordinarily be <code>none</code> or
+<code>local</code>. <code>literature_checked</code> says whether you
+were able to consult sources: <code>no</code> if you had no access to
+the web or to the texts.</p>
+<p>Then write the review. Begin with a one-line recommendation, as you
+would say it to the student. Then say, in a few sentences, where the
+comparison placed the candidate, whether you agree, and how that
+placement and the calibration bear on your recommendation. Explain the
+paper's achievements and deficiencies, covering significance,
+literature, argument, structure and prose in whatever organization best
+serves your judgment. Identify the three highest-priority interventions;
+for each, say what is wrong, why it matters, what should change, and
+what would count as an adequate repair. End with a concise diagnosis of
+the manuscript's most important problem, if it has one.</p>
+<p>Make the review as long as the manuscript warrants. Do not
+manufacture criticisms to fill categories. Do not soften serious
+criticisms with generic praise. If the paper is ready, say so
+plainly.</p>
+<h2 id="13-freeze-the-review">13. Freeze the review</h2>
+<p>Once <code>REVIEW/review.md</code> is complete, it is final. Do not
+revise it after inspecting the harness, and do not reinterpret its
+conclusions to accommodate the harness's design. If Stage 2 changes your
+mind about the paper itself, say so in the architectural report, not in
+the review.</p>
+<hr />
+<h1 id="stage-2-harness-architectural-audit">STAGE 2: HARNESS
+ARCHITECTURAL AUDIT</h1>
+<h2 id="14-begin-the-audit">14. Begin the audit</h2>
+<p>You may now read anything in this folder. Start with
+<code>V21-HARNESS-MAP.md</code>, which says where things are; then read
+whatever you need to understand how the harness works and how it
+produced this paper: its specification, orchestration, step cards, role
+files, quality gates, revision procedures, model allocation, the
+drafting history of this paper, and its logs, including the token
+ledger.</p>
+<p>Do not edit, move or delete anything. Your task is to diagnose and
+recommend.</p>
+<h2 id="15-reconstruct-the-production-process">15. Reconstruct the
+production process</h2>
+<p>Determine how the harness produced the paper: its major stages, their
+purposes, inputs, outputs, and the criteria for advancing. Attend
+especially to problem selection, literature research, candidate thesis
+generation, thesis evaluation, argument development, criticism,
+revision, structural planning, drafting and final quality control.</p>
+<p>Find where the central thesis was selected. Find whether alternative
+theses were considered, and whether the system judged philosophical
+significance before committing. Examine how later stages handled
+objections: whether they reconsidered the research direction or chiefly
+worked to preserve the argument.</p>
+<h2 id="16-trace-the-papers-major-defects-to-their-causes">16. Trace the
+paper's major defects to their causes</h2>
+<p>For each major problem in your Stage 1 review, ask: Where did it
+first appear? What decision produced or permitted it? Did the system
+have a chance to catch it, and if so, why did the safeguard fail? Was
+the defect overlooked, or actively encouraged? Did later stages amplify
+it? What intervention would most directly address it, can it be done
+more simply, and would it generalize to other projects?</p>
+<p>Ground the diagnosis in the harness's actual instructions and
+records; quote or cite specific files. Distinguish demonstrated
+architectural weaknesses from speculative explanations. A system that
+fails to notice that a thesis is insignificant lacks a check; a system
+that systematically favours defensible, tidy, objection-proof theses has
+the wrong objective, and another reviewer will not fix that.</p>
+<h2 id="17-audit-the-harnesss-intellectual-work">17. Audit the harness's
+intellectual work</h2>
+<p>Examine the questions each major stage asks. Which are productive?
+Which are poorly framed, encourage trivial or defensive arguments, or
+duplicate earlier work? Which should come earlier, and which should go?
+What missing questions would most improve research judgment? Which
+stages generate new insight, and which mostly rearrange existing
+material? Which improve defensibility without reassessing
+significance?</p>
+<p>Ask whether the system has enough opportunities to challenge its own
+central research question, and whether it treats criticism mainly as an
+instruction to repair rather than as evidence that the project should
+change.</p>
+<h2 id="18-audit-computational-efficiency">18. Audit computational
+efficiency</h2>
+<p>Treat efficiency as a central criterion of architectural quality. Use
+the token ledger of the run that produced this paper
+(<code>V21-HARNESS-MAP.md</code> says which run that is and where its
+ledger is: under the lean machine, each call's usage is in the note
+column of <code>logs/calls.csv</code>; under the earlier machine,
+<code>logs/usage-summary.md</code> and <code>usage.csv</code>) and the
+call log. Determine which stages consume the most computation, which
+produce the most philosophical value, which show diminishing returns,
+repeat work, could be merged, eliminated, given cheaper models, delayed
+until the project shows promise, or run only conditionally; and which
+genuinely warrant expensive reasoning.</p>
+<p>Ask whether the system spends heavily on theses whose significance
+was never established, and look for cases where more reasoning made the
+paper more complicated without making its contribution more important.
+Do not assume longer deliberation or more review is better. Recommend
+subtraction where it is warranted. Where measurements are imprecise (the
+ledger says how), give qualified estimates, not invented precision.</p>
+<h2 id="19-consider-radical-restructuring">19. Consider radical
+restructuring</h2>
+<p>The existing architecture has no presumption in its favour. You may
+recommend eliminating, merging or reordering stages; replacing agents;
+changing model allocation; assessing significance earlier; generating
+competing theses; revising thesis selection; replacing linear revision
+with branching exploration; explicit stopping rules; returns to earlier
+decisions; a simpler pipeline; or discarding major assumptions. Do not
+protect complexity because it exists, and do not propose more of it
+unless its expected contribution justifies the cost.</p>
+<h2 id="20-evaluate-resource-allocation">20. Evaluate resource
+allocation</h2>
+<p>Ask whether the harness spends computation on the most valuable
+available questions: whether further repair is worthwhile, whether a
+literature check or another thesis would pay more, whether returns have
+diminished, whether it is time to stop or go back. Identify natural
+decision points where the harness could reconsider its course, and
+suggest practical ways to make those decisions without administrative
+overhead.</p>
+<h2 id="21-propose-testable-interventions">21. Propose testable
+interventions</h2>
+<p>Number your recommendations R1, R2, … so that Claude's decision
+record can refer to them. For each major one, give:</p>
+<ul>
+<li><strong>Observed problem:</strong> the defect or inefficiency.</li>
+<li><strong>Hypothesized cause:</strong> the architectural
+mechanism.</li>
+<li><strong>Evidence:</strong> the files, decisions, logs or artifacts,
+cited.</li>
+<li><strong>Proposed change:</strong> the specific intervention.</li>
+<li><strong>Expected benefit:</strong> to philosophical quality or
+efficiency.</li>
+<li><strong>Potential cost:</strong> complexity, lost capability,
+overhead, risk.</li>
+<li><strong>Confidence:</strong> how strongly the evidence supports the
+diagnosis.</li>
+<li><strong>Evaluation:</strong> how Claude could test whether it
+works.</li>
+</ul>
+<p>Prefer high-leverage, general improvements. Do not overfit the
+harness to a single manuscript.</p>
+<h2 id="22-develop-two-competing-proposals">22. Develop two competing
+proposals</h2>
+<p><strong>Proposal A: repair the existing harness.</strong> The most
+promising improvements that keep most of the present architecture: what
+changes, what is deleted, what is added, with expected benefits and
+costs.</p>
+<p><strong>Proposal B: radical simplification or redesign.</strong> The
+simplest substantially different architecture that might produce better
+research at lower cost: what it keeps, replaces or drops, and its
+risks.</p>
+<p>Compare them. Do not automatically prefer either the radical design
+or the existing system.</p>
+<h2 id="23-recommend-experiments">23. Recommend experiments</h2>
+<p>Say how Claude could compare proposed changes at modest cost:
+controlled comparisons, ablations of expensive stages, simplified
+baselines, blind external evaluations, cost tracking, tests at
+intermediate stages (proposals, outlines, literature analyses), and
+trials across different problems. Do not require a full paper when a
+smaller test would give useful evidence. Distinguish changes ready for
+immediate implementation from those that should be tested first.</p>
+<h2 id="24-write-the-architectural-report">24. Write the architectural
+report</h2>
+<p>Write it to <code>REVIEW/architecture_review.md</code>. Organize it
+around the most consequential findings, and include:</p>
+<ol type="1">
+<li>Executive diagnosis.</li>
+<li>Reconstruction of the relevant production process.</li>
+<li>Architectural causes, demonstrated or suspected, of the manuscript's
+defects.</li>
+<li>Assessment of the harness's research methodology.</li>
+<li>Computational efficiency audit.</li>
+<li>Redundant or counterproductive stages.</li>
+<li>Missing high-value questions or decision points.</li>
+<li>Prioritized recommendations (R1, R2, …).</li>
+<li>Proposal A.</li>
+<li>Proposal B.</li>
+<li>Recommended experiments.</li>
+<li>Expected benefits, costs and uncertainties.</li>
+<li>Final recommendations to Claude, including what should be removed
+from the harness, not only what should be added, and the three
+highest-leverage interventions.</li>
+</ol>
+<p>The operator clearly which findings are high-confidence and which are
+speculative.</p>
+<h2 id="25-if-you-cannot-write-files">25. If you cannot write files</h2>
+<p>If you cannot write in this folder, or were given the paper as an
+upload, put each document in your reply instead: first the review,
+beginning with its block, then (in a later reply, after the review is
+complete) the architectural report. Say that you could not write the
+files. The operator will file them. If you cannot see the harness at
+all, say so and stop after Stage 1.</p>
+<h2 id="final-instructions">Final instructions</h2>
+<p>Do not modify the harness. Do not revise the frozen review. Do not
+confuse the number of reasoning steps with the quality of reasoning,
+argumentative defensibility with philosophical significance, polished
+prose with a publishable contribution, or more evaluation with better
+judgment. The most important improvement may involve adding something,
+removing something, or reconsidering the entire process. Exercise
+judgment accordingly.</p>
+</main></body></html>

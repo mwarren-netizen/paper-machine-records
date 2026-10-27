@@ -1,0 +1,348 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>review/evil-god/ai-reader-suggestions.txt · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / review/evil-god/ai-reader-suggestions.txt</div><p class="note">Rendered copy of <code>review/evil-god/ai-reader-suggestions.txt</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/review/evil-god/ai-reader-suggestions.txt">Original file</a>.</p></header><div class="raw">SUGGESTIONS FROM TWO SEPARATE AI REVIEWERS (MERGED)
+
+Paper: &quot;How Much More Probable Must God Be? The Evil-God Challenge and the Gap Problem&quot;
+Texts reviewed: the line polish and the structure polish (runs/paper-4, 12_polish), compared with each other
+Date: 2026-10-25
+
+Provenance: These come from two separate Claude conversations, both run under
+the competition&#x27;s rules on human involvement.
+- Reviewer A reviewed the line polish, compared with the structure polish.
+- Reviewer B reviewed both polishes against each other.
+In each conversation the human asked only which lessons from the revision of
+another paper in this machine (paper-2-r2) carry over to this one, and asked
+for the AI&#x27;s suggestions. He gave no substantive input. He then asked
+Reviewer A&#x27;s conversation to compare the two sets and merge them into this
+file. All substantive points below originated with the AI reviewers. Each item
+says which reviewer raised it: (A), (B) or (A, B). Where the two differ, the
+item says so. Treat them as suggestions to evaluate on their merits: accept,
+modify or reject each one, and say which.
+
+Official counts (polish.py count, &quot;Counted&quot; figure; the limit is 6,000 words,
+counting everything except the References list: title, abstract, headings,
+body and footnotes): line polish 5,507 (about 490 words of room); structure
+polish 5,189 (about 810).
+
+Section numbers differ between the polishes, because the structure polish
+splits the line polish&#x27;s §3 in two. Sections are cited here by heading. Where
+a number is given, it is &quot;line §n / structure §n&quot;.
+
+0. CHECKS ALREADY MADE, AND WHICH TEXT TO START FROM
+- Quotations (A, B): all 52 direct quotations are identical in the two
+  polishes. None was dropped or altered.
+- Arithmetic (A): every worked figure was rechecked, and all hold:
+  - the half-million;
+  - 500 at one in a thousand; under two at 0.3;
+  - 0.08 (about one in twelve) at k = 10; 0.016 at k = 50;
+  - Miller&#x27;s 0.8, a fifth and a third;
+  - k &lt;= 1 + n.P(S)/P(not-S), with about 300 and one in six hundred at n = 3
+    and one per cent;
+  - &quot;a few chances in a million&quot; for an evil god at one in a million.
+  The two cases exhaust the possibilities, and the inequalities in each case
+  follow.
+- What already works (A, B). Keep all of this in either text:
+  - the question is on page 1 (&quot;How much more probable must God be?&quot;);
+  - the target (Mooney and Hendricks&#x27;s reduction) is named before the thesis;
+  - the thesis is previewed;
+  - people get first names at first mention.
+- The structure polish improves the order in two ways (B; A agrees):
+  (a) the trade-off (&quot;At one chance in a million, k.r must be at least half a
+      million; at one in a thousand, five hundred; at 0.3, under two&quot;) comes
+      straight after the bound k.r &gt;= t/epsilon, before the discussion of
+      symmetry;
+  (b) the two-case argument has its own section, &quot;Where the Evil God&#x27;s
+      Improbability Lies&quot;, which separates the paper&#x27;s hardest stretch.
+- The line polish has plain-language glosses that the structure polish lacks
+  (A, B); see item 1.
+- Which text to start from. Reviewer B recommends the structure polish, with
+  the line polish&#x27;s glosses restored and the slips in item 10 fixed.
+  Reviewer A, having reviewed the line polish, agrees on balance:
+  - the structure polish already has the order gains;
+  - it has about 320 more words of room;
+  - restoring the glosses and fixing the slips should cost far less than
+    that.
+  The human chooses.
+
+1. KEEP OR RESTORE THE PLAIN-LANGUAGE GLOSSES (A, B)
+The line polish defines technical terms in passing. The structure polish does
+not. In whichever text is used, define each at first use:
+- &quot;prior probability&quot; (line polish: &quot;its probability before the evidence is
+  weighed&quot;);
+- &quot;credence&quot; (line polish: &quot;or degree of confidence&quot;);
+- the prior ratio P(G)/P(M) and the likelihood ratio P(E|G)/P(E|M) (line
+  polish: &quot;the ratio of the hypotheses&#x27; probabilities before the evidence&quot;;
+  &quot;the ratio of the probabilities each hypothesis assigns to the evidence&quot;);
+- &quot;posterior ratios&quot; (line polish: &quot;ratios of probabilities after the evidence
+  is weighed&quot;);
+- Symes&#x27;s distinction (line polish: &quot;absurdity before the evidence is weighed
+  (a priori) from absurdity in light of it (a posteriori)&quot;; structure polish:
+  &quot;separated a priori from a posteriori absurdity&quot;);
+- &quot;perfectly free&quot; (line polish: &quot;moved only by its knowledge of what is
+  good&quot;);
+- &quot;metaethics&quot; (line polish: &quot;to questions about value and motivation&quot;).
+
+2. SAY WHAT THE SIMPLICITY REPLY IS, AND WHAT SWINBURNE&#x27;S MEASURE COUNTS AS
+SIMPLER (A, B)
+(a) Introduction (B). The line polish explains the reply: &quot;God is perfectly
+free: moved only by its knowledge of what is good, it needs no further motive.
+A being that does evil needs a desire to do it. Simpler hypotheses are more
+probable, so God is more probable than the evil god.&quot; The structure polish
+cuts this. The reader is told that &quot;the most developed reply appeals to
+simplicity&quot; but not, until Section 2, why simplicity favours God. The
+introduction&#x27;s later claims (the cap, &quot;Swinburne&#x27;s premise about value and
+motivation&quot;) depend on it. Keep or restore a brief statement of the reply.
+(b) Swinburne&#x27;s measure (A).
+- The paper relies on Swinburne&#x27;s account of simplicity throughout, but the
+  reader meets it only in fragments:
+  - fewer properties (&quot;the absence of properties, such as non-rational
+    desires&quot;);
+  - infinite values simpler than finite ones;
+  - a penalty on desires a being &quot;variously has&quot;.
+- By the simplicity section, the argument turns on what the measure favours
+  (&quot;Swinburne&#x27;s measure favours extremes&quot;; &quot;the cheap setting&quot;).
+- Somewhere early, say in two or three sentences what the account counts as
+  simpler and why simplicity is supposed to raise prior probability. Use the
+  paper&#x27;s own words, from the sources it already cites.
+- The general lesson from paper-2-r2: when a paper borrows a framework from
+  elsewhere and leans on it, a newcomer needs a short account of what the
+  framework is before its details are used.
+
+3. SAY WHY THE CAP HOLDS, IN THE INTRODUCTION (B)
+The line polish gives the reason that simplicity&#x27;s advantage is capped: &quot;For
+if that premise is false, and nothing else about value favours the good, a
+good god needs a motive as much as an evil one does.&quot; The structure polish
+states the cap with no reason (&quot;the advantage simplicity can supply is capped
+by the theist&#x27;s confidence in Swinburne&#x27;s premise about value and
+motivation&quot;). Give the reader the one-sentence reason, and name the premise
+as the line polish does (&quot;that a perfectly free being who knows what is good
+will do it&quot;).
+
+4. GLOSS THE BOUND WHERE IT APPEARS (A; already done in the structure polish)
+In the line polish, the display k.r &gt;= t/epsilon is followed by a long
+paragraph on Page and Baker-Hytch and the rough symmetry. Only then comes the
+plain-words reading (&quot;This requirement sets a lower bound... At one chance in
+a million...&quot;). Put the trade-off straight after the display, so the formula
+is read in words while it is still in view. The structure polish already does
+this (item 0(a)).
+
+5. TRANSLATE THE MATHEMATICS INTO WORDS (A, B)
+The lesson from paper-5&#x27;s revision: where a formula or condition matters to
+the argument, give a rough statement of what it means in plain words. The
+paper already does this in places, and those are the model:
+- after the cap, &quot;the advantage simplicity gives God is at most about n times
+  the odds on Swinburne&#x27;s premise&quot;;
+- the conclusion&#x27;s &quot;the theist&#x27;s credence in God is her credence in the evil
+  god multiplied by God&#x27;s combined advantage&quot;.
+Reviewer B recommends that most of the spare words go here. The passages that
+need it:
+(a) The two-case argument (&quot;Where the Evil God&#x27;s Improbability Lies&quot;, or the
+    second half of line §3), from &quot;Let d be the factor by which the total
+    evidence changes the evil god&#x27;s probability&quot; through &quot;so nearly all of
+    the evil god&#x27;s improbability lies in its prior&quot; (B). Say in words:
+    - what d measures;
+    - why P(G|E) &lt;= r.d;
+    - what each case amounts to;
+    - why the two cases exhaust the possibilities.
+    For the second case in particular (A): &quot;Then P(M) = epsilon/d &lt;=
+    r.epsilon/t, so nearly all of the evil god&#x27;s improbability lies in its
+    prior.&quot; The step to &quot;nearly all&quot; is left to the reader. With the paper&#x27;s
+    own values (r = 1, t = 1/2), it says that the evil god&#x27;s prior is at most
+    twice its final credence. An evil god at one in a million therefore
+    starts out at no more than two in a million: the evidence has done almost
+    nothing, and the prior has done the rest.
+(b) The derivation of the cap (A, B): &quot;Then P(G | S), which cannot exceed the
+    probability of a creator, is at most about n times P(G | not-S).&quot; This is
+    the step on which the cap rests, and its reason is compressed into a
+    relative clause. Spelled out:
+    - given not-S, a creator&#x27;s motive is one of n equally likely simplest
+      motives, so God gets about a 1/n share of the creator&#x27;s probability;
+    - given S, God can get at most all of it;
+    - since S does not raise the creator&#x27;s probability, the second is at most
+      n times the first.
+    Say this, and briefly why each later step holds (&quot;Since P(M) &gt;=
+    P(not-S).P(M | not-S), and P(G) = ...&quot;), before the formula k &lt;= 1 +
+    n.P(S)/P(not-S).
+(c) &quot;A credence of at least t/(rk)&quot; (B): say what this is.
+
+6. REMIND READERS WHAT THE SYMBOLS AND THE BOUND MEAN (A, B)
+- The paper uses k, r, epsilon, t, d, S and n. Epsilon is not a small
+  quantity in general but the evil god&#x27;s final (posterior) credence, which a
+  reader may not expect (B).
+- When k.r &gt;= t/epsilon returns, say in a few words what each symbol stands
+  for (B). It returns in &quot;What a Gap Solution Must Supply&quot;, in the simplicity
+  section (&quot;a prior advantage for God of at least t/(r epsilon)&quot;) and in the
+  conclusion.
+- &quot;The bound&quot; is coined in &quot;How Large the Advantage Must Be&quot; (&quot;sets a lower
+  bound&quot;) and used later without restatement (A). &quot;What a Gap Solution Must
+  Supply&quot; opens with &quot;The bound shows this to be mistaken&quot;; restate the bound
+  in words there.
+
+7. ONE NAME FOR EACH CHALLENGE (A, B)
+- The two versions of the challenge have two names each:
+  - &quot;comparative&quot; and &quot;absolute&quot; (abstract, introduction, conclusion);
+  - &quot;Challenge I&quot; and &quot;Challenge II&quot; (Section 2 and after).
+- The mapping is given once, in Section 2 (&quot;Challenge I is comparative ...
+  Challenge II is absolute&quot;). A reader who reaches &quot;It answers Challenge II
+  only if...&quot; has to remember which is which.
+- Either use one pair throughout, keeping Mooney and Hendricks&#x27;s numerals only
+  in quotation, or tie the labels together at each return (for example,
+  &quot;Challenge II, the absolute challenge&quot;).
+
+8. ONE NAME FOR THE EVIL-GOD HYPOTHESIS, AND FOR THE SYMMETRY PREMISE (A)
+(a) The evil-god hypothesis appears as &quot;the evil god&quot;, &quot;maltheism&quot; (Mooney and
+Hendricks), M, &quot;diabolism&quot; (Collins), &quot;EGH&quot; (Lancaster-Thomas) and &quot;EG&quot; (Page
+and Baker-Hytch). God likewise appears as &quot;theism&quot;, G, &quot;GGH&quot; and &quot;GG&quot;. Each is
+glossed where it appears, which is right, but that is five names for one
+hypothesis. Say once, early, that the paper calls it &quot;the evil god&quot;
+(formally M) and that the authors quoted use other labels. Each quoted label
+then needs only &quot;(their name for the evil god)&quot;.
+(b) The premise the whole argument is conditional on has four descriptions:
+- &quot;its central premise, that the evidence fits the two gods about equally
+  well&quot; (introduction);
+- &quot;the two symmetries&quot; (Section 2, where the two grounds of Challenge I have
+  not yet been called symmetries);
+- &quot;the symmetry premise&quot; (the bound section);
+- &quot;the symmetry of likelihoods&quot; (conclusion).
+Name it at first use and keep the name. In Section 2, say that the two
+grounds just given are the &quot;two symmetries&quot; the quotation goes on to mention.
+
+9. LABELS THAT RETURN AFTER A GAP, AND TERMS USED UNGLOSSED (A)
+- &quot;The first option&quot; and &quot;the second option&quot; first appear in &quot;What a Gap
+  Solution Must Supply&quot; (&quot;Miller has thus taken the second option&quot;) and in the
+  simplicity section (&quot;The theist&#x27;s first option&quot;). The introduction sets out
+  the choice (&quot;She may hold ... Or she may give...&quot;) but doesn&#x27;t number the
+  options. Number them there, or describe each again at its return.
+- &quot;The superfluity claim&quot; (conclusion) appears for the first time there.
+  Prefer &quot;their claim that the challenge is superfluous&quot;.
+- &quot;Natural theology&quot; and &quot;evidential problem of evil&quot; are unglossed (&quot;Anyone
+  whose natural theology has already made naturalism improbable&quot;; &quot;a decisive
+  evidential problem of evil&quot;). A short gloss of each would help a reader
+  from outside philosophy of religion.
+
+10. WORDING SLIPS AND PRECISION (B, with A on &quot;exactly&quot;)
+(a) Slips in the structure polish (B):
+- &quot;under symmetry the evidence lowers God exactly as it lowers the evil god.
+  To say that it lowers the evil god by more than half is to say that it
+  lowers God by more than half&quot;. As written, the evidence lowers God; it
+  should lower God&#x27;s *probability*, as in the line polish.
+- &quot;evidence that fits both gods equally moves them together&quot; is vaguer than
+  the line polish&#x27;s &quot;changes their probabilities by the same factor&quot;.
+- &quot;His second is right of the difference between the two probabilities ...
+  but not of their ratio&quot;: &quot;right of&quot; is unidiomatic. The line polish has
+  &quot;right about&quot;.
+- &quot;reaches the evil god only if the evil god is among the many&quot; and &quot;The evil
+  god belongs to a small class of simplest motives, not to the many&quot;: &quot;the
+  many&quot; is undefined. The line polish says &quot;one of the many rivals among
+  which the remaining probability is spread thinly&quot;.
+- &quot;since such knowledge might incline without compelling&quot; is compressed. The
+  line polish says &quot;might incline a being to do good without compelling it to
+  do so&quot;.
+- &quot;Now exactly.&quot; and &quot;Start with the shape of the point.&quot; are abrupt
+  transitions.
+(b) &quot;Exactly&quot; overstates the symmetry (A). Both polishes say the evidence
+lowers God&#x27;s probability by &quot;exactly&quot; the evil god&#x27;s factor. The paper&#x27;s
+premise, however, is that r is &quot;close to one&quot;, and it allows the symmetry to
+be &quot;only rough&quot;. &quot;Exactly&quot; holds only at r = 1. Combined fix: &quot;lowers God&#x27;s
+probability by about the same factor (exactly, when r = 1)&quot;. The argument of
+the next sentence needs only rough equality.
+(c) Smaller (A). &quot;God&#x27;s credence is at most k.r times the evil god&#x27;s&quot; (in the
+Miller discussion) is true but weaker than the paper&#x27;s own equation,
+P(G|E) = k.r.epsilon exactly. Check that &quot;at most&quot; is the intended claim.
+These are precision points, not changes to the argument.
+
+11. THE PAPER&#x27;S OWN MOVE IN THE SIMPLICITY SECTION NEEDS SLOWING DOWN (A, B)
+- The argument that the evil god is among the simplest rivals is the paper&#x27;s
+  most original step. It begins with &quot;Swinburne&#x27;s measure favours extremes&quot;;
+  then what privileges malevolence is that &quot;its object is supplied by the
+  facts that make God good&quot;.
+- It carries the cap: without it, the argument from the continuum would sink
+  the evil god, and the cap would have nothing to cap.
+- It is dense:
+  - &quot;fixed by the same facts with the direction reversed&quot;;
+  - &quot;needs no content beyond them&quot;;
+  - Draper&#x27;s penalty &quot;spares a uniform anti-good motive&quot;;
+  - strength &quot;set at the limit&quot;.
+- Check that a reader new to Swinburne can follow each step:
+  - why limitlessness is cheap on Swinburne&#x27;s measure;
+  - why a reversed valuation needs no further content, while a desire for
+    order does;
+  - why Draper&#x27;s penalty spares it;
+  - why the egoist god is the stated limit.
+- The paper&#x27;s own contrast between the evil god and a god with a maximal
+  desire for order could be made a plain comparison of what each hypothesis
+  has to specify (A).
+- Keep every qualification at its present strength (A, B).
+
+12. SAY WHAT EACH SECTION OR PASSAGE IS FOR (A, B)
+(a) The Law paragraph (A). The paragraph on Law&#x27;s elves of Swindon closes the
+bound section (line §3 / structure §3), after the symmetry discussion, and
+reads as an afterthought. It does real work:
+- the conclusion counts its result among what the paper establishes (&quot;Law&#x27;s
+  point about the elves of Swindon is best read as a claim about absolute
+  credence&quot;);
+- the plan gave it a section of its own (&quot;What Law should have said&quot;).
+Open the paragraph with a sentence saying what it does: it corrects the
+challenger&#x27;s own reply to simplicity, and the correction is the bound applied
+to Law&#x27;s example.
+(b) The survey in &quot;What a Gap Solution Must Supply&quot; (B).
+- The section runs through Swinburne, Miller (2016), Collins, Symes,
+  Lancaster-Thomas and Miller (2021) in quick succession. Make sure the reader
+  knows why each is there: each either fails to state a size, or (Miller 2021)
+  states one and so takes the second option.
+- A short sentence at the start saying what the survey is looking for would
+  help. &quot;None of the solutions in print that I examined states a prior
+  ratio...&quot; does this, but it comes after the objection-and-reply paragraphs;
+  consider whether it should come first.
+- The &quot;by definition&quot; objection and its reply are dense. Check that the
+  distinction between the two readings of &quot;successful&quot; is clear.
+(c) General (A). Check that each section&#x27;s job is visible when a reader
+enters it.
+
+13. THE CONTRIBUTION STATEMENT (A and B differ)
+&quot;What this paper adds is to connect these points: the size of the requirement,
+its consequence for Mooney and Hendricks&#x27;s reduction ..., and, on one model, a
+cap on what simplicity can supply.&quot;
+- Reviewer B finds this clear and easy to find, and would keep it.
+- Reviewer A suggests numbering the three contributions so the reader can
+  find them again in the later sections, with the conclusion echoing them in
+  the same order.
+Either way, don&#x27;t strengthen the claim. &quot;Connect these points&quot; is the paper&#x27;s
+own description, and the cap is introduced as holding &quot;on one model&quot;.
+
+14. CONCRETE ILLUSTRATIONS (B; A optional)
+(a) The price of the second option is a strong example (B). &quot;A theist with
+k = 10, r = 1 and a credence in God of 0.8 must give the evil god 0.08: one
+chance in twelve that the world was made by an omnipotent being who wants us
+to suffer&quot; is the paper&#x27;s most vivid illustration. It comes late. Consider
+whether the introduction could point to it, as it already does with the
+one-in-a-million figure. Claim no more than the paper does.
+(b) One illustrative theist, carried through (A, optional). The worked numbers
+change from section to section:
+- one in a million;
+- one in a thousand and 0.3;
+- a prior ratio of a hundred;
+- k = 10 and 50;
+- n = 3 and one per cent.
+Each set is clear on its own, but the reader can&#x27;t watch one theist&#x27;s
+position change as the argument proceeds. Consider fixing one illustrative
+theist early (say, an evil god at one in a million, belief at one half,
+r = 1) and returning to her at each stage:
+- the bound she faces;
+- what the solutions in print give her;
+- what simplicity can give her on the model, and what she must therefore
+  believe about Swinburne&#x27;s premise.
+The pieces are already in the paper; this changes how they are threaded, not
+what they show. Mind the budget: (a) is the cheaper way to get much of the
+same effect.
+</div></main></body></html>

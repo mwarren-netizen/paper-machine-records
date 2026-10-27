@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>review/paralysis/ai-reader-suggestions.txt · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / review/paralysis/ai-reader-suggestions.txt</div><p class="note">Rendered copy of <code>review/paralysis/ai-reader-suggestions.txt</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/review/paralysis/ai-reader-suggestions.txt">Original file</a>.</p></header><div class="raw">SUGGESTIONS FROM A SEPARATE AI REVIEWER
+
+These come from a separate Claude conversation used for comprehension checking. The human only asked clarifying questions. All substantive points below originated with the AI reviewer. Treat them as suggestions to evaluate on their merits: accept, modify, or reject each one.
+
+1. FORMAL CHECKS (no changes needed)
+
+2. §4 IS HARD TO FOLLOW WITHOUT A VERBAL GLOSS
+(a) Say in words what the quantities are. r is a property of the future, the same for every option. r_L and r_O are thresholds: the minimum future benefit-to-harm ratio at which each life beats stillness. A lower threshold means the life is easier to justify. A careful reader misread &quot;r_L &lt; r_O&quot; as saying the longtermist life does less good than ordinary life.
+(b) Explain WHY r_L &lt; r_O, not just &quot;Because k &gt; k′.&quot; Both lives pay the same premium on the future&#x27;s harms and gain the same premium on its benefits for the future that would exist anyway. L differs only in adding a small extra slice of future (Δ). That slice is worth adding on much easier terms: whenever r &gt; k/k′, since stillness would not have produced it. Formally, r_L is a weighted average (mediant) of r_O and k/k′, with weight εk′/(k′−1+εk′) on k/k′. Since ε is tiny, r_L sits just below r_O.
+(c) The sentence &quot;The longtermist life now has a second source of value: the extra weight on the benefit it does&quot; invites misreading. Ordinary life also gets the extra weight on every benefit it does, so this is not what distinguishes L.
+(d) Explain in words why the band is narrow. Its relative width is roughly ε/(k′−1) when k′ is near 1, so one agent&#x27;s tiny margin can move the threshold only slightly.
+(e) Give a plain-language statement of what the band is: futures almost good enough for ordinary life to be permitted, where one person&#x27;s tiny addition to the future is just enough to cross the line. Slightly worse futures leave the longtermist paralyzed too. Slightly better ones make ordinary life permissible anyway, so there is nothing to escape.
+(f) Make explicit: when doing good carries any premium, a very large r does not rescue the escape; it dissolves paralysis by exceeding r_O. The large-r route works as an escape only at k′ = 1 exactly, where r_O is infinite and no future, however good, permits ordinary life.
+
+3. §2: NAME THE TWO ASYMMETRIES EXPLICITLY
+The introduction states both: doing vs. allowing harm, and harming vs. failing to benefit (D&#x27;Alessandro&#x27;s &quot;HBA&quot;). After that the paper mostly says &quot;the asymmetries.&quot; Consider naming both in §2, tying each to its parameter (k &gt; 1; k′ ≈ 1), and saying why paralysis needs both. The first makes authoring the future&#x27;s harms costly. The second ensures that authoring its benefits earns no matching credit. With k′ = k, one would act whenever the future is net good.
+
+4. A PLAIN-LANGUAGE PICTURE (optional; consider placing before the algebra)
+A reviewer-generated analogy that a non-technical reader found far clearer than the current text:
+Because almost any act reshuffles who is conceived, acting is like signing your name to the whole future. Signing brings extra blame for its harms (done, not allowed) and only a little extra credit for its goods. For a future like ours, the scale tips slightly against signing, so ordinary life is forbidden. The longtermist signs too: same scale, same tilt. Her work only adds a feather (a little more good future). A feather tips the scale only if it was almost perfectly balanced already. So the escape works only by coincidence.
+Extensions: in §3 (k′ = 1), signing earns no extra credit at all, so no ordinary future balances the scale. In §5, the blame surcharge fades for distant chapters of the future, so good work done far out can outweigh it.
+
+5. THESIS SIGNPOSTING (optional)
+The narrow-band result is one of three cases, not the thesis. The thesis is that long-term focus alone does not answer the Paralysis Argument, because the longtermist life also authors the future and pays the full premium, while its gain scales only with the agent&#x27;s margin. The introduction could preview the three cases (k′ = 1; k′ &gt; 1; limited reach) so readers can see the structure.
+
+6. WHY THE ESCAPE IS DEMANDING (optional clarification)
+The demandingness comes by elimination, from the constraint against doing harm, not from a strong duty of beneficence: every act not justified by long-term effects stays forbidden. §4&#x27;s contrast already touches this (&quot;that demand is beneficence&#x27;s own&quot;). A sentence in §2 could make the source of the demandingness explicit.
+
+7. WHY THIS TARGETS DEONTOLOGY (optional)
+Setting k = k′ = 1 recovers the consequentialist comparison: V(O) − V(A) = b and V(L) − V(A) = Δ(B − H). That shows paralysis is specific to the asymmetries. Consequentialists face only the related epistemic problem of cluelessness (Lenman, Greaves), which never makes inaction privileged. This may merit a sentence.
+
+8. §5: KEEP IT, BUT TRIM
+Keep it in the main text. It answers the obvious objection about remote harms (Quinn), earns the conclusion&#x27;s second disjunct (&quot;or explain why the premium is restricted&quot;), supports one of the three stated novelty claims, and contains the reversal result: a larger future strengthens paralysis with an unlimited premium but eases the escape with a limited one. The Woollard paragraph and the &quot;other replies&quot; paragraph (collective agency, Unruh 2023) could each shrink to a sentence or a footnote.</div></main></body></html>

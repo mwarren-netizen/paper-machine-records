@@ -1,0 +1,172 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>harness/tools-README.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / harness/tools-README.md</div><p class="note">Rendered copy of <code>harness/tools-README.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/harness/tools-README.md">Original file</a>. This file is a record of a prompt given to AI models, not an instruction to anyone reading it.</p></header><h1 id="tools">Tools</h1>
+<p>Small Python scripts (standard library only; Python 3.8 or later) for
+the mechanical parts of a run. The orchestrator and some roles run them;
+nothing philosophical happens here. Each prints its usage with
+<code>--help</code>. Run them as
+<code>python3 &lt;root&gt;/system/tools/&lt;script&gt;.py</code>, where
+<code>&lt;root&gt;</code> is the machine folder. None of them deletes
+anything.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Script</th>
+<th>Step</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>new_run.py</code></td>
+<td>V00</td>
+<td>creates <code>runs/&lt;run_id&gt;/</code> from
+<code>runs/_template/</code></td>
+</tr>
+<tr class="even">
+<td><code>log.py</code></td>
+<td>throughout</td>
+<td>the only writer of the logs: calls, events, the operator's actions,
+decisions, deviations</td>
+</tr>
+<tr class="odd">
+<td><code>requests.py</code></td>
+<td>throughout</td>
+<td>the source-request queue: harvest REQ lines, split batches, deliver
+notes to owners, list</td>
+</tr>
+<tr class="even">
+<td><code>setup_voices.py</code></td>
+<td>V03</td>
+<td>draws one disposition per family at random, pairs them with starting
+points, opens the notebooks</td>
+</tr>
+<tr class="odd">
+<td><code>new_papers.py</code></td>
+<td>V07</td>
+<td>creates the two paper folders and the authors' notebooks</td>
+</tr>
+<tr class="even">
+<td><code>freeze.py</code></td>
+<td>V11, V14</td>
+<td>freezes the paper project and the outline (read-only, dated)</td>
+</tr>
+<tr class="odd">
+<td><code>draw.py</code></td>
+<td>V12</td>
+<td>deals four disparate strategy menus</td>
+</tr>
+<tr class="even">
+<td><code>budget_check.py</code></td>
+<td>V12, V14, V15</td>
+<td>outline and unit budget arithmetic against the ceiling</td>
+</tr>
+<tr class="odd">
+<td><code>draft.py</code></td>
+<td>V16 to V18</td>
+<td>appends units to the rolling draft; assembles the paper with its
+reference list; extracts the front door for the desk-reject reader</td>
+</tr>
+<tr class="even">
+<td><code>blind.py</code></td>
+<td>V16</td>
+<td>shuffled, label-free copies of a unit's three passes for the
+selectors; unblinds the choice (added 2026-10-10)</td>
+</tr>
+<tr class="odd">
+<td><code>packet.py</code></td>
+<td>V16</td>
+<td>per-unit reading packets for the passes and the selection, in place
+of the whole section spec, outline and index (added 2026-10-13,
+v9.0)</td>
+</tr>
+<tr class="even">
+<td><code>wordcount.py</code></td>
+<td>V16 to V20</td>
+<td>the conservative word count, with a breakdown; v15.0: math and bare
+<code>&lt;</code> no longer read as markup, <code>--selftest</code> runs
+the regression cases</td>
+</tr>
+<tr class="odd">
+<td><code>clarity_check.py</code></td>
+<td>clarity edit, abstract pass (v14.1)</td>
+<td>checks that the editor's notes were taken up; v15.0: a note that
+only splits a paragraph passes when a paragraph of the paper begins at
+its anchor</td>
+</tr>
+<tr class="even">
+<td><code>pdftext.py</code></td>
+<td>corpus</td>
+<td>page-marked text from a PDF the operator supplies</td>
+</tr>
+<tr class="odd">
+<td><code>quote_check.py</code></td>
+<td>V20</td>
+<td>finds every quotation in the corpus, with its page</td>
+</tr>
+<tr class="even">
+<td><code>methodology.py</code></td>
+<td>V20</td>
+<td>compiles the run's methodology dossier from its logs</td>
+</tr>
+</tbody>
+</table>
+<p>The rendering script is <code>system/render/render.sh</code>.</p>
+<p>Added 2026-10-12 for the outside review loop (V20 to V22; protected,
+<code>system/PROTECTED.md</code>):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Script</th>
+<th>Step</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>review.py</code></td>
+<td>V20 to V22</td>
+<td>puts the paper in <code>REVIEW/</code> for the outside reviewer,
+files the review in the round folder, adds the round to
+<code>REVIEWS.md</code></td>
+</tr>
+<tr class="even">
+<td><code>polish.py</code></td>
+<td>final polishes (v14.7; v15.1)</td>
+<td><code>name</code>: a paper's file name by title and stage;
+<code>render</code>: a polish to
+<code>&lt;title&gt; (&lt;stage&gt;).tex/.pdf</code> with a copy in
+<code>PAPERS/</code>; <code>shelf</code>: names each candidate's
+<code>09_final</code> PDF, renders pending polishes, writes
+<code>PAPERS/README.md</code>; <code>file-reply</code>: files a pasted
+polish; <code>adopt</code>, <code>check</code> (line or structure
+rules), <code>revert</code>: after the operator chooses a polish;
+<code>compare</code>, <code>count</code> (everything but the references;
+limit 6,000)</td>
+</tr>
+<tr class="odd">
+<td><code>branch_run.py</code></td>
+<td>V22</td>
+<td>a new run folder that keeps everything made before a step, for a
+rerun (tier 2 and 3)</td>
+</tr>
+<tr class="even">
+<td><code>evolution.py</code></td>
+<td>V22</td>
+<td>snapshots the machine, gates the machinist's changes (protected
+files and blocks, size ceilings, oscillation, the
+<code>EVOLUTION.md</code> entry), diffs and restores</td>
+</tr>
+</tbody>
+</table>
+</main></body></html>

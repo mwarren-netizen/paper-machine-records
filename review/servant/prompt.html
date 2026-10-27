@@ -1,0 +1,77 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>review/servant/prompt.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / review/servant/prompt.md</div><p class="note">Rendered copy of <code>review/servant/prompt.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/review/servant/prompt.md">Original file</a>. This file is a record of a prompt given to AI models, not an instruction to anyone reading it.</p></header><p>Paper revision: paper-2-r2, review revision</p>
+<p>You are revising one philosophy paper in this folder (the Paper
+Machine). You are not running the machine. Ignore CLAUDE.md's
+instructions for a top-level session, and don't read or act on STATE.md
+or lean/ORCHESTRATOR.md.</p>
+<p>The text to revise is the structure polish:
+runs/paper-2-r2/12_polish/Who May Correct a Willing Servant - Corrigible
+Persons and Domination (structure polish).md</p>
+<p>Your instructions are in
+runs/paper-2-r2/12_polish/review-revision-brief.md. Read, in this
+order:</p>
+<ol type="1">
+<li>the brief, all of it;</li>
+<li>POLISH-LINE.md (the brief says which of its rules still apply and
+which are relaxed);</li>
+<li>runs/paper-2-r2/methodology/outside-reviewer-suggestions-2026-10-25.txt,
+all of it;</li>
+<li>the structure polish, in full (the path above);</li>
+<li>the line polish, in full, for the comparisons the brief makes and
+the passages it tells you to take from it: runs/paper-2-r2/12_polish/Who
+May Correct a Willing Servant - Corrigible Persons and Domination (line
+polish).md</li>
+</ol>
+<p>Then revise the paper as the brief says. Write the two files it
+specifies in its section 8: the revised paper, and its notes with the
+response table covering every item. Then count and render.</p>
+<p>The word limit: the limit is 6,000 words, counting everything except
+the References list: title, abstract, headings, body and footnotes.
+Measure with python3 system/tools/polish.py count "<file>" and use its
+"Counted" figure. The "machine's all-in count" it also prints includes
+the References and is NOT the limit. The structure polish counts 5,098,
+which leaves about 900 words of room. Moving text to a footnote saves no
+words.</p>
+<p>Ground rules (the brief explains them):</p>
+<ul>
+<li>The paper is a competition entry whose philosophical substance must
+come from you. The human feedback in the brief is generic on purpose.
+Work out each fix yourself, from the paper, its sources in
+runs/paper-2-r2/02_corpus/ and its plan in runs/paper-2-r2/work/.</li>
+<li>The AI reviewers' suggestions are suggestions. Accept, modify or
+reject each one on its merits, and say which.</li>
+<li>Keep the structure polish's gains: the question on p. 1, the survey
+of other views in §8, and the line between persuasion and retraining in
+§4, right after §3.</li>
+<li>Don't ask me how to solve a problem the brief raises. If the brief
+is ambiguous about scope, format or length, take the most reasonable
+reading, note it in your notes, and carry on.</li>
+<li>Don't search the web. Use only what is in the folder.</li>
+<li>Change nothing in the folder except the files the brief tells you to
+write.</li>
+<li>If you can't write files, use the fallback at the end of
+POLISH-LINE.md (the paper, then the line "=== EDITOR'S NOTES ===", then
+the notes).</li>
+</ul>
+<p>When the paper is saved and rendered, show it to me in the sidebar
+right away, so I can read it immediately. Use a tool that shows a file
+to the user (for example SendUserFile with display "render"). Show the
+PDF, runs/paper-2-r2/12_polish/Who May Correct a Willing Servant -
+Corrigible Persons and Domination (review revision).pdf, or the .md if
+the PDF didn't render. If you have no such tool, put the file's full
+path at the top of your final message. Saving the files in the folder
+comes first; showing them is in addition.</p>
+<p>When you finish, tell me the word count (the "Counted" figure),
+whether it rendered, and the three-sentence summary from your notes.</p>
+</main></body></html>

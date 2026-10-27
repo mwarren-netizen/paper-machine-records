@@ -1,0 +1,407 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>review/evil-god/revision-notes.md · Paper Machine records</title><style>
+:root{--bg:#faf9f6;--fg:#1f1e1c;--mut:#6b6862;--line:#e3e0d8;--acc:#1D4ED8;--code:#f1f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9e8e4;--mut:#a3a19b;--line:#33363d;--acc:#86A8FF;--code:#22252c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Iowan Old Style',serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px;overflow-wrap:anywhere}
+.crumb,.note{font:.85rem/1.5 system-ui,sans-serif;color:var(--mut)}.crumb a,a{color:var(--acc)}
+header{border-bottom:1px solid var(--line);margin-bottom:24px;padding-bottom:12px}
+h1,h2,h3,h4{line-height:1.25}pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.82rem;line-height:1.45;white-space:pre-wrap}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}blockquote{margin:.6em 0;padding-left:14px;border-left:3px solid var(--line)}
+table{border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}td,th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.raw{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.5}
+</style></head><body><main><header><div class="crumb"><a href="https://anonymous.4open.science/w/paper-machine-records-8698/">Paper Machine records</a> / review/evil-god/revision-notes.md</div><p class="note">Rendered copy of <code>review/evil-god/revision-notes.md</code>. <a href="https://anonymous.4open.science/r/paper-machine-records-8698/review/evil-god/revision-notes.md">Original file</a>.</p></header><h1
+id="notes-review-revision-of-how-much-more-probable-must-god-be-the-evil-god-challenge-and-the-gap-problem">Notes:
+review revision of "How Much More Probable Must God Be? The Evil-God
+Challenge and the Gap Problem"</h1>
+<p><strong>Text revised:</strong> the structure polish
+(<code>12_polish/… (structure polish).md</code>), the operator's choice.
+The line polish was used for the comparisons and borrowings listed
+below. <strong>Output:</strong>
+<code>12_polish/How Much More Probable Must God Be - The Evil-God Challenge and the Gap Problem (review revision).md</code>.
+The name was confirmed with
+<code>polish.py name --run runs/paper-4 --stage "review revision"</code>,
+which notes, as expected, that this stage is not one of the standard
+four. <strong>How it was made:</strong> in the Claude session that
+reviewed the two polishes and the AI reviewers' file (Claude Opus 5.5,
+extra effort, the operator's choice). The operator asked that session to
+apply the reviewed list directly instead of preparing a brief for a
+fresh run. There was no human feedback on the paper's content; the
+operator supplied no margin notes. Every item below comes from the AI
+reviewers' file
+(<code>methodology/outside-reviewer-suggestions-2026-10-25.txt</code>,
+cited R0 to R14) or from this session's own review (cited [A]).
+<strong>Word count:</strong> <code>polish.py count</code> gives
+<strong>Counted 5,927</strong> (title 15, abstract 150, body 5,733,
+notes 29). The limit is 6,000, so there is room for 73. Not counted:
+References 219. The machine's all-in count is 6,146, and that figure is
+not the limit. <strong>Render:</strong> <code>polish.py render</code>
+succeeded: 12 pages. It wrote the <code>.pdf</code> and
+<code>.tex</code> beside the paper, a render log in
+<code>12_polish/render-logs/</code>, and a copy of the PDF in
+<code>PAPERS/</code>. The log shows no overfull boxes and no missing
+characters. Both displays, both footnotes and the References were
+checked on the page. <strong>Placeholders left:</strong> none.
+<strong>Title, abstract, headings:</strong> unchanged. The abstract
+already uses "comparative" and "absolute", the names now used
+throughout, so it needed no change. The seven sections keep the
+structure polish's order and headings, and its two order gains are kept:
+the trade-off comes straight after the bound, and the two-case argument
+has its own section, "Where the Evil God's Improbability Lies".
+<strong>Quotations:</strong> all 51 quoted strings in the structure
+polish's body survive word for word with their citations (checked
+mechanically). One new quotation was added and checked (see "New
+citations"). The References are byte-identical to the structure
+polish's.</p>
+<h2 id="response-table">Response table</h2>
+<p>"Done" means the item was acted on in full. "Partly" means part of it
+was acted on, and the reason for the rest is given. "Declined" means it
+was not acted on, with the reason. The judgments on the R items are this
+session's, made on the merits after checking each quotation against the
+polish it cites, each comparison against the other polish, and each
+figure by recomputing it.</p>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Done?</th>
+<th>How, or why not</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R0 checks</td>
+<td>done</td>
+<td>Verified. Every quotation is identical in the two polishes: the body
+has 51 quoted strings, 50 distinct, including the quoted words "favour"
+and "successful"; the reviewers' "52" counts the title. All figures were
+recomputed and hold (1 + 3·99 = 298, about 300; 0.5/298, about 1/596; k
+≥ 500,000 needs P(not-S) of about 6 in a million; Miller's 0.8, a fifth
+and a third; 0.08 and 0.016). The two cases exhaust the possibilities.
+"The question is on page 1" holds through the title; in both PDFs the
+body's sentence falls at the top of p. 2, and that needs no action.</td>
+</tr>
+<tr class="even">
+<td>R0 what already works</td>
+<td>done</td>
+<td>Kept: the question as its own paragraph, the target named before the
+thesis, the thesis previewed, first names at first mention. One
+exception was found and fixed: the structure polish gave Collins no
+first name (see [A]-1).</td>
+</tr>
+<tr class="odd">
+<td>R0 base text</td>
+<td>done</td>
+<td>The operator chose the structure polish. The borrowings from the
+line polish are listed under R1, R2(a), R3, R10(a) and [A]-2.</td>
+</tr>
+<tr class="even">
+<td>R1 glosses</td>
+<td>done, modified</td>
+<td>Glossed at first use: prior probability (§1, "its probability before
+the evidence is weighed"); credence (§1, "or degree of confidence"); k
+and r (§3); posterior ratios (§1); Symes's distinction (§1, the line
+polish's wording); metaethical grounds (§1, "that is, on claims about
+value and motivation"). "Perfectly free" is glossed in §1 because R2(a)
+now puts the term there; the structure polish already glossed it at its
+§2 occurrence.</td>
+</tr>
+<tr class="odd">
+<td>R2(a) the reply in §1</td>
+<td>done</td>
+<td>§1 now states the simplicity reply in two sentences, on the line
+polish's model. So that the reply is not given three times, §2 gives
+Mooney and Hendricks's version and §6 Swinburne's premise, each for its
+own purpose.</td>
+</tr>
+<tr class="even">
+<td>R2(b) Swinburne's measure</td>
+<td>done, modified</td>
+<td>In §2, not §1, where the model solution is set out. Two sentences:
+simplicity is internal to a hypothesis and so bears on probability
+before the evidence, with the new quotation "The simpler a theory, the
+more probable it is" (Swinburne 2004, 53); and a hypothesis is simpler
+the fewer entities and properties it postulates (paraphrasing the same
+page). Modified because the reviewers list Draper's penalty on desires a
+being "variously has" as part of Swinburne's measure. On the source page
+it belongs to Draper's own criterion of coherence (see [A]-3), so the
+account is kept to Swinburne.</td>
+</tr>
+<tr class="odd">
+<td>R3 the cap's reason in §1</td>
+<td>done</td>
+<td>§1 now names the premise ("that a perfectly free being who knows
+what is good will do it") and gives the line polish's one-sentence
+reason for the cap.</td>
+</tr>
+<tr class="even">
+<td>R4 trade-off after the bound</td>
+<td>done (no action)</td>
+<td>The structure polish already does this. Kept.</td>
+</tr>
+<tr class="odd">
+<td>R5(a) the two cases in words</td>
+<td>done</td>
+<td>§4 now says what d measures (with the example that a d of one half
+halves the evil god's probability), glosses the two Bayes identities in
+words, says why P(G|E) ≤ r·d ("however probable God was at the outset,
+the evidence leaves God no more probable than r·d"), and says why the
+cases exhaust the possibilities (d is either below t/r or not). The
+first case adds "so r·d is below t". The second case spells out the step
+to "nearly all": with r = 1 and t = 1/2, an evil god at one in a million
+started at no more than two in a million.</td>
+</tr>
+<tr class="even">
+<td>R5(b) the cap's derivation</td>
+<td>done</td>
+<td>§6 now spells out the step: given not-S, God has about a 1/n share
+of the probability that there is a creator; given S it can have at most
+all of it; and by the supposition that S does not make a creator more
+probable there is no more to have. Each of the two facts that give the
+cap is then stated in words before the display.</td>
+</tr>
+<tr class="odd">
+<td>R5(c) t/(rk)</td>
+<td>done</td>
+<td>§6: "This is the bound solved for ε: the lowest credence in the evil
+god compatible with believing in God."</td>
+</tr>
+<tr class="even">
+<td>R6 symbols and the bound</td>
+<td>done, modified</td>
+<td>The bound is now named where it is set up ("which I call the
+bound"). The reviewers' quoted wording "sets a lower bound" was the line
+polish's; the structure polish read "a lower bound on k·r". ε is
+introduced as "the evil god's final credence". Where the bound returns:
+§5 restates it in words; §6 calls t/(rε) "the bound of Section 3 solved
+for k"; the conclusion already stated it in words.</td>
+</tr>
+<tr class="odd">
+<td>R7 one name for each challenge</td>
+<td>done</td>
+<td>"Comparative challenge" and "absolute challenge" are used throughout
+in the paper's own voice. §2 says once that Mooney and Hendricks call
+them Challenge I and Challenge II. No quotation in the paper contains
+the numerals, so none is affected.</td>
+</tr>
+<tr class="even">
+<td>R8(a) one name for the evil-god hypothesis</td>
+<td>done</td>
+<td>§2 says once that the paper calls it simply the evil god and that
+other authors' labels are glossed where they occur. The existing short
+glosses of maltheism, diabolism, GGH/EGH and GG/EG are kept.</td>
+</tr>
+<tr class="odd">
+<td>R8(b) the symmetry premise</td>
+<td>done, modified</td>
+<td>The reviewers say the quotation goes on to mention "two symmetries".
+In fact "Given the two symmetries" is the paper's own lead-in,
+paraphrasing Mooney and Hendricks's "Given our above assumptions that
+(a) … and (b) …" (588). §2 now says that the comparative challenge
+"rests on two symmetries", so the lead-in points back to them. The
+premise is named at first use in §1 ("which I call the symmetry
+premise") and keeps that name in §3 and the conclusion (which read "the
+symmetry of likelihoods" before).</td>
+</tr>
+<tr class="even">
+<td>R9 labels and unglossed terms</td>
+<td>done</td>
+<td>§1 now numbers the theist's two options ("Her first option … Her
+second …"). The conclusion's "superfluity claim" is spelled out.
+"Natural theology" is glossed at its first use, in §3, not §4.
+"Evidential problem of evil" is glossed in §4.</td>
+</tr>
+<tr class="odd">
+<td>R10(a) wording slips</td>
+<td>done</td>
+<td>God's probability, not God (§4); "changes their probabilities by the
+same factor" (§4); "right about" (§3); "the many" defined, as the rivals
+among which the remaining probability is spread thinly (§6, both
+places); "might incline a being to do good without compelling it to do
+so" (§6); "Start with the point in outline" and "To put this precisely"
+(§3). The line polish's wording was used where it had one.</td>
+</tr>
+<tr class="even">
+<td>R10(b) "exactly"</td>
+<td>done</td>
+<td>The reviewers differ here; this follows A. The sentence now reads
+"by about the same factor as the evil god's (exactly, when r = 1)", and
+the next sentence reads "by about as much". The premise is that r is
+close to one, and the argument needs only rough equality. §3's "exactly
+as they stood before" is unchanged: it is conditional on equal
+explanation, and it is right.</td>
+</tr>
+<tr class="odd">
+<td>R10(c) "at most k·r"</td>
+<td>done</td>
+<td>The paper's own equation gives equality, so the Miller paragraph now
+reads "God's credence is still k·r times the evil god's".</td>
+</tr>
+<tr class="even">
+<td>R11 slow down §6's own move</td>
+<td>done</td>
+<td>§6 now explains why limitlessness is cheap ("An unlimited degree
+needs no particular value to be specified; a large finite one does"). It
+adds a plain comparison of what each hypothesis must specify beyond
+omnipotence and omniscience: God (on Swinburne's account) no desire; a
+god of order a desire and an object the value facts don't supply; the
+evil god a desire but no object of its own. It says why the egoist god
+is the limit ("since the facts about value also settle what that good
+is"). Every qualification is kept at its present strength ("may be as
+cheap", "a small class", "may hold most of what remains").</td>
+</tr>
+<tr class="odd">
+<td>R12(a) the Law passage</td>
+<td>done</td>
+<td>It now opens: "The bound also corrects the challenger's own reply to
+simplicity."</td>
+</tr>
+<tr class="even">
+<td>R12(b) the survey in §5</td>
+<td>done, modified</td>
+<td>The order is kept: the "by definition" objection belongs to the
+application of the bound to the reduction, and "None of the solutions in
+print that I examined…" already opens the survey. Instead §5 opens with
+a sentence saying what it does. The objection's two readings of
+"successful" are now marked ("Two readings of 'successful' must be kept
+apart here"), and Mooney and Hendricks's reading is called theirs. Each
+author's role in the survey was already visible (no figure stated, or,
+for Miller 2021, the second option), so it is unchanged.</td>
+</tr>
+<tr class="odd">
+<td>R12(c) each section's job</td>
+<td>done</td>
+<td>Checked section by section. §5 got an opening sentence and §3's Law
+passage an opening sentence; the other sections already say what they do
+at entry. No roadmap was added.</td>
+</tr>
+<tr class="even">
+<td>R13 contribution statement</td>
+<td>done (kept, as B recommends)</td>
+<td>Kept unnumbered, taking the line polish's "these points". The three
+parts already map in order onto §§3–4, §5 and §6, and the conclusion
+follows the same order. The claim is not strengthened.</td>
+</tr>
+<tr class="odd">
+<td>R14(a) the price in §1</td>
+<td>done, modified</td>
+<td>§1 now points to it briefly: "(one of the examples in Section 5 puts
+it at about one chance in twelve)". "One of the examples" marks it as
+conditional, and §5 states the conditions (k = 10, r = 1, credence in
+God 0.8). The full conditions would cost about 20 more words in the
+paragraph the structure polish shortened.</td>
+</tr>
+<tr class="even">
+<td>R14(b) one illustrative theist</td>
+<td>declined</td>
+<td>Each set of figures does a different job: the trade-off, refuting
+"roughly equal", the price, the cap. Rethreading them through one theist
+would cost many words for little gain. The paper already returns to one
+in a million at both ends (§1 and §6), and R14(a) gets most of the
+effect.</td>
+</tr>
+<tr class="odd">
+<td>[A]-1 Collins's first name</td>
+<td>done</td>
+<td>"John M. Collins" at first mention (§3), from the References and the
+line polish.</td>
+</tr>
+<tr class="even">
+<td>[A]-2 more slips</td>
+<td>done</td>
+<td>"sets a lower bound … and it expresses a trade-off" (§3); "none
+against the claim about absolute credence. Read that way, …" (§3);
+"cite" (§4); "the evil god's motive belongs" (§6); "The dispute thus
+concerns…" and "This is of a piece…", fixing unclear referents (§6);
+"used it to answer the challenge" (§1); "connect these points" (§1);
+"the absolute challenge's conclusion 'follows only if…'" (§5); "what
+supplies it" (conclusion).</td>
+</tr>
+<tr class="odd">
+<td>[A]-3 Draper's penalty</td>
+<td>done</td>
+<td>"Draper's simplicity penalty" became "Draper's criterion of
+coherence, which he takes to be more fundamental than simplicity,
+penalises…". The source says so: Draper proposes that what is right
+about simplicity derives "from a more fundamental criterion of
+'coherence'" (2016, 48, held text PDF p. 1), and the p. 61 passage comes
+under his supposition that "simplicity is replaced with coherence". The
+run's <code>work/source-check-2.md</code> calls it "the coherence
+penalty". The quotation, its page and "and so spares a uniform anti-good
+motive" are unchanged.</td>
+</tr>
+<tr class="even">
+<td>[A]-4 "one chance in twelve"</td>
+<td>done</td>
+<td>Now "about one chance in twelve" (0.08 is one in 12.5).</td>
+</tr>
+<tr class="odd">
+<td>[A]-5 "barely moves either god"</td>
+<td>done</td>
+<td>Now "does not drive either god down far". For a theist whose natural
+theology has made naturalism improbable the evidence may raise both
+gods; the second case needs only that it does not drive them down
+far.</td>
+</tr>
+<tr class="even">
+<td>[A]-6 attribution in §2</td>
+<td>done</td>
+<td>Found while revising: the sentence quoted from Mooney and Hendricks
+(591) reports Swinburne's argument (source p. 591, "Swinburne also
+argues that…"). The paper now says "Mooney and Hendricks report how
+Swinburne applies this to freedom". This also keeps the page-only
+citation "(591)" from being read as Swinburne's.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="changes-to-what-the-paper-claims">Changes to what the paper
+claims</h2>
+<p>Each is a correction or a step the paper left implicit:</p>
+<ul>
+<li>"lowers God exactly as it lowers the evil god" became "by about the
+same factor … (exactly, when r = 1)" (R10(b)).</li>
+<li>"at most k·r times" became "still k·r times" (R10(c)).</li>
+<li>"barely moves either god" became "does not drive either god down
+far" ([A]-5).</li>
+<li>Draper's penalty is now described as his criterion of coherence
+([A]-3).</li>
+<li>"one chance in twelve" became "about one chance in twelve"
+([A]-4).</li>
+<li>"Challenge II 'follows only if'" became "the absolute challenge's
+conclusion 'follows only if'" ([A]-2), matching §2.</li>
+<li>In §2, the perfect-freedom step is attributed to Swinburne as Mooney
+and Hendricks report it ([A]-6).</li>
+<li>Implicit steps now stated: the reading of d; the Bayes identities in
+words; why P(G|E) ≤ r·d; why the cases exhaust; the second-case
+illustration; the three steps of the cap; t/(rk) as the bound solved for
+ε; why limitlessness is cheap; the specification comparison; the reason
+the egoist god may be as cheap. Each claims no more than the paper
+argues, and the egoist sentence keeps "may".</li>
+</ul>
+<h2 id="new-citations">New citations</h2>
+<ul>
+<li>Swinburne 2004, 53: "The simpler a theory, the more probable it is".
+Checked in <code>02_corpus/sources/swinburne-2004-existence.txt</code>
+at printed p. 53, word for word. The paraphrase "a hypothesis is simpler
+the fewer entities and properties it postulates" is from the same page
+("postulating few (logically independent) entities, few properties of
+entities, …").</li>
+<li>Draper 2016: the paraphrase "which he takes to be more fundamental
+than simplicity" was checked at p. 48 (and pp. 52, 54) of
+<code>draper-2016-simplicity.txt</code>. It carries no new page
+reference: the citation (2016, 61) stays attached to the quotation.</li>
+</ul>
+<h2 id="names-and-titles-introduced">Names and titles introduced</h2>
+<ul>
+<li>John M. Collins, from the References.</li>
+</ul>
+<h2 id="for-the-operator">For the operator</h2>
+<p>The revision restores the line polish's glosses, its statement of the
+simplicity reply and its reason for the cap. It fixes one name each for
+the two challenges, the evil-god hypothesis, the symmetry premise and
+the bound, and puts the two-case argument, the cap's derivation and the
+paper's own move about the simplest motives into plain words. It also
+corrects four precision points against the texts and sources ("exactly",
+"at most", Draper's coherence penalty, and the attribution of the
+freedom step), and counts 5,927 of 6,000.</p>
+</main></body></html>
